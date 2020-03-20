@@ -10,8 +10,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -22,10 +24,8 @@ import net.minecraft.world.World;
 
 public class ItemStaffPortal extends MoCItem {
 
-    public ItemStaffPortal(String name) {
-        super(name);
-        this.maxStackSize = 1;
-        setMaxDamage(3);
+    public ItemStaffPortal() {
+        super(new Item.Properties().maxStackSize(1).maxDamage(3));
     }
 
     private int portalPosX;
@@ -34,7 +34,7 @@ public class ItemStaffPortal extends MoCItem {
     private int portalDimension;
 
     @Override
-    public EnumActionResult
+    public ActionResultType
             onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         final ItemStack stack = player.getHeldItem(hand);
         if (worldIn.isRemote) {

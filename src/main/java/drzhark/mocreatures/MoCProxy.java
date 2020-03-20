@@ -18,7 +18,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoCProxy implements IGuiHandler {
+public class MoCProxy implements IGUIHandler {
+
+    //TODO: Proxies are no longer necessary in 1.14+
 
     public static String ARMOR_TEXTURE = "textures/armor/";
     public static String BLOCK_TEXTURE = "textures/blocks/";

@@ -17,6 +17,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
@@ -43,7 +44,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-public abstract class MoCEntityMob extends EntityMob implements IMoCEntity//, IEntityAdditionalSpawnData
+public abstract class MoCEntityMob extends MobEntity implements IMoCEntity//, IEntityAdditionalSpawnData
 {
 
     protected boolean divePending;

@@ -20,6 +20,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -48,7 +49,7 @@ public class MoCEventHooks {
             MoCreatures.proxy.worldInitDone = true;
         }
         // make sure doMobSpawning is on if CMS is not installed
-        GameRules gameRule = event.getWorld().getGameRules();
+        GameRules gameRule = event.getWorld().getWorldInfo().getGameRulesInstance();
         if (gameRule != null && !MoCreatures.isCustomSpawnerLoaded) {
             gameRule.setOrCreateGameRule("doMobSpawning", "true");
         }

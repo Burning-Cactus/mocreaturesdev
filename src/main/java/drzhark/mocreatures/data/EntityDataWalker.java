@@ -1,4 +1,4 @@
-package drzhark.mocreatures.datafixer;
+package drzhark.mocreatures.data;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.datafix.IDataFixer;

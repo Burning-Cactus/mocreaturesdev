@@ -1,41 +1,52 @@
 package drzhark.mocreatures.item;
 
 import com.google.common.collect.Multimap;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.IItemTier;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTier;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MoCItemWeapon extends MoCItem {
 
     private float attackDamage;
-    private final Item.ToolMaterial material;
+    private final IItemTier material;
     private int specialWeaponType = 0;
     private boolean breakable = false;
 
-    public MoCItemWeapon(String name, Item.ToolMaterial par2ToolMaterial) {
-        super(name);
-        this.material = par2ToolMaterial;
-        this.maxStackSize = 1;
-        this.setMaxDamage(par2ToolMaterial.getMaxUses());
-        this.attackDamage = 4F + par2ToolMaterial.getAttackDamage();
+    public MoCItemWeapon(IItemTier materialIn, Item.Properties builder) {
+        super(builder.maxDamage(materialIn.getMaxUses()).maxStackSize(1));
+        this.material = materialIn;
+        this.attackDamage = 4F + materialIn.getAttackDamage();
     }
 
     /**
@@ -45,8 +56,8 @@ public class MoCItemWeapon extends MoCItem {
      * @param damageType 0 = default, 1 = poison, 2 = slow down, 3 = fire, 4 =
      *        confusion, 5 = blindness
      */
-    public MoCItemWeapon(String name, ToolMaterial par2ToolMaterial, int damageType, boolean fragile) {
-        this(name, par2ToolMaterial);
+    public MoCItemWeapon(IItemTier materialIn, int damageType, boolean fragile, Item.Properties builder) {
+        this(materialIn, builder);
         this.specialWeaponType = damageType;
         this.breakable = fragile;
     }
@@ -58,8 +69,8 @@ public class MoCItemWeapon extends MoCItem {
         return this.material.getAttackDamage();
     }
 
-    public float getStrVsBlock(ItemStack stack, IBlockState state) {
-        if (state.getBlock() == Blocks.WEB) {
+    public float getStrVsBlock(ItemStack stack, BlockState state) {
+        if (state.getBlock() == Blocks.COBWEB) {
             return 15.0F;
         } else {
             Material material = state.getMaterial();
@@ -76,7 +87,7 @@ public class MoCItemWeapon extends MoCItem {
      * @param attacker the attacking entity
      */
     @Override
-    public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase target, EntityLivingBase attacker) {
+    public boolean hitEntity(ItemStack par1ItemStack, LivingEntity target, LivingEntity attacker) {
         int i = 1;
         if (this.breakable) {
             i = 10;
@@ -85,19 +96,19 @@ public class MoCItemWeapon extends MoCItem {
         int potionTime = 100;
         switch (this.specialWeaponType) {
             case 1: //poison
-                target.addPotionEffect(new PotionEffect(MobEffects.POISON, potionTime, 0));
+                target.addPotionEffect(new EffectInstance(Effects.POISON, potionTime, 0));
                 break;
             case 2: //frost slowdown
-                target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, potionTime, 0));
+                target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, potionTime, 0));
                 break;
             case 3: //fire
                 target.setFire(10);
                 break;
             case 4: //confusion
-                target.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, potionTime, 0));
+                target.addPotionEffect(new EffectInstance(Effects.NAUSEA, potionTime, 0));
                 break;
             case 5: //blindness
-                target.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, potionTime, 0));
+                target.addPotionEffect(new EffectInstance(Effects.BLINDNESS, potionTime, 0));
                 break;
             default:
                 break;
@@ -106,8 +117,8 @@ public class MoCItemWeapon extends MoCItem {
         return true;
     }
 
-    public boolean onBlockDestroyed(ItemStack par1ItemStack, int par2, int par3, int par4, int par5, EntityLiving par6EntityLiving) {
-        par1ItemStack.damageItem(2, par6EntityLiving);
+    public boolean onBlockDestroyed(ItemStack par1ItemStack, int par2, int par3, int par4, int par5, LivingEntity par6EntityLiving) {
+        par1ItemStack.damageItem(2, par6EntityLiving, d -> d.sendBreakAnimation(EquipmentSlotType.MAINHAND));
         return true;
     }
 
@@ -115,7 +126,7 @@ public class MoCItemWeapon extends MoCItem {
      * Returns True is the item is renderer in full 3D when hold.
      */
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public boolean isFull3D() {
         return true;
     }
@@ -142,18 +153,18 @@ public class MoCItemWeapon extends MoCItem {
      * pressed. Args: itemStack, world, entityPlayer
      */
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand) {
         final ItemStack stack = player.getHeldItem(hand);
         player.setActiveHand(hand);
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+        return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
     }
 
     /**
      * Returns if the item (tool) can harvest results from the block type.
      */
     @Override
-    public boolean canHarvestBlock(IBlockState state) {
-        return state.getBlock() == Blocks.WEB;
+    public boolean canHarvestBlock(BlockState state) {
+        return state.getBlock() == Blocks.COBWEB;
     }
 
     /**
@@ -168,9 +179,9 @@ public class MoCItemWeapon extends MoCItem {
     /**
      * Called when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
      */
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase playerIn) {
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity playerIn) {
         if ((double) state.getBlockHardness(worldIn, pos) != 0.0D) {
-            stack.damageItem(2, playerIn);
+            stack.damageItem(2, playerIn, d -> d.sendBreakAnimation(EquipmentSlotType.MAINHAND));
         }
 
         return true;
@@ -200,9 +211,9 @@ public class MoCItemWeapon extends MoCItem {
      * Gets a map of item attribute modifiers, used by ItemSword to increase hit damage.
      */
     @SuppressWarnings("deprecation")
-    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
+    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EquipmentSlotType equipmentSlot) {
         Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
-        if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
+        if (equipmentSlot == EquipmentSlotType.MAINHAND) {
             multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier",
                     (double) this.attackDamage, 0));
         }

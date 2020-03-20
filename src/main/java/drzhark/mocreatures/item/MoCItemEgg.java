@@ -6,10 +6,13 @@ import drzhark.mocreatures.entity.aquatic.MoCEntitySmallFish;
 import drzhark.mocreatures.entity.item.MoCEntityEgg;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -24,22 +27,22 @@ public class MoCItemEgg extends MoCItem {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         final ItemStack stack = player.getHeldItem(hand);
         stack.shrink(1);
         if (!world.isRemote && player.onGround) {
-            int i = stack.getItemDamage();
+            int i = stack.getDamage();
             if (i == 30) {
                 i = 31; //for ostrich eggs. placed eggs become stolen eggs.
             }
             MoCEntityEgg entityegg = new MoCEntityEgg(world, i);
-            entityegg.setPosition(player.posX, player.posY, player.posZ);
+            entityegg.setEntityPosition(player.posX, player.posY, player.posZ);
             player.world.spawnEntity(entityegg);
             entityegg.motionY += world.rand.nextFloat() * 0.05F;
             entityegg.motionX += (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F;
             entityegg.motionZ += (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F;
         }
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+        return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
     }
 
     @Override
@@ -77,9 +80,9 @@ public class MoCItemEgg extends MoCItem {
             items.add(new ItemStack(this, 1, i));
         }
     }
-
-    @Override
-    public String getUnlocalizedName(ItemStack itemstack) {
-        return (new StringBuilder()).append(getUnlocalizedName()).append(".").append(itemstack.getItemDamage()).toString();
-    }
+//  Obsolete.
+//    @Override
+//    public String getUnlocalizedName(ItemStack itemstack) {
+//        return (new StringBuilder()).append(getUnlocalizedName()).append(".").append(itemstack.getItemDamage()).toString();
+//    }
 }

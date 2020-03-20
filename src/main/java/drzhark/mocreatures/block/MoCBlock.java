@@ -11,6 +11,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.EnumProperty;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
@@ -18,13 +19,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MoCBlock extends Block {
 
-    public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", EnumType.class);
+    public static final EnumProperty<EnumType> VARIANT = EnumProperty.create("variant", EnumType.class);
 
     public MoCBlock(String name, Material material) {
-        super(material);
-        this.setCreativeTab(MoCreatures.tabMoC);
+        super(Block.Properties.create(material));
         this.setRegistryName(MoCConstants.MOD_ID, name);
-        this.setUnlocalizedName(name);
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumType.WYVERN_LAIR));
     }
 

@@ -18,6 +18,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockJukebox;
 import net.minecraft.block.BlockJukebox.TileEntityJukebox;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -25,12 +26,14 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityPig;
@@ -40,6 +43,7 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
@@ -92,9 +96,9 @@ public class MoCTools {
             for (int i = 0; i < var2; ++i) {
                 float var4 = (i % 2 - 0.5F) * 1 / 4.0F;
                 float var5 = (i / 2 - 0.5F) * 1 / 4.0F;
-                EntitySlime var6 = new EntitySlime(world);
+                SlimeEntity var6 = new SlimeEntity(world);
                 //var6.setSlimeSize(1);  TODO FIX
-                var6.setLocationAndAngles(entity.posX + var4, entity.posY + 0.5D, entity.posZ + var5, world.rand.nextFloat() * 360.0F, 0.0F);
+                var6.setLocationAndAngles(entity.getPosX() + var4, entity.getPosY() + 0.5D, entity.getPosZ() + var5, world.rand.nextFloat() * 360.0F, 0.0F);
                 world.spawnEntity(var6);
             }
         }
@@ -107,7 +111,7 @@ public class MoCTools {
         if (!entity.getIsRideable() || world.isRemote) {
             return;
         }
-        dropCustomItem(entity, world, new ItemStack(MoCItems.horsesaddle, 1));
+        dropCustomItem(entity, world, new ItemStack(MoCItems.HORSESADDLE.get(), 1));
         entity.setRideable(false);
     }
 
@@ -129,7 +133,7 @@ public class MoCTools {
             return;
         }
 
-        EntityItem entityitem = new EntityItem(world, entity.posX, entity.posY, entity.posZ, itemstack);
+        EntityItem entityitem = new EntityItem(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), itemstack);
         float f3 = 0.05F;
         entityitem.motionX = (float) world.rand.nextGaussian() * f3;
         entityitem.motionY = ((float) world.rand.nextGaussian() * f3) + 0.2F;
@@ -138,9 +142,9 @@ public class MoCTools {
     }
 
     public static void bigsmack(Entity entity, Entity entity1, float force) {
-        double d = entity.posX - entity1.posX;
-        double d1 = entity.posZ - entity1.posZ;
-        for (d1 = entity.posZ - entity1.posZ; ((d * d) + (d1 * d1)) < 0.0001D; d1 = (Math.random() - Math.random()) * 0.01D) {
+        double d = entity.getPosX() - entity1.getPosX();
+//        double d1 = entity.getPosZ() - entity1.getPosZ();
+        for (double d1 = entity.getPosZ() - entity1.getPosZ(); ((d * d) + (d1 * d1)) < 0.0001D; d1 = (Math.random() - Math.random()) * 0.01D) {
             d = (Math.random() - Math.random()) * 0.01D;
         }
 
@@ -156,11 +160,11 @@ public class MoCTools {
         }
     }
 
-    public static void buckleMobs(EntityLiving entityattacker, Double dist, World world) {
-        List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(entityattacker, entityattacker.getEntityBoundingBox().expand(dist, 2D, dist));
+    public static void buckleMobs(LivingEntity entityattacker, Double dist, World world) {
+        List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(entityattacker, entityattacker.getBoundingBox().expand(dist, 2D, dist));
         for (int i = 0; i < list.size(); i++) {
             Entity entitytarget = list.get(i);
-            if (!(entitytarget instanceof EntityLiving) || (entityattacker.isBeingRidden() && entitytarget == entityattacker.getRidingEntity())) {
+            if (!(entitytarget instanceof LivingEntity) || (entityattacker.isBeingRidden() && entitytarget == entityattacker.getRidingEntity())) {
                 continue;
             }
 
@@ -171,11 +175,11 @@ public class MoCTools {
         }
     }
 
-    public static void buckleMobsNotPlayers(EntityLiving entityattacker, Double dist, World world) {
-        List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(entityattacker, entityattacker.getEntityBoundingBox().expand(dist, 2D, dist));
+    public static void buckleMobsNotPlayers(LivingEntity entityattacker, Double dist, World world) {
+        List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(entityattacker, entityattacker.getBoundingBox().expand(dist, 2D, dist));
         for (int i = 0; i < list.size(); i++) {
             Entity entitytarget = list.get(i);
-            if (!(entitytarget instanceof EntityLiving) || (entitytarget instanceof EntityPlayer)
+            if (!(entitytarget instanceof LivingEntity) || (entitytarget instanceof PlayerEntity)
                     || (entityattacker.isBeingRidden() && entitytarget == entityattacker.getRidingEntity())) {
                 continue;
             }
@@ -187,36 +191,36 @@ public class MoCTools {
         }
     }
 
-    public static void spawnNearPlayer(EntityPlayer player, int entityId, int numberToSpawn)//, World world)
+    public static void spawnNearPlayer(PlayerEntity player, int entityId, int numberToSpawn)//, World world)
     {
         WorldServer world =
                 FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(player.world.provider.getDimensionType().getId());
         for (int i = 0; i < numberToSpawn; i++) {
             EntityLiving entityliving = null;
             try {
-                Class<? extends EntityLiving> entityClass = MoCreatures.instaSpawnerMap.get(entityId);
-                entityliving = (EntityLiving) entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
+                Class<? extends LivingEntity> entityClass = MoCreatures.instaSpawnerMap.get(entityId);
+                entityliving = (LivingEntity) entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             if (entityliving != null) {
-                entityliving.setLocationAndAngles(player.posX - 1, player.posY, player.posZ - 1, player.rotationYaw, player.rotationPitch);
+                entityliving.setLocationAndAngles(player.getPosX() - 1, player.getPosY(), player.getPosZ() - 1, player.rotationYaw, player.rotationPitch);
                 world.spawnEntity(entityliving);
             }
         }
     }
 
-    public static void spawnNearPlayerbyName(EntityPlayer player, String eName, int numberToSpawn) {
+    public static void spawnNearPlayerbyName(PlayerEntity player, String eName, int numberToSpawn) {
         WorldServer world =
                 FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(player.world.provider.getDimensionType().getId());
 
         for (int i = 0; i < numberToSpawn; i++) {
-            EntityLiving entityToSpawn = null;
+            LivingEntity entityToSpawn = null;
             try {
                 MoCEntityData entityData = MoCreatures.mocEntityMap.get(eName);
-                Class<? extends EntityLiving> myClass = entityData.getEntityClass();
-                entityToSpawn = (EntityLiving) myClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
+                Class<? extends LivingEntity> myClass = entityData.getEntityClass();
+                entityToSpawn = (LivingEntity) myClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
             } catch (Exception e) {
                 e.printStackTrace();
             }

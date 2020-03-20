@@ -20,6 +20,7 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,7 +44,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class MoCEntityAmbient extends EntityAnimal implements IMoCEntity {
+public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntity {
 
     protected static final DataParameter<Boolean> ADULT = EntityDataManager.<Boolean>createKey(MoCEntityAmbient.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Integer> TYPE = EntityDataManager.<Integer>createKey(MoCEntityAmbient.class, DataSerializers.VARINT);

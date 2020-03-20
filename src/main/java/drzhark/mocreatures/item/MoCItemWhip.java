@@ -13,14 +13,22 @@ import drzhark.mocreatures.entity.passive.MoCEntityPetScorpion;
 import drzhark.mocreatures.entity.passive.MoCEntityWyvern;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -29,10 +37,8 @@ import java.util.List;
 
 public class MoCItemWhip extends MoCItem {
 
-    public MoCItemWhip(String name) {
-        super(name);
-        this.maxStackSize = 1;
-        setMaxDamage(24);
+    public MoCItemWhip() {
+        super(new Item.Properties().maxStackSize(1).maxDamage(24));
     }
 
     @Override
@@ -40,22 +46,28 @@ public class MoCItemWhip extends MoCItem {
         return true;
     }
 
-    public ItemStack onItemRightClick2(ItemStack itemstack, World world, EntityPlayer entityplayer) {
+    public ItemStack onItemRightClick2(ItemStack itemstack, World world, PlayerEntity entityplayer) {
         return itemstack;
     }
 
     @Override
-    public EnumActionResult
-            onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public ActionResultType
+            onItemUse(ItemUseContext context /*PlayerEntity player, World worldIn, BlockPos pos, Hand hand, EnumFacing side, float hitX, float hitY, float hitZ*/) {
+
+        PlayerEntity player = context.getPlayer();
+        World worldIn = context.getWorld();
+        Hand hand = context.getHand();
+        BlockPos pos = context.getPos();
+        Direction side = context.getFace();
         final ItemStack stack = player.getHeldItem(hand);
         int i1 = 0;
         Block block = worldIn.getBlockState(pos).getBlock();
         Block block1 = worldIn.getBlockState(pos.up()).getBlock();
-        if (side != EnumFacing.DOWN && (block1 == Blocks.AIR) && (block != Blocks.AIR) && (block != Blocks.STANDING_SIGN)) {
+        if (side != Direction.DOWN && (block1 == Blocks.AIR) && (block != Blocks.AIR) && (block != Blocks.STANDING_SIGN)) {
             whipFX(worldIn, pos);
             worldIn.playSound(player, pos, MoCSoundEvents.ENTITY_GENERIC_WHIP, SoundCategory.PLAYERS, 0.5F, 0.4F / ((itemRand.nextFloat() * 0.4F) + 0.8F));
-            stack.damageItem(1, player);
-            List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(player, player.getEntityBoundingBox().expand(12D, 12D, 12D));
+            stack.damageItem(1, player, d -> d.sendBreakAnimation(hand));
+            List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(player, player.getBoundingBox().expand(12D, 12D, 12D));
             for (int l1 = 0; l1 < list.size(); l1++) {
                 Entity entity = list.get(l1);
 
@@ -72,7 +84,7 @@ public class MoCItemWhip extends MoCItem {
                     if (entitybigcat.getIsTamed()) {
                         entitybigcat.setSitting(!entitybigcat.getIsSitting());
                         i1++;
-                    } else if ((worldIn.getDifficulty().getDifficultyId() > 0) && entitybigcat.getIsAdult()) {
+                    } else if ((worldIn.getDifficulty().getId() > 0) && entitybigcat.getIsAdult()) {
                         entitybigcat.setAttackTarget(player);
                     }
                 }
@@ -148,9 +160,9 @@ public class MoCItemWhip extends MoCItem {
             if (i1 > 6) {
                 //entityplayer.triggerAchievement(MoCreatures.Indiana);
             }
-            return EnumActionResult.SUCCESS;
+            return ActionResultType.SUCCESS;
         }
-        return EnumActionResult.FAIL;
+        return ActionResultType.FAIL;
     }
 
     public void whipFX(World world, BlockPos pos) {

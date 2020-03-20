@@ -6,8 +6,10 @@ import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -18,10 +20,8 @@ import net.minecraft.world.World;
 
 public class ItemStaffTeleport extends MoCItem {
 
-    public ItemStaffTeleport(String name) {
-        super(name);
-        this.maxStackSize = 1;
-        setMaxDamage(128);
+    public ItemStaffTeleport() {
+        super(new Item.Properties().maxStackSize(1).maxDamage(128));
     }
 
     /**
@@ -46,7 +46,7 @@ public class ItemStaffTeleport extends MoCItem {
      * pressed. Args: itemStack, world, entityPlayer
      */
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, EnumHand hand) {
         final ItemStack stack = player.getHeldItem(hand);
         if (player.getRidingEntity() != null || player.isBeingRidden()) {
             return ActionResult.newResult(EnumActionResult.PASS, stack);

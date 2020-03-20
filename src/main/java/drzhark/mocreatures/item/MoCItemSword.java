@@ -1,34 +1,34 @@
 package drzhark.mocreatures.item;
 
-import drzhark.mocreatures.MoCConstants;
-import drzhark.mocreatures.MoCreatures;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.MobEffects;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.*;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 
-public class MoCItemSword extends ItemSword {
+public class MoCItemSword extends SwordItem {
 
     private int specialWeaponType = 0;
     private boolean breakable = false;
 
-    public MoCItemSword(String name, Item.ToolMaterial material) {
-        this(name, 0, material);
+    public MoCItemSword(Item.Properties builder) {
+        this(ItemTier.IRON, 0, 0, builder);
+    }
+    public MoCItemSword(IItemTier material, Item.Properties builder) {
+        this(material, 0, 0, builder);
     }
 
-    public MoCItemSword(String name, int meta, Item.ToolMaterial material) {
-        super(material);
-        this.setCreativeTab(MoCreatures.tabMoC);
-        this.setRegistryName(MoCConstants.MOD_ID, name);
-        this.setUnlocalizedName(name);
+    public MoCItemSword(IItemTier material, int strength, float speed, Item.Properties builder) {
+        super(material, strength, speed, builder);
+//        this.setCreativeTab(MoCreatures.tabMoC);
+//        this.setRegistryName(MoCConstants.MOD_ID, name);
+//        this.setUnlocalizedName(name);
     }
 
-    public MoCItemSword(String name, Item.ToolMaterial material, int damageType, boolean fragile) {
-        this(name, material);
+    public MoCItemSword(IItemTier material, int strength, float speed, int damageType, Item.Properties builder) {
+        super(material, strength, speed, builder);
         this.specialWeaponType = damageType;
-        this.breakable = fragile;
+//        this.breakable = fragile;
     }
 
     /**
@@ -39,28 +39,28 @@ public class MoCItemSword extends ItemSword {
      * @param attacker the attacking entity
      */
     @Override
-    public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase target, EntityLivingBase attacker) {
+    public boolean hitEntity(ItemStack par1ItemStack, LivingEntity target, LivingEntity attacker) {
         int i = 1;
         if (this.breakable) {
             i = 10;
         }
-        par1ItemStack.damageItem(i, attacker);
+        par1ItemStack.damageItem(i, attacker, d -> d.sendBreakAnimation(EquipmentSlotType.MAINHAND));
         int potionTime = 100;
         switch (this.specialWeaponType) {
             case 1: //poison
-                target.addPotionEffect(new PotionEffect(MobEffects.POISON, potionTime, 0));
+                target.addPotionEffect(new EffectInstance(Effects.POISON, potionTime, 0));
                 break;
             case 2: //frost slowdown
-                target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, potionTime, 0));
+                target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, potionTime, 0));
                 break;
             case 3: //fire
                 target.setFire(10);
                 break;
             case 4: //confusion
-                target.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, potionTime, 0));
+                target.addPotionEffect(new EffectInstance(Effects.NAUSEA, potionTime, 0));
                 break;
             case 5: //blindness
-                target.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, potionTime, 0));
+                target.addPotionEffect(new EffectInstance(Effects.BLINDNESS, potionTime, 0));
                 break;
             default:
                 break;

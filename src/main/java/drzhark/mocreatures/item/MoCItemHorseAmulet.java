@@ -16,11 +16,15 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -49,18 +53,17 @@ public class MoCItemHorseAmulet extends MoCItem {
     private String ownerName;
     private int PetId;
 
-    public MoCItemHorseAmulet(String name) {
-        super(name);
-        this.maxStackSize = 1;
-        setHasSubtypes(true);
+    public MoCItemHorseAmulet() {
+        super(new Item.Properties().maxStackSize(1));
+//        setHasSubtypes(true);
         this.ageCounter = 0;
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand) {
         final ItemStack stack = player.getHeldItem(hand);
         if (++this.ageCounter < 2) {
-            return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+            return new ActionResult<ItemStack>(ActionResultType.PASS, stack);
         }
 
         if (!worldIn.isRemote) {
@@ -68,9 +71,9 @@ public class MoCItemHorseAmulet extends MoCItem {
         }
 
         double dist = 3D;
-        double newPosY = player.posY;
-        double newPosX = player.posX - (dist * Math.cos((MoCTools.realAngle(player.rotationYaw - 90F)) / 57.29578F));
-        double newPosZ = player.posZ - (dist * Math.sin((MoCTools.realAngle(player.rotationYaw - 90F)) / 57.29578F));
+        double newPosY = player.getPosY();
+        double newPosX = player.getPosX() - (dist * Math.cos((MoCTools.realAngle(player.rotationYaw - 90F)) / 57.29578F));
+        double newPosZ = player.getPosZ() - (dist * Math.sin((MoCTools.realAngle(player.rotationYaw - 90F)) / 57.29578F));
 
         if (!player.world.isRemote) {
             try {
@@ -182,7 +185,7 @@ public class MoCItemHorseAmulet extends MoCItem {
         }
         this.ageCounter = 0;
 
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+        return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
     }
 
     public void readFromNBT(NBTTagCompound nbt) {

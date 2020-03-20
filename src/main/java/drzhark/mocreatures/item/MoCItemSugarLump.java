@@ -1,9 +1,10 @@
 package drzhark.mocreatures.item;
 
+import net.minecraft.item.Item;
+
 public class MoCItemSugarLump extends MoCItemFood {
 
-    public MoCItemSugarLump(String name) {
-        super(name, 3);
-        this.maxStackSize = 32;
+    public MoCItemSugarLump(Item.Properties properties) {
+        super(3, properties.maxStackSize(16));
     }
 }

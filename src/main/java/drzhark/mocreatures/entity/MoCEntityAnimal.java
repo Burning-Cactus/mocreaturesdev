@@ -23,6 +23,7 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,7 +50,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-public abstract class MoCEntityAnimal extends EntityAnimal implements IMoCEntity {
+public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity {
 
     protected boolean divePending;
     protected boolean jumpPending;

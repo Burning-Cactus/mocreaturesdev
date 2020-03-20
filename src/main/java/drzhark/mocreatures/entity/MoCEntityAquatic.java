@@ -5,6 +5,7 @@ import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.ai.EntityAIMoverHelperMoC;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
@@ -42,7 +43,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-public abstract class MoCEntityAquatic extends EntityCreature implements IMoCEntity//, IEntityAdditionalSpawnData
+public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEntity//, IEntityAdditionalSpawnData
 {
 
     protected boolean divePending;
