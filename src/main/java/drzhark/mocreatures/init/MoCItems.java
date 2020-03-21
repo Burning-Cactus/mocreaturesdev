@@ -2,6 +2,7 @@ package drzhark.mocreatures.init;
 
 import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.block.*;
 import drzhark.mocreatures.item.ItemBuilderHammer;
 import drzhark.mocreatures.item.ItemStaffPortal;
 import drzhark.mocreatures.item.ItemStaffTeleport;
@@ -21,29 +22,15 @@ import drzhark.mocreatures.item.MoCItemSword;
 import drzhark.mocreatures.item.MoCItemTurtleSoup;
 import drzhark.mocreatures.item.MoCItemWeapon;
 import drzhark.mocreatures.item.MoCItemWhip;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
-import net.minecraft.item.ItemTier;
-import net.minecraft.item.ToolItem;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.item.*;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -199,6 +186,23 @@ public class MoCItems {
 
     //TODO: Register and implement Food items
 
+
+
+    //BlockItems
+    public static final RegistryObject<Item> WYVERN_STONE = ITEMS.register("wyvern_stone", () -> new BlockItem(MoCBlocks.WYVERN_STONE.get(), new Item.Properties().group(MoCreatures.tabMoC)));
+    public static final RegistryObject<Item> WYVERN_GRASS = ITEMS.register("wyvern_grass", () -> new BlockItem(MoCBlocks.WYVERN_GRASS.get(), new Item.Properties().group(MoCreatures.tabMoC)));
+    public static final RegistryObject<Item> WYVERN_DIRT = ITEMS.register("wyvern_dirt", () -> new BlockItem(MoCBlocks.WYVERN_DIRT.get(), new Item.Properties().group(MoCreatures.tabMoC)));
+    public static final RegistryObject<Item> WYVERN_LEAVES = ITEMS.register("wyvern_leaves", () -> new BlockItem(MoCBlocks.WYVERN_LEAVES.get(), new Item.Properties().group(MoCreatures.tabMoC)));
+    public static final RegistryObject<Item> WYVERN_LOG = ITEMS.register("wyvern_log", () -> new BlockItem(MoCBlocks.WYVERN_LOG.get(), new Item.Properties().group(MoCreatures.tabMoC)));
+    public static final RegistryObject<Item> WYVERN_TALLGRASS = ITEMS.register("wyvern_tallgrass", () -> new BlockItem(MoCBlocks.WYVERN_TALLGRASS.get(), new Item.Properties().group(MoCreatures.tabMoC)));
+    public static final RegistryObject<Item> WYVERN_WOODPLANK = ITEMS.register("wyvern_woodplank", () -> new BlockItem(MoCBlocks.WYVERN_WOODPLANK.get(), new Item.Properties().group(MoCreatures.tabMoC)));
+    public static final RegistryObject<Item> OGRE_STONE = ITEMS.register("ogre_stone", () -> new BlockItem(MoCBlocks.OGRE_STONE.get(), new Item.Properties().group(MoCreatures.tabMoC)));
+    public static final RegistryObject<Item> OGRE_GRASS = ITEMS.register("ogre_grass", () -> new BlockItem(MoCBlocks.OGRE_GRASS.get(), new Item.Properties().group(MoCreatures.tabMoC)));
+    public static final RegistryObject<Item> OGRE_DIRT = ITEMS.register("ogre_dirt", () -> new BlockItem(MoCBlocks.OGRE_DIRT.get(), new Item.Properties().group(MoCreatures.tabMoC)));
+    public static final RegistryObject<Item> OGRE_LEAVES = ITEMS.register("ogre_leaves", () -> new BlockItem(MoCBlocks.OGRE_LEAVES.get(), new Item.Properties().group(MoCreatures.tabMoC)));
+    public static final RegistryObject<Item> OGRE_LOG = ITEMS.register("ogre_log", () -> new BlockItem(MoCBlocks.OGRE_LOG.get(), new Item.Properties().group(MoCreatures.tabMoC)));
+    public static final RegistryObject<Item> OGRE_TALLGRASS = ITEMS.register("ogre_tallgrass", () -> new BlockItem(MoCBlocks.OGRE_TALLGRASS.get(), new Item.Properties().group(MoCreatures.tabMoC)));
+    public static final RegistryObject<Item> OGRE_WOODPLANK = ITEMS.register("ogre_woodplank", () -> new BlockItem(MoCBlocks.OGRE_WOODPLANK.get(), new Item.Properties().group(MoCreatures.tabMoC)));
 
 
 //    public static final Set<Item> ITEMS = new HashSet<>();

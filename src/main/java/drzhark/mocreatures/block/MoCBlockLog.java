@@ -1,6 +1,8 @@
 package drzhark.mocreatures.block;
 
 import drzhark.mocreatures.init.MoCBlocks;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -12,9 +14,9 @@ import java.util.Random;
 
 public class MoCBlockLog extends MoCBlock {
 
-    public MoCBlockLog(String name) {
-        super(name, Material.WOOD);
-        this.setSoundType(SoundType.WOOD);
+    public MoCBlockLog(Block.Properties builder) {
+        super(builder
+                .sound(SoundType.WOOD));
     }
 
     /**
@@ -33,7 +35,7 @@ public class MoCBlockLog extends MoCBlock {
     }
 
     @Override
-    public boolean canSustainLeaves(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public boolean canSustainLeaves(BlockState state, IBlockAccess world, BlockPos pos) {
         return true;
     }
 

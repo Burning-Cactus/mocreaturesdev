@@ -2,7 +2,10 @@ package drzhark.mocreatures.block;
 
 import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.MoCreatures;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.BushBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -15,12 +18,12 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class MoCBlockBush extends BlockBush {
+public class MoCBlockBush extends BushBlock {
 
     public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", EnumType.class);
 
-    public MoCBlockBush(String name, Material material) {
-        super(material);
+    public MoCBlockBush(Block.Properties builder) {
+        super(builder);
         this.setCreativeTab(MoCreatures.tabMoC);
         this.setRegistryName(MoCConstants.MOD_ID, name);
         this.setUnlocalizedName(name);
@@ -28,7 +31,7 @@ public class MoCBlockBush extends BlockBush {
     }
 
     @Override
-    public int damageDropped(IBlockState state) {
+    public int damageDropped(BlockState state) {
         return ((MoCBlockBush.EnumType) state.getValue(VARIANT)).getMetadata();
     }
 
@@ -41,12 +44,12 @@ public class MoCBlockBush extends BlockBush {
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public BlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(VARIANT, MoCBlockBush.EnumType.byMetadata(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(BlockState state) {
         return ((MoCBlockBush.EnumType) state.getValue(VARIANT)).getMetadata();
     }
 
