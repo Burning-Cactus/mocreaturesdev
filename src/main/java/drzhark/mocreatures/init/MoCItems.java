@@ -25,6 +25,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
@@ -147,7 +148,41 @@ public class MoCItems {
     public static final RegistryObject<Item> TUSKSDIAMOND = ITEMS.register("tusksdiamond", () -> new MoCItemWeapon(ItemTier.DIAMOND, new Item.Properties()));
 
     //Armor
-    //TODO: Register and implement all player armor
+    public static final RegistryObject<Item> PLATECROC = ITEMS.register("reptileplate", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties()));
+    public static final RegistryObject<Item> HELMETCROC = ITEMS.register("reptilehelmet", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties()));
+    public static final RegistryObject<Item> LEGSCROC = ITEMS.register("reptilelegs", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties()));
+    public static final RegistryObject<Item> BOOTSCROC = ITEMS.register("reptileboots", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.FEET, new Item.Properties()));
+
+    public static final RegistryObject<Item> CHESTFUR = ITEMS.register("furchest", () -> new MoCItemArmor(furARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties());
+    public static final RegistryObject<Item> HELMETFUR = ITEMS.register("furhelmet", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties()));
+    public static final RegistryObject<Item> LEGSFUR = ITEMS.register("furlegs", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties()));
+    public static final RegistryObject<Item> BOOTSFUR = ITEMS.register("furboots", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.FEET, new Item.Properties()));
+
+    public static final RegistryObject<Item> CHESTHIDE = ITEMS.register("hidechest", () -> new MoCItemArmor(hideARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties()));
+    public static final RegistryObject<Item> HELMETHIDE = ITEMS.register("hidehelmet", () -> new MoCItemArmor(hideARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties()));
+    public static final RegistryObject<Item> LEGSHIDE = ITEMS.register("hidelegs", () -> new MoCItemArmor(hideARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties()));
+    public static final RegistryObject<Item> BOOTSHIDE = ITEMS.register("hideboots", () -> new MoCItemArmor(hideARMOR, 4, EquipmentSlotType.FEET, new Item.Properties()));
+
+    public static final RegistryObject<Item> SCORPPLATEDIRT = ITEMS.register("scorpplatedirt", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties()));
+    public static final RegistryObject<Item> SCORPHELMETDIRT = ITEMS.register("scorphelmetdirt", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties()));
+    public static final RegistryObject<Item> SCORPLEGSDIRT = ITEMS.register("scorplegsdirt", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties()));
+    public static final RegistryObject<Item> SCORPBOOTSDIRT = ITEMS.register("scorpbootsdirt", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.FEET, new Item.Properties()));
+
+    public static final RegistryObject<Item> SCORPPLATEFROST = ITEMS.register("scorpplatefrost", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties()));
+    public static final RegistryObject<Item> SCORPHELMETFROST = ITEMS.register("scorphelmetfrost", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties()));
+    public static final RegistryObject<Item> SCORPLEGSFROST = ITEMS.register("scorplegsfrost", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties()));
+    public static final RegistryObject<Item> SCORPBOOTSFROST = ITEMS.register("scorpbootsfrost", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.FEET, new Item.Properties()));
+
+    public static final RegistryObject<Item> SCORPPLATECAVE = ITEMS.register("scorpplatecave", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties()));
+    public static final RegistryObject<Item> SCORPHELMETCAVE = ITEMS.register("scorphelmetcave", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties()));
+    public static final RegistryObject<Item> SCORPLEGSCAVE = ITEMS.register("scorplegscave", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties()));
+    public static final RegistryObject<Item> SCORPBOOTSCAVE = ITEMS.register("scorpbootscave", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.FEET, new Item.Properties()));
+
+    public static final RegistryObject<Item> SCORPPLATENETHER = ITEMS.register("scorpplatenether", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties()));
+    public static final RegistryObject<Item> SCORPHELMETNETHER = ITEMS.register("scorphelmetnether", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties()));
+    public static final RegistryObject<Item> SCORPLEGSNETHER = ITEMS.register("scorplegsnether", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties()));
+    public static final RegistryObject<Item> SCORPBOOTSNETHER = ITEMS.register("scorpbootsnether", () -> new MoCItemArmor(scorpARMOR, 4, EquipmentSlotType.FEET, new Item.Properties()));
+
 
     //Elephant stuff!
     public static final RegistryObject<Item> ELEPHANTHARNESS = ITEMS.register("elephantharness", () -> new MoCItem(new Item.Properties()));

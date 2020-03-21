@@ -1,6 +1,6 @@
 package drzhark.mocreatures.entity;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.UUID;
@@ -67,7 +67,7 @@ public interface IMoCEntity {
 
     ResourceLocation getTexture();
 
-    boolean canAttackTarget(EntityLivingBase entity);
+    boolean canAttackTarget(LivingEntity entity);
 
     boolean getIsSitting(); // is the entity sitting, for animations and AI
 

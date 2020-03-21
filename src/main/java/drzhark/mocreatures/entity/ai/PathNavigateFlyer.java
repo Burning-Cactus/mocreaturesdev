@@ -1,15 +1,17 @@
 package drzhark.mocreatures.entity.ai;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class PathNavigateFlyer extends PathNavigate {
+public class PathNavigateFlyer extends PathNavigator {
 
-    public PathNavigateFlyer(EntityLiving entitylivingIn, World worldIn) {
+    public PathNavigateFlyer(LivingEntity entitylivingIn, World worldIn) {
         super(entitylivingIn, worldIn);
     }
 

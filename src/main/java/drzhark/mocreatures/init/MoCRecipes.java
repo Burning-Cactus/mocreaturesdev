@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
 @ObjectHolder(MoCConstants.MOD_ID)
+@Deprecated //Moving to data generators for json recipes
 public class MoCRecipes {
 
     @Mod.EventBusSubscriber(modid = MoCConstants.MOD_ID)

@@ -4,7 +4,6 @@ import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.MoCItemGroup;
 import drzhark.mocreatures.MoCreatures;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
 
 public class MoCItemFood extends MoCItem { //Formerly extended ItemFood
 

@@ -6,6 +6,7 @@ import drzhark.mocreatures.entity.monster.MoCEntityOgre;
 import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -28,7 +29,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class MoCEntityLitterBox extends EntityLiving {
+public class MoCEntityLitterBox extends LivingEntity {
 
     public int littertime;
     private static final DataParameter<Boolean> PICKED_UP = EntityDataManager.<Boolean>createKey(MoCEntityLitterBox.class, DataSerializers.BOOLEAN);
