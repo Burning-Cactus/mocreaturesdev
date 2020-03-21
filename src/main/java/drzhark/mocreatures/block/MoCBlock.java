@@ -4,12 +4,14 @@ import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.init.MoCBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.util.IStringSerializable;
@@ -21,32 +23,36 @@ public class MoCBlock extends Block {
 
     public static final EnumProperty<EnumType> VARIANT = EnumProperty.create("variant", EnumType.class);
 
-    public MoCBlock(String name, Material material) {
-        super(Block.Properties.create(material));
-        this.setRegistryName(MoCConstants.MOD_ID, name);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumType.WYVERN_LAIR));
+    public MoCBlock(Block.Properties builder) {
+        super(builder);
     }
 
+//    public MoCBlock(String name, Material material) {
+//        super(Block.Properties.create(material));
+//        this.setRegistryName(MoCConstants.MOD_ID, name);
+//        this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumType.WYVERN_LAIR));
+//    }
+
     @Override
-    public int damageDropped(IBlockState state) {
+    public int damageDropped(BlockState state) {
         return ((EnumType) state.getValue(VARIANT)).getMetadata();
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> items) {
         for (int ix = 0; ix < MoCBlocks.multiBlockNames.size(); ix++) {
             items.add(new ItemStack(this, 1, ix));
         }
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public BlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(VARIANT, MoCBlock.EnumType.byMetadata(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(BlockState state) {
         return ((MoCBlock.EnumType) state.getValue(VARIANT)).getMetadata();
     }
 

@@ -3,6 +3,8 @@ package drzhark.mocreatures.block;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.init.MoCBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -22,21 +24,20 @@ public class MoCBlockTallGrass extends MoCBlockBush implements IShearable {
 
     protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.8D, 0.9D);
 
-    public MoCBlockTallGrass(String name) {
-        super(name, Material.VINE);
-        this.setCreativeTab(MoCreatures.tabMoC);
-        this.setSoundType(SoundType.PLANT);
+    public MoCBlockTallGrass(Block.Properties builder) {
+        super(builder
+                .sound(SoundType.PLANT));
     }
-
-    public MoCBlockTallGrass(String name, boolean lighted) {
-        this(name);
-        if (lighted) {
-            this.setLightLevel(0.8F);
-        }
-    }
+//
+//    public MoCBlockTallGrass(Block.Properties builder, boolean lighted) {
+//        this(builder);
+//        if (lighted) {
+//            this.setLightLevel(0.8F);
+//        }
+//    }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
         return AABB;
     }
 
@@ -67,7 +68,7 @@ public class MoCBlockTallGrass extends MoCBlockBush implements IShearable {
     }
 
     @Override
-    public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state) {
+    public boolean canBlockStay(World worldIn, BlockPos pos, BlockState state) {
         Block soil = worldIn.getBlockState(pos.down()).getBlock();
         return soil == MoCBlocks.mocGrass || soil == MoCBlocks.mocDirt || soil == Blocks.GRASS 
                 || soil == Blocks.DIRT || soil == Blocks.FARMLAND;
@@ -76,7 +77,7 @@ public class MoCBlockTallGrass extends MoCBlockBush implements IShearable {
     @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        IBlockState soil = worldIn.getBlockState(pos.down());
+        BlockState soil = worldIn.getBlockState(pos.down());
         Block tempblock = soil.getBlock();
         if (tempblock instanceof MoCBlockDirt || tempblock instanceof MoCBlockGrass){
             return true;

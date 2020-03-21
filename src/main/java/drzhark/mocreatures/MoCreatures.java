@@ -11,6 +11,7 @@ import drzhark.mocreatures.command.CommandMoCTP;
 import drzhark.mocreatures.command.CommandMoCreatures;
 import drzhark.mocreatures.data.EntityDataWalker;
 import drzhark.mocreatures.dimension.WorldProviderWyvernEnd;
+import drzhark.mocreatures.init.MoCBlocks;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import net.minecraft.creativetab.CreativeTabs;
@@ -78,6 +79,7 @@ public class MoCreatures {
 
         //TODO Move to deferred registers
 
+        MoCBlocks.BLOCKS.register(bus);
         MoCItems.ITEMS.register(bus);
 
     }
