@@ -1,6 +1,9 @@
 package drzhark.mocreatures.command;
 
 import com.mojang.authlib.GameProfile;
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import drzhark.mocreatures.MoCEntityData;
 import drzhark.mocreatures.MoCPetData;
 import drzhark.mocreatures.MoCTools;
@@ -29,7 +32,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class CommandMoCreatures extends CommandBase {
+public class CommandMoCreatures implements Command {
 
     private static List<String> commands = new ArrayList<String>();
     private static List<String> aliases = new ArrayList<String>();
@@ -640,5 +643,10 @@ public class CommandMoCreatures extends CommandBase {
             String tamedInfo = list.get(l);
             sender.sendMessage(new TextComponentTranslation(tamedInfo));
         }
+    }
+
+    @Override
+    public int run(CommandContext context) throws CommandSyntaxException {
+        return 0;
     }
 }

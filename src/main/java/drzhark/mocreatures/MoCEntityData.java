@@ -1,9 +1,14 @@
 package drzhark.mocreatures;
 
 import drzhark.guiapi.widget.WidgetSimplewindow;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -12,13 +17,13 @@ import java.util.List;
 
 public class MoCEntityData {
 
-    private EnumCreatureType typeOfCreature;
+    private EntityClassification typeOfCreature;
     private SpawnListEntry spawnListEntry;
     private String entityName;
     private boolean canSpawn = true;
     private int entityId;
     private List<Type> biomeTypes;
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private WidgetSimplewindow entityWindow;
 
     private int frequency = 8;
@@ -26,7 +31,7 @@ public class MoCEntityData {
     private int maxGroup = 1;
     private int maxSpawnInChunk = 1;
 
-    public MoCEntityData(String name, int maxchunk, EnumCreatureType type, SpawnListEntry spawnListEntry, List<Type> biomeTypes) {
+    public MoCEntityData(String name, int maxchunk, EntityClassification type, SpawnListEntry spawnListEntry, List<Type> biomeTypes) {
         this.entityName = name;
         this.typeOfCreature = type;
         this.biomeTypes = biomeTypes;
@@ -38,7 +43,7 @@ public class MoCEntityData {
         MoCreatures.entityMap.put(spawnListEntry.entityClass, this);
     }
 
-    public MoCEntityData(String name, int id, int maxchunk, EnumCreatureType type, SpawnListEntry spawnListEntry, List<Type> biomeTypes) {
+    public MoCEntityData(String name, int id, int maxchunk, EntityClassification type, SpawnListEntry spawnListEntry, List<Type> biomeTypes) {
         this.entityId = id;
         this.entityName = name;
         this.typeOfCreature = type;
@@ -51,18 +56,18 @@ public class MoCEntityData {
         MoCreatures.entityMap.put(spawnListEntry.entityClass, this);
     }
 
-    public Class<? extends EntityLiving> getEntityClass() {
+    public Class<? extends LivingEntity> getEntityClass() {
         return this.spawnListEntry.entityClass;
     }
 
-    public EnumCreatureType getType() {
+    public EntityClassification getType() {
         if (this.typeOfCreature != null) {
             return this.typeOfCreature;
         }
         return null;
     }
 
-    public void setType(EnumCreatureType type) {
+    public void setType(EntityClassification type) {
         this.typeOfCreature = type;
     }
 
@@ -146,12 +151,12 @@ public class MoCEntityData {
         return this.spawnListEntry;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public WidgetSimplewindow getEntityWindow() {
         return this.entityWindow;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void setEntityWindow(WidgetSimplewindow window) {
         this.entityWindow = window;
     }

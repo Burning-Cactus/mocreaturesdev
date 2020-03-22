@@ -4,9 +4,11 @@ import drzhark.customspawner.utils.CMSUtils;
 import drzhark.mocreatures.entity.IMoCTameable;
 import drzhark.mocreatures.util.MoCLog;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.*;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityPig;
@@ -79,18 +81,18 @@ public class MoCEventHooks {
             // try to guess what we should ignore
             // Monsters
             if ((IMob.class.isAssignableFrom(event.getEntityLiving().getClass()) || IRangedAttackMob.class.isAssignableFrom(event.getEntityLiving().getClass()))
-                    || event.getEntityLiving().isCreatureType(EnumCreatureType.MONSTER, false)) {
+                    || event.getEntityLiving().getCreatureType(EntityClassification.MONSTER, false)) {
                 return;
             }
             // Tameable
-            if (event.getEntityLiving() instanceof EntityTameable) {
-                if (((EntityTameable) event.getEntityLiving()).isTamed()) {
+            if (event.getEntityLiving() instanceof TameableEntity) {
+                if (((TameableEntity) event.getEntityLiving()).isTamed()) {
                     return;
                 }
             }
             // Farm animals
-            if (event.getEntityLiving() instanceof EntitySheep || event.getEntityLiving() instanceof EntityPig || event.getEntityLiving() instanceof EntityCow
-                    || event.getEntityLiving() instanceof EntityChicken) {
+            if (event.getEntityLiving() instanceof SheepEntity || event.getEntityLiving() instanceof PigEntity || event.getEntityLiving() instanceof CowEntity
+                    || event.getEntityLiving() instanceof ChickenEntity) {
                 // check lightlevel
                 if (isValidDespawnLightLevel(event.getEntity(), event.getWorld(), MoCreatures.proxy.minDespawnLightLevel,
                         MoCreatures.proxy.maxDespawnLightLevel)) {
@@ -114,9 +116,9 @@ public class MoCEventHooks {
             }
 
             if (MoCreatures.proxy.debug) {
-                int x = MathHelper.floor(event.getEntity().posX);
-                int y = MathHelper.floor(event.getEntity().getEntityBoundingBox().minY);
-                int z = MathHelper.floor(event.getEntity().posZ);
+                int x = MathHelper.floor(event.getEntity().getPosX());
+                int y = MathHelper.floor(event.getEntity().getBoundingBox().minY);
+                int z = MathHelper.floor(event.getEntity().getPosZ());
                 MoCLog.logger.info("Forced Despawn of entity " + event.getEntityLiving() + " at " + x + ", " + y + ", " + z
                         + ". To prevent forced despawns, use /moc forceDespawns false.");
             }
@@ -124,15 +126,15 @@ public class MoCEventHooks {
     }
 
     private boolean isValidDespawnLightLevel(Entity entity, World world, int minDespawnLightLevel, int maxDespawnLightLevel) {
-        int x = MathHelper.floor(entity.posX);
-        int y = MathHelper.floor(entity.getEntityBoundingBox().minY);
-        int z = MathHelper.floor(entity.posZ);
+        int x = MathHelper.floor(entity.getPosX());
+        int y = MathHelper.floor(entity.getBoundingBox().minY);
+        int z = MathHelper.floor(entity.getPosZ());
         int blockLightLevel = 0;
         if (y >= 0) {
             if (y >= 256) {
                 y = 255;
             }
-            blockLightLevel = CMSUtils.getLightFromNeighbors(world.getChunkFromChunkCoords(x >> 4, z >> 4), x & 15, y, z & 15);
+            blockLightLevel = CMSUtils.getLightFromNeighbors(world.getChunk(x >> 4, z >> 4), x & 15, y, z & 15);
         }
         if (blockLightLevel < minDespawnLightLevel && maxDespawnLightLevel != -1) {
             //if (debug) CMSUtils.getEnvironment(world).envLog.logger.info("Denied spawn! for " + entity.getName() + blockLightLevel + " under minimum threshold of " + minDespawnLightLevel + " in dimension " + world.provider.getDimensionType().getId() + " at coords " + x + ", " + y + ", " + z);

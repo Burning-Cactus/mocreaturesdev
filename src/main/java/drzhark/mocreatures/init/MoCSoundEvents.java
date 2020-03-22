@@ -1,13 +1,13 @@
 package drzhark.mocreatures.init;
 
 import drzhark.mocreatures.MoCConstants;
-import net.minecraft.init.Bootstrap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.registry.Bootstrap;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
+import net.minecraftforge.registries.ObjectHolder;
 
 @ObjectHolder(MoCConstants.MOD_ID)
 public class MoCSoundEvents {
@@ -372,9 +372,9 @@ public class MoCSoundEvents {
     }
 
     static {
-        if (!Bootstrap.isRegistered()) {
-            throw new RuntimeException("Accessed Sounds before Bootstrap!");
-        } else {
+//        if (!Bootstrap.isRegistered()) { //TODO: Make this exception work
+//            throw new RuntimeException("Accessed Sounds before Bootstrap!");
+//        } else {
             ENTITY_BEAR_AMBIENT = createSoundEvent("beargrunt");
             ENTITY_BEAR_DEATH = createSoundEvent("beardeath");
             ENTITY_BEAR_HURT = createSoundEvent("bearhurt");
@@ -544,6 +544,6 @@ public class MoCSoundEvents {
             ENTITY_WYVERN_HURT = createSoundEvent("wyvernhurt");
             ENTITY_WYVERN_WINGFLAP = createSoundEvent("wyvernwingflap");
             ITEM_RECORD_SHUFFLING = createSoundEvent("shuffling");
-        }
+//        }
     }
 }

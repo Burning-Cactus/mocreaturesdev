@@ -22,13 +22,14 @@ import drzhark.mocreatures.network.message.MoCMessageTwoBytes;
 import drzhark.mocreatures.network.message.MoCMessageUpdatePetName;
 import drzhark.mocreatures.network.message.MoCMessageVanish;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.network.NetworkRegistry;
 
 import java.util.List;
 
@@ -37,20 +38,20 @@ public class MoCMessageHandler {
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel("MoCreatures");
 
     public static void init() {
-        INSTANCE.registerMessage(MoCMessageAnimation.class, MoCMessageAnimation.class, 0, Side.CLIENT);
-        INSTANCE.registerMessage(MoCMessageAppear.class, MoCMessageAppear.class, 1, Side.CLIENT);
-        INSTANCE.registerMessage(MoCMessageAttachedEntity.class, MoCMessageAttachedEntity.class, 2, Side.CLIENT);
-        INSTANCE.registerMessage(MoCMessageEntityDive.class, MoCMessageEntityDive.class, 3, Side.SERVER);
-        INSTANCE.registerMessage(MoCMessageEntityJump.class, MoCMessageEntityJump.class, 4, Side.SERVER);
-        INSTANCE.registerMessage(MoCMessageExplode.class, MoCMessageExplode.class, 5, Side.CLIENT);
-        INSTANCE.registerMessage(MoCMessageHealth.class, MoCMessageHealth.class, 6, Side.CLIENT);
-        INSTANCE.registerMessage(MoCMessageHeart.class, MoCMessageHeart.class, 7, Side.CLIENT);
-        INSTANCE.registerMessage(MoCMessageInstaSpawn.class, MoCMessageInstaSpawn.class, 8, Side.SERVER);
-        INSTANCE.registerMessage(MoCMessageNameGUI.class, MoCMessageNameGUI.class, 9, Side.CLIENT);
-        INSTANCE.registerMessage(MoCMessageUpdatePetName.class, MoCMessageUpdatePetName.class, 10, Side.SERVER);
-        INSTANCE.registerMessage(MoCMessageShuffle.class, MoCMessageShuffle.class, 11, Side.CLIENT);
-        INSTANCE.registerMessage(MoCMessageTwoBytes.class, MoCMessageTwoBytes.class, 12, Side.CLIENT);
-        INSTANCE.registerMessage(MoCMessageVanish.class, MoCMessageVanish.class, 13, Side.CLIENT);
+        INSTANCE.registerMessage(MoCMessageAnimation.class, MoCMessageAnimation.class, 0, Dist.CLIENT);
+        INSTANCE.registerMessage(MoCMessageAppear.class, MoCMessageAppear.class, 1, Dist.CLIENT);
+        INSTANCE.registerMessage(MoCMessageAttachedEntity.class, MoCMessageAttachedEntity.class, 2, Dist.CLIENT);
+        INSTANCE.registerMessage(MoCMessageEntityDive.class, MoCMessageEntityDive.class, 3, Dist.DEDICATED_SERVER);
+        INSTANCE.registerMessage(MoCMessageEntityJump.class, MoCMessageEntityJump.class, 4, Dist.DEDICATED_SERVER);
+        INSTANCE.registerMessage(MoCMessageExplode.class, MoCMessageExplode.class, 5, Dist.CLIENT);
+        INSTANCE.registerMessage(MoCMessageHealth.class, MoCMessageHealth.class, 6, Dist.CLIENT);
+        INSTANCE.registerMessage(MoCMessageHeart.class, MoCMessageHeart.class, 7, Dist.CLIENT);
+        INSTANCE.registerMessage(MoCMessageInstaSpawn.class, MoCMessageInstaSpawn.class, 8, Dist.DEDICATED_SERVER);
+        INSTANCE.registerMessage(MoCMessageNameGUI.class, MoCMessageNameGUI.class, 9, Dist.CLIENT);
+        INSTANCE.registerMessage(MoCMessageUpdatePetName.class, MoCMessageUpdatePetName.class, 10, Dist.DEDICATED_SERVER);
+        INSTANCE.registerMessage(MoCMessageShuffle.class, MoCMessageShuffle.class, 11, Dist.CLIENT);
+        INSTANCE.registerMessage(MoCMessageTwoBytes.class, MoCMessageTwoBytes.class, 12, Dist.CLIENT);
+        INSTANCE.registerMessage(MoCMessageVanish.class, MoCMessageVanish.class, 13, Dist.CLIENT);
     }
 
     // Wrap client message handling due to 1.8 clients receiving packets on Netty thread
@@ -121,8 +122,8 @@ public class MoCMessageHandler {
                 MoCMessageHealth message = (MoCMessageHealth) this.message;
                 List<Entity> entList = MoCClientProxy.mc.player.world.loadedEntityList;
                 for (Entity ent : entList) {
-                    if (ent.getEntityId() == message.entityId && ent instanceof EntityLiving) {
-                        ((EntityLiving) ent).setHealth(message.health);
+                    if (ent.getEntityId() == message.entityId && ent instanceof LivingEntity) {
+                        ((LivingEntity) ent).setHealth(message.health);
                         break;
                     }
                 }

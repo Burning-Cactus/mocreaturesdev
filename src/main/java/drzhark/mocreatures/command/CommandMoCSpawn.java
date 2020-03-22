@@ -1,5 +1,6 @@
 package drzhark.mocreatures.command;
 
+import com.mojang.brigadier.Command;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
 import drzhark.mocreatures.entity.passive.MoCEntityHorse;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandMoCSpawn extends CommandBase {
+public class CommandMoCSpawn extends Command {
 
     private static List<String> commands = new ArrayList<String>();
     private static List<String> aliases = new ArrayList<String>();

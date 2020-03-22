@@ -30,6 +30,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -47,6 +48,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -100,9 +102,9 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
     }
 
     @Override
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData par1EntityLivingData) {
+    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData par1EntityLivingData, CompoundNBT dataTag) {
         selectType();
-        return super.onInitialSpawn(difficulty, par1EntityLivingData);
+        return super.onInitialSpawn(worldIn, difficulty, reason, par1EntityLivingData);
     }
 
     /**
@@ -254,7 +256,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
                     || (this.height <= entity1.height) || (this.width <= entity1.width)) {
                 continue;
             }
-            double d2 = entity1.getDistanceSq(entity.posY, entity.posZ, entity.motionX);
+            double d2 = entity1.getDistanceSq(entity.getPosY(), entity.getPosZ(), entity.motionX);
             if (((d < 0.0D) || (d2 < (d * d))) && ((d1 == -1D) || (d2 < d1)) && ((LivingEntity) entity1).canEntityBeSeen(entity)) {
                 d1 = d2;
                 entityliving = (LivingEntity) entity1;
@@ -264,10 +266,10 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
         return entityliving;
     }
 
-    protected LivingEntity getClosestSpecificEntity(Entity entity, Class<? extends EntityLiving> myClass, double d) {
+    protected LivingEntity getClosestSpecificEntity(Entity entity, Class<? extends LivingEntity> myClass, double d) {
         double d1 = -1D;
         LivingEntity entityliving = null;
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(entity, entity.getEntityBoundingBox().expand(d, d, d));
+        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(entity, entity.getBoundingBox().expand(d, d, d));
         for (int i = 0; i < list.size(); i++) {
             Entity entity1 = list.get(i);
             if (!myClass.isAssignableFrom(entity1.getClass())) {
@@ -378,7 +380,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
     }
 
     public boolean isSwimming() {
-        return ((isInsideOfMaterial(Material.WATER)));
+        return ((super.isSwimming()));
     }
 
     /**
@@ -521,7 +523,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
     }
 
     public void getMyOwnPath(Entity entity, float f) {
-        Path pathentity = this.getNavigator().getPathToEntityLiving(entity);
+        Path pathentity = this.getNavigator().getPathtoEntityLiving(entity);
         if (pathentity != null) {
             this.getNavigator().setPath(pathentity, 1D);
         }
@@ -632,7 +634,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
             BlockState blockstate = this.world.getBlockState(pos.down());
             final Block block = blockstate.getBlock();
 
-            if (block == MoCBlocks.mocDirt || block == MoCBlocks.mocGrass
+            if (block == MoCBlocks.WYVERN_DIRT.get() || block == MoCBlocks.OGRE_DIRT.get() || block == MoCBlocks.WYVERN_GRASS.get() || block == MoCBlocks.OGRE_GRASS.get()
                     || (block != null && block.isLeaves(blockstate, this.world, pos.down()))) {
                 return true;
             }

@@ -1,15 +1,15 @@
 package drzhark.mocreatures;
 
 import drzhark.mocreatures.entity.IMoCTameable;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class MoCPlayerTracker {
 
     @SubscribeEvent
-    public void onPlayerLogout(PlayerLoggedOutEvent event) {
-        EntityPlayer player = event.player;
+    public void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        PlayerEntity player = event.getPlayer();
         if (player.getRidingEntity() != null && (player.getRidingEntity() instanceof IMoCTameable)) {
             IMoCTameable mocEntity = (IMoCTameable) player.getRidingEntity();
             mocEntity.setRiderDisconnecting(true);

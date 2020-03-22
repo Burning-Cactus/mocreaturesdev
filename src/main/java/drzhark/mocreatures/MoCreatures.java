@@ -177,7 +177,7 @@ public class MoCreatures {
     }
 
     //TODO: Fix the isServer() method
-//    public static boolean isServer() {
-//        return (FMLCommonLaunchHandler.getDist() == Dist.DEDICATED_SERVER);
-//    }
+    public static boolean isServer() {
+        return (FMLCommonLaunchHandler.getDist() == Dist.DEDICATED_SERVER);
+    }
 }

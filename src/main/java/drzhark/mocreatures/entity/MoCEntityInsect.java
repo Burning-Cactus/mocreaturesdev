@@ -4,15 +4,19 @@ import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAnimation;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
@@ -33,9 +37,9 @@ public class MoCEntityInsect extends MoCEntityAmbient {
 
     @Override
     protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
     }
 
     @Override
@@ -69,17 +73,17 @@ public class MoCEntityInsect extends MoCEntityAmbient {
         if (!this.world.isRemote) {
             if (!getIsFlying() && isOnLadder() && !this.onGround) {
                 MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
-                        new TargetPoint(this.world.provider.getDimensionType().getId(), this.posX, this.posY, this.posZ, 64));
+                        new TargetPoint(this.world.provider.getDimensionType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
 
             if (isFlyer() && !getIsFlying() && this.rand.nextInt(getFlyingFreq()) == 0) {
-                List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().expand(4D, 4D, 4D));
+                List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(4D, 4D, 4D));
                 for (int i = 0; i < list.size(); i++) {
                     Entity entity1 = list.get(i);
-                    if (!(entity1 instanceof EntityLivingBase)) {
+                    if (!(entity1 instanceof LivingEntity)) {
                         continue;
                     }
-                    if (((EntityLivingBase) entity1).width >= 0.4F && ((EntityLivingBase) entity1).height >= 0.4F && canEntityBeSeen(entity1)) {
+                    if (((LivingEntity) entity1).width >= 0.4F && ((LivingEntity) entity1).height >= 0.4F && canEntityBeSeen(entity1)) {
                         setIsFlying(true);
                         this.wander.makeUpdate();
                     }
@@ -184,7 +188,7 @@ public class MoCEntityInsect extends MoCEntityAmbient {
     }
 
     @Override
-    public PathNavigate getNavigator() {
+    public PathNavigator getNavigator() {
         /*if (this.isInWater() && this.isAmphibian()) {
             return this.navigatorWater;
         }
@@ -192,5 +196,15 @@ public class MoCEntityInsect extends MoCEntityAmbient {
             return this.navigatorFlyer;
         }
         return this.navigator;
+    }
+
+    @Override
+    public Entity getEntity() {
+        return this;
+    }
+
+    @Override
+    public void deserializeNBT(CompoundNBT nbt) {
+
     }
 }

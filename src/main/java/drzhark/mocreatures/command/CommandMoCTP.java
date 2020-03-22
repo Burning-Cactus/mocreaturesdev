@@ -1,5 +1,6 @@
 package drzhark.mocreatures.command;
 
+import com.mojang.brigadier.Command;
 import drzhark.mocreatures.MoCPetData;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandMoCTP extends CommandBase {
+public class CommandMoCTP extends Command {
 
     private static List<String> commands = new ArrayList<String>();
     private static List<String> aliases = new ArrayList<String>();
