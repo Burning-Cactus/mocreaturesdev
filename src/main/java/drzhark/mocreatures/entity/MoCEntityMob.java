@@ -68,7 +68,7 @@ public abstract class MoCEntityMob extends MobEntity implements IMoCEntity//, IE
     public MoCEntityMob(World world) {
         super(new EntityType<? extends MoCEntityMob>, world);
         this.texture = "blank.jpg";
-        this.moveHelper = new EntityAIMoverHelperMoC(this);
+        this.moveController = new EntityAIMoverHelperMoC(this);
         this.navigatorWater = new SwimmerPathNavigator(this, world);
         this.navigatorFlyer = new PathNavigateFlyer(this, world);
         this.goalSelector.addGoal(4, this.wander = new EntityAIWanderMoC2(this, 1.0D, 80));
@@ -121,8 +121,9 @@ public abstract class MoCEntityMob extends MobEntity implements IMoCEntity//, IE
     }
 
     @Override
-    public int getType() {
-        return ((Integer)this.dataManager.get(TYPE)).intValue();
+    public EntityType getType() {
+        //return ((Integer)this.dataManager.get(TYPE)).intValue();
+        return super.getType();
     }
 
     @Override
@@ -301,7 +302,7 @@ public abstract class MoCEntityMob extends MobEntity implements IMoCEntity//, IE
     public boolean attackEntityFrom(DamageSource damagesource, float i) {
         if (!this.world.isRemote && getIsTamed()) {
             MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new TargetPoint(
-                    this.world.provider.getDimensionType().getId(), this.posX, this.posY, this.posZ, 64));
+                    this.world.provider.getDimensionType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
         return super.attackEntityFrom(damagesource, i);
     }
@@ -316,24 +317,24 @@ public abstract class MoCEntityMob extends MobEntity implements IMoCEntity//, IE
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-        super.writeEntityToNBT(nbttagcompound);
+    public void writeAdditional(CompoundNBT nbttagcompound) {
+        super.writeAdditional(nbttagcompound);
         //nbttagcompound = MoCTools.getEntityData(this);
-        nbttagcompound.setBoolean("Adult", getIsAdult());
-        nbttagcompound.setInteger("Edad", getEdad());
-        nbttagcompound.setString("Name", getPetName());
-        nbttagcompound.setInteger("TypeInt", getType());
+        nbttagcompound.putBoolean("Adult", getIsAdult());
+        nbttagcompound.putInt("Edad", getEdad());
+        nbttagcompound.putString("Name", getPetName());
+        nbttagcompound.putInt("TypeInt", getType());
 
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-        super.readEntityFromNBT(nbttagcompound);
+    public void readAdditional(CompoundNBT nbttagcompound) {
+        super.readAdditional(nbttagcompound);
         //nbttagcompound = MoCTools.getEntityData(this);
         setAdult(nbttagcompound.getBoolean("Adult"));
-        setEdad(nbttagcompound.getInteger("Edad"));
+        setEdad(nbttagcompound.getInt("Edad"));
         setPetName(nbttagcompound.getString("Name"));
-        setType(nbttagcompound.getInteger("TypeInt"));
+        setType(nbttagcompound.getInt("TypeInt"));
 
     }
 

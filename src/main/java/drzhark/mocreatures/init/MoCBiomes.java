@@ -8,15 +8,17 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.ObjectHolder;
 
 @ObjectHolder(MoCConstants.MOD_ID)
 public class MoCBiomes {
 
-    public static Biome WyvernLairBiome = new BiomeGenWyvernLair(new BiomeProperties("WyvernLair").setBaseHeight(0.3F).setHeightVariation(1.5F));
+    public static Biome WyvernLairBiome = new BiomeGenWyvernLair(new Biome.Builder(/*"WyvernLair"*/).setBaseHeight(0.3F).setHeightVariation(1.5F));
 
     @Mod.EventBusSubscriber(modid = MoCConstants.MOD_ID)
     public static class RegistrationHandler {

@@ -2,7 +2,7 @@ package drzhark.mocreatures.dimension;
 
 import drzhark.mocreatures.block.MoCBlockTallGrass;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -12,17 +12,17 @@ import java.util.Random;
 public class WorldGenWyvernGrass extends WorldGenerator {
 
     /** Stores ID for WorldGenTallGrass */
-    private IBlockState iBlockStateGrass;
+    private BlockState iBlockStateGrass;
     private MoCBlockTallGrass grass;
 
-    public WorldGenWyvernGrass(IBlockState iblockstategrass) {
+    public WorldGenWyvernGrass(BlockState iblockstategrass) {
         this.iBlockStateGrass = iblockstategrass;
         this.grass = (MoCBlockTallGrass) iBlockStateGrass.getBlock();
     }
 
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position) {
-        IBlockState blockstate;
+        BlockState blockstate;
 
         do {
             blockstate = worldIn.getBlockState(position);

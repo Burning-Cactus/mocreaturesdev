@@ -1,6 +1,7 @@
 package drzhark.mocreatures.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.UUID;
@@ -19,9 +20,9 @@ public interface IMoCTameable extends IMoCEntity {
 
     void setDead();
 
-    void writeEntityToNBT(NBTTagCompound nbttagcompound);
+    void writeAdditional(CompoundNBT nbttagcompound);
 
-    void readEntityFromNBT(NBTTagCompound nbttagcompound);
+    void readAdditional(CompoundNBT nbttagcompound);
 
     void setOwnerId(@Nullable UUID uuid);
 

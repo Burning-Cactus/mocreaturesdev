@@ -3,23 +3,29 @@ package drzhark.mocreatures.entity.ai;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.MoCEntityAquatic;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.pathfinding.NodeProcessor;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
-public class EntityAIMoverHelperMoC extends EntityMoveHelper {
+public class EntityAIMoverHelperMoC extends MovementController {
 
-    EntityCreature theCreature;
-    protected EntityMoveHelper.Action action = EntityMoveHelper.Action.WAIT;
+    CreatureEntity theCreature;
+    protected MovementController.Action action = MovementController.Action.WAIT;
 
     public boolean isUpdating()
     {
-        return this.action == EntityMoveHelper.Action.MOVE_TO;
+        return this.action == MovementController.Action.MOVE_TO;
     }
 
     public double getSpeed()
@@ -36,12 +42,12 @@ public class EntityAIMoverHelperMoC extends EntityMoveHelper {
         this.posY = y;
         this.posZ = z;
         this.speed = speedIn;
-        this.action = EntityMoveHelper.Action.MOVE_TO;
+        this.action = MovementController.Action.MOVE_TO;
     }
 
     public void strafe(float forward, float strafe)
     {
-        this.action = EntityMoveHelper.Action.STRAFE;
+        this.action = MovementController.Action.STRAFE;
         this.moveForward = forward;
         this.moveStrafe = strafe;
         this.speed = 0.25D;
@@ -60,9 +66,9 @@ public class EntityAIMoverHelperMoC extends EntityMoveHelper {
 
     public void onUpdateMoveOnGround()
     {
-        if (this.action == EntityMoveHelper.Action.STRAFE)
+        if (this.action == MovementController.Action.STRAFE)
         {
-            float f = (float)this.entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue();
+            float f = (float)this.mob.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue();
             float f1 = (float)this.speed * f;
             float f2 = this.moveForward;
             float f3 = this.moveStrafe;
@@ -80,7 +86,7 @@ public class EntityAIMoverHelperMoC extends EntityMoveHelper {
             float f6 = MathHelper.cos(this.entity.rotationYaw * 0.017453292F);
             float f7 = f2 * f6 - f3 * f5;
             float f8 = f3 * f6 + f2 * f5;
-            PathNavigate pathnavigate = this.entity.getNavigator();
+            PathNavigator pathnavigate = this.entity.getNavigator();
 
             if (pathnavigate != null)
             {
@@ -97,11 +103,11 @@ public class EntityAIMoverHelperMoC extends EntityMoveHelper {
             this.entity.setAIMoveSpeed(f1);
             this.entity.setMoveForward(this.moveForward);
             this.entity.setMoveStrafing(this.moveStrafe);
-            this.action = EntityMoveHelper.Action.WAIT;
+            this.action = MovementController.Action.WAIT;
         }
-        else if (this.action == EntityMoveHelper.Action.MOVE_TO)
+        else if (this.action == MovementController.Action.MOVE_TO)
         {
-            this.action = EntityMoveHelper.Action.WAIT;
+            this.action = MovementController.Action.WAIT;
             double d0 = this.posX - this.entity.posX;
             double d1 = this.posZ - this.entity.posZ;
             double d2 = this.posY - this.entity.posY;
@@ -181,9 +187,9 @@ public class EntityAIMoverHelperMoC extends EntityMoveHelper {
         STRAFE;
     }
 
-    public EntityAIMoverHelperMoC(EntityLiving entityliving) {
-        super(entityliving);
-        this.theCreature = (EntityCreature) entityliving;
+    public EntityAIMoverHelperMoC(LivingEntity entityliving) {
+        super((MobEntity) entityliving);
+        this.theCreature = (CreatureEntity) entityliving;
     }
 
     @Override
@@ -210,14 +216,14 @@ public class EntityAIMoverHelperMoC extends EntityMoveHelper {
             this.swimmerMovementUpdate();
             fLimitAngle = 30F;
         }
-        if (this.action == EntityMoveHelper.Action.MOVE_TO && !this.theCreature.getNavigator().noPath()) {
-            double d0 = this.posX - this.theCreature.posX;
-            double d1 = this.posY - this.theCreature.posY;
-            double d2 = this.posZ - this.theCreature.posZ;
+        if (this.action == MovementController.Action.MOVE_TO && !this.theCreature.getNavigator().noPath()) {
+            double d0 = this.posX - this.theCreature.getPosX();
+            double d1 = this.posY - this.theCreature.getPosY();
+            double d2 = this.posZ - this.theCreature.getPosZ();
             double d3 = d0 * d0 + d1 * d1 + d2 * d2;
             d3 = MathHelper.sqrt(d3);
             if (d3 < 0.5) {
-                this.entity.setMoveForward(0.0F);
+                this.mob.setMoveForward(0.0F);
                 this.theCreature.getNavigator().clearPath();
                 return;
             }
@@ -226,7 +232,7 @@ public class EntityAIMoverHelperMoC extends EntityMoveHelper {
             float f = (float) (Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
             this.theCreature.rotationYaw = this.limitAngle(this.theCreature.rotationYaw, f, fLimitAngle);
             this.theCreature.renderYawOffset = this.theCreature.rotationYaw;
-            float f1 = (float) (this.speed * this.theCreature.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
+            float f1 = (float) (this.speed * this.theCreature.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue());
             this.theCreature.setAIMoveSpeed(this.theCreature.getAIMoveSpeed() + (f1 - this.theCreature.getAIMoveSpeed()) * 0.125F);
             double d4 = Math.sin((double) (this.theCreature.ticksExisted + this.theCreature.getEntityId()) * 0.75D) * 0.01D;
             double d5 = Math.cos((double) (this.theCreature.rotationYaw * (float) Math.PI / 180.0F));
@@ -273,7 +279,7 @@ public class EntityAIMoverHelperMoC extends EntityMoveHelper {
 
         double distToSurface = (MoCTools.waterSurfaceAtGivenEntity(theCreature) - theCreature.posY);
         if (distToSurface > ((IMoCEntity) theCreature).getDivingDepth()) {
-            if (theCreature.motionY < 0) {
+            if (theCreature.getMotion().getY() < 0) {
                 theCreature.motionY = 0;
             }
             theCreature.motionY += 0.001D;// 0.001

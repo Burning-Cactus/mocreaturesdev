@@ -5,10 +5,13 @@ import drzhark.mocreatures.entity.passive.MoCEntityBunny;
 import drzhark.mocreatures.entity.passive.MoCEntitySnake;
 import drzhark.mocreatures.entity.passive.MoCEntityWyvern;
 import drzhark.mocreatures.init.MoCBlocks;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.feature.ShrubFeature;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenShrub;
 import net.minecraft.world.gen.feature.WorldGenVines;
@@ -21,19 +24,19 @@ public class BiomeGenWyvernLair extends Biome {
     private MoCWorldGenBigTree wyvernGenBigTree;
     private WorldGenShrub worldGenShrub;
 
-    public BiomeGenWyvernLair(Biome.BiomeProperties biomeProperties) {
+    public BiomeGenWyvernLair(Biome.Builder biomeProperties) {
         super(biomeProperties);
-        this.spawnableCreatureList.clear();
-        this.spawnableMonsterList.clear();
-        this.spawnableWaterCreatureList.clear();
-        this.spawnableCreatureList.add(new SpawnListEntry(MoCEntityBunny.class, 6, 2, 3));
-        this.spawnableCreatureList.add(new SpawnListEntry(MoCEntityDragonfly.class, 8, 2, 3));
-        this.spawnableCreatureList.add(new SpawnListEntry(MoCEntitySnake.class, 6, 1, 2));
-        this.spawnableCreatureList.add(new SpawnListEntry(MoCEntityWyvern.class, 10, 1, 4));
-        this.topBlock = MoCBlocks.mocGrass.getDefaultState();
-        this.fillerBlock = MoCBlocks.mocDirt.getDefaultState();
+        this.getSpawns(EntityClassification.CREATURE).clear();
+        this.getSpawns(EntityClassification.MONSTER).clear();
+        this.getSpawns(EntityClassification.WATER_CREATURE).clear();
+        this.getSpawns(EntityClassification.CREATURE).add(new SpawnListEntry(MoCEntityBunny.class, 6, 2, 3));
+        this.getSpawns(EntityClassification.CREATURE).add(new SpawnListEntry(MoCEntityDragonfly.class, 8, 2, 3));
+        this.getSpawns(EntityClassification.CREATURE).add(new SpawnListEntry(MoCEntitySnake.class, 6, 1, 2));
+        this.getSpawns(EntityClassification.CREATURE).add(new SpawnListEntry(MoCEntityWyvern.class, 10, 1, 4));
+        this.topBlock = MoCBlocks.WYVERN_GRASS.get().getDefaultState();
+        this. = MoCBlocks.WYVERN_DIRT.get();
         this.wyvernGenBigTree = new MoCWorldGenBigTree(false, MoCBlocks.mocLog.getDefaultState(), MoCBlocks.mocLeaf.getDefaultState(), 2, 30, 10);
-        this.worldGenShrub = new WorldGenShrub(Blocks.DIRT.getDefaultState(), Blocks.AIR.getDefaultState());
+        this.worldGenShrub = new ShrubFeature(Blocks.DIRT.getDefaultState(), Blocks.AIR.getDefaultState());
         this.decorator = new BiomeWyvernDecorator();
     }
 
@@ -54,7 +57,7 @@ public class BiomeGenWyvernLair extends Biome {
      */
     @Override
     public WorldGenerator getRandomWorldGenForGrass(Random par1Random) {
-        return new WorldGenWyvernGrass(MoCBlocks.mocTallGrass.getDefaultState());
+        return new WorldGenWyvernGrass(MoCBlocks.WYVERN_TALLGRASS.get().getDefaultState());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package drzhark.mocreatures;
 
 import com.mojang.authlib.GameProfile;
+import com.mojang.brigadier.CommandDispatcher;
 import drzhark.mocreatures.client.MoCClientProxy;
 import drzhark.mocreatures.client.MoCClientTickHandler;
 import drzhark.mocreatures.client.MoCCreativeTabs;
@@ -23,10 +24,13 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
+import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -49,12 +53,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.function.BiFunction;
 
 @Mod(MoCConstants.MOD_ID)
 public class MoCreatures {
 
-//    @Instance(MoCConstants.MOD_ID)
-//    public static MoCreatures instance;
+    @Instance(MoCConstants.MOD_ID)
+    public static MoCreatures instance;
 
 //    public static MoCProxy proxy = DistExecutor.runForDist(()->MoCProxy::new, ()->()-> MoCClientProxy());
     public static final Logger LOGGER = LogManager.getLogger(MoCConstants.MOD_ID);
@@ -62,7 +67,8 @@ public class MoCreatures {
     public MoCPetMapData mapData;
     public static boolean isCustomSpawnerLoaded = false;
     public static GameProfile MOCFAKEPLAYER = new GameProfile(UUID.fromString("6E379B45-1111-2222-3333-2FE1A88BCD66"), "[MoCreatures]");
-    public static DimensionType WYVERN_LAIR;
+
+    public static final DimensionType WYVERN_LAIR = null;
     public static int WyvernLairDimensionID; //17;
 
     public static Map<String, MoCEntityData> mocEntityMap = new TreeMap<String, MoCEntityData>(String.CASE_INSENSITIVE_ORDER);
@@ -88,54 +94,52 @@ public class MoCreatures {
 
     }
 
+    //TODO: Register commands properly in 1.15
     private void onServerStart(FMLServerStartingEvent event) {
-
+        CommandDispatcher dispatcher = event.getCommandDispatcher();
+        dispatcher.register(new CommandMoCreatures());
+//        proxy.initGUI();
+//        event.registerServerCommand(new CommandMoCreatures());
+//        event.registerServerCommand(new CommandMoCTP());
+//        event.registerServerCommand(new CommandMoCPets());
+//        if (isServer()) {
+//            if (FMLCommonHandler.instance().getMinecraftServerInstance().isDedicatedServer()) {
+//                event.registerServerCommand(new CommandMoCSpawn());
+//            }
+//        }
     }
 
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        if (isServer()) {
-            FMLCommonHandler.instance().getMinecraftServerInstance().getDataFixer().registerWalker(FixTypes.ENTITY, new EntityDataWalker());
-        }
-        MoCMessageHandler.init();
-        MinecraftForge.EVENT_BUS.register(new MoCEventHooks());
-        proxy.ConfigInit(event);
-        proxy.initTextures();
-        if (!isServer()) {
-            MinecraftForge.EVENT_BUS.register(new MoCClientTickHandler());
-            MinecraftForge.EVENT_BUS.register(new MoCKeyHandler());
-        }
-    }
-
-    //how to check for client: if(FMLCommonHandler.instance().getSide().isRemote())
-
-    @EventHandler
-    public void load(FMLInitializationEvent event) {
-        WyvernLairDimensionID = proxy.WyvernDimension;
-        proxy.mocSettingsConfig.save();
-        proxy.registerRenderers();
-        proxy.registerRenderInformation();
-        WYVERN_LAIR = DimensionType.register("Wyvern Lair", "_wyvern_lair", WyvernLairDimensionID, WorldProviderWyvernEnd.class, false);
-        DimensionManager.registerDimension(WyvernLairDimensionID, WYVERN_LAIR);
-    }
-
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent event) {
-        isCustomSpawnerLoaded = Loader.isModLoaded("CustomSpawner");
-    }
-
-    @EventHandler
-    public void serverStarting(FMLServerStartingEvent event) {
-        proxy.initGUI();
-        event.registerServerCommand(new CommandMoCreatures());
-        event.registerServerCommand(new CommandMoCTP());
-        event.registerServerCommand(new CommandMoCPets());
-        if (isServer()) {
-            if (FMLCommonHandler.instance().getMinecraftServerInstance().isDedicatedServer()) {
-                event.registerServerCommand(new CommandMoCSpawn());
-            }
-        }
-    }
+//    @EventHandler
+//    public void preInit(FMLPreInitializationEvent event) {
+//        if (isServer()) {
+//            FMLCommonHandler.instance().getMinecraftServerInstance().getDataFixer().registerWalker(FixTypes.ENTITY, new EntityDataWalker());
+//        }
+//        MoCMessageHandler.init();
+//        MinecraftForge.EVENT_BUS.register(new MoCEventHooks());
+//        proxy.ConfigInit(event);
+//        proxy.initTextures();
+//        if (!isServer()) {
+//            MinecraftForge.EVENT_BUS.register(new MoCClientTickHandler());
+//            MinecraftForge.EVENT_BUS.register(new MoCKeyHandler());
+//        }
+//    }
+//
+//    //how to check for client: if(FMLCommonHandler.instance().getSide().isRemote())
+//
+//    @EventHandler
+//    public void load(FMLInitializationEvent event) {
+//        WyvernLairDimensionID = proxy.WyvernDimension;
+//        proxy.mocSettingsConfig.save();
+//        proxy.registerRenderers();
+//        proxy.registerRenderInformation();
+//        WYVERN_LAIR = DimensionType.register("Wyvern Lair", "_wyvern_lair", WyvernLairDimensionID, WorldProviderWyvernEnd.class, false);
+//        DimensionManager.registerDimension(WyvernLairDimensionID, WYVERN_LAIR);
+//    }
+//
+//    @EventHandler
+//    public void postInit(FMLPostInitializationEvent event) {
+//        isCustomSpawnerLoaded = Loader.isModLoaded("CustomSpawner");
+//    }
 
     public static void burnPlayer(PlayerEntity player) {
         //TODO 4FIX
@@ -180,4 +184,12 @@ public class MoCreatures {
     public static boolean isServer() {
         return (FMLCommonLaunchHandler.getDist() == Dist.DEDICATED_SERVER);
     }
+
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class MoCDimensions {
+
+
+
+    }
+
 }

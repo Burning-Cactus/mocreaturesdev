@@ -9,6 +9,7 @@ import drzhark.mocreatures.entity.passive.MoCEntityHorse;
 import drzhark.mocreatures.util.MoCLog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -159,10 +160,10 @@ public class MoCProxy implements IGUIHandler {
     public void VacuumFX(MoCEntityGolem entity) {
     }
 
-    public void hammerFX(EntityPlayer entityplayer) {
+    public void hammerFX(PlayerEntity entityplayer) {
     }
 
-    public void teleportFX(EntityPlayer entity) {
+    public void teleportFX(PlayerEntity entity) {
     }
 
     public boolean getAnimateTextures() {
@@ -192,7 +193,7 @@ public class MoCProxy implements IGUIHandler {
         return null;
     }
 
-    public EntityPlayer getPlayer() {
+    public PlayerEntity getPlayer() {
         return null;
     }
 
@@ -368,13 +369,13 @@ public class MoCProxy implements IGUIHandler {
     }
 
     @Override
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public Object getServerGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public Object getClientGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -394,7 +395,7 @@ public class MoCProxy implements IGUIHandler {
      * @param player
      * @param mocanimal
      */
-    public void setName(EntityPlayer player, IMoCEntity mocanimal) {
+    public void setName(PlayerEntity player, IMoCEntity mocanimal) {
         //client side only
     }
 

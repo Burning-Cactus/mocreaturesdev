@@ -2,6 +2,7 @@ package drzhark.mocreatures.entity.monster;
 
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.init.MoCItems;
+import net.minecraft.block.Blocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -11,7 +12,7 @@ public class MoCEntityFireOgre extends MoCEntityOgre{
 
     public MoCEntityFireOgre(World world) {
         super(world);
-        this.isImmuneToFire = true;
+       //Fire immunity needs to be set by the EntityType
     }
 
     @Override
@@ -40,6 +41,6 @@ public class MoCEntityFireOgre extends MoCEntityOgre{
         if (!flag) {
             return Item.getItemFromBlock(Blocks.FIRE);
         }
-        return MoCItems.heartfire;
+        return MoCItems.HEARTFIRE.get();
     } 
 }

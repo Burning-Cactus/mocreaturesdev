@@ -7,7 +7,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProviderSurface;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -40,7 +43,7 @@ public class WorldProviderWyvernEnd extends WorldProviderSurface {
         setSkyRenderer(new MoCSkyRenderer());
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     /**
      * Returns array with sunrise/sunset colors
      */
@@ -50,7 +53,7 @@ public class WorldProviderWyvernEnd extends WorldProviderSurface {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     /**
      * Return Vec3D with biome specific fog color
      */
@@ -76,7 +79,7 @@ public class WorldProviderWyvernEnd extends WorldProviderSurface {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public boolean isSkyColored() {
         return false;
     }
@@ -100,7 +103,7 @@ public class WorldProviderWyvernEnd extends WorldProviderSurface {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     /**
      * the y level at which clouds are rendered.
      */
@@ -132,7 +135,7 @@ public class WorldProviderWyvernEnd extends WorldProviderSurface {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     /**
      * Returns true if the given X,Z coordinate should show environmental fog.
      */

@@ -1,5 +1,6 @@
 package drzhark.mocreatures.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 
@@ -47,7 +48,7 @@ public interface IMoCEntity {
 
     void setArmorType(int i);
 
-    int getType();
+    EntityType getType();
 
     void setType(int i);
 

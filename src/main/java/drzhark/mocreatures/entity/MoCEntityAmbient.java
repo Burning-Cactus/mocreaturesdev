@@ -108,7 +108,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     @Override
-    public int getType() {
+    public EntityType getType() {
         return this.dataManager.get(TYPE);
     }
 
