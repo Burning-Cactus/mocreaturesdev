@@ -6,17 +6,17 @@ import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.IMoCTameable;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Supplier;
 
-public class MoCMessageUpdatePetName implements IMessage, IMessageHandler<MoCMessageUpdatePetName, IMessage> {
+public class MoCMessageUpdatePetName implements IMoCMessage {
 
     public String name;
     public int entityId;
@@ -34,19 +34,19 @@ public class MoCMessageUpdatePetName implements IMessage, IMessageHandler<MoCMes
     }
 
     @Override
-    public void toBytes(ByteBuf buffer) {
+    public void encode(PacketBuffer buffer) {
         ByteBufUtils.writeUTF8String(buffer, this.name);
         ByteBufUtils.writeVarInt(buffer, this.entityId, 5);
-    }
+    } //TODO: Figure out how to update from ByteBufUtils
 
     @Override
-    public void fromBytes(ByteBuf buffer) {
+    public void decode(PacketBuffer buffer) {
         this.name = ByteBufUtils.readUTF8String(buffer);
         this.entityId = ByteBufUtils.readVarInt(buffer, 5);
     }
 
     @Override
-    public IMessage onMessage(MoCMessageUpdatePetName message, MessageContext ctx) {
+    public boolean onMessage(MoCMessageUpdatePetName message, Supplier<NetworkEvent.Context> ctx) {
         Entity pet = null;
         List<Entity> entList = ctx.getServerHandler().player.world.loadedEntityList;
         UUID ownerUniqueId = null;
@@ -63,16 +63,16 @@ public class MoCMessageUpdatePetName implements IMessage, IMessageHandler<MoCMes
         MoCPetData petData = MoCreatures.instance.mapData.getPetData(ownerUniqueId);
         if (petData != null && pet != null && ((IMoCTameable) pet).getOwnerPetId() != -1) {
             int id = ((IMoCTameable) pet).getOwnerPetId();
-            NBTTagList tag = petData.getOwnerRootNBT().getTagList("TamedList", 10);
-            for (int i = 0; i < tag.tagCount(); i++) {
-                NBTTagCompound nbt = tag.getCompoundTagAt(i);
-                if (nbt.getInteger("PetId") == id) {
-                    nbt.setString("Name", message.name);
+            ListNBT tag = petData.getOwnerRootNBT().getTagList("TamedList", 10);
+            for (int i = 0; i < tag.size(); i++) {
+                CompoundNBT nbt = tag.getCompound(i);
+                if (nbt.getInt("PetId") == id) {
+                    nbt.putString("Name", message.name);
                     ((IMoCTameable) pet).setPetName(message.name);
                 }
             }
         }
-        return null;
+        return true;
     }
 
     @Override

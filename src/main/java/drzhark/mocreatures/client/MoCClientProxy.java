@@ -209,6 +209,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -227,7 +228,7 @@ import java.util.Map.Entry;
 
 public class MoCClientProxy extends MoCProxy {
 
-    public static Minecraft mc = Minecraft.getMinecraft();
+    public static Minecraft mc = Minecraft.getInstance();
     public static MoCClientProxy instance;
     public static MoCTextures mocTextures = new MoCTextures();
 
@@ -354,7 +355,7 @@ public class MoCClientProxy extends MoCProxy {
      * @param mocanimal
      */
     @Override
-    public void setName(EntityPlayer player, IMoCEntity mocanimal) {
+    public void setName(PlayerEntity player, IMoCEntity mocanimal) {
         mc.displayGuiScreen(new MoCGUIEntityNamer(mocanimal, mocanimal.getPetName()));
 
     }

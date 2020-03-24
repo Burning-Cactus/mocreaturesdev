@@ -15,6 +15,7 @@ import drzhark.mocreatures.dimension.WorldProviderWyvernEnd;
 import drzhark.mocreatures.init.MoCBlocks;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.network.MoCMessageHandler;
+import drzhark.mocreatures.util.IProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.LivingEntity;
@@ -61,7 +62,7 @@ public class MoCreatures {
     @Instance(MoCConstants.MOD_ID)
     public static MoCreatures instance;
 
-//    public static MoCProxy proxy = DistExecutor.runForDist(()->MoCProxy::new, ()->()-> MoCClientProxy());
+    public static IProxy proxy = DistExecutor.runForDist(()->()-> new MoCClientProxy(), ()->()-> new MoCProxy());
     public static final Logger LOGGER = LogManager.getLogger(MoCConstants.MOD_ID);
     public static final ItemGroup tabMoC = new MoCItemGroup("MoCreaturesTab");
     public MoCPetMapData mapData;
@@ -82,11 +83,6 @@ public class MoCreatures {
 
         bus.addListener(this::setup);
         bus.addListener(this::onServerStart);
-
-        //TODO Move to deferred registers
-
-        MoCBlocks.BLOCKS.register(bus);
-        MoCItems.ITEMS.register(bus);
 
     }
 

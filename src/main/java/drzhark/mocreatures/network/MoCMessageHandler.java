@@ -1,5 +1,6 @@
 package drzhark.mocreatures.network;
 
+import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.client.MoCClientProxy;
 import drzhark.mocreatures.client.gui.helpers.MoCGUIEntityNamer;
 import drzhark.mocreatures.entity.IMoCEntity;
@@ -7,58 +8,52 @@ import drzhark.mocreatures.entity.IMoCTameable;
 import drzhark.mocreatures.entity.monster.MoCEntityGolem;
 import drzhark.mocreatures.entity.monster.MoCEntityOgre;
 import drzhark.mocreatures.entity.passive.MoCEntityHorse;
-import drzhark.mocreatures.network.message.MoCMessageAnimation;
-import drzhark.mocreatures.network.message.MoCMessageAppear;
-import drzhark.mocreatures.network.message.MoCMessageAttachedEntity;
-import drzhark.mocreatures.network.message.MoCMessageEntityDive;
-import drzhark.mocreatures.network.message.MoCMessageEntityJump;
-import drzhark.mocreatures.network.message.MoCMessageExplode;
-import drzhark.mocreatures.network.message.MoCMessageHealth;
-import drzhark.mocreatures.network.message.MoCMessageHeart;
-import drzhark.mocreatures.network.message.MoCMessageInstaSpawn;
-import drzhark.mocreatures.network.message.MoCMessageNameGUI;
-import drzhark.mocreatures.network.message.MoCMessageShuffle;
-import drzhark.mocreatures.network.message.MoCMessageTwoBytes;
-import drzhark.mocreatures.network.message.MoCMessageUpdatePetName;
-import drzhark.mocreatures.network.message.MoCMessageVanish;
+import drzhark.mocreatures.network.message.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class MoCMessageHandler {
 
-    public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel("MoCreatures");
+    public static final String PROTOCOL = "1";
+
+    public static final SimpleChannel CHANNEL = NetworkRegistry
+            .newSimpleChannel(new ResourceLocation(MoCConstants.MOD_ID, "channel"),
+                    () -> PROTOCOL,
+                    PROTOCOL::equals,
+                    PROTOCOL::equals);
+
+//    public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel("MoCreatures");
 
     public static void init() {
-        INSTANCE.registerMessage(MoCMessageAnimation.class, MoCMessageAnimation.class, 0, Dist.CLIENT);
-        INSTANCE.registerMessage(MoCMessageAppear.class, MoCMessageAppear.class, 1, Dist.CLIENT);
-        INSTANCE.registerMessage(MoCMessageAttachedEntity.class, MoCMessageAttachedEntity.class, 2, Dist.CLIENT);
-        INSTANCE.registerMessage(MoCMessageEntityDive.class, MoCMessageEntityDive.class, 3, Dist.DEDICATED_SERVER);
-        INSTANCE.registerMessage(MoCMessageEntityJump.class, MoCMessageEntityJump.class, 4, Dist.DEDICATED_SERVER);
-        INSTANCE.registerMessage(MoCMessageExplode.class, MoCMessageExplode.class, 5, Dist.CLIENT);
-        INSTANCE.registerMessage(MoCMessageHealth.class, MoCMessageHealth.class, 6, Dist.CLIENT);
-        INSTANCE.registerMessage(MoCMessageHeart.class, MoCMessageHeart.class, 7, Dist.CLIENT);
-        INSTANCE.registerMessage(MoCMessageInstaSpawn.class, MoCMessageInstaSpawn.class, 8, Dist.DEDICATED_SERVER);
-        INSTANCE.registerMessage(MoCMessageNameGUI.class, MoCMessageNameGUI.class, 9, Dist.CLIENT);
-        INSTANCE.registerMessage(MoCMessageUpdatePetName.class, MoCMessageUpdatePetName.class, 10, Dist.DEDICATED_SERVER);
-        INSTANCE.registerMessage(MoCMessageShuffle.class, MoCMessageShuffle.class, 11, Dist.CLIENT);
-        INSTANCE.registerMessage(MoCMessageTwoBytes.class, MoCMessageTwoBytes.class, 12, Dist.CLIENT);
-        INSTANCE.registerMessage(MoCMessageVanish.class, MoCMessageVanish.class, 13, Dist.CLIENT);
+//        INSTANCE.registerMessage(MoCMessageAnimation.class, MoCMessageAnimation.class, 0, Dist.CLIENT);
+//        INSTANCE.registerMessage(MoCMessageAppear.class, MoCMessageAppear.class, 1, Dist.CLIENT);
+//        INSTANCE.registerMessage(MoCMessageAttachedEntity.class, MoCMessageAttachedEntity.class, 2, Dist.CLIENT);
+//        INSTANCE.registerMessage(MoCMessageEntityDive.class, MoCMessageEntityDive.class, 3, Dist.DEDICATED_SERVER);
+//        INSTANCE.registerMessage(MoCMessageEntityJump.class, MoCMessageEntityJump.class, 4, Dist.DEDICATED_SERVER);
+//        INSTANCE.registerMessage(MoCMessageExplode.class, MoCMessageExplode.class, 5, Dist.CLIENT);
+//        INSTANCE.registerMessage(MoCMessageHealth.class, MoCMessageHealth.class, 6, Dist.CLIENT);
+//        INSTANCE.registerMessage(MoCMessageHeart.class, MoCMessageHeart.class, 7, Dist.CLIENT);
+//        INSTANCE.registerMessage(MoCMessageInstaSpawn.class, MoCMessageInstaSpawn.class, 8, Dist.DEDICATED_SERVER);
+//        INSTANCE.registerMessage(MoCMessageNameGUI.class, MoCMessageNameGUI.class, 9, Dist.CLIENT);
+//        INSTANCE.registerMessage(MoCMessageUpdatePetName.class, MoCMessageUpdatePetName.class, 10, Dist.DEDICATED_SERVER);
+//        INSTANCE.registerMessage(MoCMessageShuffle.class, MoCMessageShuffle.class, 11, Dist.CLIENT);
+//        INSTANCE.registerMessage(MoCMessageTwoBytes.class, MoCMessageTwoBytes.class, 12, Dist.CLIENT);
+//        INSTANCE.registerMessage(MoCMessageVanish.class, MoCMessageVanish.class, 13, Dist.CLIENT);
     }
 
     // Wrap client message handling due to 1.8 clients receiving packets on Netty thread
     // This solves random NPE issues when attempting to access world data on client
     @SuppressWarnings("rawtypes")
-    public static void handleMessage(IMessageHandler message, MessageContext ctx) {
-        if (ctx.side == Side.CLIENT) {
+    public static void handleMessage(IMoCMessage message, Supplier<NetworkEvent.Context> ctx) {
+        if (ctx.side == Dist.CLIENT) {
             FMLCommonHandler.instance().getWorldThread(FMLCommonHandler.instance().getClientToServerNetworkManager().getNetHandler()).addScheduledTask(new ClientPacketTask(message, ctx));
         }
     }
@@ -67,12 +62,12 @@ public class MoCMessageHandler {
     public static class ClientPacketTask implements Runnable {
 
         @SuppressWarnings("rawtypes")
-        private IMessageHandler message;
+        private IMoCMessage message;
         @SuppressWarnings("unused")
-        private MessageContext ctx;
+        private Supplier<NetworkEvent.Context> ctx;
 
         @SuppressWarnings("rawtypes")
-        public ClientPacketTask(IMessageHandler message, MessageContext ctx) {
+        public ClientPacketTask(IMoCMessage message, Supplier<NetworkEvent.Context> ctx) {
             this.message = message;
             this.ctx = ctx;
         }

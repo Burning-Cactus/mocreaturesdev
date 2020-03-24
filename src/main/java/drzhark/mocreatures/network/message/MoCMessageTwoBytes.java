@@ -2,11 +2,15 @@ package drzhark.mocreatures.network.message;
 
 import drzhark.mocreatures.network.MoCMessageHandler;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MoCMessageTwoBytes implements IMessage, IMessageHandler<MoCMessageTwoBytes, IMessage> {
+import java.util.function.Supplier;
+
+public class MoCMessageTwoBytes implements IMoCMessage {
 
     public int entityId;
     public byte slot;
@@ -22,23 +26,22 @@ public class MoCMessageTwoBytes implements IMessage, IMessageHandler<MoCMessageT
     }
 
     @Override
-    public void toBytes(ByteBuf buffer) {
+    public void encode(PacketBuffer buffer) {
         buffer.writeInt(this.entityId);
         buffer.writeByte(this.slot);
         buffer.writeByte(this.value);
     }
 
     @Override
-    public void fromBytes(ByteBuf buffer) {
+    public void decode(PacketBuffer buffer) {
         this.entityId = buffer.readInt();
         this.slot = buffer.readByte();
         this.value = buffer.readByte();
     }
 
-    @Override
-    public IMessage onMessage(MoCMessageTwoBytes message, MessageContext ctx) {
+    public boolean onMessage(MoCMessageTwoBytes message, Supplier<NetworkEvent.Context> ctx) {
         MoCMessageHandler.handleMessage(message, ctx);
-        return null;
+        return true;
     }
 
     @Override

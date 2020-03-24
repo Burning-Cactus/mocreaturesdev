@@ -2,11 +2,12 @@ package drzhark.mocreatures.network.message;
 
 import drzhark.mocreatures.network.MoCMessageHandler;
 import io.netty.buffer.ByteBuf;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MoCMessageAnimation implements IMessage, IMessageHandler<MoCMessageAnimation, IMessage> {
+import java.util.function.Supplier;
+
+public class MoCMessageAnimation implements IMoCMessage {
 
     public int entityId;
     public int animationType;
@@ -20,21 +21,20 @@ public class MoCMessageAnimation implements IMessage, IMessageHandler<MoCMessage
     }
 
     @Override
-    public void toBytes(ByteBuf buffer) {
+    public void encode(PacketBuffer buffer) {
         buffer.writeInt(this.entityId);
         buffer.writeInt(this.animationType);
     }
 
     @Override
-    public void fromBytes(ByteBuf buffer) {
+    public void decode(PacketBuffer buffer) {
         this.entityId = buffer.readInt();
         this.animationType = buffer.readInt();
     }
 
-    @Override
-    public IMessage onMessage(MoCMessageAnimation message, MessageContext ctx) {
+    public boolean onMessage(MoCMessageAnimation message, Supplier<NetworkEvent.Context> ctx) {
         MoCMessageHandler.handleMessage(message, ctx);
-        return null;
+        return true;
     }
 
     @Override

@@ -6,6 +6,7 @@ import drzhark.mocreatures.configuration.MoCProperty;
 import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.monster.MoCEntityGolem;
 import drzhark.mocreatures.entity.passive.MoCEntityHorse;
+import drzhark.mocreatures.util.IProxy;
 import drzhark.mocreatures.util.MoCLog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +20,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoCProxy implements IGUIHandler {
+public class MoCProxy implements IProxy {
 
     //TODO: Proxies are no longer necessary in 1.14+
 

@@ -1,12 +1,12 @@
 package drzhark.mocreatures.network.message;
 
 import drzhark.mocreatures.network.MoCMessageHandler;
-import io.netty.buffer.ByteBuf;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MoCMessageShuffle implements IMessage, IMessageHandler<MoCMessageShuffle, IMessage> {
+import java.util.function.Supplier;
+
+public class MoCMessageShuffle implements IMoCMessage {
 
     public int entityId;
     public boolean flag;
@@ -20,21 +20,20 @@ public class MoCMessageShuffle implements IMessage, IMessageHandler<MoCMessageSh
     }
 
     @Override
-    public void toBytes(ByteBuf buffer) {
+    public void encode(PacketBuffer buffer) {
         buffer.writeInt(this.entityId);
         buffer.writeBoolean(this.flag);
     }
 
     @Override
-    public void fromBytes(ByteBuf buffer) {
+    public void decode(PacketBuffer buffer) {
         this.entityId = buffer.readInt();
         this.flag = buffer.readBoolean();
     }
 
-    @Override
-    public IMessage onMessage(MoCMessageShuffle message, MessageContext ctx) {
+    public boolean onMessage(MoCMessageShuffle message, Supplier<NetworkEvent.Context> ctx) {
         MoCMessageHandler.handleMessage(message, ctx);
-        return null;
+        return true;
     }
 
     @Override

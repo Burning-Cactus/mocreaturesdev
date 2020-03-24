@@ -3,12 +3,12 @@ package drzhark.mocreatures.network.message;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.util.MoCLog;
-import io.netty.buffer.ByteBuf;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MoCMessageInstaSpawn implements IMessage, IMessageHandler<MoCMessageInstaSpawn, IMessage> {
+import java.util.function.Supplier;
+
+public class MoCMessageInstaSpawn implements IMoCMessage {
 
     public int entityId;
     public int numberToSpawn;
@@ -22,18 +22,17 @@ public class MoCMessageInstaSpawn implements IMessage, IMessageHandler<MoCMessag
     }
 
     @Override
-    public void toBytes(ByteBuf buffer) {
+    public void encode(PacketBuffer buffer) {
         buffer.writeInt(this.entityId);
         buffer.writeInt(this.numberToSpawn);
     }
 
     @Override
-    public void fromBytes(ByteBuf buffer) {
+    public void decode(PacketBuffer buffer) {
         this.entityId = buffer.readInt();
     }
 
-    @Override
-    public IMessage onMessage(MoCMessageInstaSpawn message, MessageContext ctx) {
+    public boolean onMessage(MoCMessageInstaSpawn message, Supplier<NetworkEvent.Context> ctx) {
         if ((MoCreatures.proxy.getProxyMode() == 1 && MoCreatures.proxy.allowInstaSpawn) || MoCreatures.proxy.getProxyMode() == 2) { // make sure the client has admin rights on server!
             MoCTools.spawnNearPlayer(ctx.getServerHandler().player, message.entityId, message.numberToSpawn);
             if (MoCreatures.proxy.debug) {
@@ -46,7 +45,7 @@ public class MoCMessageInstaSpawn implements IMessage, IMessageHandler<MoCMessag
                         + " tried to use MoC instaspawner, but the allowInstaSpawn setting is set to " + MoCreatures.proxy.allowInstaSpawn);
             }
         }
-        return null;
+        return true;
     }
 
     @Override
