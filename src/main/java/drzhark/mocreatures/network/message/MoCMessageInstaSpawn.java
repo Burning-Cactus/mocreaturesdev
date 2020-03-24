@@ -21,18 +21,16 @@ public class MoCMessageInstaSpawn implements IMoCMessage {
         this.numberToSpawn = numberToSpawn;
     }
 
-    @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeInt(this.entityId);
         buffer.writeInt(this.numberToSpawn);
     }
 
-    @Override
-    public void decode(PacketBuffer buffer) {
-        this.entityId = buffer.readInt();
+    public static MoCMessageInstaSpawn decode(PacketBuffer buffer) {
+        return new MoCMessageInstaSpawn(buffer.readInt(), buffer.readInt());
     }
 
-    public boolean onMessage(MoCMessageInstaSpawn message, Supplier<NetworkEvent.Context> ctx) {
+    public static boolean onMessage(MoCMessageInstaSpawn message, Supplier<NetworkEvent.Context> ctx) {
         if ((MoCreatures.proxy.getProxyMode() == 1 && MoCreatures.proxy.allowInstaSpawn) || MoCreatures.proxy.getProxyMode() == 2) { // make sure the client has admin rights on server!
             MoCTools.spawnNearPlayer(ctx.getServerHandler().player, message.entityId, message.numberToSpawn);
             if (MoCreatures.proxy.debug) {

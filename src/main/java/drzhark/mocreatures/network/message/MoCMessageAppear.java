@@ -7,7 +7,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MoCMessageAppear implements IMoCMessage {
+public class MoCMessageAppear {
 
     public int entityId;
 
@@ -18,17 +18,15 @@ public class MoCMessageAppear implements IMoCMessage {
         this.entityId = entityId;
     }
 
-    @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeInt(this.entityId);
     }
 
-    @Override
-    public void decode(PacketBuffer buffer) {
-        this.entityId = buffer.readInt();
+    public static MoCMessageAppear decode(PacketBuffer buffer) {
+        return new MoCMessageAppear(buffer.readInt());
     }
 
-    public boolean onMessage(MoCMessageAppear message, Supplier<NetworkEvent.Context> ctx) {
+    public static boolean onMessage(MoCMessageAppear message, Supplier<NetworkEvent.Context> ctx) {
         MoCMessageHandler.handleMessage(message, ctx);
         return true;
     }

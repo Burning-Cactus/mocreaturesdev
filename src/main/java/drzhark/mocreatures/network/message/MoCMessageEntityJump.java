@@ -10,24 +10,23 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MoCMessageEntityJump implements IMoCMessage {
+public class MoCMessageEntityJump {
 
     public MoCMessageEntityJump() {
     }
 
-    @Override
     public void encode(PacketBuffer buffer) {
     }
 
-    @Override
-    public void decode(PacketBuffer buffer) {
+    public static MoCMessageEntityJump decode(PacketBuffer buffer) {
+        return new MoCMessageEntityJump();
     }
 
-    public boolean onMessage(MoCMessageEntityJump message, Supplier<NetworkEvent.Context> ctx) {
+    public static boolean onMessage(MoCMessageEntityJump message, Supplier<NetworkEvent.Context> ctx) {
         if (ctx.getServerHandler().player.getRidingEntity() != null && ctx.getServerHandler().player.getRidingEntity() instanceof IMoCEntity) {
             ((IMoCEntity) ctx.getServerHandler().player.getRidingEntity()).makeEntityJump();
         }
-        return null;
+        return true;
     }
 
     @Override

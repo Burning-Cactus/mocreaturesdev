@@ -8,7 +8,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MoCMessageNameGUI implements IMoCMessage {
+public class MoCMessageNameGUI {
 
     public int entityId;
 
@@ -19,17 +19,15 @@ public class MoCMessageNameGUI implements IMoCMessage {
         this.entityId = entityId;
     }
 
-    @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeInt(this.entityId);
     }
 
-    @Override
-    public void decode(PacketBuffer buffer) {
-        this.entityId = buffer.readInt();
+    public static MoCMessageNameGUI decode(PacketBuffer buffer) {
+        return new MoCMessageNameGUI(buffer.readInt());
     }
 
-    public boolean onMessage(MoCMessageNameGUI message, Supplier<NetworkEvent.Context> ctx) {
+    public static boolean onMessage(MoCMessageNameGUI message, Supplier<NetworkEvent.Context> ctx) {
         if (ctx == Dist.CLIENT) {
             handleClientMessage(message, ctx);
         }

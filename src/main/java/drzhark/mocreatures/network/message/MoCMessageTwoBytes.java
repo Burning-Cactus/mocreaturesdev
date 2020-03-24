@@ -25,21 +25,17 @@ public class MoCMessageTwoBytes implements IMoCMessage {
         this.value = value;
     }
 
-    @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeInt(this.entityId);
         buffer.writeByte(this.slot);
         buffer.writeByte(this.value);
     }
 
-    @Override
-    public void decode(PacketBuffer buffer) {
-        this.entityId = buffer.readInt();
-        this.slot = buffer.readByte();
-        this.value = buffer.readByte();
+    public static MoCMessageTwoBytes decode(PacketBuffer buffer) {
+        return new MoCMessageTwoBytes(buffer.readInt(), buffer.readByte(), buffer.readByte());
     }
 
-    public boolean onMessage(MoCMessageTwoBytes message, Supplier<NetworkEvent.Context> ctx) {
+    public static boolean onMessage(MoCMessageTwoBytes message, Supplier<NetworkEvent.Context> ctx) {
         MoCMessageHandler.handleMessage(message, ctx);
         return true;
     }

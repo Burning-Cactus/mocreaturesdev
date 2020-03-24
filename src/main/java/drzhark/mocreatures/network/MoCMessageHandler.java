@@ -33,6 +33,21 @@ public class MoCMessageHandler {
 //    public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel("MoCreatures");
 
     public static void init() {
+        int id = 0;
+        CHANNEL.registerMessage(id++, MoCMessageAnimation.class, MoCMessageAnimation::encode, MoCMessageAnimation::decode, MoCMessageAnimation::onMessage);
+        CHANNEL.registerMessage(id++, MoCMessageAppear.class, MoCMessageAppear::encode, MoCMessageAppear::decode, MoCMessageAppear::onMessage);
+        CHANNEL.registerMessage(id++, MoCMessageAttachedEntity.class, MoCMessageAttachedEntity::encode, MoCMessageAttachedEntity::decode, MoCMessageAttachedEntity::onMessage);
+        CHANNEL.registerMessage(id++, MoCMessageEntityDive.class, MoCMessageEntityDive::encode, MoCMessageEntityDive::decode, MoCMessageEntityDive::onMessage);
+        CHANNEL.registerMessage(id++, MoCMessageEntityJump.class, MoCMessageEntityJump::encode, MoCMessageEntityJump::decode, MoCMessageEntityJump::onMessage);
+        CHANNEL.registerMessage(id++, MoCMessageExplode.class, MoCMessageExplode::encode, MoCMessageExplode::decode, MoCMessageExplode::onMessage);
+        CHANNEL.registerMessage(id++, MoCMessageHealth.class, MoCMessageHealth::encode, MoCMessageHealth::decode, MoCMessageHealth::onMessage);
+        CHANNEL.registerMessage(id++, MoCMessageHeart.class, MoCMessageHeart::encode, MoCMessageHeart::decode, MoCMessageHeart::onMessage);
+        CHANNEL.registerMessage(id++, MoCMessageInstaSpawn.class, MoCMessageInstaSpawn::encode, MoCMessageInstaSpawn::decode, MoCMessageInstaSpawn::onMessage);
+        CHANNEL.registerMessage(id++, MoCMessageNameGUI.class, MoCMessageNameGUI::encode, MoCMessageNameGUI::decode, MoCMessageNameGUI::onMessage);
+        CHANNEL.registerMessage(id++, MoCMessageShuffle.class, MoCMessageShuffle::encode, MoCMessageShuffle::decode, MoCMessageShuffle::onMessage);
+        CHANNEL.registerMessage(id++, MoCMessageTwoBytes.class, MoCMessageTwoBytes::encode, MoCMessageTwoBytes::decode, MoCMessageTwoBytes::onMessage);
+        CHANNEL.registerMessage(id++, MoCMessageUpdatePetName.class, MoCMessageUpdatePetName::encode, MoCMessageUpdatePetName::decode, MoCMessageUpdatePetName::onMessage);
+        CHANNEL.registerMessage(id++, MoCMessageVanish.class, MoCMessageVanish::encode, MoCMessageVanish::decode, MoCMessageVanish::onMessage);
 //        INSTANCE.registerMessage(MoCMessageAnimation.class, MoCMessageAnimation.class, 0, Dist.CLIENT);
 //        INSTANCE.registerMessage(MoCMessageAppear.class, MoCMessageAppear.class, 1, Dist.CLIENT);
 //        INSTANCE.registerMessage(MoCMessageAttachedEntity.class, MoCMessageAttachedEntity.class, 2, Dist.CLIENT);

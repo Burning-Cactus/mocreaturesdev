@@ -6,7 +6,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MoCMessageShuffle implements IMoCMessage {
+public class MoCMessageShuffle {
 
     public int entityId;
     public boolean flag;
@@ -19,19 +19,16 @@ public class MoCMessageShuffle implements IMoCMessage {
         this.flag = flag;
     }
 
-    @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeInt(this.entityId);
         buffer.writeBoolean(this.flag);
     }
 
-    @Override
-    public void decode(PacketBuffer buffer) {
-        this.entityId = buffer.readInt();
-        this.flag = buffer.readBoolean();
+    public static MoCMessageShuffle decode(PacketBuffer buffer) {
+        return new MoCMessageShuffle(buffer.readInt(), buffer.readBoolean());
     }
 
-    public boolean onMessage(MoCMessageShuffle message, Supplier<NetworkEvent.Context> ctx) {
+    public static boolean onMessage(MoCMessageShuffle message, Supplier<NetworkEvent.Context> ctx) {
         MoCMessageHandler.handleMessage(message, ctx);
         return true;
     }

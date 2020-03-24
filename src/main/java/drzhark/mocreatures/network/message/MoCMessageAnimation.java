@@ -7,7 +7,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MoCMessageAnimation implements IMoCMessage {
+public class MoCMessageAnimation {
 
     public int entityId;
     public int animationType;
@@ -20,19 +20,16 @@ public class MoCMessageAnimation implements IMoCMessage {
         this.animationType = animationType;
     }
 
-    @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeInt(this.entityId);
         buffer.writeInt(this.animationType);
     }
 
-    @Override
-    public void decode(PacketBuffer buffer) {
-        this.entityId = buffer.readInt();
-        this.animationType = buffer.readInt();
+    public static MoCMessageAnimation decode(PacketBuffer buffer) {
+        return new MoCMessageAnimation(buffer.readInt(), buffer.readInt());
     }
 
-    public boolean onMessage(MoCMessageAnimation message, Supplier<NetworkEvent.Context> ctx) {
+    public static boolean onMessage(MoCMessageAnimation message, Supplier<NetworkEvent.Context> ctx) {
         MoCMessageHandler.handleMessage(message, ctx);
         return true;
     }

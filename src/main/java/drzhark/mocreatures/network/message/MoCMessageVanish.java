@@ -6,7 +6,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MoCMessageVanish implements IMoCMessage {
+public class MoCMessageVanish {
 
     public int entityId;
 
@@ -17,17 +17,15 @@ public class MoCMessageVanish implements IMoCMessage {
         this.entityId = entityId;
     }
 
-    @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeInt(this.entityId);
     }
 
-    @Override
-    public void decode(PacketBuffer buffer) {
-        this.entityId = buffer.readInt();
+    public static MoCMessageVanish decode(PacketBuffer buffer) {
+        return new MoCMessageVanish(buffer.readInt());
     }
 
-    public boolean onMessage(MoCMessageVanish message, Supplier<NetworkEvent.Context> ctx) {
+    public static boolean onMessage(MoCMessageVanish message, Supplier<NetworkEvent.Context> ctx) {
         MoCMessageHandler.handleMessage(message, ctx);
         return true;
     }

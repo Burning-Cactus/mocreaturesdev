@@ -7,7 +7,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MoCMessageAttachedEntity implements IMoCMessage {
+public class MoCMessageAttachedEntity {
 
     public int sourceEntityId;
     public int targetEntityId;
@@ -20,19 +20,16 @@ public class MoCMessageAttachedEntity implements IMoCMessage {
         this.targetEntityId = targetEntityId;
     }
 
-    @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeInt(this.sourceEntityId);
         buffer.writeInt(this.targetEntityId);
     }
 
-    @Override
-    public void decode(PacketBuffer buffer) {
-        this.sourceEntityId = buffer.readInt();
-        this.targetEntityId = buffer.readInt();
+    public static MoCMessageAttachedEntity decode(PacketBuffer buffer) {
+        return new MoCMessageAttachedEntity(buffer.readInt(), buffer.readInt());
     }
 
-    public Boolean onMessage(MoCMessageAttachedEntity message, Supplier<NetworkEvent.Context> ctx) {
+    public static Boolean onMessage(MoCMessageAttachedEntity message, Supplier<NetworkEvent.Context> ctx) {
         MoCMessageHandler.handleMessage(message, ctx);
         return true;
     }

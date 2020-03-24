@@ -6,7 +6,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MoCMessageHeart implements IMoCMessage {
+public class MoCMessageHeart {
 
     public int entityId;
 
@@ -17,17 +17,15 @@ public class MoCMessageHeart implements IMoCMessage {
         this.entityId = entityId;
     }
 
-    @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeInt(this.entityId);
     }
 
-    @Override
-    public void decode(PacketBuffer buffer) {
-        this.entityId = buffer.readInt();
+    public static MoCMessageHeart decode(PacketBuffer buffer) {
+        return new MoCMessageHeart(buffer.readInt());
     }
 
-    public boolean onMessage(MoCMessageHeart message, Supplier<NetworkEvent.Context> ctx) {
+    public static boolean onMessage(MoCMessageHeart message, Supplier<NetworkEvent.Context> ctx) {
         MoCMessageHandler.handleMessage(message, ctx);
         return true;
     }

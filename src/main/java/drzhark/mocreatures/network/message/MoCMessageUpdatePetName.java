@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-public class MoCMessageUpdatePetName implements IMoCMessage {
+public class MoCMessageUpdatePetName {
 
     public String name;
     public int entityId;
@@ -28,25 +28,25 @@ public class MoCMessageUpdatePetName implements IMoCMessage {
         this.entityId = entityId;
     }
 
-    public MoCMessageUpdatePetName(int entityId, String name) {
+    public MoCMessageUpdatePetName(String name, int entityId) {
         this.entityId = entityId;
         this.name = name;
     }
 
-    @Override
     public void encode(PacketBuffer buffer) {
-        ByteBufUtils.writeUTF8String(buffer, this.name);
-        ByteBufUtils.writeVarInt(buffer, this.entityId, 5);
+//        ByteBufUtils.writeUTF8String(buffer, this.name);
+//        ByteBufUtils.writeVarInt(buffer, this.entityId, 5);
+        buffer.writeString(name);
+        buffer.writeVarInt(entityId);
     } //TODO: Figure out how to update from ByteBufUtils
 
-    @Override
-    public void decode(PacketBuffer buffer) {
-        this.name = ByteBufUtils.readUTF8String(buffer);
-        this.entityId = ByteBufUtils.readVarInt(buffer, 5);
+    public static MoCMessageUpdatePetName decode(PacketBuffer buffer) {
+//        this.name = ByteBufUtils.readUTF8String(buffer);
+//        this.entityId = ByteBufUtils.readVarInt(buffer, 5);
+        new MoCMessageUpdatePetName(buffer.readString(), buffer.readVarInt());
     }
 
-    @Override
-    public boolean onMessage(MoCMessageUpdatePetName message, Supplier<NetworkEvent.Context> ctx) {
+    public static boolean onMessage(MoCMessageUpdatePetName message, Supplier<NetworkEvent.Context> ctx) {
         Entity pet = null;
         List<Entity> entList = ctx.getServerHandler().player.world.loadedEntityList;
         UUID ownerUniqueId = null;

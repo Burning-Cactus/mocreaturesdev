@@ -6,7 +6,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MoCMessageHealth implements IMoCMessage {
+public class MoCMessageHealth {
 
     public int entityId;
     public float health;
@@ -19,19 +19,16 @@ public class MoCMessageHealth implements IMoCMessage {
         this.health = health;
     }
 
-    @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeInt(this.entityId);
         buffer.writeFloat(this.health);
     }
 
-    @Override
-    public void decode(PacketBuffer buffer) {
-        this.entityId = buffer.readInt();
-        this.health = buffer.readFloat();
+    public static MoCMessageHealth decode(PacketBuffer buffer) {
+        return new MoCMessageHealth(buffer.readInt(), buffer.readFloat());
     }
 
-    public boolean onMessage(MoCMessageHealth message, Supplier<NetworkEvent.Context> ctx) {
+    public static boolean onMessage(MoCMessageHealth message, Supplier<NetworkEvent.Context> ctx) {
         MoCMessageHandler.handleMessage(message, ctx);
         return true;
     }
