@@ -6,15 +6,21 @@ import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
+import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -36,20 +42,21 @@ public class MoCEntityHorseMob extends MoCEntityMob {
         setSize(1.4F, 1.6F);
     }
 
+
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, true));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTargetMoC(this, EntityPlayer.class, true));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC((this, PlayerEntity.class, true));
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
     }
 
     @Override
@@ -163,8 +170,8 @@ public class MoCEntityHorseMob extends MoCEntityMob {
     }
 
     public boolean isOnAir() {
-        return this.world.isAirBlock(new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.posY - 0.2D), MathHelper
-                .floor(this.posZ)));
+        return this.world.isAirBlock(new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosY() - 0.2D), MathHelper
+                .floor(this.getPosZ())));
     }
 
     @Override
@@ -291,16 +298,16 @@ public class MoCEntityHorseMob extends MoCEntityMob {
 
         if (flag && (this.getType() == 36 || (this.getType() >= 50 && this.getType() < 60))) //unicorn
         {
-            return MoCItems.unicornhorn;
+            return MoCItems.UNICORNHORN;
         }
 
         if (this.getType() == 38 && flag && this.world.provider.doesWaterVaporize()) //nightmare
         {
-            return MoCItems.heartfire;
+            return MoCItems.HEARTFIRE;
         }
         if (this.getType() == 32 && flag) //bat horse
         {
-            return MoCItems.heartdarkness;
+            return MoCItems.HEARTDARKNESS;
         }
         if (this.getType() == 26)//skely
         {
@@ -308,7 +315,7 @@ public class MoCEntityHorseMob extends MoCEntityMob {
         }
         if ((this.getType() == 23 || this.getType() == 24 || this.getType() == 25)) {
             if (flag) {
-                return MoCItems.heartundead;
+                return MoCItems.HEARTUNDEAD;
             }
             return Items.ROTTEN_FLESH;
         }
@@ -322,7 +329,7 @@ public class MoCEntityHorseMob extends MoCEntityMob {
 
     @Override
     public boolean attackEntityAsMob(Entity entityIn) {
-        if (entityIn instanceof EntityPlayer && !shouldAttackPlayers()) {
+        if (entityIn instanceof PlayerEntity && !shouldAttackPlayers()) {
             return false;
         }
         if (this.onGround && !isOnAir()) {
@@ -345,12 +352,12 @@ public class MoCEntityHorseMob extends MoCEntityMob {
 
     @Override
     public double getMountedYOffset() {
-        return (this.height * 0.75D) - 0.1D;
+        return (this.getHeight() * 0.75D) - 0.1D;
     }
 
     @Override
     public boolean getCanSpawnHere() {
-        if (this.posY < 50D && !this.world.provider.doesWaterVaporize()) {
+        if (this.getPosY() < 50D && !this.world.provider.doesWaterVaporize()) {
             setType(32);
         }
         return super.getCanSpawnHere();
@@ -368,9 +375,9 @@ public class MoCEntityHorseMob extends MoCEntityMob {
      * Get this Entity's EnumCreatureAttribute
      */
     @Override
-    public EnumCreatureAttribute getCreatureAttribute() {
+    public CreatureAttribute getCreatureAttribute() {
         if (getType() == 23 || getType() == 24 || getType() == 25) {
-            return EnumCreatureAttribute.UNDEAD;
+            return CreatureAttribute.UNDEAD;
         }
         return super.getCreatureAttribute();
     }
@@ -393,9 +400,9 @@ public class MoCEntityHorseMob extends MoCEntityMob {
     @Override
     public void updatePassenger(Entity passenger) {
         double dist = (0.4D);
-        double newPosX = this.posX + (dist * Math.sin(this.renderYawOffset / 57.29578F));
-        double newPosZ = this.posZ - (dist * Math.cos(this.renderYawOffset / 57.29578F));
-        passenger.setPosition(newPosX, this.posY + getMountedYOffset() + passenger.getYOffset(), newPosZ);
+        double newPosX = this.getPosX() + (dist * Math.sin(this.renderYawOffset / 57.29578F));
+        double newPosZ = this.getPosZ() - (dist * Math.cos(this.renderYawOffset / 57.29578F));
+        passenger.setPosition(newPosX, this.getPosY() + getMountedYOffset() + passenger.getYOffset(), newPosZ);
         passenger.rotationYaw = this.rotationYaw;
     }
 }

@@ -26,7 +26,9 @@ public class MoCBlockLeaf extends MoCBlock {
     public MoCBlockLeaf(Block.Properties builder) {
         super(builder
                 .sound(SoundType.PLANT)
-                .tickRandomly());
+                .tickRandomly()
+                .hardnessAndResistance(0.2F)
+        );
     }
 
     @Override

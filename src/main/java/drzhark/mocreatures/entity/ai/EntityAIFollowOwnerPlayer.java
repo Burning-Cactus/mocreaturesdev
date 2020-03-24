@@ -2,38 +2,49 @@ package drzhark.mocreatures.entity.ai;
 
 import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.IMoCTameable;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.b3d.B3DModel;
+import net.minecraftforge.event.world.NoteBlockEvent;
 
+import java.util.EnumSet;
 import java.util.UUID;
 
-public class EntityAIFollowOwnerPlayer extends EntityAIBase {
+public class EntityAIFollowOwnerPlayer extends Goal {
 
-    private EntityLiving thePet;
-    private EntityPlayer theOwner;
+    private LivingEntity thePet;
+    private PlayerEntity theOwner;
     World world;
     private double speed;
-    private PathNavigate petPathfinder;
+    private PathNavigator petPathfinder;
     private int delayCounter;
     float maxDist;
     float minDist;
 
-    public EntityAIFollowOwnerPlayer(EntityLiving thePetIn, double speedIn, float minDistIn, float maxDistIn) {
+    public EntityAIFollowOwnerPlayer(LivingEntity thePetIn, double speedIn, float minDistIn, float maxDistIn) {
         this.thePet = thePetIn;
         this.world = thePetIn.world;
         this.speed = speedIn;
-        this.petPathfinder = thePetIn.getNavigator();
+        this.petPathfinder = ((MobEntity)thePetIn).getNavigator();
         this.minDist = minDistIn;
         this.maxDist = maxDistIn;
-        this.setMutexBits(3);
+        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 
         //if (!(thePetIn.getNavigator() instanceof PathNavigateGround)) {
         //System.out.println("exiting due to first illegal argument");
@@ -55,7 +66,7 @@ public class EntityAIFollowOwnerPlayer extends EntityAIBase {
             return false;
         }
 
-        EntityPlayer entityplayer = EntityAITools.getIMoCTameableOwner((IMoCTameable) this.thePet);
+        PlayerEntity entityplayer = EntityAITools.getIMoCTameableOwner((IMoCTameable) this.thePet);
 
         if (entityplayer == null) {
             return false;
@@ -101,7 +112,7 @@ public class EntityAIFollowOwnerPlayer extends EntityAIBase {
 
     private boolean isEmptyBlock(BlockPos pos)
     {
-        IBlockState iblockstate = this.world.getBlockState(pos);
+        BlockState iblockstate = this.world.getBlockState(pos);
         return iblockstate.getMaterial() == Material.AIR ? true : !iblockstate.isFullCube();
     }
     
@@ -120,16 +131,16 @@ public class EntityAIFollowOwnerPlayer extends EntityAIBase {
                     {
                         if (this.thePet.getDistanceSq(this.theOwner) >= 144.0D)
                         {
-                            int i = MathHelper.floor(this.theOwner.posX) - 2;
-                            int j = MathHelper.floor(this.theOwner.posZ) - 2;
-                            int k = MathHelper.floor(this.theOwner.getEntityBoundingBox().minY);
+                            int i = MathHelper.floor(this.theOwner.getPosX()) - 2;
+                            int j = MathHelper.floor(this.theOwner.getPosZ()) - 2;
+                            int k = MathHelper.floor(this.theOwner.getBoundingBox().minY);
 
                             for (int l = 0; l <= 4; ++l)
                             {
                                 for (int i1 = 0; i1 <= 4; ++i1)
                                 {
                                     final BlockPos pos = new BlockPos(i + l, k - 1, j + i1);
-                                    if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.world.getBlockState(pos).isSideSolid(world, pos, EnumFacing.DOWN) && this.isEmptyBlock(new BlockPos(i + l, k, j + i1)) && this.isEmptyBlock(new BlockPos(i + l, k + 1, j + i1)))
+                                    if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.world.getBlockState(pos).isSideSolid(world, pos, Direction.DOWN) && this.isEmptyBlock(new BlockPos(i + l, k, j + i1)) && this.isEmptyBlock(new BlockPos(i + l, k + 1, j + i1)))
                                     {
                                         this.thePet.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.thePet.rotationYaw, this.thePet.rotationPitch);
                                         this.petPathfinder.clearPath();

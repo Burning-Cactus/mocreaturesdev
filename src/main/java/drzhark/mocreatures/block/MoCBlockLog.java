@@ -9,6 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.ToolType;
 
 import java.util.Random;
 
@@ -16,7 +17,11 @@ public class MoCBlockLog extends MoCBlock {
 
     public MoCBlockLog(Block.Properties builder) {
         super(builder
-                .sound(SoundType.WOOD));
+                .sound(SoundType.WOOD)
+                .hardnessAndResistance(2.0F)
+                .harvestTool(ToolType.AXE)
+                .harvestLevel(0)
+        );
     }
 
     /**

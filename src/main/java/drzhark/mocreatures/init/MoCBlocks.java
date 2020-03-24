@@ -14,20 +14,16 @@ import drzhark.mocreatures.block.MoCBlockTallGrass;
 import drzhark.mocreatures.block.MultiItemBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,33 +32,8 @@ import java.util.Set;
 @ObjectHolder(MoCConstants.MOD_ID)
 public class MoCBlocks {
 
-    //Due to the flattening, all blocks will be registered separately.
-
-    public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<Block>(ForgeRegistries.BLOCKS, MoCConstants.MOD_ID);
-
-    //Wyvern blocks
-    public static final RegistryObject<Block> WYVERN_STONE = BLOCKS.register("wyvern_stone", () -> new MoCBlockRock(Block.Properties.create(Material.ROCK)));
-    public static final RegistryObject<Block> WYVERN_GRASS = BLOCKS.register("wyvern_grass", () -> new MoCBlockGrass(Block.Properties.create(Material.PLANTS)));
-    public static final RegistryObject<Block> WYVERN_DIRT = BLOCKS.register("wyvern_dirt", () -> new MoCBlockDirt(Block.Properties.create(Material.EARTH)));
-    //Non-terrain generation
-    public static final RegistryObject<Block> WYVERN_LEAVES = BLOCKS.register("wyvern_leaves", () -> new MoCBlockLeaf(Block.Properties.create(Material.LEAVES)));
-    public static final RegistryObject<Block> WYVERN_LOG = BLOCKS.register("wyvern_log", () -> new MoCBlockLog(Block.Properties.create(Material.WOOD)));
-    public static final RegistryObject<Block> WYVERN_TALLGRASS = BLOCKS.register("wyvern_tallgrass", () -> new MoCBlockTallGrass(Block.Properties.create(Material.PLANTS)));
-    public static final RegistryObject<Block> WYVERN_WOODPLANK = BLOCKS.register("wyvern_woodplank", () -> new MoCBlockPlanks(Block.Properties.create(Material.WOOD)));
-
-    //Ogre blocks
-    public static final RegistryObject<Block> OGRE_STONE = BLOCKS.register("ogre_stone", () -> new MoCBlockRock(Block.Properties.create(Material.ROCK)));
-    public static final RegistryObject<Block> OGRE_GRASS = BLOCKS.register("wyvern_grass", () -> new MoCBlockGrass(Block.Properties.create(Material.PLANTS)));
-    public static final RegistryObject<Block> OGRE_DIRT = BLOCKS.register("wyvern_dirt", () -> new MoCBlockDirt(Block.Properties.create(Material.EARTH)));
-    //Non-terrain generation
-    public static final RegistryObject<Block> OGRE_LEAVES = BLOCKS.register("wyvern_leaves", () -> new MoCBlockLeaf(Block.Properties.create(Material.LEAVES)));
-    public static final RegistryObject<Block> OGRE_LOG = BLOCKS.register("wyvern_log", () -> new MoCBlockLog(Block.Properties.create(Material.WOOD)));
-    public static final RegistryObject<Block> OGRE_TALLGRASS = BLOCKS.register("wyvern_tallgrass", () -> new MoCBlockTallGrass(Block.Properties.create(Material.PLANTS)));
-    public static final RegistryObject<Block> OGRE_WOODPLANK = BLOCKS.register("wyvern_woodplank", () -> new MoCBlockPlanks(Block.Properties.create(Material.WOOD)));
-
-
 //    public static ArrayList<String> multiBlockNames = new ArrayList<String>();
-//
+
 //    public static MoCBlock mocStone = (MoCBlock) new MoCBlockRock("MoCStone").setHardness(1.5F).setResistance(10.0F);
 //    public static MoCBlock mocGrass = (MoCBlock) new MoCBlockGrass("MoCGrass").setHardness(0.5F);
 //    public static MoCBlock mocDirt = (MoCBlock) new MoCBlockDirt("MoCDirt").setHardness(0.6F);
@@ -71,64 +42,67 @@ public class MoCBlocks {
 //    public static MoCBlock mocLog = (MoCBlock) new MoCBlockLog("MoCLog").setHardness(2.0F);
 //    public static MoCBlockTallGrass mocTallGrass = (MoCBlockTallGrass) new MoCBlockTallGrass("MoCTallGrass", true).setHardness(0.0F);
 //    public static MoCBlock mocPlank = (MoCBlock) new MoCBlockPlanks("MoCWoodPlank").setHardness(2.0F).setResistance(5.0F);
-//
-//    @Mod.EventBusSubscriber(modid = MoCConstants.MOD_ID)
-//    public static class RegistrationHandler {
-//        public static final Set<ItemBlock> ITEM_BLOCKS = new HashSet<>();
-//
-//        /**
-//         * Register this mod's {@link Block}s.
-//         *
-//         * @param event The event
-//         */
-//        @SubscribeEvent
-//        public static void registerBlocks(final RegistryEvent.Register<Block> event) {
-//            final IForgeRegistry<Block> registry = event.getRegistry();
-//
-//            final Block[] blocks = {
-//                mocStone,
-//                mocGrass,
-//                mocDirt,
-//                mocLeaf,
-//                mocLog,
-//                mocTallGrass,
-//                mocPlank
-//            };
-//
-//            //wyvern lair block harvest settings
-//            mocDirt.setHarvestLevel("shovel", 0, mocDirt.getDefaultState());
-//            mocGrass.setHarvestLevel("shovel", 0, mocGrass.getDefaultState());
-//            mocStone.setHarvestLevel("pickaxe", 1, mocStone.getDefaultState());
-//            multiBlockNames.add("WyvernLair");
-//            multiBlockNames.add("OgreLair");
-//            registry.registerAll(blocks);
-//        }
-//
-//
-//        /**
-//         * Register this mod's {@link ItemBlock}s.
-//         *
-//         * @param event The event
-//         */
-//        @SubscribeEvent
-//        public static void registerItemBlocks(final RegistryEvent.Register<Item> event) {
-//            final ItemBlock[] items = {
-//                    new MultiItemBlock(mocStone),
-//                    new MultiItemBlock(mocGrass),
-//                    new MultiItemBlock(mocDirt),
-//                    new MultiItemBlock(mocLeaf),
-//                    new MultiItemBlock(mocLog),
-//                    new MultiItemBlock(mocTallGrass),
-//                    new MultiItemBlock(mocPlank)
-//            };
-//
-//            final IForgeRegistry<Item> registry = event.getRegistry();
-//
-//            for (final ItemBlock item : items) {
-//                final Block block = item.getBlock();
-//                final ResourceLocation registryName = Preconditions.checkNotNull(block.getRegistryName(), "Block %s has null registry name", block);
-//                registry.register(item.setRegistryName(registryName));
-//                ITEM_BLOCKS.add(item);
+
+    //Wyvern blocks
+    public static MoCBlock WYVERN_STONE = (MoCBlock) new MoCBlockRock(Block.Properties.create(Material.ROCK)).setRegistryName("wyvern_stone");
+    public static MoCBlock WYVERN_GRASS = (MoCBlock) new MoCBlockGrass(Block.Properties.create(Material.PLANTS)).setRegistryName("wyvern_grass");
+    public static MoCBlock WYVERN_DIRT = (MoCBlock) new MoCBlockDirt(Block.Properties.create(Material.EARTH)).setRegistryName("wyvern_dirt");
+    //Non terrain generator blocks
+    public static MoCBlock WYVERN_LEAVES = (MoCBlock) new MoCBlockLeaf(Block.Properties.create(Material.LEAVES)).setRegistryName("wyvern_leaves");
+    public static MoCBlock WYVERN_LOG = (MoCBlock) new MoCBlockLog(Block.Properties.create(Material.WOOD)).setRegistryName("wyvern_log");
+    public static MoCBlockTallGrass WYVERN_TALLGRASS = (MoCBlockTallGrass) new MoCBlockTallGrass(Block.Properties.create(Material.TALL_PLANTS)).setRegistryName("wyvern_tallgrass");
+    public static MoCBlock WYVERN_WOODPLANK = (MoCBlock) new MoCBlockPlanks(Block.Properties.create(Material.WOOD)).setRegistryName("wyvern_woodplank");
+
+    @Mod.EventBusSubscriber(modid = MoCConstants.MOD_ID)
+    public static class RegistrationHandler {
+        public static final Set<BlockItem> ITEM_BLOCKS = new HashSet<>();
+
+        /**
+         * Register this mod's {@link Block}s.
+         *
+         * @param event The event
+         */
+        @SubscribeEvent
+        public static void registerBlocks(final RegistryEvent.Register<Block> event) {
+            final IForgeRegistry<Block> registry = event.getRegistry();
+
+            final Block[] blocks = {
+                    WYVERN_STONE,
+                    WYVERN_GRASS,
+                    WYVERN_DIRT,
+                    WYVERN_LEAVES,
+                    WYVERN_LOG,
+                    WYVERN_TALLGRASS,
+                    WYVERN_WOODPLANK
+            };
+            registry.registerAll(blocks);
+        }
+
+
+        /**
+         * Register this mod's {@link BlockItem}s.
+         *
+         * @param event The event
+         */
+        @SubscribeEvent
+        public static void registerItemBlocks(final RegistryEvent.Register<Item> event) {
+            final BlockItem[] items = {
+                    new BlockItem(WYVERN_STONE, new Item.Properties()),
+                    new BlockItem(WYVERN_GRASS, new Item.Properties()),
+                    new BlockItem(WYVERN_DIRT, new Item.Properties()),
+                    new BlockItem(WYVERN_LEAVES, new Item.Properties()),
+                    new BlockItem(WYVERN_LOG, new Item.Properties()),
+                    new BlockItem(WYVERN_TALLGRASS, new Item.Properties()),
+                    new BlockItem(WYVERN_WOODPLANK, new Item.Properties())
+            };
+
+            final IForgeRegistry<Item> registry = event.getRegistry();
+
+            for (final BlockItem item : items) {
+                final Block block = item.getBlock();
+                final ResourceLocation registryName = Preconditions.checkNotNull(block.getRegistryName(), "Block %s has null registry name", block);
+                registry.register(item.setRegistryName(registryName));
+                ITEM_BLOCKS.add(item);
 //                if (!MoCreatures.isServer()) {
 //                    final String name = item.getUnlocalizedName().replace("tile.", "").replace("MoC", "").toLowerCase();
 //                    System.out.println("registering custom location " + name);
@@ -139,7 +113,7 @@ public class MoCBlocks {
 //                    ModelLoader.setCustomModelResourceLocation(item, 2, new ModelResourceLocation("mocreatures:wyvern_" + name, "variant=wyvern_lair"));
 //                    ModelLoader.setCustomModelResourceLocation(item, 3, new ModelResourceLocation("mocreatures:ogre_" + name, "variant=ogre_lair"));
 //                }
-//            }
-//        }
-//    }
+            }
+        }
+    }
 }

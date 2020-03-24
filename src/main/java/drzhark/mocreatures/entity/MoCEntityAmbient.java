@@ -2,7 +2,7 @@ package drzhark.mocreatures.entity;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
-import drzhark.mocreatures.entity.ai.PathNavigateFlyer;
+import drzhark.mocreatures.entity.ai.PathNavigateFlyerMoC;
 import drzhark.mocreatures.entity.item.MoCEntityEgg;
 import drzhark.mocreatures.entity.item.MoCEntityKittyBed;
 import drzhark.mocreatures.entity.item.MoCEntityLitterBox;
@@ -10,7 +10,6 @@ import drzhark.mocreatures.entity.passive.MoCEntityHorse;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
@@ -60,7 +59,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
 
     public MoCEntityAmbient(World world) {
         super(world);
-        this.navigatorFlyer = new PathNavigateFlyer(this, world);
+        this.navigatorFlyer = new PathNavigateFlyerMoC(this, world);
     }
 
     @Override

@@ -2,23 +2,23 @@ package drzhark.mocreatures.entity.ai;
 
 import com.google.common.base.Predicate;
 import drzhark.mocreatures.entity.MoCEntityAnimal;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.LivingEntity;
 
 public class EntityAIHunt extends EntityAINearestAttackableTargetMoC {
 
-    private EntityCreature hunter;
+    private CreatureEntity hunter;
 
-    public EntityAIHunt(EntityCreature entity, Class<? extends EntityCreature> classTarget, int chance, boolean checkSight, boolean onlyNearby, Predicate<EntityLivingBase> predicate) {
+    public EntityAIHunt(CreatureEntity entity, Class<? extends CreatureEntity> classTarget, int chance, boolean checkSight, boolean onlyNearby, Predicate<LivingEntity> predicate) {
         super(entity, classTarget, chance, checkSight, onlyNearby, predicate);
         this.hunter = entity;
     }
 
-    public EntityAIHunt(EntityCreature entityCreature, Class<? extends EntityCreature> classTarget, boolean checkSight) {
+    public EntityAIHunt(CreatureEntity entityCreature, Class<? extends CreatureEntity> classTarget, boolean checkSight) {
         this(entityCreature, classTarget, checkSight, false);
     }
 
-    public EntityAIHunt(EntityCreature entity, Class<? extends EntityCreature> classTarget, boolean checkSight, boolean onlyNearby) {
+    public EntityAIHunt(CreatureEntity entity, Class<? extends CreatureEntity> classTarget, boolean checkSight, boolean onlyNearby) {
         this(entity, classTarget, 10, checkSight, onlyNearby, null);
 
     }

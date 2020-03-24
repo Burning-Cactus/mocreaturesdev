@@ -3,7 +3,7 @@ package drzhark.mocreatures.entity;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.ai.EntityAIMoverHelperMoC;
-import drzhark.mocreatures.entity.ai.PathNavigateFlyer;
+import drzhark.mocreatures.entity.ai.PathNavigateFlyerMoC;
 import drzhark.mocreatures.entity.item.MoCEntityEgg;
 import drzhark.mocreatures.entity.item.MoCEntityKittyBed;
 import drzhark.mocreatures.entity.item.MoCEntityLitterBox;
@@ -86,7 +86,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
         this.texture = "blank.jpg";
         this.navigatorWater = new SwimmerPathNavigator(this, world);
         this.moveHelper = new EntityAIMoverHelperMoC(this);
-        this.navigatorFlyer = new PathNavigateFlyer(this, world);
+        this.navigatorFlyer = new PathNavigateFlyerMoC(this, world);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package drzhark.mocreatures.entity.monster;
 
 import drzhark.mocreatures.MoCreatures;
+import net.minecraft.block.Blocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;

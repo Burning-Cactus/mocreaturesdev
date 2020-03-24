@@ -1,9 +1,10 @@
 package drzhark.mocreatures.item;
 
+import net.minecraft.item.Item;
+
 public class MoCItemHayStack extends MoCItem {
 
-    public MoCItemHayStack(String name) {
-        super(name);
-        this.maxStackSize = 16;
+    public MoCItemHayStack(Item.Properties builder) {
+        super(builder.maxStackSize(16));
     }
 }

@@ -4,21 +4,23 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.MoCEntityAquatic;
+import net.minecraft.command.arguments.EntitySelector;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.util.EntitySelectors;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.EnumSet;
 import java.util.List;
 
-public class EntityAIFleeFromEntityMoC extends EntityAIBase {
+public class EntityAIFleeFromEntityMoC extends Goal {
 
     public final Predicate<Entity> canBeSeenSelector = new Predicate<Entity>() {
 
         public boolean isApplicable(Entity entityIn) {
-            return entityIn.isEntityAlive() && EntityAIFleeFromEntityMoC.this.entity.getEntitySenses().canSee(entityIn);
+            return entityIn.isAlive() && EntityAIFleeFromEntityMoC.this.entity.getEntitySenses().canSee(entityIn);
         }
 
         @Override
@@ -27,7 +29,7 @@ public class EntityAIFleeFromEntityMoC extends EntityAIBase {
         }
     };
     /** The entity we are attached to */
-    protected EntityCreature entity;
+    protected CreatureEntity entity;
     private double farSpeed;
     private double nearSpeed;
     protected Entity closestLivingEntity;
@@ -38,13 +40,13 @@ public class EntityAIFleeFromEntityMoC extends EntityAIBase {
     private double randPosY;
     private double randPosZ;
 
-    public EntityAIFleeFromEntityMoC(EntityCreature creature, Predicate<Entity> targetSelector, float searchDistance, double farSpeedIn, double nearSpeedIn) {
+    public EntityAIFleeFromEntityMoC(CreatureEntity creature, Predicate<Entity> targetSelector, float searchDistance, double farSpeedIn, double nearSpeedIn) {
         this.entity = creature;
         this.avoidTargetSelector = targetSelector;
         this.avoidDistance = searchDistance;
         this.farSpeed = farSpeedIn;
         this.nearSpeed = nearSpeedIn;
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Flag.MOVE));
     }
 
     /**
@@ -63,16 +65,16 @@ public class EntityAIFleeFromEntityMoC extends EntityAIBase {
 
         List<Entity> list =
                 this.entity.world.getEntitiesInAABBexcluding(this.entity,
-                        this.entity.getEntityBoundingBox().expand((double) this.avoidDistance, 3.0D, (double) this.avoidDistance),
-                        Predicates.and(new Predicate[] {EntitySelectors.NOT_SPECTATING, this.canBeSeenSelector, this.avoidTargetSelector}));
+                        this.entity.getBoundingBox().expand((double) this.avoidDistance, 3.0D, (double) this.avoidDistance),
+                        Predicates.and(new Predicate[] {(Predicate) EntityPredicates.NOT_SPECTATING, this.canBeSeenSelector, this.avoidTargetSelector}));
 
         if (list.isEmpty()) {
             return false;
         } else {
             this.closestLivingEntity = list.get(0);
             Vec3d vec3 =
-                    RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.entity, 16, 7, new Vec3d(this.closestLivingEntity.posX,
-                            this.closestLivingEntity.posY, this.closestLivingEntity.posZ));
+                    RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.entity, 16, 7, new Vec3d(this.closestLivingEntity.getPosX(),
+                            this.closestLivingEntity.getPosY(), this.closestLivingEntity.getPosZ()));
 
             if (vec3 == null) {
                 return false;
@@ -116,7 +118,7 @@ public class EntityAIFleeFromEntityMoC extends EntityAIBase {
      * Updates the task
      */
     @Override
-    public void updateTask() {
+    public void tick() {
         if (this.entity.getDistanceSq(this.closestLivingEntity) < 8.0D) {
             this.entity.getNavigator().setSpeed(this.nearSpeed);
         } else {

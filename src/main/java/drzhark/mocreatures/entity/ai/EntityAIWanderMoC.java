@@ -1,14 +1,14 @@
 package drzhark.mocreatures.entity.ai;
 
 import drzhark.mocreatures.entity.IMoCEntity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.ai.goal.RandomWalkingGoal;
 
-public class EntityAIWanderMoC extends EntityAIWander {
+public class EntityAIWanderMoC extends RandomWalkingGoal { //EntityAIWander
 
-    private EntityCreature entityCreature;
+    private CreatureEntity entityCreature;
 
-    public EntityAIWanderMoC(EntityCreature creature, double speedIn) {
+    public EntityAIWanderMoC(CreatureEntity creature, double speedIn) {
         super(creature, speedIn);
         this.entityCreature = creature;
     }

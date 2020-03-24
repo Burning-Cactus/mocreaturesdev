@@ -3,19 +3,24 @@ package drzhark.mocreatures.entity.ai;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import drzhark.mocreatures.entity.IMoCEntity;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.EntitySelectors;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.List;
 
 public class EntityAINearestAttackableTargetMoC extends EntitiAITargetMoC {
 
-    protected final Class<? extends EntityLivingBase> targetClass;
+    protected final Class<? extends LivingEntity> targetClass;
     private final int targetChance;
     /** Instance of EntityAINearestAttackableTargetSorter. */
     protected final EntityAINearestAttackableTargetMoC.Sorter theNearestAttackableTargetSorter;
@@ -23,20 +28,20 @@ public class EntityAINearestAttackableTargetMoC extends EntitiAITargetMoC {
      * This filter is applied to the Entity search.  Only matching entities will be targetted.  (null -> no
      * restrictions)
      */
-    protected Predicate<EntityLivingBase> targetEntitySelector;
-    protected EntityLivingBase targetEntity;
+    protected Predicate<LivingEntity> targetEntitySelector;
+    protected LivingEntity targetEntity;
     private IMoCEntity theAttacker;
 
-    public EntityAINearestAttackableTargetMoC(EntityCreature creature, Class<? extends EntityLivingBase> classTarget, boolean checkSight) {
+    public EntityAINearestAttackableTargetMoC(CreatureEntity creature, Class<? extends LivingEntity> classTarget, boolean checkSight) {
         this(creature, classTarget, checkSight, false);
     }
 
-    public EntityAINearestAttackableTargetMoC(EntityCreature creature, Class<? extends EntityLivingBase> classTarget, boolean checkSight, boolean onlyNearby) {
+    public EntityAINearestAttackableTargetMoC(CreatureEntity creature, Class<? extends LivingEntity> classTarget, boolean checkSight, boolean onlyNearby) {
         this(creature, classTarget, 10, checkSight, onlyNearby, null);
     }
 
-    public EntityAINearestAttackableTargetMoC(EntityCreature creature, Class<? extends EntityLivingBase> classTarget, int chance, boolean checkSight, boolean onlyNearby,
-            final Predicate<EntityLivingBase> targetSelector) {
+    public EntityAINearestAttackableTargetMoC(CreatureEntity creature, Class<? extends LivingEntity> classTarget, int chance, boolean checkSight, boolean onlyNearby,
+            final Predicate<LivingEntity> targetSelector) {
         super(creature, checkSight, onlyNearby);
         if (creature instanceof IMoCEntity) {
             this.theAttacker = (IMoCEntity) creature;
@@ -44,15 +49,15 @@ public class EntityAINearestAttackableTargetMoC extends EntitiAITargetMoC {
         this.targetClass = classTarget;
         this.targetChance = chance;
         this.theNearestAttackableTargetSorter = new EntityAINearestAttackableTargetMoC.Sorter(creature);
-        this.setMutexBits(1);
-        this.targetEntitySelector = new Predicate<EntityLivingBase>() {
+        this.setMutexFlags(EnumSet.of(Flag.TARGET));
+        this.targetEntitySelector = new Predicate<LivingEntity>() {
 
             @Override
-            public boolean apply(EntityLivingBase entitylivingbaseIn) {
+            public boolean apply(LivingEntity entitylivingbaseIn) {
                 if (targetSelector != null && !targetSelector.apply(entitylivingbaseIn)) {
                     return false;
                 } else {
-                    if (entitylivingbaseIn instanceof EntityPlayer) {
+                    if (entitylivingbaseIn instanceof PlayerEntity) {
                         double d0 = EntityAINearestAttackableTargetMoC.this.getTargetDistance();
 
                         if (entitylivingbaseIn.isSneaking()) {
@@ -60,7 +65,7 @@ public class EntityAINearestAttackableTargetMoC extends EntitiAITargetMoC {
                         }
 
                         if (entitylivingbaseIn.isInvisible()) {
-                            float f = ((EntityPlayer) entitylivingbaseIn).getArmorVisibility();
+                            float f = ((PlayerEntity) entitylivingbaseIn).getArmorVisibility();
 
                             if (f < 0.1F) {
                                 f = 0.1F;
@@ -92,16 +97,16 @@ public class EntityAINearestAttackableTargetMoC extends EntitiAITargetMoC {
             return false;
         } else {
             double d0 = this.getTargetDistance();
-            List<EntityLivingBase> list =
-                    this.taskOwner.world.getEntitiesWithinAABB(this.targetClass, this.taskOwner.getEntityBoundingBox().expand(d0, 4.0D, d0),
-                            Predicates.and(this.targetEntitySelector, EntitySelectors.NOT_SPECTATING));
+            List<LivingEntity> list =
+                    this.taskOwner.world.getEntitiesWithinAABB(this.targetClass, this.taskOwner.getBoundingBox().expand(d0, 4.0D, d0),
+                            Predicates.and(this.targetEntitySelector, (Predicate) EntityPredicates.NOT_SPECTATING));
             Collections.sort(list, this.theNearestAttackableTargetSorter);
 
             if (list.isEmpty()) {
                 return false;
             } else {
-                this.targetEntity = (EntityLivingBase) list.get(0);
-                if (this.targetEntity instanceof EntityPlayer && !this.theAttacker.shouldAttackPlayers()) {
+                this.targetEntity = (LivingEntity) list.get(0);
+                if (this.targetEntity instanceof PlayerEntity && !this.theAttacker.shouldAttackPlayers()) {
                     return false;
                 }
                 return true;

@@ -1,21 +1,22 @@
 package drzhark.mocreatures.entity.ai;
 
 import drzhark.mocreatures.entity.IMoCEntity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.goal.Goal;
 
 import java.util.Iterator;
 import java.util.List;
 
-public class EntityAIFollowAdult extends EntityAIBase {
+public class EntityAIFollowAdult extends Goal {
 
     /** The child that is following its parent. */
-    EntityLiving childAnimal;
-    EntityLiving parentAnimal;
+    LivingEntity childAnimal;
+    LivingEntity parentAnimal;
     double moveSpeed;
     private int delayCounter;
 
-    public EntityAIFollowAdult(EntityLiving animal, double speed) {
+    public EntityAIFollowAdult(LivingEntity animal, double speed) {
         this.childAnimal = animal;
         this.moveSpeed = speed;
     }
@@ -28,15 +29,15 @@ public class EntityAIFollowAdult extends EntityAIBase {
         if ((!(this.childAnimal instanceof IMoCEntity)) || ((IMoCEntity) this.childAnimal).getIsAdult()) {
             return false;
         } else {
-            List<EntityLiving> list =
+            List<LivingEntity> list =
                     this.childAnimal.world.getEntitiesWithinAABB(this.childAnimal.getClass(),
-                            this.childAnimal.getEntityBoundingBox().expand(8.0D, 4.0D, 8.0D));
-            EntityLiving entityliving = null;
+                            this.childAnimal.getBoundingBox().expand(8.0D, 4.0D, 8.0D));
+            LivingEntity entityliving = null;
             double d0 = Double.MAX_VALUE;
-            Iterator<EntityLiving> iterator = list.iterator();
+            Iterator<LivingEntity> iterator = list.iterator();
 
             while (iterator.hasNext()) {
-                EntityLiving entityliving1 = iterator.next();
+                LivingEntity entityliving1 = iterator.next();
 
                 if (((IMoCEntity) entityliving1).getIsAdult()) {
                     double d1 = this.childAnimal.getDistanceSq(entityliving1);
@@ -66,7 +67,7 @@ public class EntityAIFollowAdult extends EntityAIBase {
     public boolean shouldContinueExecuting() {
         if (((IMoCEntity) this.childAnimal).getIsAdult()) {
             return false;
-        } else if (!this.parentAnimal.isEntityAlive()) {
+        } else if (!this.parentAnimal.isAlive()) {
             return false;
         } else {
             double d0 = this.childAnimal.getDistanceSq(this.parentAnimal);
@@ -94,10 +95,10 @@ public class EntityAIFollowAdult extends EntityAIBase {
      * Updates the task
      */
     @Override
-    public void updateTask() {
+    public void tick() {
         if (--this.delayCounter <= 0) {
             this.delayCounter = 10;
-            this.childAnimal.getNavigator().tryMoveToEntityLiving(this.parentAnimal, this.moveSpeed);
+            ((MobEntity)this.childAnimal).getNavigator().tryMoveToEntityLiving(this.parentAnimal, this.moveSpeed);
         }
     }
 }

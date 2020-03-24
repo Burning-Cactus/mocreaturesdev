@@ -1,14 +1,14 @@
 package drzhark.mocreatures.entity.ai;
 
 import drzhark.mocreatures.entity.IMoCEntity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.ai.EntityAIPanic;
+import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.ai.goal.PanicGoal;
 
-public class EntityAIPanicMoC extends EntityAIPanic {
+public class EntityAIPanicMoC extends PanicGoal {
 
-    private EntityCreature entityCreature;
+    private CreatureEntity entityCreature;
 
-    public EntityAIPanicMoC(EntityCreature creature, double speedIn) {
+    public EntityAIPanicMoC(CreatureEntity creature, double speedIn) {
         super(creature, speedIn);
         this.entityCreature = creature;
     }

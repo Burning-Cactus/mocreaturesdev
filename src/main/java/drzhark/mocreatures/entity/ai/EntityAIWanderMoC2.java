@@ -5,12 +5,13 @@ import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ambient.MoCEntityAnt;
 import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-public class EntityAIWanderMoC2 extends EntityAIBase {
+import java.util.EnumSet;
+
+public class EntityAIWanderMoC2 extends Goal {
 
     private CreatureEntity entity;
     private double xPosition;
@@ -28,7 +29,7 @@ public class EntityAIWanderMoC2 extends EntityAIBase {
         this.entity = creatureIn;
         this.speed = speedIn;
         this.executionChance = chance;
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Flag.MOVE));
     }
 
     /**
@@ -57,9 +58,9 @@ public class EntityAIWanderMoC2 extends EntityAIBase {
 
         Vec3d vec3 = RandomPositionGeneratorMoCFlyer.findRandomTarget(this.entity, 10, 12);
 
-        if (vec3 != null && this.entity instanceof IMoCEntity && this.entity.getNavigator() instanceof PathNavigateFlyer) {
+        if (vec3 != null && this.entity instanceof IMoCEntity && this.entity.getNavigator() instanceof PathNavigateFlyerMoC) {
             int distToFloor = MoCTools.distanceToFloor(this.entity);
-            int finalYHeight = distToFloor + MathHelper.floor(vec3.y - this.entity.posY);
+            int finalYHeight = distToFloor + MathHelper.floor(vec3.y - this.entity.getPosY());
             if ((finalYHeight < ((IMoCEntity) this.entity).minFlyingHeight())) {
                 //System.out.println("vector height " + finalYHeight + " smaller than min flying height " + ((IMoCEntity) this.entity).minFlyingHeight());
                 return false;

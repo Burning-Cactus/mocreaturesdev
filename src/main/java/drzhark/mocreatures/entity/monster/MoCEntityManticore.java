@@ -9,15 +9,15 @@ import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAnimation;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -44,18 +44,18 @@ public class MoCEntityManticore extends MoCEntityMob {
     }
 
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, true));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTargetMoC(this, EntityPlayer.class, true));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
     }
 
     @Override
@@ -75,9 +75,9 @@ public class MoCEntityManticore extends MoCEntityMob {
             return true;
         }
 
-        int i = MathHelper.floor(this.posX);
-        int j = MathHelper.floor(getEntityBoundingBox().minY);
-        int k = MathHelper.floor(this.posZ);
+        int i = MathHelper.floor(this.getPosX());
+        int j = MathHelper.floor(getBoundingBox().minY);
+        int k = MathHelper.floor(this.getPosZ());
         BlockPos pos = new BlockPos(i, j, k);
 
         Biome currentbiome = MoCTools.Biomekind(this.world, pos);
@@ -150,15 +150,15 @@ public class MoCEntityManticore extends MoCEntityMob {
     @Override
     public void updatePassenger(Entity passenger) {
         double dist = (-0.1D);
-        double newPosX = this.posX + (dist * Math.sin(this.renderYawOffset / 57.29578F));
-        double newPosZ = this.posZ - (dist * Math.cos(this.renderYawOffset / 57.29578F));
-        passenger.setPosition(newPosX, this.posY + getMountedYOffset() + passenger.getYOffset(), newPosZ);
+        double newPosX = this.getPosX() + (dist * Math.sin(this.renderYawOffset / 57.29578F));
+        double newPosZ = this.getPosZ() - (dist * Math.cos(this.renderYawOffset / 57.29578F));
+        passenger.setPosition(newPosX, this.getPosY() + getMountedYOffset() + passenger.getYOffset(), newPosZ);
         passenger.rotationYaw = this.rotationYaw;
     }
 
     @Override
     public double getMountedYOffset() {
-        return (this.height * 0.75D) - 0.1D;
+        return (this.getHeight() * 0.75D) - 0.1D;
     }
 
     /*@Override
@@ -183,8 +183,8 @@ public class MoCEntityManticore extends MoCEntityMob {
     }
 
     public boolean isOnAir() {
-        return this.world.isAirBlock(new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.posY - 0.2D), MathHelper
-                .floor(this.posZ)));
+        return this.world.isAirBlock(new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosY() - 0.2D), MathHelper
+                .floor(this.getPosZ())));
     }
 
     @Override
@@ -280,7 +280,7 @@ public class MoCEntityManticore extends MoCEntityMob {
             this.wingFlapCounter = 1;
             if (!this.world.isRemote) {
                 MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
-                        new TargetPoint(this.world.provider.getDimensionType().getId(), this.posX, this.posY, this.posZ, 64));
+                        new TargetPoint(this.world.provider.getDimensionType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
         }
     }
@@ -308,7 +308,7 @@ public class MoCEntityManticore extends MoCEntityMob {
     public void setPoisoning(boolean flag) {
         if (flag && !this.world.isRemote) {
             MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
-                    new TargetPoint(this.world.provider.getDimensionType().getId(), this.posX, this.posY, this.posZ, 64));
+                    new TargetPoint(this.world.getChunkProvider().getDimensionType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
         this.isPoisoning = flag;
     }
@@ -318,8 +318,8 @@ public class MoCEntityManticore extends MoCEntityMob {
         if (super.attackEntityFrom(damagesource, i)) {
             Entity entity = damagesource.getTrueSource();
 
-            if (entity != null && entity != this && entity instanceof EntityLivingBase && this.shouldAttackPlayers() && getIsAdult()) {
-                setAttackTarget((EntityLivingBase) entity);
+            if (entity != null && entity != this && entity instanceof LivingEntity && this.shouldAttackPlayers() && getIsAdult()) {
+                setAttackTarget((LivingEntity) entity);
             }
             return true;
         } else {
@@ -328,28 +328,28 @@ public class MoCEntityManticore extends MoCEntityMob {
     }
 
     @Override
-    protected void applyEnchantments(EntityLivingBase entityLivingBaseIn, Entity entityIn) {
-        boolean flag = (entityIn instanceof EntityPlayer);
+    protected void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
+        boolean flag = (entityIn instanceof PlayerEntity);
         if (!getIsPoisoning() && this.rand.nextInt(5) == 0 && entityIn instanceof EntityLivingBase) {
             setPoisoning(true);
             if (getType() == 4 || getType() == 2)// regular
             {
                 if (flag) {
-                    MoCreatures.poisonPlayer((EntityPlayer) entityIn);
+                    MoCreatures.poisonPlayer((PlayerEntity) entityIn);
                 }
-                ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 70, 0));
+                ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 70, 0));
             } else if (getType() == 3)// blue
             {
                 if (flag) {
-                    MoCreatures.freezePlayer((EntityPlayer) entityIn);
+                    MoCreatures.freezePlayer((PlayerEntity) entityIn);
                 }
-                ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 70, 0));
+                ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 70, 0));
 
             } else if (getType() == 1)// red
             {
                 if (flag && !this.world.isRemote && !this.world.provider.doesWaterVaporize()) {
-                    MoCreatures.burnPlayer((EntityPlayer) entityIn);
-                    ((EntityLivingBase) entityIn).setFire(15);
+                    MoCreatures.burnPlayer((PlayerEntity) entityIn);
+                    ((LivingEntity) entityIn).setFire(15);
                 }
             }
         } else {
@@ -407,37 +407,37 @@ public class MoCEntityManticore extends MoCEntityMob {
         switch (getType()) {
             case 1:
                 if (flag) {
-                    return MoCItems.scorpStingNether;
+                    return MoCItems.SCORPSTINGNETHER;
                 }
-                return MoCItems.chitinNether;
+                return MoCItems.CHITINNETHER;
             case 2:
                 if (flag) {
-                    return MoCItems.scorpStingCave;
+                    return MoCItems.SCORPSTINGCAVE;
                 }
-                return MoCItems.chitinCave;
+                return MoCItems.CHITINCAVE;
 
             case 3:
                 if (flag) {
-                    return MoCItems.scorpStingFrost;
+                    return MoCItems.SCORPSTINGFROST;
                 }
-                return MoCItems.chitinFrost;
+                return MoCItems.CHITINFROST;
             case 4:
                 if (flag) {
-                    return MoCItems.scorpStingDirt;
+                    return MoCItems.SCORPSTINGDIRT;
                 }
-                return MoCItems.chitin;
+                return MoCItems.CHITIN;
 
             default:
-                return MoCItems.chitin;
+                return MoCItems.CHITIN;
         }
     }
 
     @Override
     protected void dropFewItems(boolean flag, int x) {
-        BlockPos pos = new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(getEntityBoundingBox().minY), this.posZ);
+        BlockPos pos = new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(getBoundingBox().minY), this.getPosZ());
         int chance = MoCreatures.proxy.rareItemDropChance;
         if (this.rand.nextInt(100) < chance) {
-            entityDropItem(new ItemStack(MoCItems.mocegg, 1, getType() + 61), 0.0F);
+            entityDropItem(new ItemStack(MoCItems.MOCEGG, 1, getType() + 61), 0.0F);
         } else {
             super.dropFewItems(flag, x);
         }

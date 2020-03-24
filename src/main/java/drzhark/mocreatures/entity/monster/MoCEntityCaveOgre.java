@@ -1,8 +1,8 @@
 package drzhark.mocreatures.entity.monster;
 
 import drzhark.mocreatures.MoCreatures;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -35,8 +35,8 @@ public class MoCEntityCaveOgre extends MoCEntityOgre{
     
     @Override
     public boolean getCanSpawnHere() {
-        return (!this.world.canBlockSeeSky(new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper
-                .floor(this.posZ)))) && (this.posY < 50D) && super.getCanSpawnHere();
+        return (!this.world.canBlockSeeSky(new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosY()), MathHelper
+                .floor(this.getPosZ())))) && (this.getPosY() < 50D) && super.getCanSpawnHere();
     }
     
     @Override

@@ -41,6 +41,6 @@ public class MoCEntityFireOgre extends MoCEntityOgre{
         if (!flag) {
             return Item.getItemFromBlock(Blocks.FIRE);
         }
-        return MoCItems.HEARTFIRE.get();
+        return MoCItems.HEARTFIRE;
     } 
 }

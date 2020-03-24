@@ -2,24 +2,23 @@ package drzhark.mocreatures.entity.ai;
 
 import drzhark.mocreatures.entity.MoCEntityAnimal;
 import drzhark.mocreatures.entity.monster.MoCEntityOgre;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.IEntityOwnable;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
-public abstract class EntitiAITargetMoC extends EntityAIBase {
+public abstract class EntitiAITargetMoC extends Goal {
 
     /** The entity that this task belongs to */
-    protected final EntityCreature taskOwner;
+    protected final CreatureEntity taskOwner;
     /** If true, EntityAI targets must be able to be seen (cannot be blocked by walls) to be suitable targets. */
     protected boolean shouldCheckSight;
     /** When true, only entities that can be reached with minimal effort will be targetted. */
@@ -34,13 +33,13 @@ public abstract class EntitiAITargetMoC extends EntityAIBase {
      */
     private int targetUnseenTicks;
 
-    public EntitiAITargetMoC(EntityCreature creature, boolean checkSight, boolean onlyNearby) {
+    public EntitiAITargetMoC(CreatureEntity creature, boolean checkSight, boolean onlyNearby) {
         this.taskOwner = creature;
         this.shouldCheckSight = checkSight;
         this.nearbyOnly = onlyNearby;
     }
 
-    public EntitiAITargetMoC(EntityCreature creature, boolean checkSight) {
+    public EntitiAITargetMoC(CreatureEntity creature, boolean checkSight) {
         this(creature, checkSight, false);
     }
 
@@ -49,20 +48,20 @@ public abstract class EntitiAITargetMoC extends EntityAIBase {
      *
      * @param attacker entity which is attacking
      * @param target attack target
-     * @param includeInvincibles should ignore {@link net.minecraft.entity.player.EntityPlayer#capabilities
+     * @param includeInvincibles should ignore {@link net.minecraft.entity.player.PlayerEntity#capabilities
      * EntityPlayer.capabilities}.{@link net.minecraft.entity.player.PlayerCapabilities#disableDamage disableDamage}
      * @param checkSight should check if attacker can see target
      */
-    public static boolean isSuitableTarget(EntityLiving attacker, EntityLivingBase target, boolean includeInvincibles, boolean checkSight) {
+    public static boolean isSuitableTarget(LivingEntity attacker, LivingEntity target, boolean includeInvincibles, boolean checkSight) {
         if (target == null) {
             return false;
         } else if (target == attacker) {
             return false;
-        } else if (!target.isEntityAlive()) {
+        } else if (!target.isAlive()) {
             return false;
-        } else if (!attacker.canAttackClass(target.getClass())) {
+        } else if (!attacker.canAttack(target)) {
             return false;
-        } else if (attacker instanceof MoCEntityAnimal && !(target instanceof EntityPlayer)) {
+        } else if (attacker instanceof MoCEntityAnimal && !(target instanceof PlayerEntity)) {
             MoCEntityAnimal mocattacker = (MoCEntityAnimal) attacker;
             if (!mocattacker.canAttackTarget(target)) {
                 return false;
@@ -87,25 +86,25 @@ public abstract class EntitiAITargetMoC extends EntityAIBase {
                 if (target == ((IEntityOwnable) attacker).getOwner()) {
                     return false;
                 }
-            } else if (target instanceof EntityPlayer && includeInvincibles && ((EntityPlayer) target).capabilities.disableDamage) {
+            } else if (target instanceof PlayerEntity && includeInvincibles && ((PlayerEntity) target).capabilities.disableDamage) {
                 return false;
             }
 
-            return !checkSight || attacker.getEntitySenses().canSee(target);
+            return !checkSight || attacker.getEntitySense().canSee(target);
         }
 
-    }
+    }//TODO: Either figure out a replacement for IEntityOwnable or rewrite this algorithm
 
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
     public boolean shouldContinueExecuting() {
-        EntityLivingBase entitylivingbase = this.taskOwner.getAttackTarget();
+        LivingEntity entitylivingbase = this.taskOwner.getAttackTarget();
 
         if (entitylivingbase == null) {
             return false;
-        } else if (!entitylivingbase.isEntityAlive()) {
+        } else if (!entitylivingbase.isAlive()) {
             return false;
         } else {
             Team team = this.taskOwner.getTeam();
@@ -127,7 +126,7 @@ public abstract class EntitiAITargetMoC extends EntityAIBase {
                         }
                     }
 
-                    return !(entitylivingbase instanceof EntityPlayer) || !((EntityPlayer) entitylivingbase).capabilities.disableDamage;
+                    return !(entitylivingbase instanceof PlayerEntity) || !((PlayerEntity) entitylivingbase).capabilities.disableDamage;
                 }
             }
         }
@@ -137,8 +136,8 @@ public abstract class EntitiAITargetMoC extends EntityAIBase {
         if (this.taskOwner instanceof MoCEntityOgre) {
             return ((MoCEntityOgre) this.taskOwner).getAttackRange();
         }
-        IAttributeInstance iattributeinstance = this.taskOwner.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
-        return iattributeinstance == null ? 16.0D : iattributeinstance.getAttributeValue();
+        IAttributeInstance iattributeinstance = this.taskOwner.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
+        return iattributeinstance == null ? 16.0D : iattributeinstance.getValue();
     }
 
     /**
@@ -156,14 +155,14 @@ public abstract class EntitiAITargetMoC extends EntityAIBase {
      */
     @Override
     public void resetTask() {
-        this.taskOwner.setAttackTarget((EntityLivingBase) null);
+        this.taskOwner.setAttackTarget((LivingEntity) null);
     }
 
     /**
      * A method used to see if an entity is a suitable target through a number of checks. Args : entity,
      * canTargetInvinciblePlayer
      */
-    protected boolean isSuitableTarget(EntityLivingBase target, boolean includeInvincibles) {
+    protected boolean isSuitableTarget(LivingEntity target, boolean includeInvincibles) {
         if (!isSuitableTarget(this.taskOwner, target, includeInvincibles, this.shouldCheckSight)) {
             //System.out.println("not suitable target");
             return false;
@@ -192,9 +191,9 @@ public abstract class EntitiAITargetMoC extends EntityAIBase {
     /**
      * Checks to see if this entity can find a short path to the given target.
      */
-    private boolean canEasilyReach(EntityLivingBase p_75295_1_) {
+    private boolean canEasilyReach(LivingEntity p_75295_1_) {
         this.targetSearchDelay = 10 + this.taskOwner.getRNG().nextInt(5);
-        Path path = this.taskOwner.getNavigator().getPathToEntityLiving(p_75295_1_);
+        Path path = this.taskOwner.getNavigator().getPathToEntity(p_75295_1_);
 
         if (path == null) {
             //System.out.println("couldn't find path");
@@ -205,8 +204,8 @@ public abstract class EntitiAITargetMoC extends EntityAIBase {
             if (pathpoint == null) {
                 return false;
             } else {
-                int i = pathpoint.x - MathHelper.floor(p_75295_1_.posX);
-                int j = pathpoint.z - MathHelper.floor(p_75295_1_.posZ);
+                int i = pathpoint.x - MathHelper.floor(p_75295_1_.getPosX());
+                int j = pathpoint.z - MathHelper.floor(p_75295_1_.getPosZ());
                 return i * i + j * j <= 2.25D;
             }
         }

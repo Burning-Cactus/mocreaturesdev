@@ -3,7 +3,7 @@ package drzhark.mocreatures.entity;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.ai.EntityAIMoverHelperMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
-import drzhark.mocreatures.entity.ai.PathNavigateFlyer;
+import drzhark.mocreatures.entity.ai.PathNavigateFlyerMoC;
 import drzhark.mocreatures.entity.item.MoCEntityEgg;
 import drzhark.mocreatures.entity.item.MoCEntityKittyBed;
 import drzhark.mocreatures.entity.item.MoCEntityLitterBox;
@@ -11,24 +11,13 @@ import drzhark.mocreatures.entity.passive.MoCEntityHorse;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageHealth;
 import net.minecraft.entity.*;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.passive.WolfEntity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.pathfinding.PathNavigateSwimmer;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
 import net.minecraft.util.DamageSource;
@@ -37,7 +26,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -49,7 +37,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-public abstract class MoCEntityMob extends MobEntity implements IMoCEntity//, IEntityAdditionalSpawnData
+public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity//, IEntityAdditionalSpawnData
 {
 
     protected boolean divePending;
@@ -70,7 +58,7 @@ public abstract class MoCEntityMob extends MobEntity implements IMoCEntity//, IE
         this.texture = "blank.jpg";
         this.moveController = new EntityAIMoverHelperMoC(this);
         this.navigatorWater = new SwimmerPathNavigator(this, world);
-        this.navigatorFlyer = new PathNavigateFlyer(this, world);
+        this.navigatorFlyer = new PathNavigateFlyerMoC(this, world);
         this.goalSelector.addGoal(4, this.wander = new EntityAIWanderMoC2(this, 1.0D, 80));
     }
 

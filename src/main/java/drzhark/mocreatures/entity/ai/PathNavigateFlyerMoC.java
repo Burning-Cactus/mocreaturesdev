@@ -1,17 +1,15 @@
 package drzhark.mocreatures.entity.ai;
 
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.pathfinding.PathFinder;
-import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class PathNavigateFlyer extends PathNavigator {
+public class PathNavigateFlyerMoC extends PathNavigator {
 
-    public PathNavigateFlyer(LivingEntity entitylivingIn, World worldIn) {
+    public PathNavigateFlyerMoC(LivingEntity entitylivingIn, World worldIn) {
         super(entitylivingIn, worldIn);
     }
 
@@ -27,12 +25,17 @@ public class PathNavigateFlyer extends PathNavigator {
     }
 
     protected Vec3d getEntityPosition() {
-        return new Vec3d(this.entity.posX, this.entity.posY + (double) this.entity.height * 0.5D, this.entity.posZ);
+        return new Vec3d(this.entity.getPosX(), this.entity.getPosY() + (double) this.entity.getHeight() * 0.5D, this.entity.getPosZ());
+    }
+
+    @Override
+    protected PathFinder getPathFinder(int p_179679_1_) {
+        return null;
     }
 
     protected void pathFollow() {
         Vec3d vec3 = this.getEntityPosition();
-        float f = this.entity.width * this.entity.width;
+        float f = this.entity.getWidth() * this.entity.getWidth();
         byte b0 = 6;
 
         if (vec3.squareDistanceTo(this.currentPath.getVectorFromIndex(this.entity, this.currentPath.getCurrentPathIndex())) < (double) f) {
@@ -66,7 +69,7 @@ public class PathNavigateFlyer extends PathNavigator {
     @Override
     protected boolean isDirectPathBetweenPoints(Vec3d posVec31, Vec3d posVec32, int sizeX, int sizeY, int sizeZ)
     {
-        RayTraceResult raytraceresult = this.world.rayTraceBlocks(posVec31, new Vec3d(posVec32.x, posVec32.y + (double)this.entity.height * 0.5D, posVec32.z), false, true, false);
-        return raytraceresult == null || raytraceresult.typeOfHit == RayTraceResult.Type.MISS;
+        RayTraceResult raytraceresult = this.world.rayTraceBlocks(posVec31, new Vec3d(posVec32.x, posVec32.y + (double)this.entity.getHeight() * 0.5D, posVec32.z), false, true, false);
+        return raytraceresult == null || raytraceresult.getType() == RayTraceResult.Type.MISS;
     }
 }

@@ -29,6 +29,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
@@ -232,7 +233,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
 
         boolean canDestroyBlocks = MoCTools.mobGriefing(this.world) && MoCreatures.proxy.golemDestroyBlocks;
         BlockState blockstate = this.world.getBlockState(myTRockPos);
-        if (Block.getIdFromBlock(blockstate.getBlock()) == 0) {
+        if (Block.getStateId(blockstate) == 0) {
             return;
         } //air blocks
         BlockEvent.BreakEvent event = null;
@@ -243,7 +244,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
         }
         if (canDestroyBlocks && event != null && !event.isCanceled()) {
             //destroys the original rock
-            this.world.setBlockToAir(myTRockPos);
+            this.world.setBlockAir(myTRockPos);
         } else {
             //couldn't destroy the original rock
             canDestroyBlocks = false;
@@ -304,8 +305,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
                 MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_TURTLE_HURT, 2F);
                 if ((MoCTools.mobGriefing(this.world)) && (MoCreatures.proxy.golemDestroyBlocks)) {
                     ItemEntity entityitem =
-                            new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), new ItemStack(state.getBlock(), 1, state.getBlock()
-                                    .getMetaFromState(state)));
+                            new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), new ItemStack(state.getBlock(), 1 /*, state.getBlock()*/));
                     entityitem.setPickupDelay(10);
                     entityitem.setAgeToCreativeDespawnTime(); // 4800
                 }
@@ -454,13 +454,13 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
         }
 
         if (x != -1 && this.golemCubes[x] != 30) {
-            Block block = Block.getBlockById(generateBlock(this.golemCubes[x]));
+            Block block = Block.getStateById(generateBlock(this.golemCubes[x])).getBlock();
             saveGolemCube((byte) x, (byte) 30);
             MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_GOLEM_HURT, 3F);
             if ((MoCTools.mobGriefing(this.world)) && (MoCreatures.proxy.golemDestroyBlocks)) {
-                ItemEntity entityitem = new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), new ItemStack(block, 1, 0));
+                ItemEntity entityitem = new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), new ItemStack(block, 1/*, 0*/));
                 entityitem.setPickupDelay(10);
-                this.world.spawnEntity(entityitem);
+                this.world(entityitem);
             }
         }
     }
@@ -508,12 +508,12 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
     public void writeAdditional(CompoundNBT nbttagcompound) {
         super.writeAdditional(nbttagcompound);
         nbttagcompound.putInt("golemState", getGolemState());
-        NBTTagList cubeLists = new NBTTagList();
+        ListNBT cubeLists = new ListNBT();
 
         for (int i = 0; i < 23; i++) {
             CompoundNBT nbttag = new CompoundNBT();
             nbttag.putByte("Slot", this.golemCubes[i]);
-            cubeLists.appendTag(nbttag);
+            cubeLists.add(nbttag);
         }
         nbttagcompound.setTag("GolemBlocks", cubeLists);
     }
@@ -522,9 +522,9 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
     public void readAdditional(CompoundNBT nbttagcompound) {
         super.readAdditional(nbttagcompound);
         setGolemState(nbttagcompound.getInt("golemState"));
-        NBTTagList nbttaglist = nbttagcompound.getTagList("GolemBlocks", 10);
+        ListNBT nbttaglist = nbttagcompound.getList("GolemBlocks", 10);
         for (int i = 0; i < 23; i++) {
-            CompoundNBT var4 = nbttaglist.getCompoundTagAt(i);
+            CompoundNBT var4 = nbttaglist.getCompound(i);
             this.golemCubes[i] = var4.getByte("Slot");
         }
     }

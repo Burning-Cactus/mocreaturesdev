@@ -1,26 +1,28 @@
 package drzhark.mocreatures.entity.ai;
 
 import drzhark.mocreatures.entity.IMoCEntity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 
-public class EntityAIFleeFromPlayer extends EntityAIBase {
+import java.util.EnumSet;
 
-    private EntityCreature entityCreature;
+public class EntityAIFleeFromPlayer extends Goal {
+
+    private CreatureEntity entityCreature;
     protected double speed;
     protected double distance;
     private double randPosX;
     private double randPosY;
     private double randPosZ;
 
-    public EntityAIFleeFromPlayer(EntityCreature creature, double speedIn, double distanceToCheck) {
+    public EntityAIFleeFromPlayer(CreatureEntity creature, double speedIn, double distanceToCheck) {
         this.entityCreature = creature;
         this.distance = distanceToCheck;
         this.speed = speedIn;
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Flag.MOVE));
     }
 
     /**
@@ -52,7 +54,7 @@ public class EntityAIFleeFromPlayer extends EntityAIBase {
     }
 
     protected boolean IsNearPlayer(double d) {
-        EntityPlayer entityplayer1 = this.entityCreature.world.getClosestPlayerToEntity(this.entityCreature, d);
+        PlayerEntity entityplayer1 = this.entityCreature.world.getClosestPlayer(this.entityCreature, d);
         if (entityplayer1 != null) {
             return true;
         }
