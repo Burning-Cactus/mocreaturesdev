@@ -14,20 +14,30 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.BasicParticleType;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -90,11 +100,11 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
     }
 
     @Nullable
-    public EntityLivingBase getOwner() {
+    public LivingEntity getOwner() {
         try
         {
             UUID uuid = this.getOwnerId();
-            return uuid == null ? null : this.world.getPlayerEntityByUUID(uuid);
+            return uuid == null ? null : this.world.getPlayerByUuid(uuid);
         }
         catch (IllegalArgumentException var2)
         {
@@ -111,24 +121,24 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
 
         //this avoids damage done by Players to a tamed creature that is not theirs
         if (MoCreatures.proxy.enableOwnership && this.getOwnerId() != null && entity != null
-                && entity instanceof EntityPlayer && !((EntityPlayer) entity).getUniqueID().equals(this.getOwnerId())
-                && !MoCTools.isThisPlayerAnOP((EntityPlayer) entity)) {
+                && entity instanceof PlayerEntity) && !((PlayerEntity) entity).getUniqueID().equals(this.getOwnerId())
+                && !MoCTools.isThisPlayerAnOP((PlayerEntity) entity)) {
             return false;
         }
 
         return super.attackEntityFrom(damagesource, i);
     }
 
-    private boolean checkOwnership(EntityPlayer player, EnumHand hand) {
+    private boolean checkOwnership(PlayerEntity player, Hand hand) {
         final ItemStack stack = player.getHeldItem(hand);
         if (!this.getIsTamed() || MoCTools.isThisPlayerAnOP(player)) {
             return true;
         }
 
-        if (this.getIsGhost() && !stack.isEmpty() && stack.getItem() == MoCItems.petamulet) {
+        if (this.getIsGhost() && !stack.isEmpty() && stack.getItem() == MoCItems.PETAMULET) {
             if (!this.world.isRemote) {
                 // Remove when client is updated
-                ((EntityPlayerMP) player).sendAllContents(player.openContainer, player.openContainer.getInventory());
+                ((ServerPlayerEntity) player).sendAllContents(player.openContainer, player.openContainer.getInventory());
                 player.sendMessage(new TextComponentTranslation(TextFormatting.RED + "This pet does not belong to you."));
             }
             return false;
@@ -145,7 +155,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
             return tameResult;
@@ -155,14 +165,14 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
     }
 
     // This should always run first for all tameable animals
-    public Boolean processTameInteract(EntityPlayer player, EnumHand hand) {
+    public Boolean processTameInteract(PlayerEntity player, Hand hand) {
         if (!this.checkOwnership(player, hand)) {
             return false;
         }
 
         final ItemStack stack = player.getHeldItem(hand);
         //before ownership check
-        if (!stack.isEmpty() && getIsTamed() && ((stack.getItem() == MoCItems.scrollOfOwner)) && MoCreatures.proxy.enableResetOwnership
+        if (!stack.isEmpty() && getIsTamed() && ((stack.getItem() == MoCItems.SCROLLOFOWNER)) && MoCreatures.proxy.enableResetOwnership
                 && MoCTools.isThisPlayerAnOP(player)) {
             stack.shrink(1);
             if (stack.isEmpty()) {
@@ -179,14 +189,14 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
         }
         //changes name
         if (!this.world.isRemote && !stack.isEmpty() && getIsTamed()
-                && (stack.getItem() == MoCItems.medallion || stack.getItem() == Items.BOOK || stack.getItem() == Items.NAME_TAG)) {
+                && (stack.getItem() == MoCItems.MEDALLION || stack.getItem() == Items.BOOK || stack.getItem() == Items.NAME_TAG)) {
             if (MoCTools.tameWithName(player, this)) {
                 return true;
             }
             return false;
         }
         //sets it free, untamed
-        if (!stack.isEmpty() && getIsTamed() && ((stack.getItem() == MoCItems.scrollFreedom))) {
+        if (!stack.isEmpty() && getIsTamed() && ((stack.getItem() == MoCItems.SCROLLFREEDOM))) {
             stack.shrink(1);
             if (stack.isEmpty()) {
                 player.setHeldItem(hand, ItemStack.EMPTY);
@@ -222,7 +232,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
         }
 
         //stores in petAmulet
-        if (!stack.isEmpty() && stack.getItem() == MoCItems.petamulet && stack.getItemDamage() == 0 && this.canBeTrappedInNet()) {
+        if (!stack.isEmpty() && stack.getItem() == MoCItems.PETAMULET && stack.getDamage() == 0 && this.canBeTrappedInNet()) {
             player.setHeldItem(hand, ItemStack.EMPTY);
             if (!this.world.isRemote) {
                 MoCPetData petData = MoCreatures.instance.mapData.getPetData(this.getOwnerId());
@@ -285,30 +295,30 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
      */
     @Override
     public void playTameEffect(boolean par1) {
-        EnumParticleTypes particleType = EnumParticleTypes.HEART;
+        BasicParticleType particleType = ParticleTypes.HEART;
 
         if (!par1) {
-            particleType = EnumParticleTypes.SMOKE_NORMAL;
+            particleType = ParticleTypes.SMOKE;
         }
 
         for (int i = 0; i < 7; ++i) {
             double d0 = this.rand.nextGaussian() * 0.02D;
             double d1 = this.rand.nextGaussian() * 0.02D;
             double d2 = this.rand.nextGaussian() * 0.02D;
-            this.world.spawnParticle(particleType, this.posX + this.rand.nextFloat() * this.width * 2.0F - this.width, this.posY + 0.5D
-                    + this.rand.nextFloat() * this.height, this.posZ + this.rand.nextFloat() * this.width * 2.0F - this.width, d0, d1, d2);
+            this.world.addParticle(particleType, this.getPosX() + this.rand.nextFloat() * this.getWidth() * 2.0F - this.getWidth(), this.getPosY() + 0.5D
+                    + this.rand.nextFloat() * this.getHeight(), this.getPosZ() + this.rand.nextFloat() * this.getWidth() * 2.0F - this.getWidth(), d0, d1, d2);
         }
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
+    public void writeAdditional(CompoundNBT nbttagcompound) {
         super.writeEntityToNBT(nbttagcompound);
-        nbttagcompound.setBoolean("Tamed", getIsTamed());
+        nbttagcompound.putBoolean("Tamed", getIsTamed());
         if (this.getOwnerId() != null) {
-            nbttagcompound.setString("OwnerUUID", this.getOwnerId().toString());
+            nbttagcompound.putString("OwnerUUID", this.getOwnerId().toString());
         }
         if (getOwnerPetId() != -1) {
-            nbttagcompound.setInteger("PetId", this.getOwnerPetId());
+            nbttagcompound.putInt("PetId", this.getOwnerPetId());
         }
         if (this instanceof IMoCTameable && getIsTamed() && MoCreatures.instance.mapData != null) {
             MoCreatures.instance.mapData.updateOwnerPet(this);
@@ -316,7 +326,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
+    public void readEntityFromNBT(CompoundNBT nbttagcompound) {
         super.readEntityFromNBT(nbttagcompound);
         setTamed(nbttagcompound.getBoolean("Tamed"));
         String s = "";
@@ -328,22 +338,22 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
         {
             this.setOwnerId(UUID.fromString(s));
         }
-        if (nbttagcompound.hasKey("PetId")) {
-            setOwnerPetId(nbttagcompound.getInteger("PetId"));
+        if (nbttagcompound.contains("PetId")) {
+            setOwnerPetId(nbttagcompound.getInt("PetId"));
         }
-        if (this.getIsTamed() && nbttagcompound.hasKey("PetId")) {
+        if (this.getIsTamed() && nbttagcompound.contains("PetId")) {
             MoCPetData petData = MoCreatures.instance.mapData.getPetData(this.getOwnerId());
             if (petData != null) {
-                NBTTagList tag = petData.getOwnerRootNBT().getTagList("TamedList", 10);
-                for (int i = 0; i < tag.tagCount(); i++) {
-                    NBTTagCompound nbt = tag.getCompoundTagAt(i);
-                    if (nbt.getInteger("PetId") == nbttagcompound.getInteger("PetId")) {
+                ListNBT tag = petData.getOwnerRootNBT().getList("TamedList", 10);
+                for (int i = 0; i < tag.size(); i++) {
+                    CompoundNBT nbt = tag.getCompound(i);
+                    if (nbt.getInt("PetId") == nbttagcompound.getInt("PetId")) {
                         // update amulet flag
-                        nbt.setBoolean("InAmulet", false);
+                        nbt.putBoolean("InAmulet", false);
                         // check if cloned and if so kill
-                        if (nbt.hasKey("Cloned")) {
+                        if (nbt.contains("Cloned")) {
                             // entity was cloned
-                            nbt.removeTag("Cloned"); // clear flag
+                            nbt.remove("Cloned"); // clear flag
                             this.setTamed(false);
                             this.setDead();
                         }
@@ -403,8 +413,8 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
         double var4 = this.rand.nextGaussian() * 0.02D;
         double var6 = this.rand.nextGaussian() * 0.02D;
 
-        this.world.spawnParticle(EnumParticleTypes.HEART, this.posX + this.rand.nextFloat() * this.width * 2.0F - this.width, this.posY + 0.5D
-                + this.rand.nextFloat() * this.height, this.posZ + this.rand.nextFloat() * this.width * 2.0F - this.width, var2, var4, var6);
+        this.world.addParticle(ParticleTypes.HEART, this.getPosX() + this.rand.nextFloat() * this.getWidth() * 2.0F - this.getWidth(), this.getPosY() + 0.5D
+                + this.rand.nextFloat() * this.getHeight(), this.getPosZ() + this.rand.nextFloat() * this.getWidth() * 2.0F - this.getWidth(), var2, var4, var6);
     }
 
     /**
@@ -440,14 +450,14 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
 
         if (this.getIsFlying()) {
             // Safety checks to prevent 'moving too fast' checks
-            if (this.motionX > 0.5) {
-                this.motionX = 0.5;
+            if (this.getMotion().x > 0.5) {
+                this.setMotion(0.5, getMotion().y, getMotion().z);
             }
-            if (this.motionY > 0.5) {
-                this.motionY = 0.5;
+            if (this.getMotion().y > 0.5) {
+                this.setMotion(getMotion().x, 0.5, getMotion().z);
             }
-            if (this.motionZ > 2.5) {
-                this.motionZ = 2.5;
+            if (this.getMotion().z > 2.5) {
+                this.setMotion(getMotion().x, getMotion().y, 2.5);
             }
         }
     }
@@ -458,7 +468,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
     protected void doBreeding() {
         int i = 0;
 
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().expand(8D, 3D, 8D));
+        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(8D, 3D, 8D));
         for (int j = 0; j < list.size(); j++) {
             Entity entity = list.get(j);
             if (compatibleMate(entity)) {
@@ -470,7 +480,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
             return;
         }
 
-        List<Entity> list1 = this.world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().expand(4D, 2D, 4D));
+        List<Entity> list1 = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(4D, 2D, 4D));
         for (int k = 0; k < list1.size(); k++) {
             Entity mate = list1.get(k);
             if (!(compatibleMate(mate)) || (mate == this)) {
@@ -488,7 +498,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
             setGestationTime(getGestationTime()+1);
             if (!this.world.isRemote) {
                 MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
-                        new TargetPoint(this.world.provider.getDimensionType().getId(), this.posX, this.posY, this.posZ, 64));
+                        new TargetPoint(this.world.provider.getDimensionType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
 
             if (getGestationTime() <= 50) {
@@ -499,18 +509,18 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
 
                 String offspringName = this.getOffspringClazz((IMoCTameable) mate);
 
-                EntityLiving offspring = (EntityLiving) EntityList.createEntityByIDFromName(new ResourceLocation(MoCConstants.MOD_PREFIX + offspringName.toLowerCase()), this.world);
+                LivingEntity offspring = (LivingEntity) EntityList.createEntityByIDFromName(new ResourceLocation(MoCConstants.MOD_PREFIX + offspringName.toLowerCase()), this.world);
                 if (offspring != null && offspring instanceof IMoCTameable) {
                     IMoCTameable baby = (IMoCTameable) offspring;
-                    ((EntityLiving) baby).setPosition(this.posX, this.posY, this.posZ);
-                    this.world.spawnEntity((EntityLiving) baby);
+                    ((LivingEntity) baby).setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
+                    this.world.spawnEntity((LivingEntity) baby);
                     baby.setAdult(false);
                     baby.setEdad(35);
                     baby.setTamed(true);
                     baby.setOwnerId(this.getOwnerId());
                     baby.setType(getOffspringTypeInt((IMoCTameable) mate));
 
-                    EntityPlayer entityplayer = this.world.getPlayerEntityByUUID(this.getOwnerId());
+                    PlayerEntity entityplayer = this.world.getPlayerByUuid(this.getOwnerId());
                     if (entityplayer != null) {
                         MoCTools.tameWithName(entityplayer, baby);
                     }

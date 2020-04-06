@@ -8,17 +8,11 @@ import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
@@ -48,7 +42,7 @@ public class MoCEntityHorseMob extends MoCEntityMob {
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC((this, PlayerEntity.class, true));
+        this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
     @Override
@@ -61,7 +55,7 @@ public class MoCEntityHorseMob extends MoCEntityMob {
 
     @Override
     public void selectType() {
-        if (this.world.provider.doesWaterVaporize()) {
+        if (this.world.getDimension().doesWaterVaporize()) {
             setType(38);
             this.isImmuneToFire = true;
         } else {
@@ -97,7 +91,7 @@ public class MoCEntityHorseMob extends MoCEntityMob {
             case 23://undead horse
 
                 if (!MoCreatures.proxy.getAnimateTextures()) {
-                    return MoCreatures.proxy.getTexture("horseundead.png");
+                    return MoCreatures.getTexture("horseundead.png");
                 }
                 String baseTex = "horseundead";
                 int max = 79;
@@ -116,17 +110,17 @@ public class MoCEntityHorseMob extends MoCEntityMob {
                 iteratorTex = iteratorTex.substring(0, 1);
                 String decayTex = "" + (getEdad() / 100);
                 decayTex = decayTex.substring(0, 1);
-                return MoCreatures.proxy.getTexture(baseTex + decayTex + iteratorTex + ".png");
+                return MoCreatures.getTexture(baseTex + decayTex + iteratorTex + ".png");
 
             case 26:
-                return MoCreatures.proxy.getTexture("horseskeleton.png");
+                return MoCreatures.getTexture("horseskeleton.png");
 
             case 32:
-                return MoCreatures.proxy.getTexture("horsebat.png");
+                return MoCreatures.getTexture("horsebat.png");
 
             case 38:
                 if (!MoCreatures.proxy.getAnimateTextures()) {
-                    return MoCreatures.proxy.getTexture("horsenightmare1.png");
+                    return MoCreatures.getTexture("horsenightmare1.png");
                 }
                 this.textCounter++;
                 if (this.textCounter < 10) {
@@ -140,10 +134,10 @@ public class MoCEntityHorseMob extends MoCEntityMob {
                 NTB = NTB.substring(0, 1);
                 String NTC = ".png";
 
-                return MoCreatures.proxy.getTexture(NTA + NTB + NTC);
+                return MoCreatures.getTexture(NTA + NTB + NTC);
 
             default:
-                return MoCreatures.proxy.getTexture("horseundead.png");
+                return MoCreatures.getTexture("horseundead.png");
         }
     }
 
@@ -301,7 +295,7 @@ public class MoCEntityHorseMob extends MoCEntityMob {
             return MoCItems.UNICORNHORN;
         }
 
-        if (this.getType() == 38 && flag && this.world.provider.doesWaterVaporize()) //nightmare
+        if (this.getType() == 38 && flag && this.world.getDimension().doesWaterVaporize()) //nightmare
         {
             return MoCItems.HEARTFIRE;
         }

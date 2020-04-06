@@ -5,10 +5,8 @@ import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAnimation;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -26,14 +24,14 @@ public class MoCEntityInsect extends MoCEntityAmbient {
 
     private static final DataParameter<Boolean> IS_FLYING = EntityDataManager.<Boolean>createKey(MoCEntityInsect.class, DataSerializers.BOOLEAN);
     
-    public MoCEntityInsect(World world) {
+    public MoCEntityInsect(EntityType<? extends MoCEntityInsect> type, World world) {
         super(world);
         setSize(0.2F, 0.2F);
-        this.tasks.addTask(2, this.wander = new EntityAIWanderMoC2(this, 1.0D, 80));
+        this.goalSelector.addGoal(2, this.wander = new EntityAIWanderMoC2(this, 1.0D, 80));
     }
 
     @Override
-    protected void applyEntityAttributes() {
+    protected void registerAttributes() {
         super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
@@ -69,8 +67,8 @@ public class MoCEntityInsect extends MoCEntityAmbient {
 
         if (!this.world.isRemote) {
             if (!getIsFlying() && isOnLadder() && !this.onGround) {
-                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
-                        new TargetPoint(this.world.provider.getDimensionType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+                MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
+                        new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
 
             if (isFlyer() && !getIsFlying() && this.rand.nextInt(getFlyingFreq()) == 0) {
@@ -80,7 +78,7 @@ public class MoCEntityInsect extends MoCEntityAmbient {
                     if (!(entity1 instanceof LivingEntity)) {
                         continue;
                     }
-                    if (((LivingEntity) entity1).width >= 0.4F && ((LivingEntity) entity1).height >= 0.4F && canEntityBeSeen(entity1)) {
+                    if (((LivingEntity) entity1).getWidth() >= 0.4F && ((LivingEntity) entity1).getHeight() >= 0.4F && canEntityBeSeen(entity1)) {
                         setIsFlying(true);
                         this.wander.makeUpdate();
                     }
@@ -180,8 +178,8 @@ public class MoCEntityInsect extends MoCEntityAmbient {
      * Get this Entity's EnumCreatureAttribute
      */
     @Override
-    public EnumCreatureAttribute getCreatureAttribute() {
-        return EnumCreatureAttribute.ARTHROPOD;
+    public CreatureAttribute getCreatureAttribute() {
+        return CreatureAttribute.ARTHROPOD;
     }
 
     @Override

@@ -17,7 +17,7 @@ public class MoCEntityFireOgre extends MoCEntityOgre{
 
     @Override
     public ResourceLocation getTexture() {
-        return MoCreatures.proxy.getTexture("ogrered.png");
+        return MoCreatures.getTexture("ogrered.png");
     }
     
     @Override

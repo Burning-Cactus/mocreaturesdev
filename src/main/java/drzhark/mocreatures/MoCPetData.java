@@ -3,8 +3,8 @@ package drzhark.mocreatures;
 import drzhark.mocreatures.entity.IMoCTameable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
@@ -13,8 +13,8 @@ import java.util.UUID;
 
 public class MoCPetData {
 
-    private NBTTagCompound ownerData = new NBTTagCompound();
-    private NBTTagList tamedList = new NBTTagList();
+    private CompoundNBT ownerData = new CompoundNBT();
+    private ListNBT tamedList = new ListNBT();
     private BitSet IDMap = new BitSet(Long.SIZE << 4);
     @SuppressWarnings("unused")
     private final UUID ownerUniqueId;
@@ -25,24 +25,24 @@ public class MoCPetData {
         this.ownerUniqueId = MoCreatures.isServer() ? pet.getOwnerId() : Minecraft.getMinecraft().player.getUniqueID();
     }
 
-    public MoCPetData(NBTTagCompound nbt, UUID owner) {
+    public MoCPetData(CompoundNBT nbt, UUID owner) {
         this.ownerData = nbt;
-        this.tamedList = nbt.getTagList("TamedList", 10);
+        this.tamedList = nbt.getList("TamedList", 10);
         this.ownerUniqueId = owner;
-        this.loadPetDataMap(nbt.getCompoundTag("PetIdData"));
+        this.loadPetDataMap(nbt.getCompound("PetIdData"));
     }
 
     public int addPet(IMoCTameable pet) {
         BlockPos coords = new BlockPos(((Entity) pet).chunkCoordX, ((Entity) pet).chunkCoordY, ((Entity) pet).chunkCoordZ);
-        NBTTagCompound petNBT = MoCTools.getEntityData((Entity) pet);
+        CompoundNBT petNBT = MoCTools.getEntityData((Entity) pet);
         if (this.tamedList != null) {
             int id = getNextFreePetId();
-            petNBT.setInteger("PetId", id);
-            NBTTagCompound petData = (NBTTagCompound) petNBT.copy();
-            petData.setInteger("ChunkX", coords.getX());
-            petData.setInteger("ChunkY", coords.getY());
-            petData.setInteger("ChunkZ", coords.getZ());
-            petData.setInteger("Dimension", ((Entity) pet).world.provider.getDimensionType().getId());
+            petNBT.putInt("PetId", id);
+            CompoundNBT petData = (CompoundNBT) petNBT.copy();
+            petData.putInt("ChunkX", coords.getX());
+            petData.putInt("ChunkY", coords.getY());
+            petData.putInt("ChunkZ", coords.getZ());
+            petData.putInt("Dimension", ((Entity) pet).world.provider.getDimensionType().getId());
             this.tamedList.appendTag(petData);
             this.ownerData.setTag("PetIdData", savePetDataMap());
             return id;
@@ -53,7 +53,7 @@ public class MoCPetData {
 
     public boolean removePet(int id) {
         for (int i = 0; i < this.tamedList.tagCount(); i++) {
-            NBTTagCompound nbt = this.tamedList.getCompoundTagAt(i);
+            CompoundNBT nbt = this.tamedList.getCompound(i);
             if (nbt.hasKey("PetId") && nbt.getInteger("PetId") == id) {
                 this.tamedList.removeTag(i);
                 this.usedPetIds.remove(new Integer(id));
@@ -68,11 +68,11 @@ public class MoCPetData {
         return false;
     }
 
-    public NBTTagCompound getPetData(int id) {
+    public CompoundNBT getPetData(int id) {
         if (this.tamedList != null) {
             for (int i = 0; i < this.tamedList.tagCount(); i++) {
-                NBTTagCompound nbt = this.tamedList.getCompoundTagAt(i);
-                if (nbt.hasKey("PetId") && nbt.getInteger("PetId") == id) {
+                CompoundNBT nbt = this.tamedList.getCompound(i);
+                if (nbt.hasKey("PetId") && nbt.getInt("PetId") == id) {
                     return nbt;
                 }
             }
@@ -80,11 +80,11 @@ public class MoCPetData {
         return null;
     }
 
-    public NBTTagCompound getOwnerRootNBT() {
+    public CompoundNBT getOwnerRootNBT() {
         return this.ownerData;
     }
 
-    public NBTTagList getTamedList() {
+    public ListNBT getTamedList() {
         return this.tamedList;
     }
 
@@ -97,7 +97,7 @@ public class MoCPetData {
     }
 
     public boolean getInAmulet(int petId) {
-        NBTTagCompound petData = getPetData(petId);
+        CompoundNBT petData = getPetData(petId);
         if (petData != null) {
             return petData.getBoolean("InAmulet");
         }
@@ -105,9 +105,9 @@ public class MoCPetData {
     }
 
     public void setInAmulet(int petId, boolean flag) {
-        NBTTagCompound petData = getPetData(petId);
+        CompoundNBT petData = getPetData(petId);
         if (petData != null) {
-            petData.setBoolean("InAmulet", flag);
+            petData.putBoolean("InAmulet", flag);
         }
     }
 
@@ -129,9 +129,9 @@ public class MoCPetData {
         }
     }
 
-    public NBTTagCompound savePetDataMap() {
+    public CompoundNBT savePetDataMap() {
         int[] data = new int[(this.IDMap.length() + Integer.SIZE - 1) / Integer.SIZE];
-        NBTTagCompound dataMap = new NBTTagCompound();
+        CompoundNBT dataMap = new CompoundNBT();
         for (int i = 0; i < data.length; i++) {
             int val = 0;
             for (int j = 0; j < Integer.SIZE; j++) {
@@ -139,11 +139,11 @@ public class MoCPetData {
             }
             data[i] = val;
         }
-        dataMap.setIntArray("PetIdArray", data);
+        dataMap.putIntArray("PetIdArray", data);
         return dataMap;
     }
 
-    public void loadPetDataMap(NBTTagCompound compoundTag) {
+    public void loadPetDataMap(CompoundNBT compoundTag) {
         if (compoundTag == null) {
             this.IDMap.clear();
         } else {

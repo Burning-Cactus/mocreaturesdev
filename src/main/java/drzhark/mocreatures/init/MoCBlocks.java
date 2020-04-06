@@ -44,14 +44,23 @@ public class MoCBlocks {
 //    public static MoCBlock mocPlank = (MoCBlock) new MoCBlockPlanks("MoCWoodPlank").setHardness(2.0F).setResistance(5.0F);
 
     //Wyvern blocks
-    public static MoCBlock WYVERN_STONE = (MoCBlock) new MoCBlockRock(Block.Properties.create(Material.ROCK)).setRegistryName("wyvern_stone");
-    public static MoCBlock WYVERN_GRASS = (MoCBlock) new MoCBlockGrass(Block.Properties.create(Material.PLANTS)).setRegistryName("wyvern_grass");
-    public static MoCBlock WYVERN_DIRT = (MoCBlock) new MoCBlockDirt(Block.Properties.create(Material.EARTH)).setRegistryName("wyvern_dirt");
+    public static Block WYVERN_STONE = new MoCBlockRock(Block.Properties.create(Material.ROCK)).setRegistryName("wyvern_stone");
+    public static Block WYVERN_GRASS = new MoCBlockGrass(Block.Properties.create(Material.PLANTS)).setRegistryName("wyvern_grass");
+    public static Block WYVERN_DIRT = new MoCBlockDirt(Block.Properties.create(Material.EARTH)).setRegistryName("wyvern_dirt");
     //Non terrain generator blocks
-    public static MoCBlock WYVERN_LEAVES = (MoCBlock) new MoCBlockLeaf(Block.Properties.create(Material.LEAVES)).setRegistryName("wyvern_leaves");
-    public static MoCBlock WYVERN_LOG = (MoCBlock) new MoCBlockLog(Block.Properties.create(Material.WOOD)).setRegistryName("wyvern_log");
+    public static Block WYVERN_LEAVES = new MoCBlockLeaf(Block.Properties.create(Material.LEAVES)).setRegistryName("wyvern_leaves");
+    public static Block WYVERN_LOG = new MoCBlockLog(Block.Properties.create(Material.WOOD)).setRegistryName("wyvern_log");
     public static MoCBlockTallGrass WYVERN_TALLGRASS = (MoCBlockTallGrass) new MoCBlockTallGrass(Block.Properties.create(Material.TALL_PLANTS)).setRegistryName("wyvern_tallgrass");
-    public static MoCBlock WYVERN_WOODPLANK = (MoCBlock) new MoCBlockPlanks(Block.Properties.create(Material.WOOD)).setRegistryName("wyvern_woodplank");
+    public static Block WYVERN_WOODPLANK = new MoCBlockPlanks(Block.Properties.create(Material.WOOD)).setRegistryName("wyvern_woodplank");
+    //Ogre blocks
+    public static Block OGRE_STONE = new MoCBlockRock(Block.Properties.create(Material.ROCK)).setRegistryName("ogre_stone");
+    public static Block OGRE_GRASS = new MoCBlockGrass(Block.Properties.create(Material.PLANTS)).setRegistryName("ogre_grass");
+    public static Block OGRE_DIRT = new MoCBlockDirt(Block.Properties.create(Material.EARTH)).setRegistryName("ogre_dirt");
+    //Non terrain generator blocks
+    public static Block OGRE_LEAVES = new MoCBlockLeaf(Block.Properties.create(Material.LEAVES)).setRegistryName("ogre_leaves");
+    public static Block OGRE_LOG = new MoCBlockLog(Block.Properties.create(Material.WOOD)).setRegistryName("ogre_log");
+    public static MoCBlockTallGrass OGRE_TALLGRASS = (MoCBlockTallGrass) new MoCBlockTallGrass(Block.Properties.create(Material.TALL_PLANTS)).setRegistryName("ogre_tallgrass");
+    public static Block OGRE_WOODPLANK = new MoCBlockPlanks(Block.Properties.create(Material.WOOD)).setRegistryName("ogre_woodplank");
 
     @Mod.EventBusSubscriber(modid = MoCConstants.MOD_ID)
     public static class RegistrationHandler {
@@ -73,7 +82,14 @@ public class MoCBlocks {
                     WYVERN_LEAVES,
                     WYVERN_LOG,
                     WYVERN_TALLGRASS,
-                    WYVERN_WOODPLANK
+                    WYVERN_WOODPLANK,
+                    OGRE_STONE,
+                    OGRE_GRASS,
+                    OGRE_DIRT,
+                    OGRE_LEAVES,
+                    OGRE_LOG,
+                    OGRE_TALLGRASS,
+                    OGRE_WOODPLANK
             };
             registry.registerAll(blocks);
         }
@@ -93,7 +109,14 @@ public class MoCBlocks {
                     new BlockItem(WYVERN_LEAVES, new Item.Properties()),
                     new BlockItem(WYVERN_LOG, new Item.Properties()),
                     new BlockItem(WYVERN_TALLGRASS, new Item.Properties()),
-                    new BlockItem(WYVERN_WOODPLANK, new Item.Properties())
+                    new BlockItem(WYVERN_WOODPLANK, new Item.Properties()),
+                    new BlockItem(OGRE_STONE, new Item.Properties()),
+                    new BlockItem(OGRE_GRASS, new Item.Properties()),
+                    new BlockItem(OGRE_DIRT, new Item.Properties()),
+                    new BlockItem(OGRE_LEAVES, new Item.Properties()),
+                    new BlockItem(OGRE_LOG, new Item.Properties()),
+                    new BlockItem(OGRE_TALLGRASS, new Item.Properties()),
+                    new BlockItem(OGRE_WOODPLANK, new Item.Properties())
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();

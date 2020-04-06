@@ -19,15 +19,15 @@ public class MoCBlockGrass extends MoCBlock {
                 .sound(SoundType.PLANT)
                 .hardnessAndResistance(0.5F)
                 .harvestTool(ToolType.SHOVEL)
-                .harvestLevel(0);
-                .tickRandomly()
+                .harvestLevel(0)
+                .tickRandomly();
         );
     }
 
     public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand) {
         if (!worldIn.isRemote) {
             if (worldIn.getLightFromNeighbors(pos.up()) < 4 && worldIn.getBlockState(pos.up()).getLightOpacity(worldIn, pos.up()) > 2) {
-                worldIn.setBlockState(pos, MoCBlocks.mocDirt.getDefaultState());
+                worldIn.setBlockState(pos, MoCBlocks.MOCDIRT.getDefaultState());
             } else {
                 if (worldIn.getLightFromNeighbors(pos.up()) >= 9) {
                     for (int i = 0; i < 4; ++i) {

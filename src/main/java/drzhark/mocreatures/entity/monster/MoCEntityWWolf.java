@@ -10,17 +10,17 @@ import drzhark.mocreatures.entity.passive.MoCEntityHorse;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.monster.SkeletonEntity;
+import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.passive.CowEntity;
+import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -43,21 +43,21 @@ public class MoCEntityWWolf extends MoCEntityMob {
         super(world);
         setSize(0.9F, 1.3F);
     }
-    
+
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, true));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTargetMoC(this, EntityPlayer.class, true));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
     }
 
     @Override
@@ -71,18 +71,18 @@ public class MoCEntityWWolf extends MoCEntityMob {
     public ResourceLocation getTexture() {
         switch (getType()) {
             case 1:
-                return MoCreatures.proxy.getTexture("wolfblack.png");
+                return MoCreatures.getTexture("wolfblack.png");
             case 2:
-                return MoCreatures.proxy.getTexture("wolfwild.png");
+                return MoCreatures.getTexture("wolfwild.png");
             case 3:
-                return MoCreatures.proxy.getTexture("wolftimber.png"); //snow wolf
+                return MoCreatures.getTexture("wolftimber.png"); //snow wolf
             case 4:
-                return MoCreatures.proxy.getTexture("wolfdark.png");
+                return MoCreatures.getTexture("wolfdark.png");
             case 5:
-                return MoCreatures.proxy.getTexture("wolfbright.png");
+                return MoCreatures.getTexture("wolfbright.png");
 
             default:
-                return MoCreatures.proxy.getTexture("wolfwild.png");
+                return MoCreatures.getTexture("wolfwild.png");
         }
     }
 
@@ -95,8 +95,8 @@ public class MoCEntityWWolf extends MoCEntityMob {
     }
 
     @Override
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
 
         if (this.rand.nextInt(200) == 0) {
             moveTail();
@@ -113,9 +113,9 @@ public class MoCEntityWWolf extends MoCEntityMob {
 
     @Override
     public boolean checkSpawningBiome() {
-        int i = MathHelper.floor(this.posX);
-        int j = MathHelper.floor(getEntityBoundingBox().minY);
-        int k = MathHelper.floor(this.posZ);
+        int i = MathHelper.floor(this.getPosX());
+        int j = MathHelper.floor(getBoundingBox().minY);
+        int k = MathHelper.floor(this.getPosZ());
 
         Biome biome = MoCTools.Biomekind(this.world, new BlockPos(i, j, k));
         if (BiomeDictionary.hasType(biome, Type.SNOWY)) {
@@ -128,28 +128,28 @@ public class MoCEntityWWolf extends MoCEntityMob {
     @Override
     public boolean getCanSpawnHere() {
         return checkSpawningBiome()
-                && this.world.canBlockSeeSky(new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper
-                        .floor(this.posZ))) && super.getCanSpawnHere();
+                && this.world.canBlockSeeSky(new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosY()), MathHelper
+                        .floor(this.getPosZ()))) && super.getCanSpawnHere();
     }
 
     //TODO move this
-    public EntityLivingBase getClosestTarget(Entity entity, double d) {
+    public LivingEntity getClosestTarget(Entity entity, double d) {
         double d1 = -1D;
-        EntityLivingBase entityliving = null;
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().expand(d, d, d));
+        LivingEntity entityliving = null;
+        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(d, d, d));
         for (int i = 0; i < list.size(); i++) {
             Entity entity1 = list.get(i);
-            if (!(entity1 instanceof EntityLivingBase) || (entity1 == entity) || (entity1 == entity.getRidingEntity())
-                    || (entity1 == entity.getRidingEntity()) || (entity1 instanceof EntityPlayer) || (entity1 instanceof EntityMob)
-                    || (entity1 instanceof MoCEntityBigCat) || (entity1 instanceof MoCEntityBear) || (entity1 instanceof EntityCow)
-                    || ((entity1 instanceof EntityWolf) && !(MoCreatures.proxy.attackWolves))
+            if (!(entity1 instanceof LivingEntity) || (entity1 == entity) || (entity1 == entity.getRidingEntity())
+                    || (entity1 == entity.getRidingEntity()) || (entity1 instanceof PlayerEntity) || (entity1 instanceof MobEntity)
+                    || (entity1 instanceof MoCEntityBigCat) || (entity1 instanceof MoCEntityBear) || (entity1 instanceof CowEntity)
+                    || ((entity1 instanceof WolfEntity) && !(MoCreatures.proxy.attackWolves))
                     || ((entity1 instanceof MoCEntityHorse) && !(MoCreatures.proxy.attackHorses))) {
                 continue;
             }
-            double d2 = entity1.getDistanceSq(entity.posX, entity.posY, entity.posZ);
-            if (((d < 0.0D) || (d2 < (d * d))) && ((d1 == -1D) || (d2 < d1)) && ((EntityLivingBase) entity1).canEntityBeSeen(entity)) {
+            double d2 = entity1.getDistanceSq(entity.getPosX(), entity.getPosY(), entity.getPosZ());
+            if (((d < 0.0D) || (d2 < (d * d))) && ((d1 == -1D) || (d2 < d1)) && ((LivingEntity) entity1).canEntityBeSeen(entity)) {
                 d1 = d2;
-                entityliving = (EntityLivingBase) entity1;
+                entityliving = (LivingEntity) entity1;
             }
         }
 
@@ -158,7 +158,7 @@ public class MoCEntityWWolf extends MoCEntityMob {
 
     @Override
     protected Item getDropItem() {
-        return MoCItems.fur;
+        return MoCItems.FUR;
     }
 
     @Override
@@ -181,30 +181,30 @@ public class MoCEntityWWolf extends MoCEntityMob {
     @Override
     public void updatePassenger(Entity passenger) {
         double dist = (0.1D);
-        double newPosX = this.posX + (dist * Math.sin(this.renderYawOffset / 57.29578F));
-        double newPosZ = this.posZ - (dist * Math.cos(this.renderYawOffset / 57.29578F));
-        passenger.setPosition(newPosX, this.posY + getMountedYOffset() + passenger.getYOffset(), newPosZ);
+        double newPosX = this.getPosX() + (dist * Math.sin(this.renderYawOffset / 57.29578F));
+        double newPosZ = this.getPosZ() - (dist * Math.cos(this.renderYawOffset / 57.29578F));
+        passenger.setPosition(newPosX, this.getPosY() + getMountedYOffset() + passenger.getYOffset(), newPosZ);
         passenger.rotationYaw = this.rotationYaw;
     }
 
     @Override
     public double getMountedYOffset() {
-        return (this.height * 0.75D) - 0.1D;
+        return (this.getHeight() * 0.75D) - 0.1D;
     }
 
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if (!this.world.isRemote && !this.isBeingRidden() && this.rand.nextInt(100) == 0) {
-            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().expand(4D, 2D, 4D));
+            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(4D, 2D, 4D));
             for (int i = 0; i < list.size(); i++) {
                 Entity entity = list.get(i);
-                if (!(entity instanceof EntityMob)) {
+                if (!(entity instanceof MobEntity)) {
                     continue;
                 }
-                EntityMob entitymob = (EntityMob) entity;
+                MobEntity entitymob = (MobEntity) entity;
                 if (entitymob.getRidingEntity() == null
-                        && (entitymob instanceof EntitySkeleton || entitymob instanceof EntityZombie || entitymob instanceof MoCEntitySilverSkeleton)) {
+                        && (entitymob instanceof SkeletonEntity || entitymob instanceof ZombieEntity || entitymob instanceof MoCEntitySilverSkeleton)) {
                     entitymob.startRiding(this);
                     break;
                 }

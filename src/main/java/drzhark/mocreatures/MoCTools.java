@@ -15,61 +15,30 @@ import drzhark.mocreatures.inventory.MoCAnimalChest;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageNameGUI;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockJukebox;
-import net.minecraft.block.BlockJukebox.TileEntityJukebox;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.JukeboxBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.item.BoatEntity;
-import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.*;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.EntitySquid;
-import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.JukeboxTileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -77,24 +46,23 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLCommonLaunchHandler;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.fml.loading.FMLServerLaunchProvider;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -128,7 +96,7 @@ public class MoCTools {
         if (!entity.getIsRideable() || world.isRemote) {
             return;
         }
-        dropCustomItem(entity, world, new ItemStack(MoCItems.HORSESADDLE.get(), 1));
+        dropCustomItem(entity, world, new ItemStack(MoCItems.HORSESADDLE, 1));
         entity.setRideable(false);
     }
 
@@ -152,28 +120,31 @@ public class MoCTools {
 
         ItemEntity entityitem = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), itemstack);
         float f3 = 0.05F;
-        entityitem.motionX = (float) world.rand.nextGaussian() * f3;
-        entityitem.motionY = ((float) world.rand.nextGaussian() * f3) + 0.2F;
-        entityitem.motionZ = (float) world.rand.nextGaussian() * f3;
+        entityitem.setMotion((float) world.rand.nextGaussian() * f3,
+                ((float) world.rand.nextGaussian() * f3) + 0.2F,
+                (float) world.rand.nextGaussian() * f3
+        );
         world.spawnEntity(entityitem);
     }
 
     public static void bigsmack(Entity entity, Entity entity1, float force) {
         double d = entity.getPosX() - entity1.getPosX();
-//        double d1 = entity.getPosZ() - entity1.getPosZ();
-        for (double d1 = entity.getPosZ() - entity1.getPosZ(); ((d * d) + (d1 * d1)) < 0.0001D; d1 = (Math.random() - Math.random()) * 0.01D) {
+        double d1;
+        for (d1 = entity.getPosZ() - entity1.getPosZ(); ((d * d) + (d1 * d1)) < 0.0001D; d1 = (Math.random() - Math.random()) * 0.01D) {
             d = (Math.random() - Math.random()) * 0.01D;
         }
 
         float f = MathHelper.sqrt((d * d) + (d1 * d1));
-        entity1.motionX /= 2D;
-        entity1.motionY /= 2D;
-        entity1.motionZ /= 2D;
-        entity1.motionX -= (d / f) * force;
-        entity1.motionY += force;
-        entity1.motionZ -= (d1 / f) * force;
-        if (entity1.motionY > force) {
-            entity1.motionY = force;
+        entity1.setMotion((entity1.getMotion().getX()/2D)-((d/f)*force),
+                (entity1.getMotion().getY()/2D)+force,
+                (entity1.getMotion().getZ()/2D)-((d1/f)*force)
+        );
+
+        if (entity1.getMotion().getY() > force) {
+            entity1.setMotion(entity1.getMotion().x,
+                    force,
+                    entity1.getMotion().z
+            );
         }
     }
 
@@ -211,7 +182,7 @@ public class MoCTools {
     public static void spawnNearPlayer(PlayerEntity player, int entityId, int numberToSpawn)//, World world)
     {
         ServerWorld world =
-                FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(player.world.provider.getDimensionType().getId());
+                FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(player.world.getDimension().getType().getId());
         for (int i = 0; i < numberToSpawn; i++) {
             LivingEntity entityliving = null;
             try {
@@ -230,7 +201,7 @@ public class MoCTools {
 
     public static void spawnNearPlayerbyName(PlayerEntity player, String eName, int numberToSpawn) {
         ServerWorld world =
-                FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(player.world.provider.getDimensionType().getId());
+                FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(player.world.getDimension().getType().getId());
 
         for (int i = 0; i < numberToSpawn; i++) {
             LivingEntity entityToSpawn = null;
@@ -244,7 +215,7 @@ public class MoCTools {
 
             if (entityToSpawn != null) {
                 ILivingEntityData entitylivingdata = null;
-                entityToSpawn.onInitialSpawn(player.world.getDifficultyForLocation(new BlockPos(entityToSpawn)), entitylivingdata); // onSpawnWithEgg
+                entityToSpawn.onInitalSpawn(player.world.getDifficultyForLocation(new BlockPos(entityToSpawn)), entitylivingdata); // onSpawnWithEgg
                 entityToSpawn.setLocationAndAngles(player.getPosX(), player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
                 world.spawnEntity(entityToSpawn);
             }
@@ -308,7 +279,7 @@ public class MoCTools {
         return false;
     }
 
-    public static TileEntityJukebox nearJukeBoxRecord(Entity entity, Double dist) {
+    public static JukeboxTileEntity nearJukeBoxRecord(Entity entity, Double dist) {
         AxisAlignedBB axisalignedbb = entity.getBoundingBox().expand(dist, dist / 2D, dist);
         int i = MathHelper.floor(axisalignedbb.minX);
         int j = MathHelper.floor(axisalignedbb.maxX + 1.0D);
@@ -323,7 +294,7 @@ public class MoCTools {
                     BlockState blockstate = entity.world.getBlockState(pos);
                     if (!entity.world.isAirBlock(pos)) {
                         if (blockstate.getBlock() instanceof JukeboxBlock) {
-                            TileEntityJukebox juky = (TileEntityJukebox) entity.world.getTileEntity(pos);
+                            JukeboxTileEntity juky = (JukeboxTileEntity) entity.world.getTileEntity(pos);
                             return juky;
                         }
                     }
@@ -336,7 +307,7 @@ public class MoCTools {
     public static void checkForTwistedEntities(World world) {
         for (int l = 0; l < world.loadedEntityList.size(); l++) {
             Entity entity = (Entity) world.loadedEntityList.get(l);
-            if (entity instanceof EntityLivingBase) {
+            if (entity instanceof LivingEntity) {
                 LivingEntity twisted = (LivingEntity) entity;
                 if (twisted.deathTime > 0 && twisted.getRidingEntity() == null && twisted.getHealth() > 0) {
                     twisted.deathTime = 0;
@@ -456,9 +427,9 @@ public class MoCTools {
         return (new int[] {x, y, z});
     }
 
-    public static void MoveCreatureToXYZ(CreatureEntity movingEntity, int x, int y, int z, float f) {
+    public static void MoveCreatureToXYZ(CreatureEntity movingEntity, double x, double y, double z, float f) {
         //TODO works?
-        Path pathentity = movingEntity.getNavigator().getPathToXYZ(x, y, z);
+        Path pathentity = movingEntity.getNavigator().getPathToPos(x, y, z, 0);
         if (pathentity != null) {
             movingEntity.getNavigator().setPath(pathentity, f);
         }
@@ -484,28 +455,28 @@ public class MoCTools {
     public static void SlideEntityToXYZ(Entity entity, int x, int y, int z) {
         if (entity != null) {
             if (entity.getPosY() < y) {
-                entity.motionY += 0.14999999999999999D;
+                entity.setMotion(entity.getMotion().add(0, 0.14999999999999999D, 0));
             }
             if (entity.getPosX() < x) {
                 double d = x - entity.getPosX();
                 if (d > 0.5D) {
-                    entity.motionX += 0.050000000000000003D;
+                    entity.setMotion(entity.getMotion().add(0.050000000000000003D, 0, 0));
                 }
             } else {
                 double d1 = entity.getPosX() - x;
                 if (d1 > 0.5D) {
-                    entity.motionX -= 0.050000000000000003D;
+                    entity.setMotion(entity.getMotion().subtract(0.050000000000000003D, 0, 0));
                 }
             }
             if (entity.getPosZ() < z) {
                 double d2 = z - entity.getPosZ();
                 if (d2 > 0.5D) {
-                    entity.motionZ += 0.050000000000000003D;
+                    entity.setMotion(entity.getMotion().add(0, 0, 0.050000000000000003D));
                 }
             } else {
                 double d3 = entity.getPosZ() - z;
                 if (d3 > 0.5D) {
-                    entity.motionZ -= 0.050000000000000003D;
+                    entity.setMotion(entity.getMotion().subtract(0, 0, 0.050000000000000003D));
                 }
             }
         }
@@ -585,7 +556,7 @@ public class MoCTools {
         BlockPos pos = new BlockPos(i, j, k);
         BlockState blockstate = entity.world.getBlockState(pos);
         if (blockstate.getBlock() != Blocks.AIR && blockstate.getMaterial() == material) {
-            float f = BlockLiquid.getLiquidHeightPercent(blockstate.getBlock().getMetaFromState(blockstate)) - 0.1111111F;
+            float f = BlockLiquid.getLiquidHeightPercent(blockstate.getBlock().getMetaFromState(blockstate)) - 0.1111111F; //TODO: Rework liquid functions
             float f1 = j + 1 - f;
             return d < f1;
         } else {
@@ -599,8 +570,7 @@ public class MoCTools {
         double d = entity.world.rand.nextGaussian();
         double d1 = 0.1D * d;
         motD = (0.2D * d1) + ((1.0D - 0.2D) * motD);
-        entity.motionX += motD;
-        entity.motionZ += motD;
+        entity.setMotion(entity.getMotion().add(motD, 0, motD));
         double d2 = 0.78D * d;
         rotD = (0.125D * d2) + ((1.0D - 0.125D) * rotD);
         entity.rotationYaw += rotD;
@@ -608,8 +578,7 @@ public class MoCTools {
     }
 
     public static void slowEntity(Entity entity) {
-        entity.motionX *= 0.8D;
-        entity.motionZ *= 0.8D;
+        entity.setMotion(entity.getMotion().mul(0.8D, 1.0D, 0.8D));
     }
 
     public static int colorize(int i) {
@@ -639,13 +608,13 @@ public class MoCTools {
             return null;
         }
 
-        Biome Biome = biomeProvider.getBiome(pos);
+        Biome biome = biomeProvider.getBiome(pos);
         //TODO works?
 
-        if (Biome == null) {
+        if (biome == null) {
             return null;
         } else {
-            return Biome.biomeName;
+            return biome.getRegistryName().toString();
         }
     }
 
@@ -693,7 +662,7 @@ public class MoCTools {
      * @param world
      * @param entity
      */
-    public static void dropGoodies(World world, Entity entity) {
+    public static void dropGoodies(World world, Entity entity) { //TODO: This method probably won't be necessary when loot table data is in place.
         if (world.isRemote) {
             return;
         }
@@ -722,7 +691,7 @@ public class MoCTools {
         entityitem6.setPickupDelay(10);
         world.spawnEntity(entityitem6);
 
-        ItemEntity entityitem7 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(MoCItems.recordshuffle, 6));
+        ItemEntity entityitem7 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(MoCItems.RECORDSHUFFLE, 6));
         entityitem7.setPickupDelay(10);
         world.spawnEntity(entityitem7);
 
@@ -738,7 +707,7 @@ public class MoCTools {
         entityitem10.setPickupDelay(10);
         world.spawnEntity(entityitem10);
 
-        ItemEntity entityitem12 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Blocks.RED_FLOWER, 6));
+        ItemEntity entityitem12 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Blocks.POPPY, 6));
         entityitem12.setPickupDelay(10);
         world.spawnEntity(entityitem12);
 
@@ -762,7 +731,7 @@ public class MoCTools {
         entityitem17.setPickupDelay(10);
         world.spawnEntity(entityitem17);
 
-        ItemEntity entityitem18 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(MoCItems.unicornhorn, 16));
+        ItemEntity entityitem18 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(MoCItems.UNICORNHORN, 16));
         entityitem18.setPickupDelay(10);
         world.spawnEntity(entityitem18);
 
@@ -770,15 +739,15 @@ public class MoCTools {
         entityitem19.setPickupDelay(10);
         world.spawnEntity(entityitem19);
 
-        ItemEntity entityitem20 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(MoCItems.essencedarkness, 6));
+        ItemEntity entityitem20 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(MoCItems.ESSENCEDARKNESS, 6));
         entityitem20.setPickupDelay(10);
         world.spawnEntity(entityitem20);
 
-        ItemEntity entityitem21 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(MoCItems.essenceundead, 6));
+        ItemEntity entityitem21 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(MoCItems.ESSENCEUNDEAD, 6));
         entityitem21.setPickupDelay(10);
         world.spawnEntity(entityitem21);
 
-        ItemEntity entityitem22 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(MoCItems.essencefire, 6));
+        ItemEntity entityitem22 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(MoCItems.ESSENCEFIRE, 6));
         entityitem22.setPickupDelay(10);
         world.spawnEntity(entityitem22);
 
@@ -790,7 +759,7 @@ public class MoCTools {
     }
 
     public static boolean mobGriefing(World world) {
-        return world.getGameRules().getBoolean("mobGriefing");
+        return world.getGameRules().getBoolean(GameRules.MOB_GRIEFING);
     }
 
     public static void DestroyBlast(Entity entity, double d, double d1, double d2, float f, boolean flag) {
@@ -879,9 +848,7 @@ public class MoCTools {
                 if (!(entity1 instanceof MoCEntityOgre)) {
                     entity1.attackEntityFrom(DamageSource.GENERIC, (int) (((((d19 * d19) + d19) / 2D) * 3D * f) + 1.0D));
                     double d21 = d19;
-                    entity1.motionX += d9 * d21;
-                    entity1.motionY += d11 * d21;
-                    entity1.motionZ += d13 * d21;
+                    entity1.setMotion(entity1.getMotion().add(d9*d21, d11*d21, d13*d21));
                 }
             }
         }
@@ -915,10 +882,9 @@ public class MoCTools {
                  * shows explosion on clients!
                  */
                 if (FMLCommonHandler.instance().getEffectiveSide() == Dist.CLIENT) {
-                    entity.world.spawnParticle(ParticleTypes.EXPLOSION, (d14 + (d * 1.0D)) / 2D, (d16 + (d1 * 1.0D)) / 2D,
+                    entity.world.addParticle(ParticleTypes.EXPLOSION, (d14 + (d * 1.0D)) / 2D, (d16 + (d1 * 1.0D)) / 2D,
                             (d18 + (d2 * 1.0D)) / 2D, d20, d22, d23);
-                    entity.motionX -= 0.0010000000474974511D;
-                    entity.motionY -= 0.0010000000474974511D;
+                    entity.setMotion(entity.getMotion().subtract(0.0010000000474974511D, 0.0010000000474974511D, 0));
                 }
 
             }
@@ -939,14 +905,14 @@ public class MoCTools {
                     entity.world.setBlockToAir(chunkposition);
                     // pass explosion instance to fix BlockTNT NPE's
                     Explosion explosion =
-                            new Explosion(entity.world, null, chunkposition.getX(), chunkposition.getY(), chunkposition.getZ(), 3f, false, false);
-                    blockstate.getBlock().onBlockDestroyedByExplosion(entity.world, chunkposition, explosion);
+                            new Explosion(entity.world, null, chunkposition.getX(), chunkposition.getY(), chunkposition.getZ(), 3f, false, Explosion.Mode.BREAK);
+                    blockstate.getBlock().onBlockExploded(blockstate, entity.world, chunkposition, explosion);
                 }
             }
         }
 
         //sets world on fire on server
-        if (mobGriefing && (FMLCommonHandler.instance().getEffectiveSide() == Dist.DEDICATED_SERVER) && flag) {
+        if (mobGriefing && (FMLEnvironment.dist == Dist.DEDICATED_SERVER) && flag) {
             for (int i3 = arraylist.size() - 1; i3 >= 0; i3--) {
                 BlockPos chunkposition1 = arraylist.get(i3);
                 BlockState blockstate = entity.world.getBlockState(chunkposition1);
@@ -1033,33 +999,33 @@ public class MoCTools {
         mystack[3] = player.getItemStackFromSlot(EquipmentSlotType.HEAD); //helmet
 
         //full scorpion cave armor set, enable night vision
-        if (mystack[0] != null && mystack[0].getItem() == MoCItems.SCORPBOOTSCAVE.get() && mystack[1] != null
-                && mystack[1].getItem() == MoCItems.SCORPLEGSCAVE.get() && mystack[2] != null && mystack[2].getItem() == MoCItems.SCORPPLATECAVE.get()
-                && mystack[3] != null && mystack[3].getItem() == MoCItems.SCORPHELMETCAVE.get()) {
+        if (mystack[0] != null && mystack[0].getItem() == MoCItems.SCORPBOOTSCAVE && mystack[1] != null
+                && mystack[1].getItem() == MoCItems.SCORPLEGSCAVE && mystack[2] != null && mystack[2].getItem() == MoCItems.SCORPPLATECAVE
+                && mystack[3] != null && mystack[3].getItem() == MoCItems.SCORPHELMETCAVE) {
             player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 300, 0));
             return;
         }
 
         //full scorpion nether armor set, enable fire resistance
-        if (mystack[0] != null && mystack[0].getItem() == MoCItems.SCORPBOOTSNETHER.get() && mystack[1] != null
-                && mystack[1].getItem() == MoCItems.SCORPLEGSNETHER.get() && mystack[2] != null && mystack[2].getItem() == MoCItems.SCORPPLATENETHER.get()
-                && mystack[3] != null && mystack[3].getItem() == MoCItems.SCORPHELMETNETHER.get()) {
+        if (mystack[0] != null && mystack[0].getItem() == MoCItems.SCORPBOOTSNETHER && mystack[1] != null
+                && mystack[1].getItem() == MoCItems.SCORPLEGSNETHER && mystack[2] != null && mystack[2].getItem() == MoCItems.SCORPPLATENETHER
+                && mystack[3] != null && mystack[3].getItem() == MoCItems.SCORPHELMETNETHER) {
             player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 300, 0));
             return;
         }
 
         //full scorpion frost armor set, enable water breathing
-        if (mystack[0] != null && mystack[0].getItem() == MoCItems.SCORPBOOTSFROST.get() && mystack[1] != null
-                && mystack[1].getItem() == MoCItems.SCORPLEGSFROST.get() && mystack[2] != null && mystack[2].getItem() == MoCItems.SCORPPLATEFROST.get()
-                && mystack[3] != null && mystack[3].getItem() == MoCItems.SCORPHELMETFROST.get()) {
+        if (mystack[0] != null && mystack[0].getItem() == MoCItems.SCORPBOOTSFROST && mystack[1] != null
+                && mystack[1].getItem() == MoCItems.SCORPLEGSFROST && mystack[2] != null && mystack[2].getItem() == MoCItems.SCORPPLATEFROST
+                && mystack[3] != null && mystack[3].getItem() == MoCItems.SCORPHELMETFROST) {
             player.addPotionEffect(new EffectInstance(Effects.WATER_BREATHING, 300, 0));
             return;
         }
 
         //full scorpion armor set, regeneration effect
-        if (mystack[0] != null && mystack[0].getItem() == MoCItems.SCORPBOOTSDIRT.get() && mystack[1] != null
-                && mystack[1].getItem() == MoCItems.SCORPLEGSDIRT.get() && mystack[2] != null && mystack[2].getItem() == MoCItems.SCORPPLATEDIRT.get()
-                && mystack[3] != null && mystack[3].getItem() == MoCItems.SCORPHELMETDIRT.get()) {
+        if (mystack[0] != null && mystack[0].getItem() == MoCItems.SCORPBOOTSDIRT && mystack[1] != null
+                && mystack[1].getItem() == MoCItems.SCORPLEGSDIRT && mystack[2] != null && mystack[2].getItem() == MoCItems.SCORPPLATEDIRT
+                && mystack[3] != null && mystack[3].getItem() == MoCItems.SCORPHELMETDIRT) {
             player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 70, 0));
             return;
         }
@@ -1095,10 +1061,10 @@ public class MoCTools {
                                         MoCreatures.MOCFAKEPLAYER));
                     }
                     if (event != null && !event.isCanceled()) {
-                        entity.world.setBlockToAir(pos);
+                        entity.world.setBlockState(pos, Blocks.AIR.getDefaultState());
                     }
                 }
-                return Block.getIdFromBlock(blockstate.getBlock());
+                return Block.getStateId(blockstate);
             }
         }
         return 0;
@@ -1124,11 +1090,11 @@ public class MoCTools {
                     BlockEvent.BreakEvent event = null;
                     if (!entity.world.isRemote) {
                         event =
-                                new BlockEvent.BreakEvent(entity.world, pos, stateTarget, FakePlayerFactory.get((WorldServer) entity.world,
+                                new BlockEvent.BreakEvent(entity.world, pos, stateTarget, FakePlayerFactory.get((ServerWorld) entity.world,
                                         MoCreatures.MOCFAKEPLAYER));
                     }
                     if (event != null && !event.isCanceled()) {
-                        entity.world.setBlockToAir(pos);
+                        entity.world.setBlockState(pos, Blocks.AIR.getDefaultState());
 
                     } else {
                         stateTarget = null;
@@ -1175,7 +1141,7 @@ public class MoCTools {
             float tZ = z - (float) entity.getPosZ();
             float spawnDist = tX * tX + tY * tY + tZ * tZ;
 
-            if (allowedBlock(Block.getIdFromBlock(blockstate1.getBlock()))
+            if (allowedBlock(Block.getStateId(blockstate1))
                     && (blockstate2.getBlock() == Blocks.AIR || blockstate3.getBlock() == Blocks.AIR || blockstate4.getBlock() == Blocks.AIR
                             || blockstate5.getBlock() == Blocks.AIR || blockstate6.getBlock() == Blocks.AIR || blockstate7.getBlock() == Blocks.AIR)
                     & spawnDist > 100F) {
@@ -1211,7 +1177,7 @@ public class MoCTools {
             float tZ = z - (float) entity.getPosZ();
             float spawnDist = tX * tX + tY * tY + tZ * tZ;
 
-            if (allowedBlock(Block.getIdFromBlock(blockstate1.getBlock()))
+            if (allowedBlock(Block.getStateId(blockstate1))
                     && (blockstate2.getBlock() == Blocks.AIR || blockstate3.getBlock() == Blocks.AIR || blockstate4.getBlock() == Blocks.AIR
                             || blockstate5.getBlock() == Blocks.AIR || blockstate6.getBlock() == Blocks.AIR || blockstate7.getBlock() == Blocks.AIR)
                     & spawnDist > 100F) {
@@ -1280,7 +1246,7 @@ public class MoCTools {
         }
 
         storedCreature.setOwnerId(ep.getUniqueID()); // ALWAYS SET OWNER. Required for our new pet save system.
-        MoCMessageHandler.INSTANCE.sendTo(new MoCMessageNameGUI(((Entity) storedCreature).getEntityId()), (EntityPlayerMP) ep);
+        MoCMessageHandler.CHANNEL.sendTo(new MoCMessageNameGUI(((Entity) storedCreature).getEntityId()), (ServerPlayerEntity) ep);
         storedCreature.setTamed(true);
         // Required to update petId data for pet amulets
         if (MoCreatures.instance.mapData != null && storedCreature.getOwnerPetId() == -1) {
@@ -1336,7 +1302,7 @@ public class MoCTools {
                     }
                     if (event != null && !event.isCanceled()) {
                         blockstate.getBlock().dropBlockAsItemWithChance(entity.world, pos, blockstate, 0.20F * strengthF, 1);
-                        entity.world.setBlockToAir(pos);
+                        entity.world.setBlockState(pos, Blocks.AIR.getDefaultState());
                         if (entity.world.rand.nextInt(3) == 0) {
                             playCustomSound(entity, MoCSoundEvents.ENTITY_GOLEM_WALK);
                             count++; //only counts recovered blocks
@@ -1368,9 +1334,7 @@ public class MoCTools {
             float f3 = 0.05F;
 
             ItemEntity entityitem = new ItemEntity(entity.world, i + f, j + f1, k + f2, itemstack);
-            entityitem.motionX = ((float) entity.world.rand.nextGaussian() * f3);
-            entityitem.motionY = (((float) entity.world.rand.nextGaussian() * f3) + 0.2F);
-            entityitem.motionZ = ((float) entity.world.rand.nextGaussian() * f3);
+            entityitem.setMotion((float) entity.world.rand.nextGaussian() * f3, ((float) entity.world.rand.nextGaussian() * f3) + 0.2F, (float) entity.world.rand.nextGaussian() * f3);
             entity.world.spawnEntity(entityitem);
             animalchest.setInventorySlotContents(l, ItemStack.EMPTY);
         }
@@ -1387,33 +1351,33 @@ public class MoCTools {
             if (stack == null) {
                 return;
             }
-            if (stack.getTagCompound() == null) {
-                stack.setTagCompound(new NBTTagCompound());
+            if (stack.getTag() == null) {
+                stack.setTag(new CompoundNBT());
             }
-            NBTTagCompound nbtt = stack.getTagCompound();
-            PlayerEntity epOwner = entity.world.getPlayerEntityByUUID(entity.getOwnerId());
+            CompoundNBT nbtt = stack.getTag();
+            PlayerEntity epOwner = entity.world.getPlayerByUuid(entity.getOwnerId());
 
             try {
-                nbtt.setString("SpawnClass", "WildHorse");
-                nbtt.setFloat("Health", entity.getHealth());
-                nbtt.setInteger("Edad", entity.getEdad());
-                nbtt.setString("Name", entity.getPetName());
-                nbtt.setBoolean("Rideable", entity.getIsRideable());
-                nbtt.setInteger("Armor", entity.getArmorType());
-                nbtt.setInteger("CreatureType", entity.getType());
-                nbtt.setBoolean("Adult", entity.getIsAdult());
-                nbtt.setString("OwnerName", epOwner != null ? epOwner.getName() : "");
+                nbtt.putString("SpawnClass", "WildHorse");
+                nbtt.putFloat("Health", entity.getHealth());
+                nbtt.putInt("Edad", entity.getEdad());
+                nbtt.putString("Name", entity.getPetName());
+                nbtt.putBoolean("Rideable", entity.getIsRideable());
+                nbtt.putInt("Armor", entity.getArmorType());
+                nbtt.putInt("CreatureType", entity.getType());
+                nbtt.putBoolean("Adult", entity.getIsAdult());
+                nbtt.putString("OwnerName", epOwner != null ? epOwner.getName().toString() : "");
                 if (entity.getOwnerId() != null) {
-                    nbtt.setUniqueId("OwnerUUID", entity.getOwnerId());
+                    nbtt.putUniqueId("OwnerUUID", entity.getOwnerId());
                 }
-                nbtt.setInteger("PetId", entity.getOwnerPetId());
+                nbtt.putInt("PetId", entity.getOwnerPetId());
                 int amuletType = 1;
-                if (stack.getItem() == MoCItems.PETAMULETFULL.get()) {
+                if (stack.getItem() == MoCItems.PETAMULETFULL) {
                     amuletType = 2;
-                } else if (stack.getItem() == MoCItems.AMULETGHOSTFULL.get()) {
+                } else if (stack.getItem() == MoCItems.AMULETGHOSTFULL) {
                     amuletType = 3;
                 }
-                nbtt.setBoolean("Ghost", amuletType == 3 ? true : false);
+                nbtt.putBoolean("Ghost", amuletType == 3 ? true : false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1435,30 +1399,30 @@ public class MoCTools {
      */
     public static void dropAmulet(IMoCEntity entity, int amuletType, PlayerEntity player) {
         if (!player.world.isRemote) {
-            ItemStack stack = new ItemStack(MoCItems.FISHNETFULL.get(), 1, 0);
+            ItemStack stack = new ItemStack(MoCItems.FISHNETFULL, 1);
             if (amuletType == 2) {
-                stack = new ItemStack(MoCItems.PETAMULETFULL.get(), 1, 0);
+                stack = new ItemStack(MoCItems.PETAMULETFULL, 1);
             }
             if (amuletType == 3) {
-                stack = new ItemStack(MoCItems.AMULETGHOSTFULL.get(), 1, 0);
+                stack = new ItemStack(MoCItems.AMULETGHOSTFULL, 1);
             }
-            if (stack.getTagCompound() == null) {
-                stack.setTagCompound(new NBTTagCompound());
+            if (stack.getTag() == null) {
+                stack.setTag(new CompoundNBT());
             }
-            NBTTagCompound nbtt = stack.getTagCompound();
+            CompoundNBT nbtt = stack.getTag();
             try {
                 final EntityEntry entry = EntityRegistry.getEntry((Class<? extends Entity>) entity.getClass());
                 final String petClass = entry.getName().replace(MoCConstants.MOD_PREFIX, "");
-                nbtt.setString("SpawnClass", petClass);
-                nbtt.setUniqueId("OwnerUUID", player.getUniqueID());
-                nbtt.setString("OwnerName", player.getName());
-                nbtt.setFloat("Health", ((EntityLiving) entity).getHealth());
-                nbtt.setInteger("Edad", entity.getEdad());
-                nbtt.setString("Name", entity.getPetName());
-                nbtt.setInteger("CreatureType", entity.getType());
-                nbtt.setBoolean("Adult", entity.getIsAdult());
-                nbtt.setInteger("PetId", entity.getOwnerPetId());
-                nbtt.setBoolean("Ghost", amuletType == 3 ? true : false);
+                nbtt.putString("SpawnClass", petClass);
+                nbtt.putUniqueId("OwnerUUID", player.getUniqueID());
+                nbtt.putString("OwnerName", player.getName().toString());
+                nbtt.putFloat("Health", ((LivingEntity) entity).getHealth());
+                nbtt.putInt("Edad", entity.getEdad());
+                nbtt.putString("Name", entity.getPetName());
+                nbtt.putInt("CreatureType", entity.getType());
+                nbtt.putBoolean("Adult", entity.getIsAdult());
+                nbtt.putInt("PetId", entity.getOwnerPetId());
+                nbtt.putBoolean("Ghost", amuletType == 3 ? true : false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1482,16 +1446,16 @@ public class MoCTools {
     public static ItemStack getProperAmulet(MoCEntityAnimal entity) {
         if (entity instanceof MoCEntityHorse) {
             if (entity.getType() == 26 || entity.getType() == 27 || entity.getType() == 28) {
-                return new ItemStack(MoCItems.AMULETBONEFULL.get(), 1, 0);
+                return new ItemStack(MoCItems.AMULETBONEFULL, 1);
             }
             if (entity.getType() > 47 && entity.getType() < 60) {
-                return new ItemStack(MoCItems.AMULETFAIRYFULL.get(), 1, 0);
+                return new ItemStack(MoCItems.AMULETFAIRYFULL., 1);
             }
             if (entity.getType() == 39 || entity.getType() == 40) {
-                return new ItemStack(MoCItems.AMULETPEGASUSFULL.get(), 1, 0);
+                return new ItemStack(MoCItems.AMULETPEGASUSFULL, 1);
             }
             if (entity.getType() == 21 || entity.getType() == 22) {
-                return new ItemStack(MoCItems.AMULETGHOSTFULL.get(), 1, 0);
+                return new ItemStack(MoCItems.AMULETGHOSTFULL, 1);
             }
         }
         return null;
@@ -1507,16 +1471,16 @@ public class MoCTools {
     public static ItemStack getProperEmptyAmulet(MoCEntityAnimal entity) {
         if (entity instanceof MoCEntityHorse) {
             if (entity.getType() == 26 || entity.getType() == 27 || entity.getType() == 28) {
-                return new ItemStack(MoCItems.AMULETBONE.get(), 1, 0);
+                return new ItemStack(MoCItems.AMULETBONE, 1);
             }
             if (entity.getType() > 49 && entity.getType() < 60) {
-                return new ItemStack(MoCItems.AMULETFAIRY.get(), 1, 0);
+                return new ItemStack(MoCItems.AMULETFAIRY, 1);
             }
             if (entity.getType() == 39 || entity.getType() == 40) {
-                return new ItemStack(MoCItems.AMULETPEGASUS.get(), 1, 0);
+                return new ItemStack(MoCItems.AMULETPEGASUS, 1);
             }
             if (entity.getType() == 21 || entity.getType() == 22) {
-                return new ItemStack(MoCItems.AMULETGHOST.get(), 1, 0);
+                return new ItemStack(MoCItems.AMULETGHOST, 1);
             }
         }
         return null;
@@ -1524,8 +1488,8 @@ public class MoCTools {
 
     public static int countPlayersInDimension(ServerWorld world, int dimension) {
         int playersInDimension = 0;
-        for (int j = 0; j < world.playerEntities.size(); ++j) {
-            ServerPlayerEntity entityplayermp = (ServerPlayerEntity) world.playerEntities.get(j);
+        for (int j = 0; j < world.getPlayers().size(); ++j) {
+            ServerPlayerEntity entityplayermp = (ServerPlayerEntity) world.getPlayers().get(j);
 
             if (entityplayermp.dimension == dimension) {
                 playersInDimension++;
@@ -1556,9 +1520,9 @@ public class MoCTools {
     }
 
     public static void getPathToEntity(LivingEntity creatureToMove, Entity entityTarget, float f) {
-        Path pathentity = creatureToMove.getNavigator().getPathToEntityLiving(entityTarget);
+        Path pathentity = ((MobEntity)creatureToMove).getNavigator().getPathToEntity(entityTarget, 0);
         if (pathentity != null && f < 12F) {
-            creatureToMove.getNavigator().setPath(pathentity, 1.0D); //TODO check if 1.0D is proper speed.
+            ((MobEntity)creatureToMove).getNavigator().setPath(pathentity, 1.0D); //TODO check if 1.0D is proper speed.
         }
     }
 
@@ -1584,7 +1548,7 @@ public class MoCTools {
             if ((j1 > 4)
                     && ((runningEntity.world.getBlockState(pos).getBlock() == Blocks.AIR) || (runningEntity.world.getBlockState(pos).getBlock() == Blocks.SNOW))
                     && (runningEntity.world.getBlockState(pos.down()).getBlock() != Blocks.AIR)) {
-                runningEntity.getNavigator().tryMoveToXYZ(i1, j1, k1, 1.0D);//TODO check if 1D speed is ok
+                ((MobEntity) runningEntity).getNavigator().tryMoveToXYZ(i1, j1, k1, 1.0D);//TODO check if 1D speed is ok
                 break;
             }
             l++;
@@ -1621,13 +1585,13 @@ public class MoCTools {
                 return true;
             }
         }
-        NBTTagCompound nbt = new NBTTagCompound();
-        entity.writeToNBT(nbt);
+        CompoundNBT nbt = new CompoundNBT();
+        entity.writeWithoutTypeId(nbt);
         if (nbt != null) {
-            if (nbt.hasKey("Owner") && !nbt.getString("Owner").equals("")) {
+            if (nbt.contains("Owner") && !nbt.getString("Owner").equals("")) {
                 return true; // ignore
             }
-            if (nbt.hasKey("Tamed") && nbt.getBoolean("Tamed") == true) {
+            if (nbt.contains("Tamed") && nbt.getBoolean("Tamed") == true) {
                 return true; // ignore
             }
         }
@@ -1671,9 +1635,10 @@ public class MoCTools {
         throwerEntity.world.spawnEntity(etrock);
         etrock.setState(state);
         etrock.setBehavior(0);
-        etrock.motionX = ((X - throwerEntity.getPosX()) / speedMod);
-        etrock.motionY = ((Y - throwerEntity.getPosY()) / speedMod + height);
-        etrock.motionZ = ((Z - throwerEntity.getPosZ()) / speedMod);
+        double x = ((X - throwerEntity.getPosX()) / speedMod);
+        double y = ((Y - throwerEntity.getPosY()) / speedMod + height);
+        double z = ((Z - throwerEntity.getPosZ()) / speedMod);
+        etrock.setMotion(x, y, z);
     }
 
     /**
@@ -1682,7 +1647,7 @@ public class MoCTools {
      * @return
      */
     public static float getMyMovementSpeed(Entity entity) {
-        return MathHelper.sqrt((entity.motionX * entity.motionX) + (entity.motionZ * entity.motionZ));
+        return MathHelper.sqrt((entity.getMotion().x * entity.getMotion().x) + (entity.getMotion().z * entity.getMotion().z));
     }
 
     public static ItemEntity getClosestFood(Entity entity, double d) {
@@ -1726,19 +1691,19 @@ public class MoCTools {
                 || item1 == Items.COOKED_RABBIT || item1 == Items.COD || item1 == Items.SALMON || item1 == Items.PORKCHOP;
     }
 
-    public static NBTTagCompound getEntityData(Entity entity) {
-        if (!entity.getEntityData().hasKey(MoCConstants.MOD_ID)) {
-            entity.getEntityData().setTag(MoCConstants.MOD_ID, new NBTTagCompound());
+    public static CompoundNBT getEntityData(Entity entity) {
+        if (!entity.getPersistentData().contains(MoCConstants.MOD_ID)) {
+            entity.getPersistentData().put(MoCConstants.MOD_ID, new CompoundNBT());
         }
 
-        return entity.getEntityData().getCompoundTag(MoCConstants.MOD_ID);
+        return entity.getPersistentData().getCompound(MoCConstants.MOD_ID);
     }
 
     public static void findMobRider(Entity mountEntity) {
         List<Entity> list = mountEntity.world.getEntitiesWithinAABBExcludingEntity(mountEntity, mountEntity.getBoundingBox().expand(4D, 2D, 4D));
         for (int i = 0; i < list.size(); i++) {
             Entity entity = list.get(i);
-            if (!(entity instanceof EntityMob)) {
+            if (!(entity instanceof MobEntity)) {
                 continue;
             }
             MobEntity entitymob = (MobEntity) entity;
@@ -1753,16 +1718,16 @@ public class MoCTools {
     }
 
     public static void copyDataFromOld(Entity source, Entity target) {
-        NBTTagCompound nbttagcompound = target.writeToNBT(new NBTTagCompound());
-        nbttagcompound.removeTag("Dimension");
-        source.readFromNBT(nbttagcompound);
+        CompoundNBT nbttagcompound = target.writeWithoutTypeId(new CompoundNBT());
+        nbttagcompound.remove("Dimension");
+        source.read(nbttagcompound);
     }
 
     public static boolean dismountSneakingPlayer(LivingEntity entity) {
-        if (!entity.isRiding()) return false;
+        if (!entity.isPassenger()) return false;
         Entity entityRidden = entity.getRidingEntity();
-        if (entityRidden instanceof LivingEntity && ((LivingEntity)entityRidden).isSneaking()) {
-            entity.dismountRidingEntity();
+        if (entityRidden instanceof LivingEntity && ((LivingEntity)entityRidden).isCrouching()) {
+            entity.stopRiding();
             double dist = (-1.5D);
             double newPosX = entityRidden.getPosX() + (dist * Math.sin(((LivingEntity)entityRidden).renderYawOffset / 57.29578F));
             double newPosZ = entityRidden.getPosZ() - (dist * Math.cos(((LivingEntity)entityRidden).renderYawOffset / 57.29578F));

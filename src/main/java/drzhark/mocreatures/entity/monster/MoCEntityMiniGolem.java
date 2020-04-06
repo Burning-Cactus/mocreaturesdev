@@ -6,12 +6,11 @@ import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.item.MoCEntityThrowableRock;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -19,6 +18,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.extensions.IForgeBlockState;
 
 public class MoCEntityMiniGolem extends MoCEntityMob {
 
@@ -34,20 +34,21 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
         setSize(1.0F, 1.0F);
     }
 
+
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, true));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTargetMoC(this, EntityPlayer.class, true));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
     }
 
     @Override
@@ -99,7 +100,7 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
     }
 
     protected void acquireTRock() {
-        IBlockState tRockState = MoCTools.destroyRandomBlockWithIBlockState(this, 3D);
+        IForgeBlockState tRockState = MoCTools.destroyRandomBlockWithIBlockState(this, 3D);
         if (tRockState == null) {
             this.tcounter = 1;
             setHasRock(false);
@@ -107,7 +108,7 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
         }
 
         //creates a dummy Trock on top of it
-        MoCEntityThrowableRock trock = new MoCEntityThrowableRock(this.world, this, this.posX, this.posY + 1.5D, this.posZ);
+        MoCEntityThrowableRock trock = new MoCEntityThrowableRock(this.world, this, this.getPosX(), this.getPosY() + 1.5D, this.getPosZ());
         this.world.spawnEntity(trock);
         trock.setState(tRockState);
         trock.setBehavior(1);
@@ -128,9 +129,7 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
 
         if (this.tcounter < 50) {
             //maintains position of Trock above head
-            this.tempRock.posX = this.posX;
-            this.tempRock.posY = (this.posY + 1.0D);
-            this.tempRock.posZ = this.posZ;
+            this.tempRock.setPosition(this.getPosX(), this.getPosY()+1.0D, this.getPosZ());
         }
 
         if (this.tcounter >= 50) {

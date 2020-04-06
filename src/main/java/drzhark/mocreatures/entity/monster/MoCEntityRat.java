@@ -7,11 +7,16 @@ import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -30,19 +35,19 @@ public class MoCEntityRat extends MoCEntityMob {
     }
 
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, true));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTargetMoC(this, EntityPlayer.class, true));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
     }
 
     @Override
@@ -68,14 +73,14 @@ public class MoCEntityRat extends MoCEntityMob {
     public ResourceLocation getTexture() {
         switch (getType()) {
             case 1:
-                return MoCreatures.proxy.getTexture("ratb.png");
+                return MoCreatures.getTexture("ratb.png");
             case 2:
-                return MoCreatures.proxy.getTexture("ratbl.png");
+                return MoCreatures.getTexture("ratbl.png");
             case 3:
-                return MoCreatures.proxy.getTexture("ratw.png");
+                return MoCreatures.getTexture("ratw.png");
 
             default:
-                return MoCreatures.proxy.getTexture("ratb.png");
+                return MoCreatures.getTexture("ratb.png");
         }
     }
 
@@ -83,12 +88,12 @@ public class MoCEntityRat extends MoCEntityMob {
     public boolean attackEntityFrom(DamageSource damagesource, float i) {
         Entity entity = damagesource.getTrueSource();
 
-        if (entity != null && entity instanceof EntityLivingBase) {
-            setAttackTarget((EntityLivingBase) entity);
+        if (entity != null && entity instanceof LivingEntity) {
+            setAttackTarget((LivingEntity) entity);
             if (!this.world.isRemote) {
                 List<MoCEntityRat> list =
                         this.world.getEntitiesWithinAABB(MoCEntityRat.class,
-                                new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1.0D, this.posY + 1.0D, this.posZ + 1.0D)
+                                new AxisAlignedBB(this.getPosX(), this.getPosY(), this.getPosZ(), this.getPosX() + 1.0D, this.getPosY() + 1.0D, this.getPosZ() + 1.0D)
                                         .expand(16D, 4D, 16D));
                 Iterator<MoCEntityRat> iterator = list.iterator();
                 do {
@@ -97,7 +102,7 @@ public class MoCEntityRat extends MoCEntityMob {
                     }
                     MoCEntityRat entityrat = (MoCEntityRat) iterator.next();
                     if ((entityrat != null) && (entityrat.getAttackTarget() == null)) {
-                        entityrat.setAttackTarget((EntityLivingBase) entity);
+                        entityrat.setAttackTarget((LivingEntity) entity);
                     }
                 } while (true);
             }
@@ -121,7 +126,7 @@ public class MoCEntityRat extends MoCEntityMob {
 
     @Override
     protected Item getDropItem() {
-        return MoCItems.ratRaw;
+        return MoCItems.RATRAW;
     }
 
     @Override

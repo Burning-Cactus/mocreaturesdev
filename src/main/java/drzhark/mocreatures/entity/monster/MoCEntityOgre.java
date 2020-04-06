@@ -8,7 +8,6 @@ import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAnimation;
 import drzhark.mocreatures.network.message.MoCMessageExplode;
-import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -122,8 +121,8 @@ public class MoCEntityOgre extends MoCEntityMob {
             if (this.smashCounter > 0 && ++this.smashCounter > 10) {
                 this.smashCounter = 0;
                 performDestroyBlastAttack();
-                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageExplode(this.getEntityId()),
-                        new TargetPoint(this.world.provider.getDimensionType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+                MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageExplode(this.getEntityId()),
+                        new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
 
             if ((this.getAttackTarget() != null) && (this.rand.nextInt(40) == 0) && this.smashCounter == 0 && this.attackCounter == 0) {
@@ -151,8 +150,8 @@ public class MoCEntityOgre extends MoCEntityMob {
      */
     protected void startDestroyBlast() {
         this.smashCounter = 1;
-        MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
-                new TargetPoint(this.world.provider.getDimensionType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+        MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
+                new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
     }
 
     /**
@@ -183,13 +182,13 @@ public class MoCEntityOgre extends MoCEntityMob {
             if (leftArmW) {
                 this.attackCounter = 1;
                 this.armToAnimate = 1;
-                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
-                        new TargetPoint(this.world.provider.getDimensionType().getId(), this.posX, this.posY, this.posZ, 64));
+                MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
+                        new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             } else {
                 this.attackCounter = 1;
                 this.armToAnimate = 2;
-                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 2),
-                        new TargetPoint(this.world.provider.getDimensionType().getId(), this.posX, this.posY, this.posZ, 64));
+                MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 2),
+                        new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
         }
     }

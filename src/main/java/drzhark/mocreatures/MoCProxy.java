@@ -190,9 +190,6 @@ public class MoCProxy implements IProxy {
     public void initTextures() {
     }
 
-    public ResourceLocation getTexture(String texture) {
-        return null;
-    }
 
     public PlayerEntity getPlayer() {
         return null;

@@ -11,7 +11,6 @@ import drzhark.mocreatures.entity.passive.MoCEntityHorse;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageHealth;
 import net.minecraft.entity.*;
-import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -24,9 +23,9 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
@@ -78,7 +77,7 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
 
     @Override
     public ResourceLocation getTexture() {
-        return MoCreatures.proxy.getTexture(this.texture);
+        return MoCreatures.getTexture(this.texture);
     }
 
     protected double getAttackStrenght() {
@@ -169,7 +168,7 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
 
     public boolean getCanSpawnHereLiving() {
         return this.world.checkNoEntityCollision(this.getBoundingBox())
-                && this.world.getCollisionBoxes(this, this.getBoundingBox()).size() == 0
+                && this.world.getCollisionShapes(this, this.getBoundingBox()).count() == 0
                 && !this.world.containsAnyLiquid(this.getBoundingBox());
     }
 
@@ -247,8 +246,8 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
             }*/
 
             if (getIsTamed() && this.rand.nextInt(200) == 0) {
-                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new PacketDistributor.TargetPoint(
-                        this.world.provider.getDimensionType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+                MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new PacketDistributor.TargetPoint(
+                        this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
 
             if (this.isHarmedByDaylight()) {
@@ -274,8 +273,8 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
             }
         }
 
-        this.getNavigator().onUpdateNavigation();
-        super.onLivingUpdate();
+        this.getNavigator().tick();
+        super.tick();
     }
 
     protected int getMaxEdad() {
@@ -289,8 +288,8 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
     @Override
     public boolean attackEntityFrom(DamageSource damagesource, float i) {
         if (!this.world.isRemote && getIsTamed()) {
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new TargetPoint(
-                    this.world.provider.getDimensionType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+            MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new TargetPoint(
+                    this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
         return super.attackEntityFrom(damagesource, i);
     }
@@ -354,13 +353,11 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
     public void moveEntityWithHeadingFlyer(float strafe, float vertical, float forward) {
         if (this.isServerWorld()) {
 
-            this.moveRelative(strafe, vertical, forward, 0.1F);
-            this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
-            this.motionX *= 0.8999999761581421D;
-            this.motionY *= 0.8999999761581421D;
-            this.motionZ *= 0.8999999761581421D;
+            this.moveRelative( 0.1F, new Vec3d(strafe, vertical, forward));
+            this.move(MoverType.SELF, this.getMotion());
+            this.getMotion().scale(0.8999999761581421D);
         } else {
-            super.travel(strafe, vertical, forward);
+            super.travel(new Vec3d(strafe, vertical, forward));
         }
     }
 

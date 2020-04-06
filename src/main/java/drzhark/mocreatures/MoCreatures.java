@@ -6,6 +6,7 @@ import drzhark.mocreatures.client.MoCClientProxy;
 import drzhark.mocreatures.client.MoCClientTickHandler;
 import drzhark.mocreatures.client.MoCCreativeTabs;
 import drzhark.mocreatures.client.handlers.MoCKeyHandler;
+import drzhark.mocreatures.client.renderer.texture.MoCTextures;
 import drzhark.mocreatures.command.CommandMoCPets;
 import drzhark.mocreatures.command.CommandMoCSpawn;
 import drzhark.mocreatures.command.CommandMoCTP;
@@ -22,6 +23,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
@@ -59,8 +61,8 @@ import java.util.function.BiFunction;
 @Mod(MoCConstants.MOD_ID)
 public class MoCreatures {
 
-    @Instance(MoCConstants.MOD_ID)
-    public static MoCreatures instance;
+//    @Instance(MoCConstants.MOD_ID)
+//    public static MoCreatures instance;
 
     public static IProxy proxy = DistExecutor.runForDist(()->()-> new MoCClientProxy(), ()->()-> new MoCProxy());
     public static final Logger LOGGER = LogManager.getLogger(MoCConstants.MOD_ID);
@@ -76,6 +78,7 @@ public class MoCreatures {
     public static Map<Class<? extends LivingEntity>, MoCEntityData> entityMap = new HashMap<Class<? extends LivingEntity>, MoCEntityData>();
     public static Map<Integer, Class<? extends LivingEntity>> instaSpawnerMap = new HashMap<Integer, Class<? extends LivingEntity>>();
     public static final String MOC_LOGO = TextFormatting.WHITE + "[" + TextFormatting.AQUA + "Mo'Creatures" + TextFormatting.WHITE + "]";
+    public static final MoCTextures MOCTEXTURES = new MoCTextures();
 
 
     public MoCreatures() {
@@ -179,6 +182,10 @@ public class MoCreatures {
     //TODO: Fix the isServer() method
     public static boolean isServer() {
         return (FMLCommonLaunchHandler.getDist() == Dist.DEDICATED_SERVER);
+    }
+
+    public static ResourceLocation getTexture(String texture) {
+        return MOCTEXTURES.getTexture(texture);
     }
 
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)

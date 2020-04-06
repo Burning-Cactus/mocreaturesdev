@@ -24,6 +24,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
@@ -122,8 +123,8 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         }
 
         if (!this.world.isRemote && getIsTamed()) {
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new TargetPoint(
-                    this.world.provider.getDimensionType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+            MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new TargetPoint(
+                    this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
         return super.attackEntityFrom(damagesource, i);
     }
@@ -199,7 +200,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
 
         //changes name
         if (!this.world.isRemote && getIsTamed()
-                && (stack.getItem() == MoCItems.MEDALLION.get() || stack.getItem() == Items.BOOK || stack.getItem() == Items.NAME_TAG)) {
+                && (stack.getItem() == MoCItems.MEDALLION || stack.getItem() == Items.BOOK || stack.getItem() == Items.NAME_TAG)) {
             if (MoCTools.tameWithName(player, this)) {
                 return true;
             }
@@ -207,7 +208,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         }
 
         //sets it free, untamed
-        if (getIsTamed() && stack.getItem() == MoCItems.SCROLLFREEDOM.get()) {
+        if (getIsTamed() && stack.getItem() == MoCItems.SCROLLFREEDOM) {
             stack.shrink(1);
             if (stack.isEmpty()) {
                 player.setHeldItem(hand, ItemStack.EMPTY);
@@ -255,7 +256,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         }
 
         //stores in fishnet
-        if (stack.getItem() == MoCItems.FISHNET.get() && stack.getDamage() == 0 && this.canBeTrappedInNet()) {
+        if (stack.getItem() == MoCItems.FISHNET && stack.getDamage() == 0 && this.canBeTrappedInNet()) {
             player.setHeldItem(hand, ItemStack.EMPTY);
             if (!this.world.isRemote) {
                 MoCPetData petData = MoCreatures.instance.mapData.getPetData(this.getOwnerId());
@@ -311,15 +312,15 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         BasicParticleType particleType = ParticleTypes.HEART;
 
         if (!par1) {
-            particleType = ParticleTypes.SMOKE_NORMAL;
+            particleType = ParticleTypes.SMOKE;
         }
 
         for (int i = 0; i < 7; ++i) {
             double d0 = this.rand.nextGaussian() * 0.02D;
             double d1 = this.rand.nextGaussian() * 0.02D;
             double d2 = this.rand.nextGaussian() * 0.02D;
-            this.world.spawnParticle(particleType, this.getPosX() + this.rand.nextFloat() * this.width * 2.0F - this.width, this.getPosY() + 0.5D
-                    + this.rand.nextFloat() * this.height, this.getPosZ() + this.rand.nextFloat() * this.width * 2.0F - this.width, d0, d1, d2);
+            this.world.addParticle(particleType, this.getPosX() + this.rand.nextFloat() * this.getWidth() * 2.0F - this.getWidth(), this.getPosY() + 0.5D
+                    + this.rand.nextFloat() * this.getHeight(), this.getPosZ() + this.rand.nextFloat() * this.getWidth() * 2.0F - this.getWidth(), d0, d1, d2);
         }
     }
 
@@ -343,7 +344,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         super.readAdditional(nbttagcompound);
         setTamed(nbttagcompound.getBoolean("Tamed"));
         String s = "";
-        if (nbttagcompound.hasKey("OwnerUUID", 8))
+        if (nbttagcompound.contains("OwnerUUID", 8))
         {
             s = nbttagcompound.getString("OwnerUUID");
         }
@@ -351,22 +352,22 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         {
             this.setOwnerId(UUID.fromString(s));
         }
-        if (nbttagcompound.hasKey("PetId")) {
+        if (nbttagcompound.contains("PetId")) {
             setOwnerPetId(nbttagcompound.getInt("PetId"));
         }
-        if (this.getIsTamed() && nbttagcompound.hasKey("PetId")) {
+        if (this.getIsTamed() && nbttagcompound.contains("PetId")) {
             MoCPetData petData = MoCreatures.instance.mapData.getPetData(this.getOwnerId());
             if (petData != null) {
-                NBTTagList tag = petData.getOwnerRootNBT().getTagList("TamedList", 10);
-                for (int i = 0; i < tag.tagCount(); i++) {
-                    CompoundNBT nbt = tag.getCompoundTagAt(i);
+                ListNBT tag = petData.getOwnerRootNBT().getList("TamedList", 10);
+                for (int i = 0; i < tag.size(); i++) {
+                    CompoundNBT nbt = tag.getCompound(i);
                     if (nbt.getInt("PetId") == nbttagcompound.getInt("PetId")) {
                         // update amulet flag
                         nbt.putBoolean("InAmulet", false);
                         // check if cloned and if so kill
-                        if (nbt.hasKey("Cloned")) {
+                        if (nbt.contains("Cloned")) {
                             // entity was cloned
-                            nbt.removeTag("Cloned"); // clear flag
+                            nbt.remove("Cloned"); // clear flag
                             this.setTamed(false);
                             this.setDead();
                         }
@@ -403,8 +404,8 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         double var4 = this.rand.nextGaussian() * 0.02D;
         double var6 = this.rand.nextGaussian() * 0.02D;
 
-        this.world.spawnParticle(ParticleTypes.HEART, this.getPosX() + this.rand.nextFloat() * this.width * 2.0F - this.width, this.getPosY() + 0.5D
-                + this.rand.nextFloat() * this.height, this.getPosZ() + this.rand.nextFloat() * this.width * 2.0F - this.width, var2, var4, var6);
+        this.world.addParticle(ParticleTypes.HEART, this.getPosX() + this.rand.nextFloat() * this.getWidth() * 2.0F - this.getWidth(), this.getPosY() + 0.5D
+                + this.rand.nextFloat() * this.getHeight(), this.getPosZ() + this.rand.nextFloat() * this.getWidth() * 2.0F - this.getWidth(), var2, var4, var6);
     }
 
     /**
@@ -474,8 +475,8 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
 
             setGestationTime(getGestationTime()+1);
             if (!this.world.isRemote) {
-                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
-                        new TargetPoint(this.world.provider.getDimensionType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+                MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
+                        new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
 
             if (getGestationTime() <= 50) {

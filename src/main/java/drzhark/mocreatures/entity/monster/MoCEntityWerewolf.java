@@ -6,24 +6,29 @@ import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.goal.LeapAtTargetGoal;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -49,20 +54,20 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     }
 
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, true));
-        this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTargetMoC(this, EntityPlayer.class, true));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4F));
+        this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
     }
 
     @Override
@@ -100,19 +105,19 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     @Override
     public ResourceLocation getTexture() {
         if (this.getIsHumanForm()) {
-            return MoCreatures.proxy.getTexture("wereblank.png");
+            return MoCreatures.getTexture("wereblank.png");
         }
 
         switch (getType()) {
             case 1:
-                return MoCreatures.proxy.getTexture("wolfblack.png");
+                return MoCreatures.getTexture("wolfblack.png");
             case 2:
-                return MoCreatures.proxy.getTexture("wolfbrown.png");
+                return MoCreatures.getTexture("wolfbrown.png");
             case 3:
-                return MoCreatures.proxy.getTexture("wolftimber.png");
+                return MoCreatures.getTexture("wolftimber.png");
             case 4:
                 if (!MoCreatures.proxy.getAnimateTextures()) {
-                    return MoCreatures.proxy.getTexture("wolffire1.png");
+                    return MoCreatures.getTexture("wolffire1.png");
                 }
                 this.textCounter++;
                 if (this.textCounter < 10) {
@@ -126,9 +131,9 @@ public class MoCEntityWerewolf extends MoCEntityMob {
                 NTB = NTB.substring(0, 1);
                 String NTC = ".png";
 
-                return MoCreatures.proxy.getTexture(NTA + NTB + NTC);
+                return MoCreatures.getTexture(NTA + NTB + NTC);
             default:
-                return MoCreatures.proxy.getTexture("wolfbrown.png");
+                return MoCreatures.getTexture("wolfbrown.png");
         }
     }
 
@@ -154,8 +159,8 @@ public class MoCEntityWerewolf extends MoCEntityMob {
             setAttackTarget(null);
             return false;
         }
-        if (this.getType() == 4 && entityIn instanceof EntityLivingBase) {
-            ((EntityLivingBase) entityIn).setFire(10);
+        if (this.getType() == 4 && entityIn instanceof LivingEntity) {
+            ((LivingEntity) entityIn).setFire(10);
         }
         return super.attackEntityAsMob(entityIn);
     }
@@ -163,27 +168,27 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     @Override
     public boolean attackEntityFrom(DamageSource damagesource, float i) {
         Entity entity = damagesource.getTrueSource();
-        if (!getIsHumanForm() && (entity != null) && (entity instanceof EntityPlayer)) {
-            EntityPlayer entityplayer = (EntityPlayer) entity;
+        if (!getIsHumanForm() && (entity != null) && (entity instanceof PlayerEntity)) {
+            PlayerEntity entityplayer = (PlayerEntity) entity;
             ItemStack stack = entityplayer.getHeldItemMainhand();
             if (!stack.isEmpty()) {
                 i = 1F;
-                if (stack.getItem() == MoCItems.silversword) {
+                if (stack.getItem() == MoCItems.SILVERSWORD) {
                     i = 10F;
                 }
-                if (stack.getItem() instanceof ItemSword) {
-                    String swordMaterial = ((ItemSword) stack.getItem()).getToolMaterialName();
-                    String swordName = ((ItemSword) stack.getItem()).getUnlocalizedName();
+                if (stack.getItem() instanceof SwordItem) {
+                    String swordMaterial = ((SwordItem) stack.getItem()).getTier().toString(); //TODO: Figure out if this material check works
+                    String swordName = ((SwordItem) stack.getItem()).getName().toString();
                     if (swordMaterial.toLowerCase().contains("silver") || swordName.toLowerCase().contains("silver")) {
-                        i = ((ItemSword) stack.getItem()).getAttackDamage() * 3F;
+                        i = ((SwordItem) stack.getItem()).getAttackDamage() * 3F;
                     }
-                } else if (stack.getItem() instanceof ItemTool) {
-                    String toolMaterial = ((ItemTool) stack.getItem()).getToolMaterialName();
-                    String toolName = ((ItemTool) stack.getItem()).getUnlocalizedName();
+                } else if (stack.getItem() instanceof ToolItem) {
+                    String toolMaterial = ((ToolItem) stack.getItem()).getTier().toString();
+                    String toolName = ((ToolItem) stack.getItem()).getName().toString();
                     if (toolMaterial.toLowerCase().contains("silver") || toolName.toLowerCase().contains("silver")) {
-                        i = ((ItemSword) stack.getItem()).getAttackDamage() * 2F;
+                        i = ((SwordItem) stack.getItem()).getAttackDamage() * 2F;
                     }
-                } else if (stack.getItem().getUnlocalizedName().toLowerCase().contains("silver")) {
+                } else if (stack.getItem().getName().toString().toLowerCase().contains("silver")) {
                     i = 6F;
                 }
             }
@@ -324,12 +329,11 @@ public class MoCEntityWerewolf extends MoCEntityMob {
             if (this.transforming && (this.rand.nextInt(3) == 0)) {
                 this.tcounter++;
                 if ((this.tcounter % 2) == 0) {
-                    this.posX += 0.3D;
-                    this.posY += this.tcounter / 30;
+                    this.setPosition(this.getPosX()+0.3D, this.getPosY() + (this.tcounter/30), this.getPosZ());
                     attackEntityFrom(DamageSource.causeMobDamage(this), 1);
                 }
                 if ((this.tcounter % 2) != 0) {
-                    this.posX -= 0.3D;
+                    this.setPosition(this.getPosX()-0.3D, this.getPosY(), this.getPosZ());
                 }
                 if (this.tcounter == 10) {
                     MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_WEREWOLF_TRANSFORM);
@@ -342,7 +346,7 @@ public class MoCEntityWerewolf extends MoCEntityMob {
             }
             //so entity doesn't despawn that often
             if (this.rand.nextInt(300) == 0) {
-                this.idleTime -= 100 * this.world.getDifficulty().getDifficultyId();
+                this.idleTime -= 100 * this.world.getDifficulty().getId();
                 if (this.idleTime  < 0) {
                     this.idleTime  = 0;
                 }
@@ -354,9 +358,9 @@ public class MoCEntityWerewolf extends MoCEntityMob {
         if (this.deathTime > 0) {
             return;
         }
-        int i = MathHelper.floor(this.posX);
-        int j = MathHelper.floor(getEntityBoundingBox().minY) + 1;
-        int k = MathHelper.floor(this.posZ);
+        int i = MathHelper.floor(this.getPosX());
+        int j = MathHelper.floor(getBoundingBox().minY) + 1;
+        int k = MathHelper.floor(this.getPosZ());
         float f = 0.1F;
         for (int l = 0; l < 30; l++) {
             double d = i + this.world.rand.nextFloat();
@@ -374,7 +378,7 @@ public class MoCEntityWerewolf extends MoCEntityMob {
             d3 *= d7;
             d4 *= d7;
             d5 *= d7;
-            this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, (d + (i * 1.0D)) / 2D, (d1 + (j * 1.0D)) / 2D, (d2 + (k * 1.0D)) / 2D,
+            this.world.addParticle(ParticleTypes.EXPLOSION, (d + (i * 1.0D)) / 2D, (d1 + (j * 1.0D)) / 2D, (d2 + (k * 1.0D)) / 2D,
                     d3, d4, d5);
         }
 
@@ -382,25 +386,25 @@ public class MoCEntityWerewolf extends MoCEntityMob {
             setHumanForm(false);
             this.setHealth(40);
             this.transforming = false;
-            this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
+            this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
         } else {
             setHumanForm(true);
             this.setHealth(15);
             this.transforming = false;
-            this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+            this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
         }
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-        super.readEntityFromNBT(nbttagcompound);
+    public void readAdditional(CompoundNBT nbttagcompound) {
+        super.readAdditional(nbttagcompound);
         setHumanForm(nbttagcompound.getBoolean("HumanForm"));
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-        super.writeEntityToNBT(nbttagcompound);
-        nbttagcompound.setBoolean("HumanForm", getIsHumanForm());
+    public void writeAdditional(CompoundNBT nbttagcompound) {
+        super.writeAdditional(nbttagcompound);
+        nbttagcompound.putBoolean("HumanForm", getIsHumanForm());
     }
 
     @Override
@@ -415,10 +419,10 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     }
 
     @Override
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
+    public ILivingEntityData onInitialSpawn(World worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData livingdata, CompoundNBT dataTag) {
         if (getType() == 4) {
             this.isImmuneToFire = true;
         }
-        return super.onInitialSpawn(difficulty, livingdata);
+        return super.onInitialSpawn(worldIn, difficulty, reason, livingdata, dataTag);
     }
 }

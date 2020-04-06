@@ -37,6 +37,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
@@ -64,7 +65,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
 
     @Override
     public ResourceLocation getTexture() {
-        return MoCreatures.proxy.getTexture(this.texture);
+        return MoCreatures.getTexture(this.texture);
     }
 
     @Override
@@ -344,7 +345,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     public void getMyOwnPath(Entity entity, float f) {
-        Path pathentity = this.getNavigator().getPathToEntityLiving(entity);
+        Path pathentity = this.getNavigator().getPathToEntity(entity, 0);
         if (pathentity != null) {
             this.getNavigator().setPath(pathentity, 1D);
         }
@@ -360,7 +361,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
             if (list != null) {
                 for (int i = 0; i < list.size(); i++) {
                     Entity entity = list.get(i);
-                    if (entity.isDead) {
+                    if (!entity.isAlive()) {
                         continue;
                     }
                     entity.onCollideWithPlayer(entityplayer);
@@ -373,16 +374,16 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
                     }
                 }
             }
-            if (entityplayer.isSneaking()) {
+            if (entityplayer.isCrouching()) {
                 if (!this.world.isRemote) {
-                    entityplayer.dismountRidingEntity();
+                    entityplayer.stopRiding();
                 }
             }
         }
     }
 
     protected void getPathOrWalkableBlock(Entity entity, float f) {
-        Path pathentity = this.navigator.getPathToPos(entity.getPosition());
+        Path pathentity = this.navigator.getPathToPos(entity.getPosition(), 0);
         if ((pathentity == null) && (f > 8F)) {
             int i = MathHelper.floor(entity.getPosX()) - 2;
             int j = MathHelper.floor(entity.getPosZ()) - 2;
@@ -469,23 +470,23 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-        super.writeEntityToNBT(nbttagcompound);
+    public void writeAdditional(CompoundNBT nbttagcompound) {
+        super.writeAdditional(nbttagcompound);
         nbttagcompound = MoCTools.getEntityData(this);
-        nbttagcompound.setBoolean("Adult", getIsAdult());
-        nbttagcompound.setInteger("Edad", getEdad());
-        nbttagcompound.setString("Name", getPetName());
-        nbttagcompound.setInteger("TypeInt", getType());
+        nbttagcompound.putBoolean("Adult", getIsAdult());
+        nbttagcompound.putInt("Edad", getEdad());
+        nbttagcompound.putString("Name", getPetName());
+        nbttagcompound.putInt("TypeInt", getType());
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-        super.readEntityFromNBT(nbttagcompound);
+    public void readAdditional(CompoundNBT nbttagcompound) {
+        super.readAdditional(nbttagcompound);
         nbttagcompound = MoCTools.getEntityData(this);
         setAdult(nbttagcompound.getBoolean("Adult"));
-        setEdad(nbttagcompound.getInteger("Edad"));
+        setEdad(nbttagcompound.getInt("Edad"));
         setPetName(nbttagcompound.getString("Name"));
-        setType(nbttagcompound.getInteger("TypeInt"));
+        setType(nbttagcompound.getInt("TypeInt"));
     }
 
     /**
@@ -593,7 +594,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     public void repelMobs(Entity entity1, Double dist, World world) {
-        List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(entity1, entity1.getEntityBoundingBox().expand(dist, 4D, dist));
+        List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(entity1, entity1.getBoundingBox().expand(dist, 4D, dist));
         for (int i = 0; i < list.size(); i++) {
             Entity entity = list.get(i);
             if (!(entity instanceof MobEntity)) {
@@ -700,7 +701,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
                 || (this.getIsTamed() && (entity instanceof MoCEntityAnimal && ((MoCEntityAnimal) entity).getIsTamed()))
                 || ((entity instanceof WolfEntity) && !(MoCreatures.proxy.attackWolves))
                 || ((entity instanceof MoCEntityHorse) && !(MoCreatures.proxy.attackHorses))
-                || (entity.width > this.width && entity.height > this.height) || (entity instanceof MoCEntityEgg));
+                || (entity.getWidth() > this.getWidth() && entity.getHeight() > this.getHeight()) || (entity instanceof MoCEntityEgg));
     }
 
     @Override
@@ -732,7 +733,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
      * @return
      */
     public boolean entitiesToInclude(Entity entity) {
-        return ((entity instanceof LivingEntity) && ((entity.width >= 0.5D) || (entity.height >= 0.5D)));
+        return ((entity instanceof LivingEntity) && ((entity.getWidth() >= 0.5D) || (entity.getHeight() >= 0.5D)));
     }
 
     @Override
@@ -856,24 +857,22 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     @Override
-    public void travel(float strafe, float vertical, float forward) {
+    public void travel(Vec3d movement) {
         if (!getIsFlying()) {
-            super.travel(strafe, vertical, forward);
+            super.travel(movement));
             return;
         }
-        this.moveEntityWithHeadingFlying(strafe, vertical, forward);
+        this.moveEntityWithHeadingFlying((float)movement.x, (float)movement.y, (float)movement.z);
     }
 
     public void moveEntityWithHeadingFlying(float strafe, float vertical, float forward) {
         if (this.isServerWorld()) {
 
-            this.moveRelative(strafe, vertical, forward, 0.1F);
-            this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
-            this.motionX *= 0.8999999761581421D;
-            this.motionY *= 0.8999999761581421D;
-            this.motionZ *= 0.8999999761581421D;
+            this.moveRelative(0.1F, new Vec3d(strafe, vertical, forward));
+            this.move(MoverType.SELF, this.getMotion());
+            this.getMotion().scale(0.8999999761581421D);
         } else {
-            super.travel(strafe, vertical, forward);
+            super.travel(new Vec3d(strafe, vertical, forward));
         }
     }
 

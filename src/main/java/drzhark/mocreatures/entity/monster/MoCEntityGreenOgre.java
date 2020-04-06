@@ -15,7 +15,7 @@ public class MoCEntityGreenOgre extends MoCEntityOgre{
 
     @Override
     public ResourceLocation getTexture() {
-        return MoCreatures.proxy.getTexture("ogregreen.png");
+        return MoCreatures.getTexture("ogregreen.png");
     }
     
     /**

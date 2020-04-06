@@ -17,14 +17,14 @@ public class MoCEntityFlameWraith extends MoCEntityWraith implements IMob {
     public MoCEntityFlameWraith(World world) {
         super(world);
         this.texture = "flamewraith.png";
-        setSize(1.5F, 1.5F);
+        //setSize(1.5F, 1.5F);
         //this.isImmuneToFire = true;
         this.burningTime = 30;
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
+    protected void registerAttributes() {
+        super.registerAttributes();
         getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
     }
 
@@ -56,7 +56,7 @@ public class MoCEntityFlameWraith extends MoCEntityWraith implements IMob {
 
     @Override
     protected void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
-        if (!this.world.isRemote && !this.world.provider.doesWaterVaporize()) {
+        if (!this.world.isRemote && !this.world.getDimension().doesWaterVaporize()) {
             entityLivingBaseIn.setFire(this.burningTime);
         }
         super.applyEnchantments(entityLivingBaseIn, entityIn);
