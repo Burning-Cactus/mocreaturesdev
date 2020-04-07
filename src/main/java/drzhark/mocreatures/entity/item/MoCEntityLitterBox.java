@@ -4,27 +4,30 @@ import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.monster.MoCEntityOgre;
 import drzhark.mocreatures.init.MoCItems;
-import net.minecraft.entity.Entity;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.*;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.*;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -41,18 +44,18 @@ public class MoCEntityLitterBox extends LivingEntity {
     }
 
     public ResourceLocation getTexture() {
-        return MoCreatures.proxy.getTexture("litterbox.png");
+        return MoCreatures.getTexture("litterbox.png");
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D); // setMaxHealth
+    protected void registerAttributes() {
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D); // setMaxHealth
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(PICKED_UP, Boolean.valueOf(false));
         this.dataManager.register(USED_LITTER, Boolean.valueOf(false));
     }
@@ -79,12 +82,17 @@ public class MoCEntityLitterBox extends LivingEntity {
 
     @Override
     public boolean canBeCollidedWith() {
-        return !this.isDead;
+        return this.isAlive();
     }
 
     @Override
     public boolean canBePushed() {
-        return !this.isDead;
+        return this.isAlive();
+    }
+
+    @Override
+    public HandSide getPrimaryHand() {
+        return null;
     }
 
     @Override
@@ -108,9 +116,9 @@ public class MoCEntityLitterBox extends LivingEntity {
 
     @Override
     public double getYOffset() {
-        if (this.getRidingEntity() instanceof EntityPlayer)
+        if (this.getRidingEntity() instanceof PlayerEntity)
         {
-            return ((EntityPlayer) this.getRidingEntity()).isSneaking() ? 0.25 : 0.5F;
+            return ((PlayerEntity) this.getRidingEntity()).isCrouching() ? 0.25 : 0.5F;
         }
         return super.getYOffset();
 
@@ -121,11 +129,26 @@ public class MoCEntityLitterBox extends LivingEntity {
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public Iterable<ItemStack> getArmorInventoryList() {
+        return null;
+    }
+
+    @Override
+    public ItemStack getItemStackFromSlot(EquipmentSlotType slotIn) {
+        return null;
+    }
+
+    @Override
+    public void setItemStackToSlot(EquipmentSlotType slotIn, ItemStack stack) {
+
+    }
+
+    @Override
+    public boolean processInteract(PlayerEntity player, Hand hand) {
         final ItemStack stack = player.getHeldItem(hand);
         if (!stack.isEmpty() && ((stack.getItem() == Items.STONE_PICKAXE) || (stack.getItem() == Items.WOODEN_PICKAXE)
                         || (stack.getItem() == Items.IRON_PICKAXE) || (stack.getItem() == Items.GOLDEN_PICKAXE) || (stack.getItem() == Items.DIAMOND_PICKAXE))) {
-            player.inventory.addItemStackToInventory(new ItemStack(MoCItems.litterbox));
+            player.inventory.addItemStackToInventory(new ItemStack(MoCItems.LITTERBOX));
             this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, (((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F) + 1.0F) * 2.0F);
             setDead();
             return true;
@@ -163,24 +186,24 @@ public class MoCEntityLitterBox extends LivingEntity {
     }
 
     @Override
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
         if (this.onGround) {
             setPickedUp(false);
         }
         if (getUsedLitter() && !this.world.isRemote) {
             this.littertime++;
-            this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().expand(12D, 4D, 12D));
+            this.world.addParticle(ParticleTypes.SMOKE, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
+            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(12D, 4D, 12D));
             for (int i = 0; i < list.size(); i++) {
                 Entity entity = list.get(i);
-                if (!(entity instanceof EntityMob)) {
+                if (!(entity instanceof MobEntity)) {
                     continue;
                 }
-                EntityMob entitymob = (EntityMob) entity;
+                MobEntity entitymob = (MobEntity) entity;
                 entitymob.setAttackTarget(this);
-                if (entitymob instanceof EntityCreeper) {
-                    ((EntityCreeper) entitymob).setCreeperState(-1);
+                if (entitymob instanceof CreeperEntity) {
+                    ((CreeperEntity) entitymob).setCreeperState(-1);
                 }
                 if (entitymob instanceof MoCEntityOgre) {
                     ((MoCEntityOgre) entitymob).smashCounter = 0;
@@ -193,17 +216,17 @@ public class MoCEntityLitterBox extends LivingEntity {
             this.littertime = 0;
         }
         
-        if (this.isRiding()) MoCTools.dismountSneakingPlayer(this);
+        if (this.isPassenger()) MoCTools.dismountSneakingPlayer(this);
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
+    public void writeAdditional(CompoundNBT nbttagcompound) {
         nbttagcompound = MoCTools.getEntityData(this);
-        nbttagcompound.setBoolean("UsedLitter", getUsedLitter());
+        nbttagcompound.putBoolean("UsedLitter", getUsedLitter());
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
+    public void readAdditional(CompoundNBT nbttagcompound) {
         nbttagcompound = MoCTools.getEntityData(this);
         setUsedLitter(nbttagcompound.getBoolean("UsedLitter"));
     }

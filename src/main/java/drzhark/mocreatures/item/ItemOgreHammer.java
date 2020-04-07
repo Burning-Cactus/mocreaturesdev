@@ -27,27 +27,27 @@ public class ItemOgreHammer extends MoCItem {
     /**
      * Returns True is the item is renderer in full 3D when hold.
      */
-    @Override
-    public boolean isFull3D() {
-        return true;
-    }
+//    @Override
+//    public boolean isFull3D() {
+//        return true;
+//    }
 
     /**
      * returns the action that specifies what animation to play when the items
-     * is being used
+     * is being used TODO: Make item use animation work
      */
-    @Override
-    public EnumAction getItemUseAction(ItemStack par1ItemStack) {
-        return EnumAction.BLOCK;
-    }
+//    @Override
+//    public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+//        return EnumAction.BLOCK;
+//    }
 
     /**
      * How long it takes to use or consume an item
      */
-    @Override
-    public int getMaxItemUseDuration(ItemStack par1ItemStack) {
-        return 72000;
-    }
+//    @Override
+//    public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+//        return 72000;
+//    }
 
     /**
      * Called whenever this item is equipped and the right mouse button is
@@ -117,7 +117,7 @@ public class ItemOgreHammer extends MoCItem {
             Item itemTemp = slotStack.getItem();
             int metadata = slotStack.getDamage();
             if (itemTemp instanceof BlockItem) {
-                if (remove && !player.getCapability(/*Creative?*/)) { //TODO: Check if the player is in creative
+                if (remove && !player.isCreative()) {
                     slotStack.shrink(1);
                     if (slotStack.isEmpty()) {
                         player.inventory.setInventorySlotContents(y, ItemStack.EMPTY);

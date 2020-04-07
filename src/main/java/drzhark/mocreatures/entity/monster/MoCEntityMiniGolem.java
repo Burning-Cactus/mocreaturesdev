@@ -52,8 +52,8 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(ANGRY, Boolean.valueOf(false));
         this.dataManager.register(HAS_ROCK, Boolean.valueOf(false)); 
     }

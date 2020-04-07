@@ -40,7 +40,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -63,8 +66,8 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(OWNER_UNIQUE_ID, Optional.<UUID>absent());
         this.dataManager.register(PET_ID, -1);
         this.dataManager.register(TAMED, false);
@@ -139,7 +142,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
             if (!this.world.isRemote) {
                 // Remove when client is updated
                 ((ServerPlayerEntity) player).sendAllContents(player.openContainer, player.openContainer.getInventory());
-                player.sendMessage(new TextComponentTranslation(TextFormatting.RED + "This pet does not belong to you."));
+                player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."));
             }
             return false;
         }
@@ -147,7 +150,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
         //if the player interacting is not the owner, do nothing!
         if (MoCreatures.proxy.enableOwnership && this.getOwnerId() != null
                 && !player.getUniqueID().equals(this.getOwnerId())) {
-            player.sendMessage(new TextComponentTranslation(TextFormatting.RED + "This pet does not belong to you."));
+            player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."));
             return false;
         }
 
@@ -216,7 +219,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
         }
 
         //removes owner, any other player can claim it by renaming it
-        if (!stack.isEmpty() && getIsTamed() && ((stack.getItem() == MoCItems.scrollOfSale))) {
+        if (!stack.isEmpty() && getIsTamed() && ((stack.getItem() == MoCItems.SCROLLOFSALE))) {
             stack.shrink(1);
             if (stack.isEmpty()) {
                 player.setHeldItem(hand, ItemStack.EMPTY);
@@ -312,7 +315,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
 
     @Override
     public void writeAdditional(CompoundNBT nbttagcompound) {
-        super.writeEntityToNBT(nbttagcompound);
+        super.writeAdditional(nbttagcompound);
         nbttagcompound.putBoolean("Tamed", getIsTamed());
         if (this.getOwnerId() != null) {
             nbttagcompound.putString("OwnerUUID", this.getOwnerId().toString());
@@ -326,8 +329,8 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
     }
 
     @Override
-    public void readEntityFromNBT(CompoundNBT nbttagcompound) {
-        super.readEntityFromNBT(nbttagcompound);
+    public void readAdditional(CompoundNBT nbttagcompound) {
+        super.readAdditional(nbttagcompound);
         setTamed(nbttagcompound.getBoolean("Tamed"));
         String s = "";
         if (nbttagcompound.hasKey("OwnerUUID", 8))
@@ -373,7 +376,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
 
     // Override to fix heart animation on clients
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void handleStatusUpdate(byte par1) {
         if (par1 == 2) {
             this.limbSwingAmount = 1.5F;
@@ -441,8 +444,8 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
     }
     
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
         //breeding code
         if (!this.world.isRemote && readytoBreed() && this.rand.nextInt(100) == 0) {
             doBreeding();
@@ -497,8 +500,8 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
 
             setGestationTime(getGestationTime()+1);
             if (!this.world.isRemote) {
-                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
-                        new TargetPoint(this.world.provider.getDimensionType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+                MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
+                        new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
 
             if (getGestationTime() <= 50) {

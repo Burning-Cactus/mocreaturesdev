@@ -21,6 +21,7 @@ import net.minecraft.item.IItemTier;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTier;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.potion.PotionEffect;
@@ -92,7 +93,7 @@ public class MoCItemWeapon extends MoCItem {
         if (this.breakable) {
             i = 10;
         }
-        par1ItemStack.damageItem(i, attacker);
+        par1ItemStack.damageItem(i, attacker, ); //TODO: Add lambda function the way vanilla does it to send break animation
         int potionTime = 100;
         switch (this.specialWeaponType) {
             case 1: //poison
@@ -200,19 +201,19 @@ public class MoCItemWeapon extends MoCItem {
      * @param toRepair The ItemStack to be repaired
      * @param repair The ItemStack that should repair this Item (leather for leather armor, etc.)
      */
-    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        ItemStack mat = this.material.getRepairItemStack();
-        if (mat != null && net.minecraftforge.oredict.OreDictionary.itemMatches(mat, repair, false))
-            return true;
-        return super.getIsRepairable(toRepair, repair);
-    }
+//    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+//        Ingredient mat = this.material.getRepairMaterial();
+//        if (mat != null && net.minecraftforge.oredict.OreDictionary.itemMatches(mat, repair, false))
+//            return true;
+//        return super.getIsRepairable(toRepair, repair);
+//    } TODO: Figure out a replacement for the oredictionary
 
     /**
      * Gets a map of item attribute modifiers, used by ItemSword to increase hit damage.
      */
     @SuppressWarnings("deprecation")
-    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EquipmentSlotType equipmentSlot) {
-        Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
+        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(equipmentSlot);
         if (equipmentSlot == EquipmentSlotType.MAINHAND) {
             multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier",
                     (double) this.attackDamage, 0));

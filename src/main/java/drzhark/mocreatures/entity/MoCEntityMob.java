@@ -52,8 +52,8 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
     protected static final DataParameter<Integer> AGE = EntityDataManager.<Integer>createKey(CreatureEntity.class, DataSerializers.VARINT);
     protected static final DataParameter<String> NAME_STR = EntityDataManager.<String>createKey(CreatureEntity.class, DataSerializers.STRING);
     
-    public MoCEntityMob(World world) {
-        super(new EntityType<? extends MoCEntityMob>, world);
+    public MoCEntityMob(EntityType<? extends MoCEntityMob> type, World world) {
+        super(type, world);
         this.texture = "blank.jpg";
         this.moveController = new EntityAIMoverHelperMoC(this);
         this.navigatorWater = new SwimmerPathNavigator(this, world);
@@ -94,8 +94,8 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(ADULT, Boolean.valueOf(false));
         this.dataManager.register(TYPE, Integer.valueOf(0));
         this.dataManager.register(AGE, Integer.valueOf(45));
@@ -167,7 +167,7 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
     }
 
     public boolean getCanSpawnHereLiving() {
-        return this.world.checkNoEntityCollision(this.getBoundingBox())
+        return this.world.checkNoEntityCollision(this)
                 && this.world.getCollisionShapes(this, this.getBoundingBox()).count() == 0
                 && !this.world.containsAnyLiquid(this.getBoundingBox());
     }
@@ -238,7 +238,7 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
     }
 
     @Override
-    public void onLivingUpdate() {
+    public void livingTick() {
         if (!this.world.isRemote) {
 
             /*if (forceUpdates() && this.rand.nextInt(1000) == 0) {
@@ -274,7 +274,7 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
         }
 
         this.getNavigator().tick();
-        super.tick();
+        super.livingTick();
     }
 
     protected int getMaxEdad() {
@@ -342,12 +342,12 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
     }
 
     @Override
-    public void travel(float strafe, float vertical, float forward) {
+    public void travel(Vec3d motion) {
         if (!isFlyer()) {
-            super.travel(strafe, vertical, forward);
+            super.travel(motion);
             return;
         }
-        this.moveEntityWithHeadingFlyer(strafe, vertical, forward);
+        this.moveEntityWithHeadingFlyer((float)motion.x, (float)motion.y, (float)motion.z);
     }
 
     public void moveEntityWithHeadingFlyer(float strafe, float vertical, float forward) {
@@ -592,10 +592,10 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
         }
     }
 
-    @Override
-    public String getClazzString() {
-        return EntityList.getEntityString(this);
-    }
+//    @Override
+//    public String getClazzString() {
+//        return EntityList.getEntityString(this);
+//    }
 
     @Override
     public boolean getIsGhost() {

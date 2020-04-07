@@ -135,12 +135,12 @@ public class MoCDespawner {
             if (y >= 256) {
                 y = 255;
             }
-            i = getLightFromNeighbors(world.getChunkFromChunkCoords(x >> 4, z >> 4), x & 15, y, z & 15);
+            i = getLightFromNeighbors(world.getChunk(x >> 4, z >> 4), x & 15, y, z & 15);
         }
         if (i > lightLevel) {
             if (debug) {
                 MoCLog.logger.info("Denied spawn! for " + entity.getName() + ". LightLevel over threshold of " + lightLevel
-                        + " in dimension " + world.provider.getDimensionType().getId() + " at coords " + x + ", " + y + ", " + z);
+                        + " in dimension " + world.dimension.getType().getId() + " at coords " + x + ", " + y + ", " + z);
             }
         }
         return i <= lightLevel;

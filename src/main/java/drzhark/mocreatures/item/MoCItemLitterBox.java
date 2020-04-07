@@ -1,14 +1,11 @@
 package drzhark.mocreatures.item;
 
 import drzhark.mocreatures.entity.item.MoCEntityLitterBox;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
@@ -26,9 +23,7 @@ public class MoCItemLitterBox extends MoCItem {
             MoCEntityLitterBox entitylitterbox = new MoCEntityLitterBox(world);
             entitylitterbox.setPosition(player.getPosX(), player.getPosY(), player.getPosZ());
             player.world.spawnEntity(entitylitterbox);
-            entitylitterbox.motionY += world.rand.nextFloat() * 0.05F;
-            entitylitterbox.motionX += (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F;
-            entitylitterbox.motionZ += (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F;
+            entitylitterbox.getMotion().add((world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F, world.rand.nextFloat() * 0.05F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F);
         }
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
     }

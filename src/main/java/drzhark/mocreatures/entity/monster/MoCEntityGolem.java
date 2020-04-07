@@ -101,8 +101,8 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         initGolemCubes();
         this.dataManager.register(GOLEM_STATE, Integer.valueOf(0)); // 0 spawned / 1 summoning rocks /2 has enemy /3 half life (harder) /4 dying
     }
@@ -116,8 +116,8 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
 
         if (!this.world.isRemote) {
             if (getGolemState() == 0) //just spawned

@@ -92,5 +92,5 @@ public interface IMoCEntity {
 
     boolean getIsFlying();
 
-    String getClazzString();
+//    String getClazzString();
 }

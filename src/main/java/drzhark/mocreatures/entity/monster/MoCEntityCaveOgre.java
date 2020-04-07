@@ -1,6 +1,7 @@
 package drzhark.mocreatures.entity.monster;
 
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
@@ -16,7 +17,7 @@ public class MoCEntityCaveOgre extends MoCEntityOgre{
 
     @Override
     public ResourceLocation getTexture() {
-        return MoCreatures.proxy.getTexture("ogreblue.png");
+        return MoCreatures.getTexture("ogreblue.png");
     }
     
     /**
@@ -25,7 +26,7 @@ public class MoCEntityCaveOgre extends MoCEntityOgre{
      */
     @Override
     public float getDestroyForce() {
-            return MoCreatures.proxy.caveOgreStrength;
+            return MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.caveOgreStrength.get().floatValue();
     }
     
     @Override

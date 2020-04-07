@@ -3,17 +3,22 @@ package drzhark.mocreatures.item;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.init.MoCSoundEvents;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -46,15 +51,15 @@ public class ItemStaffTeleport extends MoCItem {
      * pressed. Args: itemStack, world, entityPlayer
      */
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand) {
         final ItemStack stack = player.getHeldItem(hand);
         if (player.getRidingEntity() != null || player.isBeingRidden()) {
-            return ActionResult.newResult(EnumActionResult.PASS, stack);
+            return ActionResult.newResult(ActionResultType.PASS, stack);
         }
 
-        double coordY = player.posY + player.getEyeHeight();
-        double coordZ = player.posZ;
-        double coordX = player.posX;
+        double coordY = player.getPosY() + player.getEyeHeight();
+        double coordZ = player.getPosZ();
+        double coordX = player.getPosX();
         for (int x = 4; x < 128; x++) {
             double newPosY = coordY - Math.cos((player.rotationPitch - 90F) / 57.29578F) * x;
             double newPosX =
@@ -64,7 +69,7 @@ public class ItemStaffTeleport extends MoCItem {
                     coordZ + Math.sin((MoCTools.realAngle(player.rotationYaw - 90F) / 57.29578F))
                             * (Math.sin((player.rotationPitch - 90F) / 57.29578F) * x);
             BlockPos pos = new BlockPos(MathHelper.floor(newPosX), MathHelper.floor(newPosY), MathHelper.floor(newPosZ));
-            IBlockState blockstate = player.world.getBlockState(pos);
+            BlockState blockstate = player.world.getBlockState(pos);
             if (blockstate.getBlock() != Blocks.AIR) {
                 newPosY = coordY - Math.cos((player.rotationPitch - 90F) / 57.29578F) * (x - 1);
                 newPosX =
@@ -75,7 +80,7 @@ public class ItemStaffTeleport extends MoCItem {
                                 * (Math.sin((player.rotationPitch - 90F) / 57.29578F) * (x - 1));
 
                 if (!worldIn.isRemote) {
-                    EntityPlayerMP playerMP = (EntityPlayerMP) player;
+                    ServerPlayerEntity playerMP = (ServerPlayerEntity) player;
                     playerMP.connection.setPlayerLocation(newPosX, newPosY, newPosZ, player.rotationYaw,
                             player.rotationPitch);
                     MoCTools.playCustomSound(player, MoCSoundEvents.ENTITY_GENERIC_MAGIC_APPEAR);
@@ -84,12 +89,12 @@ public class ItemStaffTeleport extends MoCItem {
                // player.setItemInUse(stack, 200);
                 stack.damageItem(1, player);
 
-                return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+                return ActionResult.newResult(ActionResultType.SUCCESS, stack);
             }
         }
 
         //player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
-        return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+        return ActionResult.newResult(ActionResultType.SUCCESS, stack);
     }
 
     public int getMaxItemUseDuration(ItemStack stack)

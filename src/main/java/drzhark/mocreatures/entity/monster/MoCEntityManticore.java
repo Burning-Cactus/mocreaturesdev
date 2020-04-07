@@ -69,7 +69,7 @@ public class MoCEntityManticore extends MoCEntityMob {
 
     @Override
     public boolean checkSpawningBiome() {
-        if (this.world.provider.doesWaterVaporize()) {
+        if (this.world.dimension.doesWaterVaporize()) {
             setType(1);
             this.isImmuneToFire = true;
             return true;
@@ -93,15 +93,15 @@ public class MoCEntityManticore extends MoCEntityMob {
     public ResourceLocation getTexture() {
         switch (getType()) {
             case 1:
-                return MoCreatures.proxy.getTexture("bcmanticore.png");
+                return MoCreatures.getTexture("bcmanticore.png");
             case 2:
-                return MoCreatures.proxy.getTexture("bcmanticoredark.png");
+                return MoCreatures.getTexture("bcmanticoredark.png");
             case 3:
-                return MoCreatures.proxy.getTexture("bcmanticoreblue.png");
+                return MoCreatures.getTexture("bcmanticoreblue.png");
             case 4:
-                return MoCreatures.proxy.getTexture("bcmanticoregreen.png");
+                return MoCreatures.getTexture("bcmanticoregreen.png");
             default:
-                return MoCreatures.proxy.getTexture("bcmanticoregreen.png");
+                return MoCreatures.getTexture("bcmanticoregreen.png");
         }
     }
 
@@ -347,7 +347,7 @@ public class MoCEntityManticore extends MoCEntityMob {
 
             } else if (getType() == 1)// red
             {
-                if (flag && !this.world.isRemote && !this.world.provider.doesWaterVaporize()) {
+                if (flag && !this.world.isRemote && !this.world.dimension.doesWaterVaporize()) {
                     MoCreatures.burnPlayer((PlayerEntity) entityIn);
                     ((LivingEntity) entityIn).setFire(15);
                 }

@@ -71,8 +71,8 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(IS_HUMAN, Boolean.valueOf(false));
         this.dataManager.register(IS_HUNCHED, Boolean.valueOf(false));
     }

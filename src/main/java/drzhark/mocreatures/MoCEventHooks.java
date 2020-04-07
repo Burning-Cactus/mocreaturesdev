@@ -14,6 +14,7 @@ import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
@@ -22,6 +23,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -31,7 +33,7 @@ public class MoCEventHooks {
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
         // if overworld has been deleted or unloaded, reset our flag
-        if (event.getWorld().provider.getDimensionType().getId() == 0) {
+        if (event.getWorld().getDimension().getType().getId() == 0) {
             MoCreatures.proxy.worldInitDone = false;
         }
     }
@@ -100,19 +102,19 @@ public class MoCEventHooks {
                 }
             }
             // Others
-            NBTTagCompound nbt = new NBTTagCompound();
-            event.getEntityLiving().writeToNBT(nbt);
+            CompoundNBT nbt = new CompoundNBT();
+            event.getEntityLiving().writeAdditional(nbt);
             if (nbt != null) {
-                if (nbt.hasKey("Owner") && !nbt.getString("Owner").equals("")) {
+                if (nbt.contains("Owner") && !nbt.getString("Owner").equals("")) {
                     return; // ignore
                 }
-                if (nbt.hasKey("Tamed") && nbt.getBoolean("Tamed") == true) {
+                if (nbt.contains("Tamed") && nbt.getBoolean("Tamed") == true) {
                     return; // ignore
                 }
             }
             // Deny Rest
             if (event.getEntityLiving().getIdleTime() > 600) {
-                event.setResult(Result.ALLOW);
+                event.setResult(Event.Result.ALLOW);
             }
 
             if (MoCreatures.proxy.debug) {

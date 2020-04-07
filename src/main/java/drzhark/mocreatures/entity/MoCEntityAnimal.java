@@ -43,6 +43,7 @@ import net.minecraft.pathfinding.SwimmerPathNavigator;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -123,8 +124,8 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(ADULT, false);
         this.dataManager.register(TYPE, 0);
         this.dataManager.register(AGE, 45);
@@ -305,7 +306,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
      */
     protected LivingEntity getBoogey(double d) {
         LivingEntity entityliving = null;
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().expand(d, 4D, d));
+        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(d, 4D, d));
         for (int i = 0; i < list.size(); i++) {
             Entity entity = list.get(i);
             if (entitiesToInclude(entity)) {
@@ -362,7 +363,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
 
         }
 
-        if (this.canRidePlayer() && this.isRiding()) MoCTools.dismountSneakingPlayer(this);
+        if (this.canRidePlayer() && this.isPassenger()) MoCTools.dismountSneakingPlayer(this);
         this.resetInLove(); 
         super.tick();
     }
@@ -644,7 +645,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
     }
 
     public boolean getCanSpawnHereJungle() {
-        if (this.world.checkNoEntityCollision(this.getBoundingBox())
+        if (this.world.checkNoEntityCollision(this) //Original: this.getBoundingBox() instead of this
                 && this.world.getCollisionShapes(this, this.getBoundingBox()).isEmpty()) {
             return true;
         }
@@ -777,7 +778,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
             }
             if (!this.world.isRemote && this.rand.nextInt(50) == 0) {
                 passenger.getMotion().add(0, 0.9D, -0.3D);
-                passenger.dismountRidingEntity();
+                passenger.stopRiding();
             }
             if (this.onGround) {
                 setIsJumping(false);
@@ -1287,10 +1288,10 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
         return false;
     }
 
-    @Override
-    public String getClazzString() {
-        return EntityList.getEntityString(this);
-    }
+//    @Override
+//    public String getClazzString() {
+//        return EntityList.getEntityString(this);
+//    }
 
     @Override
     public boolean getIsGhost() {

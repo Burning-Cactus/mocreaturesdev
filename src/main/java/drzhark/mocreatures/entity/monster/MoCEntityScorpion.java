@@ -108,8 +108,8 @@ public class MoCEntityScorpion extends MoCEntityMob {
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(IS_PICKED, Boolean.valueOf(false));
         this.dataManager.register(HAS_BABIES, Boolean.valueOf(false)); 
     }
@@ -172,7 +172,7 @@ public class MoCEntityScorpion extends MoCEntityMob {
     }
 
     @Override
-    public void onLivingUpdate() {
+    public void livingTick() {
 
         if (!this.onGround && (this.getRidingEntity() != null)) {
             this.rotationYaw = this.getRidingEntity().rotationYaw;
@@ -217,7 +217,7 @@ public class MoCEntityScorpion extends MoCEntityMob {
                 setPoisoning(false);
             }
         }
-        super.onLivingUpdate();
+        super.livingTick();
     }
 
     @Override

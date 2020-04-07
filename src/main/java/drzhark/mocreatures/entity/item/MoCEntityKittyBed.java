@@ -10,16 +10,19 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
+import net.minecraft.util.*;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -49,18 +52,18 @@ public class MoCEntityKittyBed extends LivingEntity {
     }
 
     public ResourceLocation getTexture() {
-        return MoCreatures.proxy.getTexture("fullkittybed.png");
+        return MoCreatures.getTexture("fullkittybed.png");
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D); // setMaxHealth
+    protected void registerAttributes() {
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D); // setMaxHealth
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(HAS_MILK, Boolean.valueOf(false));
         this.dataManager.register(HAS_FOOD, Boolean.valueOf(false));
         this.dataManager.register(PICKED_UP, Boolean.valueOf(false));
@@ -106,12 +109,17 @@ public class MoCEntityKittyBed extends LivingEntity {
 
     @Override
     public boolean canBeCollidedWith() {
-        return !this.isDead;
+        return this.isAlive();
     }
 
     @Override
     public boolean canBePushed() {
-        return !this.isDead;
+        return this.isAlive();
+    }
+
+    @Override
+    public HandSide getPrimaryHand() {
+        return null;
     }
 
     @Override
@@ -126,8 +134,8 @@ public class MoCEntityKittyBed extends LivingEntity {
 
     @Override
     public boolean canEntityBeSeen(Entity entity) {
-        return this.world.rayTraceBlocks(new Vec3d(this.posX, this.posY + getEyeHeight(), this.posZ),
-                new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)) == null;
+        return this.world.rayTraceBlocks(new Vec3d(this.getPosX(), this.getPosY() + getEyeHeight(), this.getPosZ()),
+                new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ())) == null;
     }
 
     @Override
@@ -141,9 +149,9 @@ public class MoCEntityKittyBed extends LivingEntity {
 
     @Override
     public double getYOffset() {
-        if (this.getRidingEntity() instanceof EntityPlayer)
+        if (this.getRidingEntity() instanceof PlayerEntity)
         {
-            return ((EntityPlayer) this.getRidingEntity()).isSneaking() ? 0.25 : 0.5F;
+            return ((PlayerEntity) this.getRidingEntity()).isCrouching() ? 0.25 : 0.5F;
         }
 
         return super.getYOffset();
@@ -154,7 +162,22 @@ public class MoCEntityKittyBed extends LivingEntity {
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public Iterable<ItemStack> getArmorInventoryList() {
+        return null;
+    }
+
+    @Override
+    public ItemStack getItemStackFromSlot(EquipmentSlotType slotIn) {
+        return null;
+    }
+
+    @Override
+    public void setItemStackToSlot(EquipmentSlotType slotIn, ItemStack stack) {
+
+    }
+
+    @Override
+    public boolean processInteract(PlayerEntity player, Hand hand) {
         final ItemStack stack = player.getHeldItem(hand);
         if (!stack.isEmpty() && (stack.getItem() == Items.MILK_BUCKET)) {
             player.setHeldItem(hand, new ItemStack(Items.BUCKET, 1));
@@ -163,7 +186,7 @@ public class MoCEntityKittyBed extends LivingEntity {
             setHasFood(false);
             return true;
         }
-        if (!stack.isEmpty() && !getHasFood() && (stack.getItem() == MoCItems.petfood)) {
+        if (!stack.isEmpty() && !getHasFood() && (stack.getItem() == MoCItems.PETFOOD)) {
             stack.shrink(1);
             if (stack.isEmpty()) {
                 player.setHeldItem(hand, ItemStack.EMPTY);
@@ -176,7 +199,7 @@ public class MoCEntityKittyBed extends LivingEntity {
         if (!stack.isEmpty() && ((stack.getItem() == Items.STONE_PICKAXE) || (stack.getItem() == Items.WOODEN_PICKAXE)
                         || (stack.getItem() == Items.IRON_PICKAXE) || (stack.getItem() == Items.GOLDEN_PICKAXE) || (stack.getItem() == Items.DIAMOND_PICKAXE))) {
             final int color = getSheetColor();
-            player.inventory.addItemStackToInventory(new ItemStack(MoCItems.kittybed[color], 1));
+            player.inventory.addItemStackToInventory(new ItemStack(MoCItems.KITTYBED[color], 1));
             this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, (((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F) + 1.0F) * 2.0F);
             setDead();
             return true;
@@ -203,8 +226,8 @@ public class MoCEntityKittyBed extends LivingEntity {
     }
 
     @Override
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
         if (this.onGround) {
             setPickedUp(false);
         }
@@ -216,31 +239,31 @@ public class MoCEntityKittyBed extends LivingEntity {
                 setHasFood(false);
             }
         }
-        if (this.isRiding()) MoCTools.dismountSneakingPlayer(this);
+        if (this.isPassenger()) MoCTools.dismountSneakingPlayer(this);
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
+    public void readAdditional(CompoundNBT nbttagcompound) {
         setHasMilk(nbttagcompound.getBoolean("HasMilk"));
-        setSheetColor(nbttagcompound.getInteger("SheetColour"));
+        setSheetColor(nbttagcompound.getInt("SheetColour"));
         setHasFood(nbttagcompound.getBoolean("HasFood"));
         this.milklevel = nbttagcompound.getFloat("MilkLevel");
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-        nbttagcompound.setBoolean("HasMilk", getHasMilk());
-        nbttagcompound.setInteger("SheetColour", getSheetColor());
-        nbttagcompound.setBoolean("HasFood", getHasFood());
-        nbttagcompound.setFloat("MilkLevel", this.milklevel);
+    public void writeAdditional(CompoundNBT nbttagcompound) {
+        nbttagcompound.putBoolean("HasMilk", getHasMilk());
+        nbttagcompound.putInt("SheetColour", getSheetColor());
+        nbttagcompound.putBoolean("HasFood", getHasFood());
+        nbttagcompound.putFloat("MilkLevel", this.milklevel);
     }
 
     @Override
-    public void onLivingUpdate() {
+    public void livingTick() {
         this.moveStrafing = 0.0F;
         this.moveForward = 0.0F;
         this.randomYawVelocity = 0.0F;
-        super.onLivingUpdate();
+        super.livingTick();
     }
 
     @Override

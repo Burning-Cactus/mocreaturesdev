@@ -1,6 +1,7 @@
 package drzhark.mocreatures.entity.monster;
 
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.block.Blocks;
 import net.minecraft.init.Blocks;
@@ -27,7 +28,7 @@ public class MoCEntityFireOgre extends MoCEntityOgre{
     
     @Override
     public float getDestroyForce() {
-            return MoCreatures.proxy.fireOgreStrength;
+            return MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.fireOgreStrength.get().floatValue();
     }
     
     @Override

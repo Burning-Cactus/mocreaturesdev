@@ -8,7 +8,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Deprecated  //Replaced by MoCItemGroup
+@Deprecated  //Replaced by MoCItemGroup, only keeping it here for reference
 public class MoCCreativeTabs extends CreativeTabs {
 
     public MoCCreativeTabs(int length, String name) {

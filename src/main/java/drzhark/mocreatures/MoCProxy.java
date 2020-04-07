@@ -116,7 +116,7 @@ public class MoCProxy implements IProxy {
         this.readGlobalConfigValues();
     }
 
-    //----------------CONFIG INITIALIZATION
+    //----------------CONFIG INITIALIZATION    TODO: Move all configuration to MoCConfig and MoCreatures
     public void ConfigInit(FMLPreInitializationEvent event) {
         this.mocSettingsConfig =
                 new MoCConfiguration(new File(event.getSuggestedConfigurationFile().getParent(), "MoCreatures" + File.separator + "MoCSettings.cfg"));

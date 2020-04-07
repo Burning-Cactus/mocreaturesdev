@@ -3,52 +3,28 @@ package drzhark.mocreatures;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import drzhark.mocreatures.client.MoCClientProxy;
-import drzhark.mocreatures.client.MoCClientTickHandler;
-import drzhark.mocreatures.client.MoCCreativeTabs;
-import drzhark.mocreatures.client.handlers.MoCKeyHandler;
 import drzhark.mocreatures.client.renderer.texture.MoCTextures;
-import drzhark.mocreatures.command.CommandMoCPets;
-import drzhark.mocreatures.command.CommandMoCSpawn;
-import drzhark.mocreatures.command.CommandMoCTP;
 import drzhark.mocreatures.command.CommandMoCreatures;
-import drzhark.mocreatures.data.EntityDataWalker;
-import drzhark.mocreatures.dimension.WorldProviderWyvernEnd;
-import drzhark.mocreatures.init.MoCBlocks;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.network.MoCMessageHandler;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.util.IProxy;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.World;
-import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.ModDimension;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLCommonLaunchHandler;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -82,10 +58,23 @@ public class MoCreatures {
 
 
     public MoCreatures() {
+
+        {
+            final Pair<MoCConfig.ClientConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(MoCConfig.ClientConfig::new);
+            ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, specPair.getRight()); //Client
+            MoCConfig.CLIENT_CONFIG = specPair.getLeft();
+        }
+        {
+            final Pair<MoCConfig.CommonConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(MoCConfig.CommonConfig::new);
+            ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, specPair.getRight()); //Common
+            MoCConfig.COMMON_CONFIG = specPair.getLeft();
+        }
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
         bus.addListener(this::setup);
         bus.addListener(this::onServerStart);
+
+
 
     }
 

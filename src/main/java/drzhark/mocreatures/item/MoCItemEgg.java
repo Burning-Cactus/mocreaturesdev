@@ -7,6 +7,8 @@ import drzhark.mocreatures.entity.item.MoCEntityEgg;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
@@ -15,14 +17,15 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MoCItemEgg extends MoCItem {
 
-    public MoCItemEgg(String name) {
-        super(name);
-        this.maxStackSize = 16;
+    public MoCItemEgg(Item.Properties builder) {
+        super(builder.maxStackSize(16));
         setHasSubtypes(true);
     }
 
@@ -36,19 +39,17 @@ public class MoCItemEgg extends MoCItem {
                 i = 31; //for ostrich eggs. placed eggs become stolen eggs.
             }
             MoCEntityEgg entityegg = new MoCEntityEgg(world, i);
-            entityegg.setEntityPosition(player.posX, player.posY, player.posZ);
+            entityegg.setPosition(player.getPosX(), player.getPosY(), player.getPosZ());
             player.world.spawnEntity(entityegg);
-            entityegg.motionY += world.rand.nextFloat() * 0.05F;
-            entityegg.motionX += (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F;
-            entityegg.motionZ += (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F;
+            entityegg.getMotion().add((world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F, world.rand.nextFloat() * 0.05F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F);
         }
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (!this.isInCreativeTab(tab)) {
+    @OnlyIn(Dist.CLIENT)
+    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> items) {
+        if (!this.isInGroup(tab)) {
             return;
         }
 

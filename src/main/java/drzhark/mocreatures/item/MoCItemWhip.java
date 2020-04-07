@@ -15,19 +15,13 @@ import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -41,10 +35,10 @@ public class MoCItemWhip extends MoCItem {
         super(new Item.Properties().maxStackSize(1).maxDamage(24));
     }
 
-    @Override
-    public boolean isFull3D() {
-        return true;
-    }
+//    @Override
+//    public boolean isFull3D() {
+//        return true;
+//    }
 
     public ItemStack onItemRightClick2(ItemStack itemstack, World world, PlayerEntity entityplayer) {
         return itemstack;
@@ -63,7 +57,7 @@ public class MoCItemWhip extends MoCItem {
         int i1 = 0;
         Block block = worldIn.getBlockState(pos).getBlock();
         Block block1 = worldIn.getBlockState(pos.up()).getBlock();
-        if (side != Direction.DOWN && (block1 == Blocks.AIR) && (block != Blocks.AIR) && (block != Blocks.STANDING_SIGN)) {
+        if (side != Direction.DOWN && (block1 == Blocks.AIR) && (block != Blocks.AIR) && ((block != Blocks.SPRUCE_SIGN)||(block != Blocks.ACACIA_SIGN)||(block != Blocks.BIRCH_SIGN)||(block != Blocks.DARK_OAK_SIGN)||(block != Blocks.JUNGLE_SIGN)||(block != Blocks.OAK_SIGN))) {
             whipFX(worldIn, pos);
             worldIn.playSound(player, pos, MoCSoundEvents.ENTITY_GENERIC_WHIP, SoundCategory.PLAYERS, 0.5F, 0.4F / ((itemRand.nextFloat() * 0.4F) + 0.8F));
             stack.damageItem(1, player, d -> d.sendBreakAnimation(hand));
@@ -171,15 +165,15 @@ public class MoCItemWhip extends MoCItem {
         double d2 = pos.getZ() + 0.5F;
         double d3 = 0.2199999988079071D;
         double d4 = 0.27000001072883606D;
-        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-        world.spawnParticle(EnumParticleTypes.FLAME, d - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-        world.spawnParticle(EnumParticleTypes.FLAME, d + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
-        world.spawnParticle(EnumParticleTypes.FLAME, d, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
-        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
-        world.spawnParticle(EnumParticleTypes.FLAME, d, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
-        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d, d1, d2, 0.0D, 0.0D, 0.0D);
-        world.spawnParticle(EnumParticleTypes.FLAME, d, d1, d2, 0.0D, 0.0D, 0.0D);
+        world.addParticle(ParticleTypes.SMOKE, d - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+        world.addParticle(ParticleTypes.FLAME, d - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+        world.addParticle(ParticleTypes.SMOKE, d + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+        world.addParticle(ParticleTypes.FLAME, d + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+        world.addParticle(ParticleTypes.SMOKE, d, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
+        world.addParticle(ParticleTypes.FLAME, d, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
+        world.addParticle(ParticleTypes.SMOKE, d, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
+        world.addParticle(ParticleTypes.FLAME, d, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
+        world.addParticle(ParticleTypes.SMOKE, d, d1, d2, 0.0D, 0.0D, 0.0D);
+        world.addParticle(ParticleTypes.FLAME, d, d1, d2, 0.0D, 0.0D, 0.0D);
     }
 }

@@ -2,40 +2,42 @@ package drzhark.mocreatures.item;
 
 import drzhark.mocreatures.entity.item.MoCEntityKittyBed;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
 public class MoCItemKittyBed extends MoCItem {
 
     private int sheetType;
 
-    public MoCItemKittyBed(String name) {
-        super(name);
+    public MoCItemKittyBed(Item.Properties builder) {
+        super(builder);
     }
 
-    public MoCItemKittyBed(String name, int type) {
-        this(name);
+    public MoCItemKittyBed(Item.Properties builder, int type) {
+        this(builder);
         this.sheetType = type;
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         final ItemStack stack = player.getHeldItem(hand);
         if (!world.isRemote) {
             MoCEntityKittyBed entitykittybed = new MoCEntityKittyBed(world, this.sheetType);
-            entitykittybed.setPosition(player.posX, player.posY, player.posZ);
+            entitykittybed.setPosition(player.getPosX(), player.getPosY(), player.getPosZ());
             world.spawnEntity(entitykittybed);
-            entitykittybed.motionY += world.rand.nextFloat() * 0.05F;
-            entitykittybed.motionX += (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F;
-            entitykittybed.motionZ += (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F;
+            entitykittybed.getMotion().add((world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F, world.rand.nextFloat() * 0.05F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F);
             stack.shrink(1);
             if (stack.isEmpty()) {
                 player.setHeldItem(hand, ItemStack.EMPTY);
             }
         }
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+        return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
     }
 }

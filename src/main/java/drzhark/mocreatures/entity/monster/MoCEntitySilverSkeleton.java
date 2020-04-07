@@ -58,7 +58,7 @@ public class MoCEntitySilverSkeleton extends MoCEntityMob {
     }
 
     @Override
-    public void onLivingUpdate() {
+    public void livingTick() {
         if (!this.world.isRemote) {
             if (this.getAttackTarget() == null) {
                 setSprinting(false);
@@ -75,7 +75,7 @@ public class MoCEntitySilverSkeleton extends MoCEntityMob {
             this.attackCounterRight = 0;
         }
 
-        super.onLivingUpdate();
+        super.livingTick();
     }
 
     @Override

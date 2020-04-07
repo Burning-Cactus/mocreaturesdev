@@ -628,7 +628,7 @@ public class MoCTools {
             return;
         }
 
-        List<Entity> list = entity.world.getEntitiesWithinAABBExcludingEntity(entity, entity.getEntityBoundingBox().expand(d, d, d));
+        List<Entity> list = entity.world.getEntitiesWithinAABBExcludingEntity(entity, entity.getBoundingBox().expand(d, d, d));
 
         for (int i = 0; i < list.size(); i++) {
             Entity entity1 = (Entity) list.get(i);
@@ -643,7 +643,7 @@ public class MoCTools {
     }
 
     public static void repelMobs(Entity entity1, Double dist, World world) {
-        List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(entity1, entity1.getEntityBoundingBox().expand(dist, 4D, dist));
+        List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(entity1, entity1.getBoundingBox().expand(dist, 4D, dist));
         for (int i = 0; i < list.size(); i++) {
             Entity entity = (Entity) list.get(i);
             if (!(entity instanceof MobEntity)) {

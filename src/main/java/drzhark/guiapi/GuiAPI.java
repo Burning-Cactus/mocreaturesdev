@@ -3,6 +3,9 @@ package drzhark.guiapi;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiOptions;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
@@ -12,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.lang.reflect.Field;
 import java.util.List;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class GuiAPI {
 
     public Object cacheCheck = null;
@@ -48,7 +51,7 @@ public class GuiAPI {
     }
 
     @SubscribeEvent
-    public void clientTick(ClientTickEvent event) {
+    public void clientTick(TickEvent.ClientTickEvent event) {
         if (!(event.type == Type.CLIENT)) {
             return;
         }

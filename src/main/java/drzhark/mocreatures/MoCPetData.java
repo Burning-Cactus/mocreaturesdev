@@ -21,8 +21,8 @@ public class MoCPetData {
     private ArrayList<Integer> usedPetIds = new ArrayList<Integer>();
 
     public MoCPetData(IMoCTameable pet) {
-        this.ownerData.setTag("TamedList", this.tamedList);
-        this.ownerUniqueId = MoCreatures.isServer() ? pet.getOwnerId() : Minecraft.getMinecraft().player.getUniqueID();
+        this.ownerData.put("TamedList", this.tamedList);
+        this.ownerUniqueId = MoCreatures.isServer() ? pet.getOwnerId() : Minecraft.getInstance().player.getUniqueID();
     }
 
     public MoCPetData(CompoundNBT nbt, UUID owner) {
@@ -42,9 +42,9 @@ public class MoCPetData {
             petData.putInt("ChunkX", coords.getX());
             petData.putInt("ChunkY", coords.getY());
             petData.putInt("ChunkZ", coords.getZ());
-            petData.putInt("Dimension", ((Entity) pet).world.provider.getDimensionType().getId());
-            this.tamedList.appendTag(petData);
-            this.ownerData.setTag("PetIdData", savePetDataMap());
+            petData.putInt("Dimension", ((Entity) pet).world.dimension.getType().getId());
+            this.tamedList.add(petData);
+            this.ownerData.put("PetIdData", savePetDataMap());
             return id;
         } else {
             return -1;
@@ -52,16 +52,16 @@ public class MoCPetData {
     }
 
     public boolean removePet(int id) {
-        for (int i = 0; i < this.tamedList.tagCount(); i++) {
+        for (int i = 0; i < this.tamedList.size(); i++) {
             CompoundNBT nbt = this.tamedList.getCompound(i);
-            if (nbt.hasKey("PetId") && nbt.getInteger("PetId") == id) {
-                this.tamedList.removeTag(i);
+            if (nbt.contains("PetId") && nbt.getInt("PetId") == id) {
+                this.tamedList.remove(i);
                 this.usedPetIds.remove(new Integer(id));
                 this.IDMap.clear(id); // clear bit so it can be reused again
                 if (this.usedPetIds.size() == 0) {
                     this.IDMap.clear(); // fixes bug with ID 0 not able to be used again
                 }
-                this.ownerData.setTag("PetIdData", savePetDataMap());
+                this.ownerData.put("PetIdData", savePetDataMap());
                 return true;
             }
         }
@@ -70,9 +70,9 @@ public class MoCPetData {
 
     public CompoundNBT getPetData(int id) {
         if (this.tamedList != null) {
-            for (int i = 0; i < this.tamedList.tagCount(); i++) {
+            for (int i = 0; i < this.tamedList.size(); i++) {
                 CompoundNBT nbt = this.tamedList.getCompound(i);
-                if (nbt.hasKey("PetId") && nbt.getInt("PetId") == id) {
+                if (nbt.contains("PetId") && nbt.getInt("PetId") == id) {
                     return nbt;
                 }
             }
