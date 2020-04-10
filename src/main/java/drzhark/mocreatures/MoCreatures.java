@@ -38,7 +38,7 @@ import java.util.function.BiFunction;
 public class MoCreatures {
 
 //    @Instance(MoCConstants.MOD_ID)
-//    public static MoCreatures instance;
+    public static MoCreatures instance;
 
     public static IProxy proxy = DistExecutor.runForDist(()->()-> new MoCClientProxy(), ()->()-> new MoCProxy());
     public static final Logger LOGGER = LogManager.getLogger(MoCConstants.MOD_ID);
@@ -58,7 +58,6 @@ public class MoCreatures {
 
 
     public MoCreatures() {
-
         {
             final Pair<MoCConfig.ClientConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(MoCConfig.ClientConfig::new);
             ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, specPair.getRight()); //Client
@@ -74,8 +73,7 @@ public class MoCreatures {
         bus.addListener(this::setup);
         bus.addListener(this::onServerStart);
 
-
-
+        MoCreatures.instance = this;
     }
 
     private void setup(FMLCommonSetupEvent event) {

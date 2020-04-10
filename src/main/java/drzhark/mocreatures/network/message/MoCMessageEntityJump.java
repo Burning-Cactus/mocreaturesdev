@@ -10,7 +10,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MoCMessageEntityJump {
+public class MoCMessageEntityJump implements IMoCMessage {
 
     public MoCMessageEntityJump() {
     }

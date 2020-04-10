@@ -24,7 +24,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -159,7 +158,7 @@ public class MoCItemHorseAmulet extends MoCItem {
                 }
 
                 if (player.world.spawnEntity(storedCreature)) {
-                    MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageAppear(storedCreature.getEntityId()), new TargetPoint(
+                    MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAppear(storedCreature.getEntityId()), new TargetPoint(
                             player.world.dimension.getType().getId(), player.getPosX(), player.getPosY(), player.getPosZ(), 64));
                     MoCTools.playCustomSound(storedCreature, MoCSoundEvents.ENTITY_GENERIC_MAGIC_APPEAR);
                     //gives an empty amulet

@@ -136,7 +136,7 @@ public class MoCEntityScorpion extends MoCEntityMob {
 
     public void setPoisoning(boolean flag) {
         if (flag && !this.world.isRemote) {
-            MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
+            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
                     new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
         this.isPoisoning = flag;
@@ -273,7 +273,7 @@ public class MoCEntityScorpion extends MoCEntityMob {
 
     public void swingArm() {
         if (!this.world.isRemote) {
-            MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
+            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
                     new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
     }
@@ -317,7 +317,7 @@ public class MoCEntityScorpion extends MoCEntityMob {
     @Override
     protected SoundEvent getAmbientSound() {
         if (!this.world.isRemote) {
-            MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
+            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
                     new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
         return MoCSoundEvents.ENTITY_SCORPION_AMBIENT;

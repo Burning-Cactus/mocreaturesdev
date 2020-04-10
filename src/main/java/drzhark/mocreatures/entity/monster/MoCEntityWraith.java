@@ -114,7 +114,7 @@ public class MoCEntityWraith extends MoCEntityMob//MoCEntityFlyerMob
     private void startArmSwingAttack() {
         if (!this.world.isRemote) {
             this.attackCounter = 1;
-            MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
+            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
                     new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
     }

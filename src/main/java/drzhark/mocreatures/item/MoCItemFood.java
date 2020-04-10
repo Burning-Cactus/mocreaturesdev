@@ -5,7 +5,7 @@ import drzhark.mocreatures.MoCItemGroup;
 import drzhark.mocreatures.MoCreatures;
 import net.minecraft.item.Item;
 
-public class MoCItemFood extends MoCItem { //Formerly extended ItemFood
+public class MoCItemFood extends MoCItem { //Formerly extended ItemFood TODO: Make food work
 
     public MoCItemFood(int j, Item.Properties builder) {
         super(builder);

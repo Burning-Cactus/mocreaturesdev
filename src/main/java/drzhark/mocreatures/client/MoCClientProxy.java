@@ -344,7 +344,7 @@ public class MoCClientProxy extends MoCProxy {
     }
 
     @Override
-    public EntityPlayer getPlayer() {
+    public PlayerEntity getPlayer() {
         return MoCClientProxy.mc.player;
     }
 

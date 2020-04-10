@@ -32,19 +32,19 @@ public class ItemStaffTeleport extends MoCItem {
     /**
      * Returns True is the item is renderer in full 3D when hold.
      */
-    @Override
-    public boolean isFull3D() {
-        return true;
-    }
+//    @Override
+//    public boolean isFull3D() {
+//        return true;
+//    }
 
     /**
      * returns the action that specifies what animation to play when the items
      * is being used
      */
-    @Override
-    public EnumAction getItemUseAction(ItemStack par1ItemStack) {
-        return EnumAction.BLOCK;
-    }
+//    @Override
+//    public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+//        return EnumAction.BLOCK;
+//    }
 
     /**
      * Called whenever this item is equipped and the right mouse button is
@@ -54,7 +54,7 @@ public class ItemStaffTeleport extends MoCItem {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand) {
         final ItemStack stack = player.getHeldItem(hand);
         if (player.getRidingEntity() != null || player.isBeingRidden()) {
-            return ActionResult.newResult(ActionResultType.PASS, stack);
+            return ActionResult.resultPass(stack);
         }
 
         double coordY = player.getPosY() + player.getEyeHeight();
@@ -89,12 +89,12 @@ public class ItemStaffTeleport extends MoCItem {
                // player.setItemInUse(stack, 200);
                 stack.damageItem(1, player);
 
-                return ActionResult.newResult(ActionResultType.SUCCESS, stack);
+                return ActionResult.resultSuccess(stack);
             }
         }
 
         //player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
-        return ActionResult.newResult(ActionResultType.SUCCESS, stack);
+        return ActionResult.resultSuccess(stack);
     }
 
     public int getMaxItemUseDuration(ItemStack stack)

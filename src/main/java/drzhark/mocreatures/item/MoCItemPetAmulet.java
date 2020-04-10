@@ -170,7 +170,7 @@ public class MoCItemPetAmulet extends MoCItem {
                     }
 
                     if (player.getEntityWorld().spawnEntity((LivingEntity) storedCreature)) {
-                        MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageAppear(((LivingEntity) storedCreature).getEntityId()),
+                        MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAppear(((LivingEntity) storedCreature).getEntityId()),
                                 new TargetPoint(player.getEntityWorld().dimension.getType().getId(), player.getPosX(), player.getPosY(),
                                         player.getPosZ(), 64));
                         if (this.ownerUniqueId == null || this.name.isEmpty()) {

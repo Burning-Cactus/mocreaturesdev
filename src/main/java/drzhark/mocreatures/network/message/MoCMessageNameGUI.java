@@ -1,6 +1,11 @@
 package drzhark.mocreatures.network.message;
 
+import drzhark.mocreatures.client.MoCClientProxy;
+import drzhark.mocreatures.client.gui.helpers.MoCGUIEntityNamer;
+import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.network.MoCMessageHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -8,7 +13,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MoCMessageNameGUI {
+public class MoCMessageNameGUI implements IMoCMessage {
 
     public int entityId;
 
@@ -28,8 +33,14 @@ public class MoCMessageNameGUI {
     }
 
     public static boolean onMessage(MoCMessageNameGUI message, Supplier<NetworkEvent.Context> ctx) {
-        if (ctx == Dist.CLIENT) {
-            handleClientMessage(message, ctx);
+//        if (ctx == Dist.CLIENT) {
+//            handleClientMessage(message, ctx);
+//        }
+        NetworkEvent.Context context = ctx.get();
+        if(context.getDirection().getReceptionSide().isClient()) {
+            Entity entity = Minecraft.getInstance().world.getEntityByID(message.entityId);
+            Minecraft.getInstance().displayGuiScreen(new MoCGUIEntityNamer(((IMoCEntity) entity), ((IMoCEntity) entity).getPetName()));
+            context.setPacketHandled(true);
         }
         return true;
     }

@@ -42,7 +42,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.world.NoteBlockEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -504,7 +503,7 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
 
             setGestationTime(getGestationTime()+1);
             if (!this.world.isRemote) {
-                MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
+                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
                         new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
 

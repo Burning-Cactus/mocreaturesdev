@@ -1,11 +1,10 @@
 package drzhark.mocreatures.network.message;
 
-import drzhark.mocreatures.network.MoCMessageHandler;
-import io.netty.buffer.ByteBuf;
+import drzhark.mocreatures.client.MoCClientProxy;
+import drzhark.mocreatures.entity.monster.MoCEntityGolem;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -36,7 +35,14 @@ public class MoCMessageTwoBytes implements IMoCMessage {
     }
 
     public static boolean onMessage(MoCMessageTwoBytes message, Supplier<NetworkEvent.Context> ctx) {
-        MoCMessageHandler.handleMessage(message, ctx);
+//        MoCMessageHandler.handleMessage(message, ctx);
+//        return true;
+        NetworkEvent.Context context = ctx.get();
+        Entity ent = Minecraft.getInstance().world.getEntityByID(message.entityId);
+        if (ent != null && ent instanceof MoCEntityGolem) {
+            ((MoCEntityGolem) ent).saveGolemCube(message.slot, message.value);
+        }
+        context.setPacketHandled(true);
         return true;
     }
 

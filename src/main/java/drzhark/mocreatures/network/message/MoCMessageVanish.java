@@ -1,12 +1,17 @@
 package drzhark.mocreatures.network.message;
 
+import drzhark.mocreatures.client.MoCClientProxy;
+import drzhark.mocreatures.entity.passive.MoCEntityHorse;
 import drzhark.mocreatures.network.MoCMessageHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
+import java.util.List;
 import java.util.function.Supplier;
 
-public class MoCMessageVanish {
+public class MoCMessageVanish implements IMoCMessage {
 
     public int entityId;
 
@@ -26,7 +31,17 @@ public class MoCMessageVanish {
     }
 
     public static boolean onMessage(MoCMessageVanish message, Supplier<NetworkEvent.Context> ctx) {
-        MoCMessageHandler.handleMessage(message, ctx);
+//        MoCMessageHandler.handleMessage(message, ctx);
+//        return true;
+        NetworkEvent.Context context = ctx.get();
+        Iterable<Entity> entList = Minecraft.getInstance().world.getAllEntities();
+        for (Entity ent : entList) {
+            if (ent.getEntityId() == message.entityId && ent instanceof MoCEntityHorse) {
+                ((MoCEntityHorse) ent).setVanishC((byte) 1);
+                break;
+            }
+        }
+        context.setPacketHandled(true);
         return true;
     }
 

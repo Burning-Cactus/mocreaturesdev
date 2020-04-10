@@ -67,7 +67,7 @@ public class MoCEntityInsect extends MoCEntityAmbient {
 
         if (!this.world.isRemote) {
             if (!getIsFlying() && isOnLadder() && !this.onGround) {
-                MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
+                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
                         new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
 

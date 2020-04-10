@@ -121,7 +121,7 @@ public class MoCEntityOgre extends MoCEntityMob {
             if (this.smashCounter > 0 && ++this.smashCounter > 10) {
                 this.smashCounter = 0;
                 performDestroyBlastAttack();
-                MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageExplode(this.getEntityId()),
+                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageExplode(this.getEntityId()),
                         new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
 
@@ -150,7 +150,7 @@ public class MoCEntityOgre extends MoCEntityMob {
      */
     protected void startDestroyBlast() {
         this.smashCounter = 1;
-        MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
+        MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
                 new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
     }
 
@@ -182,12 +182,12 @@ public class MoCEntityOgre extends MoCEntityMob {
             if (leftArmW) {
                 this.attackCounter = 1;
                 this.armToAnimate = 1;
-                MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
+                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
                         new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             } else {
                 this.attackCounter = 1;
                 this.armToAnimate = 2;
-                MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 2),
+                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 2),
                         new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
         }

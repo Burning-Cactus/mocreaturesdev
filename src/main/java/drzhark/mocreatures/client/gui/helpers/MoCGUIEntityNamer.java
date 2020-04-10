@@ -8,10 +8,13 @@ import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageUpdatePetName;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
@@ -19,8 +22,8 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 
-@SideOnly(Side.CLIENT)
-public class MoCGUIEntityNamer extends GuiScreen {
+@OnlyIn(Dist.CLIENT)
+public class MoCGUIEntityNamer extends Screen {
 
     protected String screenTitle;
     private final IMoCEntity NamedEntity;

@@ -1,12 +1,17 @@
 package drzhark.mocreatures.network.message;
 
+import drzhark.mocreatures.client.MoCClientProxy;
+import drzhark.mocreatures.entity.monster.MoCEntityOgre;
 import drzhark.mocreatures.network.MoCMessageHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
+import java.util.List;
 import java.util.function.Supplier;
 
-public class MoCMessageExplode {
+public class MoCMessageExplode implements IMoCMessage {
 
     public int entityId;
 
@@ -26,7 +31,19 @@ public class MoCMessageExplode {
     }
 
     public static boolean onMessage(MoCMessageExplode message, Supplier<NetworkEvent.Context> ctx) {
-        MoCMessageHandler.handleMessage(message, ctx);
+//        MoCMessageHandler.handleMessage(message, ctx);
+//        return true;
+        NetworkEvent.Context context = ctx.get();
+        if(context.getDirection().getReceptionSide().isClient()) {
+            Iterable<Entity> entList = Minecraft.getInstance().world.getAllEntities();
+            for(Entity ent : entList) {
+                if(ent.getEntityId() == message.entityId && ent instanceof MoCEntityOgre) {
+                    ((MoCEntityOgre) ent).performDestroyBlastAttack();
+                    break;
+                }
+            }
+        }
+        context.setPacketHandled(true);
         return true;
     }
 

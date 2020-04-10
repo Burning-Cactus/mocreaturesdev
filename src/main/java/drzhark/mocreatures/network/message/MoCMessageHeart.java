@@ -1,12 +1,16 @@
 package drzhark.mocreatures.network.message;
 
+import drzhark.mocreatures.client.MoCClientProxy;
+import drzhark.mocreatures.entity.IMoCTameable;
 import drzhark.mocreatures.network.MoCMessageHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MoCMessageHeart {
+public class MoCMessageHeart implements IMoCMessage {
 
     public int entityId;
 
@@ -26,7 +30,19 @@ public class MoCMessageHeart {
     }
 
     public static boolean onMessage(MoCMessageHeart message, Supplier<NetworkEvent.Context> ctx) {
-        MoCMessageHandler.handleMessage(message, ctx);
+//        MoCMessageHandler.handleMessage(message, ctx);
+//        return true;
+        NetworkEvent.Context context = ctx.get();
+        Entity entity = null;
+        while (entity == null) {
+            entity = Minecraft.getInstance().world.getEntityByID(message.entityId);
+            if (entity != null) {
+                if (entity instanceof IMoCTameable) {
+                    ((IMoCTameable)entity).spawnHeart();
+                }
+            }
+        }
+        context.setPacketHandled(true);
         return true;
     }
 

@@ -11,7 +11,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MoCMessageEntityDive {
+public class MoCMessageEntityDive implements IMoCMessage {
 
     public MoCMessageEntityDive() {
     }

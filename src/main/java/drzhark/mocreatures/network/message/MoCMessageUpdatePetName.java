@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-public class MoCMessageUpdatePetName {
+public class MoCMessageUpdatePetName implements IMoCMessage {
 
     public String name;
     public int entityId;
@@ -63,7 +63,7 @@ public class MoCMessageUpdatePetName {
         MoCPetData petData = MoCreatures.instance.mapData.getPetData(ownerUniqueId);
         if (petData != null && pet != null && ((IMoCTameable) pet).getOwnerPetId() != -1) {
             int id = ((IMoCTameable) pet).getOwnerPetId();
-            ListNBT tag = petData.getOwnerRootNBT().getTagList("TamedList", 10);
+            ListNBT tag = petData.getOwnerRootNBT().getList("TamedList", 10);
             for (int i = 0; i < tag.size(); i++) {
                 CompoundNBT nbt = tag.getCompound(i);
                 if (nbt.getInt("PetId") == id) {

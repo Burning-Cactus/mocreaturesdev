@@ -123,7 +123,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         }
 
         if (!this.world.isRemote && getIsTamed()) {
-            MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new TargetPoint(
+            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new TargetPoint(
                     this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
         return super.attackEntityFrom(damagesource, i);
@@ -475,7 +475,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
 
             setGestationTime(getGestationTime()+1);
             if (!this.world.isRemote) {
-                MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
+                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
                         new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
 

@@ -500,7 +500,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
 
             setGestationTime(getGestationTime()+1);
             if (!this.world.isRemote) {
-                MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
+                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
                         new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
 

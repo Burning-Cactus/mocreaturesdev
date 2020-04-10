@@ -246,7 +246,7 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
             }*/
 
             if (getIsTamed() && this.rand.nextInt(200) == 0) {
-                MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new PacketDistributor.TargetPoint(
+                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new PacketDistributor.TargetPoint(
                         this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
 
@@ -288,7 +288,7 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
     @Override
     public boolean attackEntityFrom(DamageSource damagesource, float i) {
         if (!this.world.isRemote && getIsTamed()) {
-            MoCMessageHandler.CHANNEL.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new TargetPoint(
+            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new TargetPoint(
                     this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
         return super.attackEntityFrom(damagesource, i);

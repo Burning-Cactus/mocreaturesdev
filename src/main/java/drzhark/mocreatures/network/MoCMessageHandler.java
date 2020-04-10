@@ -24,7 +24,7 @@ public class MoCMessageHandler {
 
     public static final String PROTOCOL = "1";
 
-    public static final SimpleChannel CHANNEL = NetworkRegistry
+    public static final SimpleChannel INSTANCE = NetworkRegistry
             .newSimpleChannel(new ResourceLocation(MoCConstants.MOD_ID, "channel"),
                     () -> PROTOCOL,
                     PROTOCOL::equals,
@@ -34,20 +34,20 @@ public class MoCMessageHandler {
 
     public static void init() {
         int id = 0;
-        CHANNEL.registerMessage(id++, MoCMessageAnimation.class, MoCMessageAnimation::encode, MoCMessageAnimation::decode, MoCMessageAnimation::onMessage);
-        CHANNEL.registerMessage(id++, MoCMessageAppear.class, MoCMessageAppear::encode, MoCMessageAppear::decode, MoCMessageAppear::onMessage);
-        CHANNEL.registerMessage(id++, MoCMessageAttachedEntity.class, MoCMessageAttachedEntity::encode, MoCMessageAttachedEntity::decode, MoCMessageAttachedEntity::onMessage);
-        CHANNEL.registerMessage(id++, MoCMessageEntityDive.class, MoCMessageEntityDive::encode, MoCMessageEntityDive::decode, MoCMessageEntityDive::onMessage);
-        CHANNEL.registerMessage(id++, MoCMessageEntityJump.class, MoCMessageEntityJump::encode, MoCMessageEntityJump::decode, MoCMessageEntityJump::onMessage);
-        CHANNEL.registerMessage(id++, MoCMessageExplode.class, MoCMessageExplode::encode, MoCMessageExplode::decode, MoCMessageExplode::onMessage);
-        CHANNEL.registerMessage(id++, MoCMessageHealth.class, MoCMessageHealth::encode, MoCMessageHealth::decode, MoCMessageHealth::onMessage);
-        CHANNEL.registerMessage(id++, MoCMessageHeart.class, MoCMessageHeart::encode, MoCMessageHeart::decode, MoCMessageHeart::onMessage);
-        CHANNEL.registerMessage(id++, MoCMessageInstaSpawn.class, MoCMessageInstaSpawn::encode, MoCMessageInstaSpawn::decode, MoCMessageInstaSpawn::onMessage);
-        CHANNEL.registerMessage(id++, MoCMessageNameGUI.class, MoCMessageNameGUI::encode, MoCMessageNameGUI::decode, MoCMessageNameGUI::onMessage);
-        CHANNEL.registerMessage(id++, MoCMessageShuffle.class, MoCMessageShuffle::encode, MoCMessageShuffle::decode, MoCMessageShuffle::onMessage);
-        CHANNEL.registerMessage(id++, MoCMessageTwoBytes.class, MoCMessageTwoBytes::encode, MoCMessageTwoBytes::decode, MoCMessageTwoBytes::onMessage);
-        CHANNEL.registerMessage(id++, MoCMessageUpdatePetName.class, MoCMessageUpdatePetName::encode, MoCMessageUpdatePetName::decode, MoCMessageUpdatePetName::onMessage);
-        CHANNEL.registerMessage(id++, MoCMessageVanish.class, MoCMessageVanish::encode, MoCMessageVanish::decode, MoCMessageVanish::onMessage);
+        INSTANCE.registerMessage(id++, MoCMessageAnimation.class, MoCMessageAnimation::encode, MoCMessageAnimation::decode, MoCMessageAnimation::onMessage);
+        INSTANCE.registerMessage(id++, MoCMessageAppear.class, MoCMessageAppear::encode, MoCMessageAppear::decode, MoCMessageAppear::onMessage);
+        INSTANCE.registerMessage(id++, MoCMessageAttachedEntity.class, MoCMessageAttachedEntity::encode, MoCMessageAttachedEntity::decode, MoCMessageAttachedEntity::onMessage);
+        INSTANCE.registerMessage(id++, MoCMessageEntityDive.class, MoCMessageEntityDive::encode, MoCMessageEntityDive::decode, MoCMessageEntityDive::onMessage);
+        INSTANCE.registerMessage(id++, MoCMessageEntityJump.class, MoCMessageEntityJump::encode, MoCMessageEntityJump::decode, MoCMessageEntityJump::onMessage);
+        INSTANCE.registerMessage(id++, MoCMessageExplode.class, MoCMessageExplode::encode, MoCMessageExplode::decode, MoCMessageExplode::onMessage);
+        INSTANCE.registerMessage(id++, MoCMessageHealth.class, MoCMessageHealth::encode, MoCMessageHealth::decode, MoCMessageHealth::onMessage);
+        INSTANCE.registerMessage(id++, MoCMessageHeart.class, MoCMessageHeart::encode, MoCMessageHeart::decode, MoCMessageHeart::onMessage);
+        INSTANCE.registerMessage(id++, MoCMessageInstaSpawn.class, MoCMessageInstaSpawn::encode, MoCMessageInstaSpawn::decode, MoCMessageInstaSpawn::onMessage);
+        INSTANCE.registerMessage(id++, MoCMessageNameGUI.class, MoCMessageNameGUI::encode, MoCMessageNameGUI::decode, MoCMessageNameGUI::onMessage);
+        INSTANCE.registerMessage(id++, MoCMessageShuffle.class, MoCMessageShuffle::encode, MoCMessageShuffle::decode, MoCMessageShuffle::onMessage);
+        INSTANCE.registerMessage(id++, MoCMessageTwoBytes.class, MoCMessageTwoBytes::encode, MoCMessageTwoBytes::decode, MoCMessageTwoBytes::onMessage);
+        INSTANCE.registerMessage(id++, MoCMessageUpdatePetName.class, MoCMessageUpdatePetName::encode, MoCMessageUpdatePetName::decode, MoCMessageUpdatePetName::onMessage);
+        INSTANCE.registerMessage(id++, MoCMessageVanish.class, MoCMessageVanish::encode, MoCMessageVanish::decode, MoCMessageVanish::onMessage);
 //        INSTANCE.registerMessage(MoCMessageAnimation.class, MoCMessageAnimation.class, 0, Dist.CLIENT);
 //        INSTANCE.registerMessage(MoCMessageAppear.class, MoCMessageAppear.class, 1, Dist.CLIENT);
 //        INSTANCE.registerMessage(MoCMessageAttachedEntity.class, MoCMessageAttachedEntity.class, 2, Dist.CLIENT);
@@ -64,129 +64,4 @@ public class MoCMessageHandler {
 //        INSTANCE.registerMessage(MoCMessageVanish.class, MoCMessageVanish.class, 13, Dist.CLIENT);
     }
 
-    // Wrap client message handling due to 1.8 clients receiving packets on Netty thread
-    // This solves random NPE issues when attempting to access world data on client
-    @SuppressWarnings("rawtypes")
-    public static void handleMessage(IMoCMessage message, Supplier<NetworkEvent.Context> ctx) {
-        if (ctx.side == Dist.CLIENT) {
-            FMLCommonHandler.instance().getWorldThread(FMLCommonHandler.instance().getClientToServerNetworkManager().getNetHandler()).addScheduledTask(new ClientPacketTask(message, ctx));
-        }
-    }
-
-    // redirects client received packets to main thread to avoid NPEs
-    public static class ClientPacketTask implements Runnable {
-
-        @SuppressWarnings("rawtypes")
-        private IMoCMessage message;
-        @SuppressWarnings("unused")
-        private Supplier<NetworkEvent.Context> ctx;
-
-        @SuppressWarnings("rawtypes")
-        public ClientPacketTask(IMoCMessage message, Supplier<NetworkEvent.Context> ctx) {
-            this.message = message;
-            this.ctx = ctx;
-        }
-
-        @Override
-        public void run() {
-            if (this.message instanceof MoCMessageAnimation) {
-                MoCMessageAnimation message = (MoCMessageAnimation) this.message;
-                List<Entity> entList = MoCClientProxy.mc.player.world.loadedEntityList;
-                for (Entity ent : entList) {
-                    if (ent.getEntityId() == message.entityId && ent instanceof IMoCEntity) {
-                        ((IMoCEntity) ent).performAnimation(message.animationType);
-                        break;
-                    }
-                }
-                return;
-            } else if (this.message instanceof MoCMessageAppear) {
-                MoCMessageAppear message = (MoCMessageAppear) this.message;
-                List<Entity> entList = MoCClientProxy.mc.player.world.loadedEntityList;
-                for (Entity ent : entList) {
-                    if (ent.getEntityId() == message.entityId && ent instanceof MoCEntityHorse) {
-                        ((MoCEntityHorse) ent).MaterializeFX();
-                        break;
-                    }
-                }
-                return;
-            } else if (this.message instanceof MoCMessageAttachedEntity) {
-                MoCMessageAttachedEntity message = (MoCMessageAttachedEntity) this.message;
-                Object var2 = MoCClientProxy.mc.player.world.getEntityByID(message.sourceEntityId);
-                Entity var3 = MoCClientProxy.mc.player.world.getEntityByID(message.targetEntityId);
-
-                if (var2 != null) {
-                    ((Entity) var2).startRiding(var3);
-                }
-                return;
-            } else if (this.message instanceof MoCMessageExplode) {
-                MoCMessageExplode message = (MoCMessageExplode) this.message;
-                List<Entity> entList = MoCClientProxy.mc.player.world.loadedEntityList;
-                for (Entity ent : entList) {
-                    if (ent.getEntityId() == message.entityId && ent instanceof MoCEntityOgre) {
-                        ((MoCEntityOgre) ent).performDestroyBlastAttack();
-                        break;
-                    }
-                }
-                return;
-            } else if (this.message instanceof MoCMessageHealth) {
-                MoCMessageHealth message = (MoCMessageHealth) this.message;
-                List<Entity> entList = MoCClientProxy.mc.player.world.loadedEntityList;
-                for (Entity ent : entList) {
-                    if (ent.getEntityId() == message.entityId && ent instanceof LivingEntity) {
-                        ((LivingEntity) ent).setHealth(message.health);
-                        break;
-                    }
-                }
-                return;
-            } else if (this.message instanceof MoCMessageHeart) {
-                MoCMessageHeart message = (MoCMessageHeart) this.message;
-                Entity entity = null;
-                while (entity == null) {
-                    entity = MoCClientProxy.mc.player.world.getEntityByID(message.entityId);
-                    if (entity != null) {
-                        if (entity instanceof IMoCTameable) {
-                            ((IMoCTameable)entity).spawnHeart();
-                        }
-                    }
-                }
-                return;
-            } else if (this.message instanceof MoCMessageShuffle) {
-                MoCMessageShuffle message = (MoCMessageShuffle) this.message;
-                List<Entity> entList = MoCClientProxy.mc.player.world.loadedEntityList;
-                for (Entity ent : entList) {
-                    if (ent.getEntityId() == message.entityId && ent instanceof MoCEntityHorse) {
-                        if (message.flag) {
-                            //((MoCEntityHorse) ent).shuffle();
-                        } else {
-                            ((MoCEntityHorse) ent).shuffleCounter = 0;
-                        }
-                        break;
-                    }
-                }
-                return;
-            } else if (this.message instanceof MoCMessageTwoBytes) {
-                MoCMessageTwoBytes message = (MoCMessageTwoBytes) this.message;
-                Entity ent = MoCClientProxy.mc.player.world.getEntityByID(message.entityId);
-                if (ent != null && ent instanceof MoCEntityGolem) {
-                    ((MoCEntityGolem) ent).saveGolemCube(message.slot, message.value);
-                }
-                return;
-            } else if (this.message instanceof MoCMessageVanish) {
-                MoCMessageVanish message = (MoCMessageVanish) this.message;
-                List<Entity> entList = MoCClientProxy.mc.player.world.loadedEntityList;
-                for (Entity ent : entList) {
-                    if (ent.getEntityId() == message.entityId && ent instanceof MoCEntityHorse) {
-                        ((MoCEntityHorse) ent).setVanishC((byte) 1);
-                        break;
-                    }
-                }
-                return;
-            } else if (this.message instanceof MoCMessageNameGUI) {
-                MoCMessageNameGUI message = (MoCMessageNameGUI) this.message;
-                Entity entity = MoCClientProxy.mc.player.world.getEntityByID(message.entityId);
-                MoCClientProxy.mc.displayGuiScreen(new MoCGUIEntityNamer(((IMoCEntity) entity), ((IMoCEntity) entity).getPetName()));
-                return;
-            }
-        }
-    }
 }

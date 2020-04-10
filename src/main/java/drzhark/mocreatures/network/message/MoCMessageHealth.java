@@ -1,12 +1,17 @@
 package drzhark.mocreatures.network.message;
 
+import drzhark.mocreatures.client.MoCClientProxy;
 import drzhark.mocreatures.network.MoCMessageHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
+import java.util.List;
 import java.util.function.Supplier;
 
-public class MoCMessageHealth {
+public class MoCMessageHealth implements IMoCMessage {
 
     public int entityId;
     public float health;
@@ -29,7 +34,17 @@ public class MoCMessageHealth {
     }
 
     public static boolean onMessage(MoCMessageHealth message, Supplier<NetworkEvent.Context> ctx) {
-        MoCMessageHandler.handleMessage(message, ctx);
+//        MoCMessageHandler.handleMessage(message, ctx);
+//        return true;
+        NetworkEvent.Context context = ctx.get();
+        Iterable<Entity> entList = Minecraft.getInstance().world.getAllEntities();
+        for (Entity ent : entList) {
+            if (ent.getEntityId() == message.entityId && ent instanceof LivingEntity) {
+                ((LivingEntity) ent).setHealth(message.health);
+                break;
+            }
+        }
+        context.setPacketHandled(true);
         return true;
     }
 
