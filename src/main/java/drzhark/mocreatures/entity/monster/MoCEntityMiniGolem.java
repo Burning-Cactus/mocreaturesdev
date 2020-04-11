@@ -6,6 +6,8 @@ import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.item.MoCEntityThrowableRock;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
@@ -28,10 +30,9 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
     private static final DataParameter<Boolean> HAS_ROCK = EntityDataManager.<Boolean>createKey(MoCEntityMiniGolem.class, DataSerializers.BOOLEAN);
     
 
-    public MoCEntityMiniGolem(World world) {
-        super(world);
+    public MoCEntityMiniGolem(EntityType<? extends MoCEntityMiniGolem> type, World world) {
+        super(type, world);
         this.texture = "minigolem.png";
-        setSize(1.0F, 1.0F);
     }
 
 
@@ -75,8 +76,8 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
 
         if (!this.world.isRemote) {
             if (this.getAttackTarget() == null) {
@@ -100,7 +101,7 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
     }
 
     protected void acquireTRock() {
-        IForgeBlockState tRockState = MoCTools.destroyRandomBlockWithIBlockState(this, 3D);
+        BlockState tRockState = MoCTools.destroyRandomBlockWithIBlockState(this, 3D);
         if (tRockState == null) {
             this.tcounter = 1;
             setHasRock(false);
@@ -109,7 +110,7 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
 
         //creates a dummy Trock on top of it
         MoCEntityThrowableRock trock = new MoCEntityThrowableRock(this.world, this, this.getPosX(), this.getPosY() + 1.5D, this.getPosZ());
-        this.world.spawnEntity(trock);
+        this.world.addEntity(trock);
         trock.setState(tRockState);
         trock.setBehavior(1);
         this.tempRock = trock;

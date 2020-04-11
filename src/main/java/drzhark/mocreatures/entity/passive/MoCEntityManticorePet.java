@@ -3,22 +3,23 @@ package drzhark.mocreatures.entity.passive;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.IMoCTameable;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumHand;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class MoCEntityManticorePet extends MoCEntityBigCat {
 
-    public MoCEntityManticorePet(World world) {
-        super(world);
+    public MoCEntityManticorePet(EntityType<? extends MoCEntityManticorePet> type, World world) {
+        super(type, world);
         this.chestName = "ManticoreChest";
     }
 
     @Override
     public void selectType() {
 
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(this.rand.nextInt(4) + 1);
         }
         super.selectType();
@@ -26,17 +27,17 @@ public class MoCEntityManticorePet extends MoCEntityBigCat {
 
     @Override
     public ResourceLocation getTexture() {
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
-                return MoCreatures.proxy.getTexture("bcmanticore.png");
+                return MoCreatures.getTexture("bcmanticore.png");
             case 2:
-                return MoCreatures.proxy.getTexture("bcmanticoredark.png");
+                return MoCreatures.getTexture("bcmanticoredark.png");
             case 3:
-                return MoCreatures.proxy.getTexture("bcmanticoreblue.png");
+                return MoCreatures.getTexture("bcmanticoreblue.png");
             case 4:
-                return MoCreatures.proxy.getTexture("bcmanticoregreen.png");
+                return MoCreatures.getTexture("bcmanticoregreen.png");
             default:
-                return MoCreatures.proxy.getTexture("bcmanticore.png");
+                return MoCreatures.getTexture("bcmanticore.png");
         }
     }
 
@@ -51,13 +52,13 @@ public class MoCEntityManticorePet extends MoCEntityBigCat {
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
             return tameResult;
         }
 
-        if (this.getIsRideable() && this.getIsAdult() && (!this.getIsChested() || !player.isSneaking()) && !this.isBeingRidden()) {
+        if (this.getIsRideable() && this.getIsAdult() && (!this.getIsChested() || !player.isCrouching()) && !this.isBeingRidden()) {
             if (!this.world.isRemote && player.startRiding(this)) {
                 player.rotationYaw = this.rotationYaw;
                 player.rotationPitch = this.rotationPitch;

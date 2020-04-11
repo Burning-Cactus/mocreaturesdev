@@ -15,20 +15,14 @@ import drzhark.mocreatures.entity.passive.MoCEntitySnake;
 import drzhark.mocreatures.entity.passive.MoCEntityWyvern;
 import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
@@ -38,22 +32,22 @@ public class MoCEntityEgg extends LivingEntity {
     private int lCounter;
     public int eggType;
 
-    public MoCEntityEgg(World world, int type) {
-        this(world);
-        this.eggType = type;
-    }
-
-    public MoCEntityEgg(World world) {
-        super(world);
-        setSize(0.25F, 0.25F);
+    public MoCEntityEgg(EntityType<? extends MoCEntityEgg> type, World world) {
+        super(type, world);
         this.tCounter = 0;
         this.lCounter = 0;
     }
 
-    public MoCEntityEgg(World world, double d, double d1, double d2) {
-        super(world);
+    public MoCEntityEgg(EntityType<? extends MoCEntityEgg> type, World world, int eggType) {
+        this(type, world);
+        this.eggType = eggType;
+    }
 
-        setSize(0.25F, 0.25F);
+
+
+    public MoCEntityEgg(EntityType<? extends MoCEntityEgg> type, World world, double d, double d1, double d2) {
+        super(type, world);
+
         this.tCounter = 0;
         this.lCounter = 0;
     }
@@ -165,7 +159,7 @@ public class MoCEntityEgg extends LivingEntity {
                         entityspawn.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
                         entityspawn.setType(getEggType());
                         entityspawn.setEdad(30);
-                        this.world.spawnEntity(entityspawn);
+                        this.world.addEntity(entityspawn);
                         PlayerEntity entityplayer = this.world.getClosestPlayer(this, 24D);
                         if (entityplayer != null) {
                             MoCTools.tameWithName(entityplayer, entityspawn);
@@ -177,7 +171,7 @@ public class MoCEntityEgg extends LivingEntity {
                         MoCEntityShark entityspawn = new MoCEntityShark(this.world);
                         entityspawn.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
                         entityspawn.setEdad(30);
-                        this.world.spawnEntity(entityspawn);
+                        this.world.addEntity(entityspawn);
                         PlayerEntity entityplayer = this.world.getClosestPlayer(this, 24D);
                         if (entityplayer != null) {
                             MoCTools.tameWithName(entityplayer, entityspawn);
@@ -188,7 +182,7 @@ public class MoCEntityEgg extends LivingEntity {
                     {
                         MoCEntityPiranha entityspawn = new MoCEntityPiranha(this.world);
                         entityspawn.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
-                        this.world.spawnEntity(entityspawn);
+                        this.world.addEntity(entityspawn);
                         entityspawn.setEdad(30);
                         PlayerEntity entityplayer = this.world.getClosestPlayer(this, 24D);
                         if (entityplayer != null) {
@@ -201,7 +195,7 @@ public class MoCEntityEgg extends LivingEntity {
                         final int type = getEggType() - 79;
                         MoCEntitySmallFish entityspawn = MoCEntitySmallFish.createEntity(this.world, type);
                         entityspawn.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
-                        this.world.spawnEntity(entityspawn);
+                        this.world.addEntity(entityspawn);
                         entityspawn.setEdad(30);
                         PlayerEntity entityplayer = this.world.getClosestPlayer(this, 24D);
                         if (entityplayer != null) {
@@ -214,7 +208,7 @@ public class MoCEntityEgg extends LivingEntity {
                         final int type = getEggType() - 69;
                         MoCEntityMediumFish entityspawn = MoCEntityMediumFish.createEntity(this.world, type);
                         entityspawn.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
-                        this.world.spawnEntity(entityspawn);
+                        this.world.addEntity(entityspawn);
                         entityspawn.setEdad(30);
                         PlayerEntity entityplayer = this.world.getClosestPlayer(this, 24D);
                         if (entityplayer != null) {
@@ -247,7 +241,7 @@ public class MoCEntityEgg extends LivingEntity {
                         entityspawn.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
                         entityspawn.setType(getEggType() - 20);
                         entityspawn.setEdad(50);
-                        this.world.spawnEntity(entityspawn);
+                        this.world.addEntity(entityspawn);
                         PlayerEntity entityplayer = this.world.getClosestPlayer(this, 24D);
                         if (entityplayer != null) {
                             MoCTools.tameWithName(entityplayer, entityspawn);
@@ -264,7 +258,7 @@ public class MoCEntityEgg extends LivingEntity {
                         entityspawn.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
                         entityspawn.setType(typeInt);
                         entityspawn.setEdad(35);
-                        this.world.spawnEntity(entityspawn);
+                        this.world.addEntity(entityspawn);
                         entityspawn.setHealth(entityspawn.getMaxHealth());
 
                         if (getEggType() == 31)//stolen egg that hatches a tamed ostrich
@@ -282,7 +276,7 @@ public class MoCEntityEgg extends LivingEntity {
 
                         entityspawn.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
                         entityspawn.setEdad(30);
-                        this.world.spawnEntity(entityspawn);
+                        this.world.addEntity(entityspawn);
                         PlayerEntity entityplayer = this.world.getClosestPlayer(this, 24D);
                         if (entityplayer != null) {
                             MoCTools.tameWithName(entityplayer, entityspawn);
@@ -296,7 +290,7 @@ public class MoCEntityEgg extends LivingEntity {
                         entityspawn.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
                         entityspawn.setType(typeInt);
                         entityspawn.setAdult(false);
-                        this.world.spawnEntity(entityspawn);
+                        this.world.addEntity(entityspawn);
                         entityspawn.setHealth(entityspawn.getMaxHealth());
                         PlayerEntity entityplayer = this.world.getClosestPlayer(this, 24D);
                         if (entityplayer != null) {
@@ -312,7 +306,7 @@ public class MoCEntityEgg extends LivingEntity {
                         entityspawn.setType(typeInt);
                         entityspawn.setAdult(false);
                         entityspawn.setEdad(30);
-                        this.world.spawnEntity(entityspawn);
+                        this.world.addEntity(entityspawn);
                         entityspawn.setHealth(entityspawn.getMaxHealth());
                         PlayerEntity entityplayer = this.world.getClosestPlayer(this, 24D);
                         if (entityplayer != null) {
@@ -327,7 +321,7 @@ public class MoCEntityEgg extends LivingEntity {
                         entityspawn.setType(typeInt);
                         entityspawn.setAdult(false);
                         entityspawn.setEdad(30);
-                        this.world.spawnEntity(entityspawn);
+                        this.world.addEntity(entityspawn);
                         entityspawn.setHealth(entityspawn.getMaxHealth());
                         PlayerEntity entityplayer = this.world.getClosestPlayer(this, 24D);
                         if (entityplayer != null) {

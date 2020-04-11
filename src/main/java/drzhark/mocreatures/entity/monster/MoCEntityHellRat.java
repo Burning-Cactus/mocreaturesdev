@@ -2,9 +2,8 @@ package drzhark.mocreatures.entity.monster;
 
 import drzhark.mocreatures.MoCreatures;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
@@ -14,10 +13,8 @@ public class MoCEntityHellRat extends MoCEntityRat {
 
     private int textCounter;
 
-    public MoCEntityHellRat(World world) {
-        super(world);
-        setSize(0.7F, 0.7F);
-        this.isImmuneToFire = true;
+    public MoCEntityHellRat(EntityType<? extends MoCEntityHellRat> type, World world) {
+        super(type, world);
     }
 
     @Override

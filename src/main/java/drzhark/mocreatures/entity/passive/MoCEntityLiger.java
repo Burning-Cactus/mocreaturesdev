@@ -5,22 +5,27 @@ import drzhark.mocreatures.entity.IMoCTameable;
 import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class MoCEntityLiger extends MoCEntityBigCat {
 
-    public MoCEntityLiger(World world) {
-        super(world);
+    public MoCEntityLiger(EntityType<? extends MoCEntityLiger> type, World world) {
+        super(type, world);
     }
 
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(1);
     }
         super.selectType();
@@ -28,18 +33,18 @@ public class MoCEntityLiger extends MoCEntityBigCat {
 
     @Override
     public ResourceLocation getTexture() {
-        return MoCreatures.proxy.getTexture("bcliger.png");
+        return MoCreatures.getTexture("bcliger.png");
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
             return tameResult;
         }
 
         final ItemStack stack = player.getHeldItem(hand);
-        if (!stack.isEmpty() && getIsTamed() && (getType() == 1) && (stack.getItem() == MoCItems.essencelight)) {
+        if (!stack.isEmpty() && getIsTamed() && (getType() == 1) && (stack.getItem() == MoCItems.ESSENCELIGHT)) {
             stack.shrink(1);
             if (stack.isEmpty()) {
                 player.setHeldItem(hand, new ItemStack(Items.GLASS_BOTTLE));
@@ -50,7 +55,7 @@ public class MoCEntityLiger extends MoCEntityBigCat {
             return true;
         }
 
-        if (this.getIsRideable() && this.getIsAdult() && (!this.getIsChested() || !player.isSneaking()) && !this.isBeingRidden()) {
+        if (this.getIsRideable() && this.getIsAdult() && (!this.getIsChested() || !player.isCrouching()) && !this.isBeingRidden()) {
             if (!this.world.isRemote && player.startRiding(this)) {
                 player.rotationYaw = this.rotationYaw;
                 player.rotationPitch = this.rotationPitch;
@@ -98,18 +103,18 @@ public class MoCEntityLiger extends MoCEntityBigCat {
     }
 
     @Override
-    public boolean canAttackTarget(EntityLivingBase entity) {
+    public boolean canAttackTarget(LivingEntity entity) {
         if (!this.getIsAdult() && (this.getEdad() < this.getMaxEdad() * 0.8)) {
             return false;
         }
         if (entity instanceof MoCEntityLiger) {
             return false;
         }
-        return entity.height < 2F && entity.width < 2F;
+        return entity.getHeight() < 2F && entity.getWidth() < 2F;
     }
     
     @Override
     public boolean isFlyer() {
-        return this.getType() == 2;
+        return this.getSubType() == 2;
     }
 }

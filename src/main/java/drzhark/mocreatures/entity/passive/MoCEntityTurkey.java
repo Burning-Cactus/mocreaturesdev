@@ -6,58 +6,59 @@ import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIPanic;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAITempt;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.PanicGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.TemptGoal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class MoCEntityTurkey extends MoCEntityTameableAnimal {
 
-    public MoCEntityTurkey(World world) {
-        super(world);
-        setSize(0.8F, 1.0F);
+    public MoCEntityTurkey(EntityType<? extends MoCEntityTurkey> type, World world) {
+        super(type, world);
         this.texture = "turkey.png";
     }
 
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIPanic(this, 1.4D));
-        this.tasks.addTask(3, new EntityAITempt(this, 1.0D, Items.MELON_SEEDS, false));
-        this.tasks.addTask(5, new EntityAIWanderMoC2(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(1, new PanicGoal(this, 1.4D));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.0D, Ingredient.fromItems(Items.MELON_SEEDS), false));
+        this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 1.0D));
+        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
     }
 
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(this.rand.nextInt(2) + 1);
         }
     }
 
     @Override
     public ResourceLocation getTexture() {
-        if (getType() == 1) {
-            return MoCreatures.proxy.getTexture("turkey.png");
+        if (getSubType() == 1) {
+            return MoCreatures.getTexture("turkey.png");
         } else {
-            return MoCreatures.proxy.getTexture("turkeyfemale.png");
+            return MoCreatures.getTexture("turkeyfemale.png");
         }
     }
 
@@ -80,13 +81,13 @@ public class MoCEntityTurkey extends MoCEntityTameableAnimal {
     protected Item getDropItem() {
         boolean flag = (this.rand.nextInt(2) == 0);
         if (flag) {
-            return MoCItems.rawTurkey;
+            return MoCItems.RAWTURKEY;
         }
         return Items.FEATHER;
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
             return tameResult;
@@ -105,10 +106,10 @@ public class MoCEntityTurkey extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
-        if (!this.onGround && this.motionY < 0.0D) {
-            this.motionY *= 0.8D;
+    public void livingTick() {
+        super.livingTick();
+        if (!this.onGround && this.getMotion().y < 0.0D) {
+            this.getMotion().mul(1, 0.8D, 1);
         }
     }
 

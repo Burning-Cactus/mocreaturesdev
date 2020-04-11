@@ -3,21 +3,22 @@ package drzhark.mocreatures.entity.passive;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.IMoCTameable;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumHand;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class MoCEntityPanthard extends MoCEntityBigCat {
 
-    public MoCEntityPanthard(World world) {
-        super(world);
+    public MoCEntityPanthard(EntityType<? extends MoCEntityPanthard> type, World world) {
+        super(type, world);
     }
 
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(1);
     }
         super.selectType();
@@ -25,17 +26,17 @@ public class MoCEntityPanthard extends MoCEntityBigCat {
 
     @Override
     public ResourceLocation getTexture() {
-        return MoCreatures.proxy.getTexture("bcpanthard.png");
+        return MoCreatures.getTexture("bcpanthard.png");
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
             return tameResult;
         }
 
-        if (this.getIsRideable() && this.getIsAdult() && (!this.getIsChested() || !player.isSneaking()) && !this.isBeingRidden()) {
+        if (this.getIsRideable() && this.getIsAdult() && (!this.getIsChested() || !player.isCrouching()) && !this.isBeingRidden()) {
             if (!this.world.isRemote && player.startRiding(this)) {
                 player.rotationYaw = this.rotationYaw;
                 player.rotationPitch = this.rotationPitch;
@@ -84,14 +85,14 @@ public class MoCEntityPanthard extends MoCEntityBigCat {
     }
 
     @Override
-    public boolean canAttackTarget(EntityLivingBase entity) {
+    public boolean canAttackTarget(LivingEntity entity) {
         if (!this.getIsAdult() && (this.getEdad() < this.getMaxEdad() * 0.8)) {
             return false;
         }
         if (entity instanceof MoCEntityPanthard) {
             return false;
         }
-        return entity.height < 1.5F && entity.width < 1.5F;
+        return entity.getHeight() < 1.5F && entity.getWidth() < 1.5F;
     }
     
     @Override

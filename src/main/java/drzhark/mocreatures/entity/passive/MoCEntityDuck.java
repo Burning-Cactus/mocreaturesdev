@@ -4,6 +4,7 @@ import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityAnimal;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.init.MoCSoundEvents;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIPanic;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -25,10 +26,9 @@ public class MoCEntityDuck extends MoCEntityAnimal//EntityChicken
     public float field_70888_h;
     public float field_70889_i = 1.0F;
 
-    public MoCEntityDuck(World world) {
-        super(world);
+    public MoCEntityDuck(EntityType<? extends MoCEntityDuck> type, World world) {
+        super(type, world);
         this.texture = "duck.png";
-        setSize(0.4F, 0.7F);
     }
 
     @Override

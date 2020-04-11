@@ -9,6 +9,7 @@ import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -47,9 +48,8 @@ public class MoCEntityGoat extends MoCEntityTameableAnimal {
     private static final DataParameter<Boolean> IS_CHARGING = EntityDataManager.<Boolean>createKey(MoCEntityGoat.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IS_UPSET = EntityDataManager.<Boolean>createKey(MoCEntityGoat.class, DataSerializers.BOOLEAN);
     
-    public MoCEntityGoat(World world) {
-        super(world);
-        setSize(0.8F, 1F);
+    public MoCEntityGoat(EntityType<? extends MoCEntityGoat> type, World world) {
+        super(type, world);
         setEdad(70);
     }
 

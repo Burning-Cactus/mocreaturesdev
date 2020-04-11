@@ -2,7 +2,6 @@ package drzhark.mocreatures.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.UUID;
 

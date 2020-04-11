@@ -13,6 +13,7 @@ import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAnimation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
@@ -65,9 +66,8 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
     private static final DataParameter<Integer> FLAG_COLOR = EntityDataManager.<Integer>createKey(MoCEntityOstrich.class, DataSerializers.VARINT);
     
 
-    public MoCEntityOstrich(World world) {
-        super(world);
-        setSize(1.0F, 1.6F);
+    public MoCEntityOstrich(EntityType<? extends MoCEntityOstrich> type, World world) {
+        super(type, world);
         setEdad(35);
         this.eggCounter = this.rand.nextInt(1000) + 1000;
         this.stepHeight = 1.0F;

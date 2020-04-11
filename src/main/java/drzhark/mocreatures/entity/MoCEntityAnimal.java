@@ -138,7 +138,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
     }
 
     @Override
-    public int getType() {
+    public int getSubType() {
         return this.dataManager.get(TYPE);
     }
 

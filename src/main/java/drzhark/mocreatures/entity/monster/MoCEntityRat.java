@@ -6,16 +6,12 @@ import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
@@ -29,9 +25,8 @@ import java.util.List;
 
 public class MoCEntityRat extends MoCEntityMob {
 
-    public MoCEntityRat(World world) {
-        super(world);
-        setSize(0.5F, 0.5F);
+    public MoCEntityRat(EntityType<? extends MoCEntityRat> type, World world) {
+        super(type, world);
     }
 
     @Override
@@ -52,7 +47,7 @@ public class MoCEntityRat extends MoCEntityMob {
 
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             int i = this.rand.nextInt(100);
             if (i <= 65) {
                 setType(1);
@@ -71,7 +66,7 @@ public class MoCEntityRat extends MoCEntityMob {
 
     @Override
     public ResourceLocation getTexture() {
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
                 return MoCreatures.getTexture("ratb.png");
             case 2:
@@ -115,8 +110,8 @@ public class MoCEntityRat extends MoCEntityMob {
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
 
         if ((this.rand.nextInt(100) == 0) && (this.getBrightness() > 0.5F)) {
             setAttackTarget(null);

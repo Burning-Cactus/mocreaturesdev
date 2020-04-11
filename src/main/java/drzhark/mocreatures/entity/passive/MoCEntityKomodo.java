@@ -14,6 +14,7 @@ import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAnimation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
@@ -41,9 +42,8 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
     public int mouthCounter;
     private static final DataParameter<Boolean> RIDEABLE = EntityDataManager.<Boolean>createKey(MoCEntityKomodo.class, DataSerializers.BOOLEAN);
     
-    public MoCEntityKomodo(World world) {
-        super(world);
-        setSize(1.6F, 0.5F);
+    public MoCEntityKomodo(EntityType<? extends MoCEntityKomodo> type, World world) {
+        super(type, world);
         this.texture = "komododragon.png";
         setTamed(false);
         setAdult(false);

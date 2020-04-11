@@ -12,6 +12,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
@@ -35,10 +36,9 @@ public class MoCEntityCrocodile extends MoCEntityTameableAnimal {
     private static final DataParameter<Boolean> EATING_PREY = EntityDataManager.<Boolean>createKey(MoCEntityCrocodile.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IS_BITING = EntityDataManager.<Boolean>createKey(MoCEntityCrocodile.class, DataSerializers.BOOLEAN);
     
-    public MoCEntityCrocodile(World world) {
-        super(world);
+    public MoCEntityCrocodile(EntityType<? extends MoCEntityCrocodile> type, World world) {
+        super(type, world);
         this.texture = "crocodile.png";
-        setSize(1.4F, 0.6F); //it was 2.0, 0.6F
         setEdad(50 + this.rand.nextInt(50));
         setTamed(false);
     }

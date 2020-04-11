@@ -5,23 +5,24 @@ import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.IMoCTameable;
 import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class MoCEntityPandaBear extends MoCEntityBear{
 
-    public MoCEntityPandaBear(World world) {
-        super(world);
+    public MoCEntityPandaBear(EntityType<? extends MoCEntityPandaBear> type, World world) {
+        super(type, world);
     }
     
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(1);
         }
         super.selectType();
@@ -29,7 +30,7 @@ public class MoCEntityPandaBear extends MoCEntityBear{
     
     @Override
     public ResourceLocation getTexture() {
-        return MoCreatures.proxy.getTexture("bearpanda.png");
+        return MoCreatures.getTexture("bearpanda.png");
     }
     
     @Override
@@ -73,23 +74,23 @@ public class MoCEntityPandaBear extends MoCEntityBear{
     
     @Override
     public boolean isMyFavoriteFood(ItemStack stack) {
-        return this.getType() == 3 && !stack.isEmpty() && stack.getItem() == Items.REEDS;
+        return this.getSubType() == 3 && !stack.isEmpty() && stack.getItem() == Items.REEDS;
     }
 
     @Override
     public boolean isMyHealFood(ItemStack stack) {
-        return this.getType() == 3 && !stack.isEmpty() && stack.getItem() == Items.REEDS;
+        return this.getSubType() == 3 && !stack.isEmpty() && stack.getItem() == Items.REEDS;
     }
     
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
             return tameResult;
         }
 
         final ItemStack stack = player.getHeldItem(hand);
-        if (!stack.isEmpty() && (stack.getItem() == MoCItems.sugarlump || stack.getItem() == Items.REEDS)) {
+        if (!stack.isEmpty() && (stack.getItem() == MoCItems.SUGARLUMP || stack.getItem() == Items.SUGAR_CANE)) {
             stack.shrink(1);
             if (stack.isEmpty()) {
                 player.setHeldItem(hand, ItemStack.EMPTY);
@@ -107,7 +108,7 @@ public class MoCEntityPandaBear extends MoCEntityBear{
 
             return true;
         }
-        if (!stack.isEmpty() && getIsTamed() && stack.getItem() == MoCItems.whip) {
+        if (!stack.isEmpty() && getIsTamed() && stack.getItem() == MoCItems.WHIP) {
             if (getBearState() == 0) {
                 setBearState(2);
             }else {
@@ -115,7 +116,7 @@ public class MoCEntityPandaBear extends MoCEntityBear{
             }
             return true;
         }
-        if (this.getIsRideable() && this.getIsAdult() && (!this.getIsChested() || !player.isSneaking()) && !this.isBeingRidden()) {
+        if (this.getIsRideable() && this.getIsAdult() && (!this.getIsChested() || !player.isCrouching()) && !this.isBeingRidden()) {
             if (!this.world.isRemote && player.startRiding(this)) {
                 player.rotationYaw = this.rotationYaw;
                 player.rotationPitch = this.rotationPitch;
@@ -129,8 +130,8 @@ public class MoCEntityPandaBear extends MoCEntityBear{
     }
     
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
         /**
          * panda bears and cubs will sit down every now and then
          */

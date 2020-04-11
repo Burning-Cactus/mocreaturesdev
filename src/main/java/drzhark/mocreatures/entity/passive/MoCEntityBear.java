@@ -15,6 +15,7 @@ import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAnimation;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
@@ -50,9 +51,8 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
     public MoCAnimalChest localchest;
     public ItemStack localstack;
     
-    public MoCEntityBear(World world) {
-        super(world);
-        setSize(1.2F, 1.5F);
+    public MoCEntityBear(EntityType<? extends MoCEntityBear> type, World world) {
+        super(type, world);
         setEdad(55);
         if (this.rand.nextInt(4) == 0) {
             setAdult(false);
@@ -89,8 +89,8 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
      * server data to client.
      */
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(BEAR_STATE, Integer.valueOf(0));
         this.dataManager.register(RIDEABLE, Boolean.valueOf(false)); 
         this.dataManager.register(CHESTED, Boolean.valueOf(false)); 
@@ -214,8 +214,8 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
         if (this.mouthCounter > 0 && ++this.mouthCounter > 20) {
             this.mouthCounter = 0;
         }
@@ -250,7 +250,7 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
             }
         }
         //TODO move to AI
-        if (!this.world.isRemote && getType() == 3 && (this.deathTime == 0) && getBearState() != 2) {
+        if (!this.world.isRemote && getSubType() == 3 && (this.deathTime == 0) && getBearState() != 2) {
             ItemEntity entityitem = getClosestItem(this, 12D, Items.SUGAR_CANE, Items.SUGAR);
             if (entityitem != null) {
 
@@ -471,7 +471,7 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
     
     @Override
     public void readAdditional(CompoundNBT nbttagcompound) {
-        super.readEntityFromNBT(nbttagcompound);
+        super.readAdditional(nbttagcompound);
         setRideable(nbttagcompound.getBoolean("Saddle"));
         setIsChested(nbttagcompound.getBoolean("Chested"));
         setIsGhost(nbttagcompound.getBoolean("Ghost"));
@@ -479,7 +479,7 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
         if (getIsChested()) {
             ListNBT nbttaglist = nbttagcompound.getList("Items", 10);
             this.localchest = new MoCAnimalChest("BigBearChest", 18);
-            for (int i = 0; i < nbttaglist.sizet(); i++) {
+            for (int i = 0; i < nbttaglist.size(); i++) {
                 CompoundNBT nbttagcompound1 = nbttaglist.getCompound(i);
                 int j = nbttagcompound1.getByte("Slot") & 0xff;
                 if ((j >= 0) && j < this.localchest.getSizeInventory()) {

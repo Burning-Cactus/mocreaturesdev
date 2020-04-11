@@ -16,6 +16,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -66,12 +67,11 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
     private static final DataParameter<Integer> HARNESS_TYPE = EntityDataManager.<Integer>createKey(MoCEntityElephant.class, DataSerializers.VARINT);
 
 
-    public MoCEntityElephant(World world) {
-        super(world);
+    public MoCEntityElephant(EntityType<? extends MoCEntityElephant> type, World world) {
+        super(type, world);
         setAdult(true);
         setTamed(false);
         setEdad(50);
-        setSize(1.1F, 3F); //TODO 
         this.stepHeight = 1.0F;
 
         if (!this.world.isRemote) {

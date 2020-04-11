@@ -8,6 +8,7 @@ import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
@@ -31,9 +32,8 @@ public class MoCEntityHorseMob extends MoCEntityMob {
     public int eatingCounter;
     public int wingFlapCounter;
 
-    public MoCEntityHorseMob(World world) {
-        super(world);
-        setSize(1.4F, 1.6F);
+    public MoCEntityHorseMob(EntityType<? extends MoCEntityHorseMob> type, World world) {
+        super(type, world);
     }
 
 
@@ -59,7 +59,7 @@ public class MoCEntityHorseMob extends MoCEntityMob {
             setType(38);
             this.isImmuneToFire = true;
         } else {
-            if (getType() == 0) {
+            if (getSubType() == 0) {
                 int j = this.rand.nextInt(100);
                 if (j <= (40)) {
                     setType(23); //undead
@@ -169,8 +169,8 @@ public class MoCEntityHorseMob extends MoCEntityMob {
     }
 
     @Override
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
 
         if (this.mouthCounter > 0 && ++this.mouthCounter > 30) {
             this.mouthCounter = 0;
@@ -196,9 +196,9 @@ public class MoCEntityHorseMob extends MoCEntityMob {
 
     @Override
     public boolean isFlyer() {
-        return this.getType() == 25 //undead pegasus
-                || this.getType() == 32 // bat horse
-                || this.getType() == 28; // skeleton pegasus
+        return this.getSubType() == 25 //undead pegasus
+                || this.getSubType() == 32 // bat horse
+                || this.getSubType() == 28; // skeleton pegasus
     }
 
     /**
@@ -207,13 +207,13 @@ public class MoCEntityHorseMob extends MoCEntityMob {
      * @return
      */
     public boolean isUnicorned() {
-        return this.getType() == 24 || this.getType() == 27 || this.getType() == 32;
+        return this.getSubType() == 24 || this.getSubType() == 27 || this.getSubType() == 32;
     }
 
     @Override
-    public void onLivingUpdate() {
+    public void livingTick() {
 
-        super.onLivingUpdate();
+        super.livingTick();
 
         if (isOnAir() && isFlyer() && this.rand.nextInt(5) == 0) {
             this.wingFlapCounter = 1;
@@ -227,11 +227,11 @@ public class MoCEntityHorseMob extends MoCEntityMob {
             stand();
         }
 
-        if (this.world.isRemote && getType() == 38 && this.rand.nextInt(50) == 0) {
+        if (this.world.isRemote && getSubType() == 38 && this.rand.nextInt(50) == 0) {
             LavaFX();
         }
 
-        if (this.world.isRemote && getType() == 23 && this.rand.nextInt(50) == 0) {
+        if (this.world.isRemote && getSubType() == 23 && this.rand.nextInt(50) == 0) {
             UndeadFX();
         }
 
@@ -286,35 +286,35 @@ public class MoCEntityHorseMob extends MoCEntityMob {
     @Override
     protected Item getDropItem() {
         boolean flag = (this.rand.nextInt(100) < MoCreatures.proxy.rareItemDropChance);
-        if (this.getType() == 32 && MoCreatures.proxy.rareItemDropChance < 25) {
+        if (this.getSubType() == 32 && MoCreatures.proxy.rareItemDropChance < 25) {
             flag = (this.rand.nextInt(100) < 25);
         }
 
-        if (flag && (this.getType() == 36 || (this.getType() >= 50 && this.getType() < 60))) //unicorn
+        if (flag && (this.getSubType() == 36 || (this.getSubType() >= 50 && this.getSubType() < 60))) //unicorn
         {
             return MoCItems.UNICORNHORN;
         }
 
-        if (this.getType() == 38 && flag && this.world.getDimension().doesWaterVaporize()) //nightmare
+        if (this.getSubType() == 38 && flag && this.world.getDimension().doesWaterVaporize()) //nightmare
         {
             return MoCItems.HEARTFIRE;
         }
-        if (this.getType() == 32 && flag) //bat horse
+        if (this.getSubType() == 32 && flag) //bat horse
         {
             return MoCItems.HEARTDARKNESS;
         }
-        if (this.getType() == 26)//skely
+        if (this.getSubType() == 26)//skely
         {
             return Items.BONE;
         }
-        if ((this.getType() == 23 || this.getType() == 24 || this.getType() == 25)) {
+        if ((this.getSubType() == 23 || this.getSubType() == 24 || this.getSubType() == 25)) {
             if (flag) {
                 return MoCItems.HEARTUNDEAD;
             }
             return Items.ROTTEN_FLESH;
         }
 
-        if (this.getType() == 21 || this.getType() == 22) {
+        if (this.getSubType() == 21 || this.getSubType() == 22) {
             return Items.GHAST_TEAR;
         }
 
@@ -338,7 +338,7 @@ public class MoCEntityHorseMob extends MoCEntityMob {
     public void onDeath(DamageSource damagesource) {
         super.onDeath(damagesource);
 
-        if ((this.getType() == 23) || (this.getType() == 24) || (this.getType() == 25)) {
+        if ((this.getSubType() == 23) || (this.getSubType() == 24) || (this.getSubType() == 25)) {
             MoCTools.spawnSlimes(this.world, this);
         }
 
@@ -351,7 +351,7 @@ public class MoCEntityHorseMob extends MoCEntityMob {
 
     @Override
     public boolean getCanSpawnHere() {
-        if (this.getPosY() < 50D && !this.world.provider.doesWaterVaporize()) {
+        if (this.getPosY() < 50D && !this.world.dimension.doesWaterVaporize()) {
             setType(32);
         }
         return super.getCanSpawnHere();
@@ -370,7 +370,7 @@ public class MoCEntityHorseMob extends MoCEntityMob {
      */
     @Override
     public CreatureAttribute getCreatureAttribute() {
-        if (getType() == 23 || getType() == 24 || getType() == 25) {
+        if (getSubType() == 23 || getSubType() == 24 || getSubType() == 25) {
             return CreatureAttribute.UNDEAD;
         }
         return super.getCreatureAttribute();

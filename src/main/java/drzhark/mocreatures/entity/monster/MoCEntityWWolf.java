@@ -9,10 +9,7 @@ import drzhark.mocreatures.entity.passive.MoCEntityBigCat;
 import drzhark.mocreatures.entity.passive.MoCEntityHorse;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -39,9 +36,8 @@ public class MoCEntityWWolf extends MoCEntityMob {
     public int mouthCounter;
     public int tailCounter;
 
-    public MoCEntityWWolf(World world) {
-        super(world);
-        setSize(0.9F, 1.3F);
+    public MoCEntityWWolf(EntityType<? extends MoCEntityWWolf> type, World world) {
+        super(type, world);
     }
 
     @Override
@@ -62,14 +58,14 @@ public class MoCEntityWWolf extends MoCEntityMob {
 
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(this.rand.nextInt(4) + 1);
         }
     }
 
     @Override
     public ResourceLocation getTexture() {
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
                 return MoCreatures.getTexture("wolfblack.png");
             case 2:
@@ -193,8 +189,8 @@ public class MoCEntityWWolf extends MoCEntityMob {
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
         if (!this.world.isRemote && !this.isBeingRidden() && this.rand.nextInt(100) == 0) {
             List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(4D, 2D, 4D));
             for (int i = 0; i < list.size(); i++) {

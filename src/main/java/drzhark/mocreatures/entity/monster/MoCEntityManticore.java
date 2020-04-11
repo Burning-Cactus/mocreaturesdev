@@ -9,6 +9,7 @@ import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAnimation;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
@@ -27,7 +28,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class MoCEntityManticore extends MoCEntityMob {
 
@@ -37,10 +37,8 @@ public class MoCEntityManticore extends MoCEntityMob {
     private boolean isPoisoning;
     private int poisontimer;
 
-    public MoCEntityManticore(World world) {
-        super(world);
-        setSize(1.4F, 1.6F);
-        this.isImmuneToFire = true;
+    public MoCEntityManticore(EntityType<? extends MoCEntityManticore> type, World world) {
+        super(type, world);
     }
 
     @Override
@@ -62,7 +60,7 @@ public class MoCEntityManticore extends MoCEntityMob {
     public void selectType() {
         checkSpawningBiome();
 
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType((this.rand.nextInt(2) * 2) + 2);
         }
     }
@@ -71,7 +69,7 @@ public class MoCEntityManticore extends MoCEntityMob {
     public boolean checkSpawningBiome() {
         if (this.world.dimension.doesWaterVaporize()) {
             setType(1);
-            this.isImmuneToFire = true;
+//            this.isImmuneToFire = true;
             return true;
         }
 
@@ -91,7 +89,7 @@ public class MoCEntityManticore extends MoCEntityMob {
 
     @Override
     public ResourceLocation getTexture() {
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
                 return MoCreatures.getTexture("bcmanticore.png");
             case 2:
@@ -205,9 +203,9 @@ public class MoCEntityManticore extends MoCEntityMob {
     }
 
     @Override
-    public void onLivingUpdate() {
+    public void livingTick() {
         //if (true) return;
-        super.onLivingUpdate();
+        super.livingTick();
 
         /**
          * slow falling
@@ -330,22 +328,22 @@ public class MoCEntityManticore extends MoCEntityMob {
     @Override
     protected void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
         boolean flag = (entityIn instanceof PlayerEntity);
-        if (!getIsPoisoning() && this.rand.nextInt(5) == 0 && entityIn instanceof EntityLivingBase) {
+        if (!getIsPoisoning() && this.rand.nextInt(5) == 0 && entityIn instanceof LivingEntity) {
             setPoisoning(true);
-            if (getType() == 4 || getType() == 2)// regular
+            if (getSubType() == 4 || getSubType() == 2)// regular
             {
                 if (flag) {
                     MoCreatures.poisonPlayer((PlayerEntity) entityIn);
                 }
                 ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 70, 0));
-            } else if (getType() == 3)// blue
+            } else if (getSubType() == 3)// blue
             {
                 if (flag) {
                     MoCreatures.freezePlayer((PlayerEntity) entityIn);
                 }
                 ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 70, 0));
 
-            } else if (getType() == 1)// red
+            } else if (getSubType() == 1)// red
             {
                 if (flag && !this.world.isRemote && !this.world.dimension.doesWaterVaporize()) {
                     MoCreatures.burnPlayer((PlayerEntity) entityIn);
@@ -404,7 +402,7 @@ public class MoCEntityManticore extends MoCEntityMob {
     protected Item getDropItem() {
         boolean flag = (this.rand.nextInt(100) < MoCreatures.proxy.rareItemDropChance);
 
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
                 if (flag) {
                     return MoCItems.SCORPSTINGNETHER;

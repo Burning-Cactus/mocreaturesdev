@@ -13,6 +13,7 @@ import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -34,9 +35,8 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 
 public class MoCEntityFox extends MoCEntityTameableAnimal {
 
-    public MoCEntityFox(World world) {
-        super(world);
-        setSize(0.6F, 0.7F);
+    public MoCEntityFox(EntityType<? extends MoCEntityFox> type, World world) {
+        super(type, world);
         setEdad(this.rand.nextInt(15) + 50);
         if (this.rand.nextInt(3) == 0) {
             setAdult(false);

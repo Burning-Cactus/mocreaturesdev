@@ -4,9 +4,10 @@ import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.IMoCTameable;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumHand;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -17,14 +18,14 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 
 public class MoCEntityLeopard extends MoCEntityBigCat {
 
-    public MoCEntityLeopard(World world) {
-        super(world);
+    public MoCEntityLeopard(EntityType<? extends MoCEntityLeopard> type, World world) {
+        super(type, world);
     }
 
     @Override
     public void selectType() {
 
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             checkSpawningBiome();
         }
         super.selectType();
@@ -32,9 +33,9 @@ public class MoCEntityLeopard extends MoCEntityBigCat {
 
     @Override
     public boolean checkSpawningBiome() {
-        int i = MathHelper.floor(this.posX);
-        int j = MathHelper.floor(getEntityBoundingBox().minY);
-        int k = MathHelper.floor(this.posZ);
+        int i = MathHelper.floor(this.getPosX());
+        int j = MathHelper.floor(getBoundingBox().minY);
+        int k = MathHelper.floor(this.getPosZ());
         BlockPos pos = new BlockPos(i, j, k);
 
         Biome currentbiome = MoCTools.Biomekind(this.world, pos);
@@ -51,24 +52,24 @@ public class MoCEntityLeopard extends MoCEntityBigCat {
 
     @Override
     public ResourceLocation getTexture() {
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
-                return MoCreatures.proxy.getTexture("bcleopard.png");
+                return MoCreatures.getTexture("bcleopard.png");
             case 2:
-                return MoCreatures.proxy.getTexture("bcsnowleopard.png");
+                return MoCreatures.getTexture("bcsnowleopard.png");
             default:
-                return MoCreatures.proxy.getTexture("bcleopard.png");
+                return MoCreatures.getTexture("bcleopard.png");
         }
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
             return tameResult;
         }
 
-        if (this.getIsRideable() && this.getIsAdult() && (!this.getIsChested() || !player.isSneaking()) && !this.isBeingRidden()) {
+        if (this.getIsRideable() && this.getIsAdult() && (!this.getIsChested() || !player.isCrouching()) && !this.isBeingRidden()) {
             if (!this.world.isRemote && player.startRiding(this)) {
                 player.rotationYaw = this.rotationYaw;
                 player.rotationPitch = this.rotationPitch;
@@ -83,13 +84,13 @@ public class MoCEntityLeopard extends MoCEntityBigCat {
 
     @Override
     public String getOffspringClazz(IMoCTameable mate) {
-        if (mate instanceof MoCEntityPanther && ((MoCEntityPanther) mate).getType() == 1) {
+        if (mate instanceof MoCEntityPanther && ((MoCEntityPanther) mate).getSubType() == 1) {
             return "Pantard";//"Panther";
         }
-        if (mate instanceof MoCEntityTiger && ((MoCEntityTiger) mate).getType() == 1) {
+        if (mate instanceof MoCEntityTiger && ((MoCEntityTiger) mate).getSubType() == 1) {
             return "Leoger";//"Tiger";
         }
-        if (mate instanceof MoCEntityLion && ((MoCEntityLion) mate).getType() == 2) {
+        if (mate instanceof MoCEntityLion && ((MoCEntityLion) mate).getSubType() == 2) {
             return "Liard";//"Lion";
         }
         return "Leopard";
@@ -97,24 +98,24 @@ public class MoCEntityLeopard extends MoCEntityBigCat {
 
     @Override
     public int getOffspringTypeInt(IMoCTameable mate) {
-        if (mate instanceof MoCEntityPanther && ((MoCEntityPanther) mate).getType() == 1) {
+        if (mate instanceof MoCEntityPanther && ((MoCEntityPanther) mate).getSubType() == 1) {
             return 1;//3; //panthard
         }
-        if (mate instanceof MoCEntityTiger && ((MoCEntityTiger) mate).getType() == 1) {
+        if (mate instanceof MoCEntityTiger && ((MoCEntityTiger) mate).getSubType() == 1) {
             return 1;//4; //leoger
         }
-        if (mate instanceof MoCEntityLion && ((MoCEntityLion) mate).getType() == 2) {
+        if (mate instanceof MoCEntityLion && ((MoCEntityLion) mate).getSubType() == 2) {
             return 1;//4; //liard
         }
-        return this.getType();
+        return this.getSubType();
     }
 
     @Override
     public boolean compatibleMate(Entity mate) {
-        return (mate instanceof MoCEntityLeopard && ((MoCEntityLeopard) mate).getType() == this.getType())
-                || (mate instanceof MoCEntityPanther && ((MoCEntityPanther) mate).getType() == 1)
-                || (mate instanceof MoCEntityTiger && ((MoCEntityTiger) mate).getType() == 1)
-                || (mate instanceof MoCEntityLion && ((MoCEntityLion) mate).getType() == 2);
+        return (mate instanceof MoCEntityLeopard && ((MoCEntityLeopard) mate).getSubType() == this.getSubType())
+                || (mate instanceof MoCEntityPanther && ((MoCEntityPanther) mate).getSubType() == 1)
+                || (mate instanceof MoCEntityTiger && ((MoCEntityTiger) mate).getSubType() == 1)
+                || (mate instanceof MoCEntityLion && ((MoCEntityLion) mate).getSubType() == 2);
     }
 
     @Override
@@ -138,14 +139,14 @@ public class MoCEntityLeopard extends MoCEntityBigCat {
     }
 
     @Override
-    public boolean canAttackTarget(EntityLivingBase entity) {
+    public boolean canAttackTarget(LivingEntity entity) {
         if (!this.getIsAdult() && (this.getEdad() < this.getMaxEdad() * 0.8)) {
             return false;
         }
         if (entity instanceof MoCEntityLeopard) {
             return false;
         }
-        return entity.height < 1.3F && entity.width < 1.3F;
+        return entity.getHeight() < 1.3F && entity.getWidth() < 1.3F;
     }
     
     @Override

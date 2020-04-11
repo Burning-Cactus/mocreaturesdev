@@ -11,37 +11,26 @@ import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageHealth;
 import drzhark.mocreatures.network.message.MoCMessageHeart;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 import java.util.List;
 import java.util.UUID;
@@ -56,13 +45,13 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
     private boolean hasEaten;
     private int gestationtime;
 
-    public MoCEntityTameableAmbient(World world) {
-        super(world);
+    public MoCEntityTameableAmbient(EntityType<? extends MoCEntityTameableAmbient> type, World world) {
+        super(type, world);
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(OWNER_UNIQUE_ID, Optional.<UUID>absent());
         this.dataManager.register(PET_ID, -1);
         this.dataManager.register(TAMED, false);
@@ -139,7 +128,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
             if (!this.world.isRemote) {
                 // Remove when client is updated
                 ((ServerPlayerEntity) player).sendAllContents(player.openContainer, player.openContainer.getInventory());
-                player.sendMessage(new TextComponentTranslation(TextFormatting.RED + "This pet does not belong to you."));
+                player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."));
             }
             return false;
         }
@@ -147,7 +136,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         //if the player interacting is not the owner, do nothing!
         if (MoCreatures.proxy.enableOwnership && this.getOwnerId() != null
                 && !player.getUniqueID().equals(this.getOwnerId())) {
-            player.sendMessage(new TextComponentTranslation(TextFormatting.RED + "This pet does not belong to you."));
+            player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."));
             return false;
         }
 
@@ -176,7 +165,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         }
 
         //before ownership check
-        if (getIsTamed() && ((stack.getItem() == MoCItems.SCROLLOFOWNER.get())) && MoCreatures.proxy.enableResetOwnership
+        if (getIsTamed() && ((stack.getItem() == MoCItems.SCROLLOFOWNER)) && MoCreatures.proxy.enableResetOwnership
                 && MoCTools.isThisPlayerAnOP(player)) {
             stack.shrink(1);
             if (stack.isEmpty()) {
@@ -228,7 +217,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         }
 
         //removes owner, any other player can claim it by renaming it
-        if (getIsTamed() && stack.getItem() == MoCItems.SCROLLOFSALE.get()) {
+        if (getIsTamed() && stack.getItem() == MoCItems.SCROLLOFSALE) {
             stack.shrink(1);
             if (stack.isEmpty()) {
                 player.setHeldItem(hand, ItemStack.EMPTY);
@@ -432,8 +421,8 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
     }
     
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
         //breeding code
         if (!this.world.isRemote && readytoBreed() && this.rand.nextInt(100) == 0) {
             doBreeding();
@@ -491,7 +480,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
                 if (offspring != null && offspring instanceof IMoCTameable) {
                     IMoCTameable baby = (IMoCTameable) offspring;
                     ((LivingEntity) baby).setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
-                    this.world.spawnEntity((LivingEntity) baby);
+                    this.world.addEntity((LivingEntity) baby);
                     baby.setAdult(false);
                     baby.setEdad(35);
                     baby.setTamed(true);

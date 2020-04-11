@@ -7,6 +7,7 @@ import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAnimation;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
@@ -28,12 +29,10 @@ public class MoCEntityWraith extends MoCEntityMob//MoCEntityFlyerMob
 
     public int attackCounter;
 
-    public MoCEntityWraith(World world) {
-        super(world);
+    public MoCEntityWraith(EntityType<? extends MoCEntityWraith> type, World world) {
+        super(type, world);
         this.collidedVertically = false;
         this.texture = "wraith.png";
-        setSize(1.5F, 1.5F);
-        this.isImmuneToFire = false;
     }
 
 
@@ -120,13 +119,13 @@ public class MoCEntityWraith extends MoCEntityMob//MoCEntityFlyerMob
     }
 
     @Override
-    public void onLivingUpdate() {
+    public void livingTick() {
         if (this.attackCounter > 0) {
             this.attackCounter += 2;
             if (this.attackCounter > 10)
                 this.attackCounter = 0;
         }
-        super.onLivingUpdate();
+        super.livingTick();
     }
 
     @Override

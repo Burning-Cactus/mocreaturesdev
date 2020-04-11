@@ -4,27 +4,27 @@ import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.IMoCTameable;
 import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class MoCEntityPanther extends MoCEntityBigCat {
 
-    public MoCEntityPanther(World world) {
-        super(world);
+    public MoCEntityPanther(EntityType<? extends MoCEntityPanther> type, World world) {
+        super(type, world);
     }
 
     @Override
     public ResourceLocation getTexture() {
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
-                return MoCreatures.proxy.getTexture("bcpuma.png");
+                return MoCreatures.getTexture("bcpuma.png");
             case 2:
-                return MoCreatures.proxy.getTexture("bcpuma.png"); //winged panther
+                return MoCreatures.getTexture("bcpuma.png"); //winged panther
             /*case 3:
                 return MoCreatures.proxy.getTexture("bcpanthard.png"); //panther X leopard
             case 4:
@@ -32,14 +32,14 @@ public class MoCEntityPanther extends MoCEntityBigCat {
             case 5:
                 return MoCreatures.proxy.getTexture("bclither.png"); //panther X lion
             */default:
-                return MoCreatures.proxy.getTexture("bcpuma.png");
+                return MoCreatures.getTexture("bcpuma.png");
         }
     }
 
     @Override
     public void selectType() {
 
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(1);
         }
         super.selectType();
@@ -51,14 +51,14 @@ public class MoCEntityPanther extends MoCEntityBigCat {
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
             return tameResult;
         }
 
         final ItemStack stack = player.getHeldItem(hand);
-        if (!stack.isEmpty() && getIsTamed() && getType() == 1 && (stack.getItem() == MoCItems.essencedarkness)) {
+        if (!stack.isEmpty() && getIsTamed() && getType() == 1 && (stack.getItem() == MoCItems.ESSENCEDARKNESS)) {
             stack.shrink(1);
             if (stack.isEmpty()) {
                 player.setHeldItem(hand, new ItemStack(Items.GLASS_BOTTLE));
@@ -68,7 +68,7 @@ public class MoCEntityPanther extends MoCEntityBigCat {
             setType(2);
             return true;
         }
-        if (this.getIsRideable() && this.getIsAdult() && (!this.getIsChested() || !player.isSneaking()) && !this.isBeingRidden()) {
+        if (this.getIsRideable() && this.getIsAdult() && (!this.getIsChested() || !player.isCrouching()) && !this.isBeingRidden()) {
             if (!this.world.isRemote && player.startRiding(this)) {
                 player.rotationYaw = this.rotationYaw;
                 player.rotationPitch = this.rotationPitch;
@@ -83,13 +83,13 @@ public class MoCEntityPanther extends MoCEntityBigCat {
 
     @Override
     public String getOffspringClazz(IMoCTameable mate) {
-        if (mate instanceof MoCEntityLeopard && ((MoCEntityLeopard) mate).getType() == 1) {
+        if (mate instanceof MoCEntityLeopard && ((MoCEntityLeopard) mate).getSubType() == 1) {
             return "Panthard";//3; //panthard
         }
-        if (mate instanceof MoCEntityTiger && ((MoCEntityTiger) mate).getType() == 1) {
+        if (mate instanceof MoCEntityTiger && ((MoCEntityTiger) mate).getSubType() == 1) {
             return "Panthger";//4; //panthger
         }
-        if (mate instanceof MoCEntityLion && ((MoCEntityLion) mate).getType() == 2) {
+        if (mate instanceof MoCEntityLion && ((MoCEntityLion) mate).getSubType() == 2) {
             return "Lither";//5; //lither
         }
         
@@ -99,13 +99,13 @@ public class MoCEntityPanther extends MoCEntityBigCat {
 
     @Override
     public int getOffspringTypeInt(IMoCTameable mate) {
-        if (mate instanceof MoCEntityLeopard && ((MoCEntityLeopard) mate).getType() == 1) {
+        if (mate instanceof MoCEntityLeopard && ((MoCEntityLeopard) mate).getSubType() == 1) {
             return 1;//3; //panthard
         }
-        if (mate instanceof MoCEntityTiger && ((MoCEntityTiger) mate).getType() == 1) {
+        if (mate instanceof MoCEntityTiger && ((MoCEntityTiger) mate).getSubType() == 1) {
             return 1;//4; //panthger
         }
-        if (mate instanceof MoCEntityLion && ((MoCEntityLion) mate).getType() == 2) {
+        if (mate instanceof MoCEntityLion && ((MoCEntityLion) mate).getSubType() == 2) {
             return 1;//5; //lither
         }
         return 1;
@@ -113,10 +113,10 @@ public class MoCEntityPanther extends MoCEntityBigCat {
 
     @Override
     public boolean compatibleMate(Entity mate) {
-        return (mate instanceof MoCEntityLeopard && ((MoCEntityLeopard) mate).getType() == 1)
-                || (mate instanceof MoCEntityPanther && ((MoCEntityPanther) mate).getType() == 1)
-                || (mate instanceof MoCEntityTiger && ((MoCEntityTiger) mate).getType() == 1)
-                || (mate instanceof MoCEntityLion && ((MoCEntityLion) mate).getType() == 2);
+        return (mate instanceof MoCEntityLeopard && ((MoCEntityLeopard) mate).getSubType() == 1)
+                || (mate instanceof MoCEntityPanther && ((MoCEntityPanther) mate).getSubType() == 1)
+                || (mate instanceof MoCEntityTiger && ((MoCEntityTiger) mate).getSubType() == 1)
+                || (mate instanceof MoCEntityLion && ((MoCEntityLion) mate).getSubType() == 2);
     }
 
     @Override
@@ -136,19 +136,19 @@ public class MoCEntityPanther extends MoCEntityBigCat {
 
     @Override
     public int getMaxEdad() {
-        if (getType() >= 4) return 110;
+        if (getSubType() >= 4) return 110;
         return 100;
     }
 
     @Override
-    public boolean canAttackTarget(EntityLivingBase entity) {
+    public boolean canAttackTarget(LivingEntity entity) {
         if (!this.getIsAdult() && (this.getEdad() < this.getMaxEdad() * 0.8)) {
             return false;
         }
         if (entity instanceof MoCEntityPanther) {
             return false;
         }
-        return entity.height < 1.5F && entity.width < 1.5F;
+        return entity.getHeight() < 1.5F && entity.getWidth() < 1.5F;
     }
     
     @Override

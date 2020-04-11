@@ -19,11 +19,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -55,16 +57,15 @@ public class MoCEntityKitty extends MoCEntityTameableAnimal {
     private final int treeCoord[] = {-1, -1, -1};
     private boolean isSwinging;
     private boolean onTree;
-    private EntityItem itemAttackTarget;
+    private ItemEntity itemAttackTarget;
     
     private static final DataParameter<Boolean> SITTING = EntityDataManager.<Boolean>createKey(MoCEntityKitty.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> HUNGRY = EntityDataManager.<Boolean>createKey(MoCEntityKitty.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> EMO = EntityDataManager.<Boolean>createKey(MoCEntityKitty.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> KITTY_STATE = EntityDataManager.<Integer>createKey(MoCEntityKitty.class, DataSerializers.VARINT);
     
-    public MoCEntityKitty(World world) {
-        super(world);
-        setSize(0.7F, 0.5F);
+    public MoCEntityKitty(EntityType<? extends MoCEntityKitty> type, World world) {
+        super(type, world);
         setAdult(true);
         setEdad(40);
         setKittyState(1);

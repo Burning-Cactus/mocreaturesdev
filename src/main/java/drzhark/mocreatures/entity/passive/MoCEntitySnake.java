@@ -15,17 +15,18 @@ import drzhark.mocreatures.network.message.MoCMessageAnimation;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -34,7 +35,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 /**
  * Biome - specific Forest Desert plains Swamp Jungle Tundra Taiga Extreme Hills
@@ -61,32 +61,31 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
 
     public static final String snakeNames[] = {"Dark", "Spotted", "Orange", "Green", "Coral", "Cobra", "Rattle", "Python"};
 
-    public MoCEntitySnake(World world) {
-        super(world);
-        setSize(1.4F, 0.5F);
+    public MoCEntitySnake(EntityType<? extends MoCEntitySnake> type, World world) {
+        super(type, world);
         this.bodyswing = 2F;
         this.movInt = this.rand.nextInt(10);
         setEdad(50 + this.rand.nextInt(50));
     }
 
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(2, new EntityAIPanicMoC(this, 0.8D));
-        this.tasks.addTask(3, new EntityAIFleeFromPlayer(this, 0.8D, 4D));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));
-        this.tasks.addTask(5, new EntityAIWanderMoC2(this, 0.8D, 30));
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAIHunt(this, EntityAnimal.class, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTargetMoC(this, EntityPlayer.class, true));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(2, new EntityAIPanicMoC(this, 0.8D));
+        this.goalSelector.addGoal(3, new EntityAIFleeFromPlayer(this, 0.8D, 4D));
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 0.8D, 30));
+        this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.targetSelector.addGoal(1, new EntityAIHunt(this, AnimalEntity.class, true));
+        this.targetSelector.addGoal(2, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
     }
 
     @Override
@@ -102,32 +101,32 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
         // 7 rattlesnake (aggressive - venomous) desert
         // 8 python (aggressive - non venomous) big - swamp
         // 9 sea snake (aggressive - venomous)
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(this.rand.nextInt(8) + 1);
         }
     }
 
     @Override
     public ResourceLocation getTexture() {
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
-                return MoCreatures.proxy.getTexture("snake1.png");
+                return MoCreatures.getTexture("snake1.png");
             case 2:
-                return MoCreatures.proxy.getTexture("snake2.png");
+                return MoCreatures.getTexture("snake2.png");
             case 3:
-                return MoCreatures.proxy.getTexture("snake3.png");
+                return MoCreatures.getTexture("snake3.png");
             case 4:
-                return MoCreatures.proxy.getTexture("snake4.png");
+                return MoCreatures.getTexture("snake4.png");
             case 5:
-                return MoCreatures.proxy.getTexture("snake5.png");
+                return MoCreatures.getTexture("snake5.png");
             case 6:
-                return MoCreatures.proxy.getTexture("snake6.png");
+                return MoCreatures.getTexture("snake6.png");
             case 7:
-                return MoCreatures.proxy.getTexture("snake7.png");
+                return MoCreatures.getTexture("snake7.png");
             case 8:
-                return MoCreatures.proxy.getTexture("snake8.png");
+                return MoCreatures.getTexture("snake8.png");
             default:
-                return MoCreatures.proxy.getTexture("snake1.png");
+                return MoCreatures.getTexture("snake1.png");
         }
     }
 
@@ -163,7 +162,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
             return tameResult;
@@ -186,7 +185,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
 
     @Override
     public boolean isNotScared() {
-        if (getType() > 2 && getEdad() > 50) {
+        if (getSubType() > 2 && getEdad() > 50) {
             return true;
         }
         return false;
@@ -198,11 +197,11 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
      * @return
      */
     public boolean isClimbing() {
-        return isOnLadder() && this.motionY > 0.01F;
+        return isOnLadder() && this.getMotion().y > 0.01F;
     }
 
     public boolean isResting() {
-        return (!getNearPlayer() && this.onGround && (this.motionX < 0.01D && this.motionX > -0.01D) && (this.motionZ < 0.01D && this.motionZ > -0.01D));
+        return (!getNearPlayer() && this.onGround && (this.getMotion().x < 0.01D && this.getMotion().x > -0.01D) && (this.getMotion().z < 0.01D && this.getMotion().z > -0.01D));
     }
 
     public boolean getNearPlayer() {
@@ -229,7 +228,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
 
     @Override
     public double getYOffset() {
-        if (this.getRidingEntity() instanceof EntityPlayer) {
+        if (this.getRidingEntity() instanceof PlayerEntity) {
             return 0.1F;
         }
 
@@ -238,22 +237,22 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
 
     public float getSizeF() {
         float factor = 1.0F;
-        if (getType() == 1 || getType() == 2)// small shy snakes
+        if (getSubType() == 1 || getSubType() == 2)// small shy snakes
         {
             factor = 0.8F;
-        } else if (getType() == 5)// coral
+        } else if (getSubType() == 5)// coral
         {
             factor = 0.6F;
         }
-        if (getType() == 6)// cobra 1.1
+        if (getSubType() == 6)// cobra 1.1
         {
             factor = 1.1F;
         }
-        if (getType() == 7)// rattlesnake
+        if (getSubType() == 7)// rattlesnake
         {
             factor = 0.9F;
         }
-        if (getType() == 8)// python
+        if (getSubType() == 8)// python
         {
             factor = 1.5F;
         }
@@ -261,8 +260,8 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
 
         if (this.world.isRemote) {
             if (getfTongue() != 0.0F) {
@@ -280,7 +279,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
                 }
             }
 
-            if (getType() == 7 && getfRattle() != 0.0F) // rattling
+            if (getSubType() == 7 && getfRattle() != 0.0F) // rattling
             {
                 setfRattle(getfRattle() + 0.2F);
                 if (getfRattle() == 1.0F) {
@@ -305,7 +304,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
             if (this.rand.nextInt(100) == 0 && getfMouth() == 0.0F) {
                 setfMouth(0.1F);
             }
-            if (getType() == 7) {
+            if (getSubType() == 7) {
                 int chance = 0;
                 if (getNearPlayer()) {
                     chance = 30;
@@ -354,7 +353,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
             this.rotationYaw = this.getRidingEntity().rotationYaw;// -90F;
         }
 
-        if (this.world.getDifficulty().getDifficultyId() > 0 && getNearPlayer() && !getIsTamed() && isNotScared()) {
+        if (this.world.getDifficulty().getId() > 0 && getNearPlayer() && !getIsTamed() && isNotScared()) {
 
             this.hissCounter++;
 
@@ -411,8 +410,8 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
 
         /**
          * this stops chasing the target randomly
@@ -421,9 +420,9 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
             setAttackTarget(null);
         }
 
-        EntityPlayer entityplayer1 = this.world.getClosestPlayerToEntity(this, 12D);
+        PlayerEntity entityplayer1 = this.world.getClosestPlayer(this, 12D);
         if (entityplayer1 != null) {
-            double distP = MoCTools.getSqDistanceTo(entityplayer1, this.posX, this.posY, this.posZ);
+            double distP = MoCTools.getSqDistanceTo(entityplayer1, this.getPosX(), this.getPosY(), this.getPosZ());
             if (isNotScared()) {
                 if (distP < 5D) {
                     setNearPlayer(true);
@@ -449,11 +448,11 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
 
     @Override
     public boolean attackEntityAsMob(Entity entityIn) {
-        if ((getType() < 3 || getIsTamed()) && entityIn instanceof EntityPlayer) {
+        if ((getSubType() < 3 || getIsTamed()) && entityIn instanceof PlayerEntity) {
             return false;
         }
 
-        if (entityIn instanceof EntityPlayer && !shouldAttackPlayers()) {
+        if (entityIn instanceof PlayerEntity && !shouldAttackPlayers()) {
             return false;
         }
         setBiting(true);
@@ -472,7 +471,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     public void setBiting(boolean flag) {
         if (flag && !this.world.isRemote) {
             MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
-                    new TargetPoint(this.world.provider.getDimensionType().getId(), this.posX, this.posY, this.posZ, 64));
+                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
         this.isBiting = flag;
     }
@@ -488,7 +487,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     @Override
     public boolean attackEntityFrom(DamageSource damagesource, float i) {
 
-        if (getType() < 3) {
+        if (getSubType() < 3) {
             return super.attackEntityFrom(damagesource, i);
         }
 
@@ -497,9 +496,9 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
             if (this.isRidingOrBeingRiddenBy(entity)) {
                 return true;
             }
-            if ((entity != this) && entity instanceof EntityLivingBase && (super.shouldAttackPlayers())) {
+            if ((entity != this) && entity instanceof LivingEntity && (super.shouldAttackPlayers())) {
                 setPissed(true);
-                setAttackTarget((EntityLivingBase) entity);
+                setAttackTarget((LivingEntity) entity);
             }
             return true;
         } else {
@@ -513,19 +512,19 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
             int j = this.rand.nextInt(3);
             for (int l = 0; l < j; l++) {
 
-                entityDropItem(new ItemStack(MoCItems.mocegg, 1, getType() + 20), 0.0F);
+                entityDropItem(new ItemStack(MoCItems.MOCEGG, 1, getSubType() + 20), 0.0F);
             }
         }
     }
 
     @Override
-    public boolean canAttackTarget(EntityLivingBase entity) {
-        return !(entity instanceof MoCEntitySnake) && entity.height < 0.5D && entity.width < 0.5D;
+    public boolean canAttackTarget(LivingEntity entity) {
+        return !(entity instanceof MoCEntitySnake) && entity.getHeight() < 0.5D && entity.getWidth() < 0.5D;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, Block par4) {
-        if (isInsideOfMaterial(Material.WATER)) {
+        if (isInWater()) {
             MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_SNAKE_SWIM);
         }
         // TODO - add sound for slither
@@ -557,7 +556,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
 
     @Override
     public boolean checkSpawningBiome() {
-        BlockPos pos = new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(getEntityBoundingBox().minY), this.posZ);
+        BlockPos pos = new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(getBoundingBox().minY), this.getPosZ());
         /**
          * swamp: python, bright green, #1 (done) plains: coral, cobra #1, #2,
          * #3, #4 (everyone but 7) desert: rattlesnake , #2 jungle: all except
@@ -589,7 +588,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
                 }
             }
 
-            if (getType() == 7 && !(BiomeDictionary.hasType(currentbiome, Type.SANDY))) {
+            if (getSubType() == 7 && !(BiomeDictionary.hasType(currentbiome, Type.SANDY))) {
                 setType(2);
             }
             if (BiomeDictionary.hasType(currentbiome, Type.HILLS)) {
@@ -623,7 +622,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
 
     @Override
     public boolean isMyHealFood(ItemStack stack) {
-        return !stack.isEmpty() && (stack.getItem() == MoCItems.ratRaw);
+        return !stack.isEmpty() && (stack.getItem() == MoCItems.RATRAW);
     }
 
     @Override
@@ -637,18 +636,18 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    protected void applyEnchantments(EntityLivingBase entityLivingBaseIn, Entity entityIn) {
+    protected void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
         if (isVenomous()) {
-            if (entityIn instanceof EntityPlayer) {
-                MoCreatures.poisonPlayer((EntityPlayer) entityIn);
+            if (entityIn instanceof PlayerEntity) {
+                MoCreatures.poisonPlayer((PlayerEntity) entityIn);
             }
-            ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 150, 2));
+            ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 150, 2));
         }
         super.applyEnchantments(entityLivingBaseIn, entityIn);
     }
 
     private boolean isVenomous() {
-        return getType() == 3 || getType() == 4 || getType() == 5 || getType() == 6 || getType() == 7 || getType() == 9;
+        return getSubType() == 3 || getSubType() == 4 || getSubType() == 5 || getSubType() == 6 || getSubType() == 7 || getSubType() == 9;
     }
 
     @Override

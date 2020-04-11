@@ -1,7 +1,9 @@
 package drzhark.mocreatures.entity.monster;
 
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -9,8 +11,8 @@ import net.minecraft.world.World;
 
 public class MoCEntityGreenOgre extends MoCEntityOgre{
 
-    public MoCEntityGreenOgre(World world) {
-        super(world);
+    public MoCEntityGreenOgre(EntityType<? extends MoCEntityGreenOgre> type, World world) {
+        super(type, world);
     }
 
     @Override
@@ -24,10 +26,10 @@ public class MoCEntityGreenOgre extends MoCEntityOgre{
      */
     @Override
     public float getDestroyForce() {
-            return MoCreatures.proxy.ogreStrength;
+            return MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.ogreStrength.get().floatValue();
     }
     
-    @Override
+    @Override //TODO: Drops are moved to json loot tables
     protected Item getDropItem() {
         return Item.getItemFromBlock(Blocks.OBSIDIAN);
     } 

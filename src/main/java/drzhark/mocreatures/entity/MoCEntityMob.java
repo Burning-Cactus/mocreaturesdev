@@ -28,7 +28,6 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.List;
@@ -105,6 +104,11 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
     @Override
     public void setType(int i) {
         this.dataManager.set(TYPE, Integer.valueOf(i));
+    }
+
+    @Override
+    public int getSubType() {
+        return this.dataManager.get(TYPE);
     }
 
     @Override

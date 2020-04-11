@@ -4,11 +4,8 @@ import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Items;
@@ -34,20 +31,18 @@ public class MoCEntityKittyBed extends LivingEntity {
     private static final DataParameter<Boolean> PICKED_UP = EntityDataManager.<Boolean>createKey(MoCEntityKittyBed.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> SHEET_COLOR = EntityDataManager.<Integer>createKey(MoCEntityKittyBed.class, DataSerializers.VARINT);
 
-    public MoCEntityKittyBed(World world) {
-        super(world);
+    public MoCEntityKittyBed(EntityType<? extends MoCEntityKittyBed> type, World world) {
+        super(type, world);
         setSize(1.0F, 0.3F);
         this.milklevel = 0.0F;
     }
 
-    public MoCEntityKittyBed(World world, double d, double d1, double d2) {
-        super(world);
-        setSize(1.0F, 0.3F);
-        this.milklevel = 0.0F;
+    public MoCEntityKittyBed(EntityType<? extends MoCEntityKittyBed> type, World world, double d, double d1, double d2) {
+        this(type, world);
     }
 
-    public MoCEntityKittyBed(World world, int i) {
-        this(world);
+    public MoCEntityKittyBed(EntityType<? extends MoCEntityKittyBed> type, World world, int i) {
+        this(type, world);
         setSheetColor(i);
     }
 

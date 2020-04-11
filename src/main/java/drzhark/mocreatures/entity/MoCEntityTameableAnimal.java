@@ -10,43 +10,30 @@ import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageHeart;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.UUID;
@@ -61,8 +48,8 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
     private boolean hasEaten;
     private int gestationtime;
     
-    public MoCEntityTameableAnimal(World world) {
-        super(world);
+    public MoCEntityTameableAnimal(EntityType<? extends MoCEntityTameableAnimal> type, World world) {
+        super(type, world);
     }
 
     @Override
@@ -333,7 +320,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
         super.readAdditional(nbttagcompound);
         setTamed(nbttagcompound.getBoolean("Tamed"));
         String s = "";
-        if (nbttagcompound.hasKey("OwnerUUID", 8))
+        if (nbttagcompound.contains("OwnerUUID", 8))
         {
             s = nbttagcompound.getString("OwnerUUID");
         }
@@ -500,7 +487,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
 
             setGestationTime(getGestationTime()+1);
             if (!this.world.isRemote) {
-                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
+                MoCMessageHandler.INSTANCE.sendTo(new MoCMessageHeart(this.getEntityId()),
                         new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
 
@@ -516,7 +503,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
                 if (offspring != null && offspring instanceof IMoCTameable) {
                     IMoCTameable baby = (IMoCTameable) offspring;
                     ((LivingEntity) baby).setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
-                    this.world.spawnEntity((LivingEntity) baby);
+                    this.world.addEntity((LivingEntity) baby);
                     baby.setAdult(false);
                     baby.setEdad(35);
                     baby.setTamed(true);

@@ -2,6 +2,7 @@ package drzhark.mocreatures.entity.monster;
 
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
@@ -11,8 +12,8 @@ import net.minecraft.world.World;
 
 public class MoCEntityCaveOgre extends MoCEntityOgre{
 
-    public MoCEntityCaveOgre(World world) {
-        super(world);
+    public MoCEntityCaveOgre(EntityType<? extends MoCEntityCaveOgre> type, World world) {
+        super(type, world);
     }
 
     @Override

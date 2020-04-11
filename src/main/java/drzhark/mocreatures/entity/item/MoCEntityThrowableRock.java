@@ -9,6 +9,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityItem;
@@ -39,16 +40,16 @@ public class MoCEntityThrowableRock extends Entity {
     private static final DataParameter<Integer> MASTERS_ID = EntityDataManager.<Integer>createKey(MoCEntityThrowableRock.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> BEHAVIOUR_TYPE = EntityDataManager.<Integer>createKey(MoCEntityThrowableRock.class, DataSerializers.VARINT);
 
-    public MoCEntityThrowableRock(World par1World) {
-        super(par1World);
+    public MoCEntityThrowableRock(EntityType<? extends MoCEntityThrowableRock> type, World par1World) {
+        super(type, par1World);
         this.preventEntitySpawning = true;
         this.setSize(1F, 1F);
         //this.yOffset = this.height / 2.0F;
     }
 
-    public MoCEntityThrowableRock(World par1World, Entity entitythrower, double par2, double par4, double par6)//, int behavior)//, int bMetadata)
+    public MoCEntityThrowableRock(EntityType<? extends MoCEntityThrowableRock> type, World par1World, Entity entitythrower, double par2, double par4, double par6)//, int behavior)//, int bMetadata)
     {
-        this(par1World);
+        this(type, par1World);
         this.setPosition(par2, par4, par6);
         this.rockTimer = 250;
         this.prevPosX = this.oPosX = par2;
@@ -95,7 +96,7 @@ public class MoCEntityThrowableRock extends Entity {
         nbttagcompound.putInt("Behavior", getBehavior());
         nbttagcompound.putInt("MasterID", getMasterID());
         nbttagcompound.putShort("BlockID", (short) Block.getStateId(iblockstate));
-        nbttagcompound.putShort("BlockMetadata", (short) iblockstate.getBlock().getMetaFromState(iblockstate));
+//        nbttagcompound.putShort("BlockMetadata", (short) iblockstate.getBlock().getMetaFromState(iblockstate));
     }
 
     @Override
@@ -259,7 +260,7 @@ public class MoCEntityThrowableRock extends Entity {
                             .getBlock().getMetaFromState(this.getState())));
             entityitem.setPickupDelay(10);
             entityitem.setAgeToCreativeDespawnTime();
-            this.world.spawnEntity(entityitem);
+            this.world.addEntity(entityitem);
         }
         this.setDead();
     }

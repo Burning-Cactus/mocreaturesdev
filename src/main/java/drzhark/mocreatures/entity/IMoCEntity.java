@@ -50,6 +50,8 @@ public interface IMoCEntity {
 
     EntityType getType();
 
+    int getSubType();
+
     void setType(int i);
 
     float rollRotationOffset();

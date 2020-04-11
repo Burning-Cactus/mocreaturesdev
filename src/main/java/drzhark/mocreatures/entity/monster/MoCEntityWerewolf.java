@@ -7,30 +7,18 @@ import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.entity.*;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAILeapAtTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Items;
 import net.minecraft.item.*;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
@@ -45,9 +33,8 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     private static final DataParameter<Boolean> IS_HUMAN = EntityDataManager.<Boolean>createKey(MoCEntityWerewolf.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IS_HUNCHED = EntityDataManager.<Boolean>createKey(MoCEntityWerewolf.class, DataSerializers.BOOLEAN);
     
-    public MoCEntityWerewolf(World world) {
-        super(world);
-        setSize(0.9F, 1.6F);
+    public MoCEntityWerewolf(EntityType<? extends MoCEntityWerewolf> type, World world) {
+        super(type, world);
         this.transforming = false;
         this.tcounter = 0;
         setHumanForm(true);
@@ -312,8 +299,8 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
         if (!this.world.isRemote) {
             if (((IsNight() && getIsHumanForm()) || (!IsNight() && !getIsHumanForm())) && (this.rand.nextInt(250) == 0)) {
                 this.transforming = true;

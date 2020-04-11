@@ -10,6 +10,7 @@ import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIPanic;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -25,10 +26,9 @@ public class MoCEntityDeer extends MoCEntityTameableAnimal {
 
     private int readyToJumpTimer;
 
-    public MoCEntityDeer(World world) {
-        super(world);
+    public MoCEntityDeer(EntityType<? extends MoCEntityDeer> type, World world) {
+        super(type, world);
         setEdad(75);
-        setSize(0.9F, 1.3F);
         setAdult(true);
         setTamed(false);
     }

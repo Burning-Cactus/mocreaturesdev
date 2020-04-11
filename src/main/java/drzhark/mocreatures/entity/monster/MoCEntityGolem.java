@@ -16,6 +16,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
@@ -64,10 +65,9 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
     private int sCounter;
     private static final DataParameter<Integer> GOLEM_STATE = EntityDataManager.<Integer>createKey(MoCEntityGolem.class, DataSerializers.VARINT);
 
-    public MoCEntityGolem(World world) {
-        super(world);
+    public MoCEntityGolem(EntityType<? extends MoCEntityGolem> type, World world) {
+        super(type, world);
         this.texture = "golemt.png";
-        setSize(1.5F, 4F);
     }
 
     @Override
@@ -263,7 +263,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
         trock.setBehavior(type);//so the rock: 2 follows the EntityGolem  or 3 - gets around the golem
 
         //spawns the new TRock
-        this.world.spawnEntity(trock);
+        this.world.addEntity(trock);
     }
 
     /**

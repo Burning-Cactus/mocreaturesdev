@@ -9,6 +9,7 @@ import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -25,9 +26,8 @@ import net.minecraft.world.World;
 
 public class MoCEntityBoar extends MoCEntityAnimal {
 
-    public MoCEntityBoar(World world) {
-        super(world);
-        setSize(0.9F, 0.8F);
+    public MoCEntityBoar(EntityType<? extends MoCEntityBoar> type, World world) {
+        super(type, world);
         setEdad(this.rand.nextInt(15) + 45);
         if (this.rand.nextInt(4) == 0) {
             setAdult(false);

@@ -1,6 +1,7 @@
 package drzhark.mocreatures.entity.monster;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
@@ -14,10 +15,9 @@ public class MoCEntityFlameWraith extends MoCEntityWraith implements IMob {
 
     protected int burningTime;
 
-    public MoCEntityFlameWraith(World world) {
-        super(world);
+    public MoCEntityFlameWraith(EntityType<? extends MoCEntityFlameWraith> type, World world) {
+        super(type, world);
         this.texture = "flamewraith.png";
-        //setSize(1.5F, 1.5F);
         //this.isImmuneToFire = true;
         this.burningTime = 30;
     }
@@ -34,7 +34,7 @@ public class MoCEntityFlameWraith extends MoCEntityWraith implements IMob {
     }
 
     @Override
-    public void onLivingUpdate() {
+    public void livingTick() {
         if (!this.world.isRemote) {
             if (this.world.isDaytime()) {
                 float f = getBrightness();
@@ -45,7 +45,7 @@ public class MoCEntityFlameWraith extends MoCEntityWraith implements IMob {
                 }
             }
         }
-        super.onLivingUpdate();
+        super.livingTick();
     }
 
     //TODO TEST

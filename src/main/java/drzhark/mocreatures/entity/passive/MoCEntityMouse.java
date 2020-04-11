@@ -7,6 +7,7 @@ import drzhark.mocreatures.entity.ai.EntityAIFleeFromPlayer;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIPanic;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -28,9 +29,8 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 
 public class MoCEntityMouse extends MoCEntityAnimal {
 
-    public MoCEntityMouse(World world) {
-        super(world);
-        setSize(0.3F, 0.3F);
+    public MoCEntityMouse(EntityType<? extends MoCEntityMouse> type, World world) {
+        super(type, world);
     }
 
     @Override

@@ -10,6 +10,7 @@ import drzhark.mocreatures.entity.ai.EntityAIPanicMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
@@ -40,15 +41,14 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
     private int jumpTimer;
     private static final DataParameter<Boolean> HAS_EATEN = EntityDataManager.<Boolean>createKey(MoCEntityBunny.class, DataSerializers.BOOLEAN);
     
-    public MoCEntityBunny(World world) {
-        super(world);
+    public MoCEntityBunny(EntityType<? extends MoCEntityBunny> type, World world) {
+        super(type, world);
         setAdult(true);
         setTamed(false);
         setEdad(50 + this.rand.nextInt(15));
         if (this.rand.nextInt(4) == 0) {
             setAdult(false);
         }
-        setSize(0.5F, 0.5F);
         this.bunnyReproduceTickerA = this.rand.nextInt(64);
         this.bunnyReproduceTickerB = 0;
     }

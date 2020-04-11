@@ -10,10 +10,7 @@ import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAnimation;
-import net.minecraft.entity.CreatureAttribute;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -46,9 +43,8 @@ public class MoCEntityScorpion extends MoCEntityMob {
     private static final DataParameter<Boolean> IS_PICKED = EntityDataManager.<Boolean>createKey(MoCEntityScorpion.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> HAS_BABIES = EntityDataManager.<Boolean>createKey(MoCEntityScorpion.class, DataSerializers.BOOLEAN);
     
-    public MoCEntityScorpion(World world) {
-        super(world);
-        setSize(1.4F, 0.9F);
+    public MoCEntityScorpion(EntityType<? extends MoCEntityScorpion> type, World world) {
+        super(type, world);
         this.poisontimer = 0;
         setAdult(true);
         setEdad(20);

@@ -11,27 +11,17 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.Path;
-import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -40,7 +30,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
@@ -58,10 +47,12 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     protected boolean riderIsDisconnecting;
     protected PathNavigator navigatorFlyer;
 
-    public MoCEntityAmbient(World world) {
-        super(world);
+    public MoCEntityAmbient(EntityType<? extends MoCEntityAmbient> type, World world) {
+        super(type, world);
         this.navigatorFlyer = new PathNavigateFlyerMoC(this, world);
     }
+
+
 
     @Override
     public ResourceLocation getTexture() {
@@ -94,8 +85,8 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(ADULT, false);
         this.dataManager.register(TYPE, 0);
         this.dataManager.register(AGE, 45);
@@ -210,14 +201,14 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     @Override
-    public void onLivingUpdate() {
+    public void livingTick() {
         if (!this.world.isRemote) {
             if (isMovementCeased()) {
                 this.getNavigator().clearPath();
             }
             this.getNavigator().onUpdateNavigation();
         }
-        super.onLivingUpdate();
+        super.livingTick();
     }
 
     public boolean swimmerEntity() {
@@ -420,13 +411,13 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     public boolean getCanSpawnHereLiving() {
-        return this.world.checkNoEntityCollision(this.getBoundingBox())
-                && this.world.getCollisionBoxes(this, this.getBoundingBox()).size() == 0
+        return this.world.checkNoEntityCollision(this)
+                && this.world.getCollisionShapes(this, this.getBoundingBox()).count() == 0
                 && !this.world.containsAnyLiquid(this.getBoundingBox());
     }
 
     public boolean getCanSpawnHereAquatic() {
-        return this.world.checkNoEntityCollision(this.getBoundingBox());
+        return this.world.checkNoEntityCollision(this);
     }
 
     @Override
@@ -446,8 +437,8 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     public boolean getCanSpawnHereJungle() {
-        if (this.world.checkNoEntityCollision(this.getBoundingBox())
-                && this.world.getCollisionBoxes(this, this.getBoundingBox()).isEmpty()
+        if (this.world.checkNoEntityCollision(this)
+                && this.world.getCollisionShapes(this, this.getBoundingBox()).count() == 0
                 && !this.world.containsAnyLiquid(this.getBoundingBox())) {
             int var1 = MathHelper.floor(this.getPosX());
             int var2 = MathHelper.floor(this.getBoundingBox().minY);
@@ -476,7 +467,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
         nbttagcompound.putBoolean("Adult", getIsAdult());
         nbttagcompound.putInt("Edad", getEdad());
         nbttagcompound.putString("Name", getPetName());
-        nbttagcompound.putInt("TypeInt", getType());
+        nbttagcompound.putInt("TypeInt", getSubType());
     }
 
     @Override

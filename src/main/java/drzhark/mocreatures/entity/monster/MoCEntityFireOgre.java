@@ -4,6 +4,7 @@ import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -11,8 +12,8 @@ import net.minecraft.world.World;
 
 public class MoCEntityFireOgre extends MoCEntityOgre{
 
-    public MoCEntityFireOgre(World world) {
-        super(world);
+    public MoCEntityFireOgre(EntityType<? extends MoCEntityFireOgre> type, World world) {
+        super(type, world);
        //Fire immunity needs to be set by the EntityType
     }
 

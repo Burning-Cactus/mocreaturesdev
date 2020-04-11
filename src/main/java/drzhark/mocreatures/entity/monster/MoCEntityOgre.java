@@ -1,7 +1,7 @@
 package drzhark.mocreatures.entity.monster;
 
 import drzhark.mocreatures.MoCTools;
-import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.init.MoCSoundEvents;
@@ -9,6 +9,7 @@ import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAnimation;
 import drzhark.mocreatures.network.message.MoCMessageExplode;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
@@ -29,8 +30,8 @@ public class MoCEntityOgre extends MoCEntityMob {
     public int armToAnimate; // 1 = left, 2 = right, 3 = both
     public int attackCounter;
 
-    public MoCEntityOgre(World world) {
-        super(world);
+    public MoCEntityOgre(EntityType<? extends MoCEntityOgre> type, World world) {
+        super(type, world);
         setSize(1.9F, 3F);
     }
 
@@ -52,7 +53,7 @@ public class MoCEntityOgre extends MoCEntityMob {
 
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(this.rand.nextInt(2) + 1);
         }
     }
@@ -108,15 +109,15 @@ public class MoCEntityOgre extends MoCEntityMob {
      * @return
      */
     public float getDestroyForce() {
-        return MoCreatures.proxy.ogreStrength;
+        return MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.ogreStrength.get().floatValue();
     }
 
     public int getAttackRange() {
-        return MoCreatures.proxy.ogreAttackRange;
+        return MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.ogreAttackRange.get().floatValue());
     }
 
     @Override
-    public void onLivingUpdate() {
+    public void livingTick() {
         if (!this.world.isRemote) {
             if (this.smashCounter > 0 && ++this.smashCounter > 10) {
                 this.smashCounter = 0;
@@ -142,7 +143,7 @@ public class MoCEntityOgre extends MoCEntityMob {
                 this.armToAnimate = 0;
             }
         }
-        super.onLivingUpdate();
+        super.livingTick();
     }
 
     /**
@@ -177,7 +178,7 @@ public class MoCEntityOgre extends MoCEntityMob {
             if (this.smashCounter != 0)
                 return;
 
-            boolean leftArmW = (getType() == 2 || getType() == 4 || getType() == 6) && this.rand.nextInt(2) == 0;
+            boolean leftArmW = (getSubType() == 2 || getSubType() == 4 || getSubType() == 6) && this.rand.nextInt(2) == 0;
 
             if (leftArmW) {
                 this.attackCounter = 1;
@@ -203,7 +204,7 @@ public class MoCEntityOgre extends MoCEntityMob {
     }
 
     public int getMovingHead() {
-        if (getType() == 1) //single headed ogre
+        if (getSubType() == 1) //single headed ogre
         {
             return 1;
         }

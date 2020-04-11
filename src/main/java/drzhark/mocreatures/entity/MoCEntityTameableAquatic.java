@@ -10,41 +10,27 @@ import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageHeart;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleType;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.UUID;
@@ -65,8 +51,8 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(OWNER_UNIQUE_ID, Optional.<UUID>absent());
         this.dataManager.register(PET_ID, -1);
         this.dataManager.register(TAMED, false);
@@ -100,7 +86,12 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
     public boolean getIsTamed() {
         return this.dataManager.get(TAMED);
     }
-    
+
+    @Override
+    public int getSubType() {
+        return 0;
+    }
+
     @Nullable
     public LivingEntity getOwner() {
         try
@@ -144,7 +135,7 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
             if (!this.world.isRemote) {
                 // Remove when client is updated
                 ((ServerPlayerEntity) player).sendAllContents(player.openContainer, player.openContainer.getInventory());
-                player.sendMessage(new TextComponentTranslation(TextFormatting.RED + "This pet does not belong to you."));
+                player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."));
             }
             return false;
         }
@@ -152,7 +143,7 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
         //if the player interacting is not the owner, do nothing!
         if (MoCreatures.proxy.enableOwnership && this.getOwnerId() != null
                 && !player.getUniqueID().equals(this.getOwnerId())) {
-            player.sendMessage(new TextComponentTranslation(TextFormatting.RED + "This pet does not belong to you."));
+            player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."));
             return false;
         }
 
@@ -291,7 +282,7 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
      */
     @Override
     public void playTameEffect(boolean par1) {
-        ParticleType particleType = ParticleTypes.HEART;
+        BasicParticleType particleType = ParticleTypes.HEART;
 
         if (!par1) {
             particleType = ParticleTypes.SMOKE;
@@ -519,7 +510,7 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
                 if (offspring != null && offspring instanceof IMoCTameable) {
                     IMoCTameable baby = (IMoCTameable) offspring;
                     ((LivingEntity) baby).setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
-                    this.world.spawnEntity((LivingEntity) baby);
+                    this.world.addEntity((LivingEntity) baby);
                     baby.setAdult(false);
                     baby.setEdad(35);
                     baby.setTamed(true);
