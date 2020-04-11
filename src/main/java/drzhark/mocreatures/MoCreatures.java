@@ -58,6 +58,7 @@ public class MoCreatures {
 
 
     public MoCreatures() {
+        LOGGER.info("Setting up configs...");
         {
             final Pair<MoCConfig.ClientConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(MoCConfig.ClientConfig::new);
             ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, specPair.getRight()); //Client

@@ -1,19 +1,20 @@
 package drzhark.mocreatures.entity.aquatic;
 
 import drzhark.mocreatures.MoCreatures;
+import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class MoCEntityManderin extends MoCEntitySmallFish{
 
-    public MoCEntityManderin(World world) {
-        super(world);
+    public MoCEntityManderin(EntityType<? extends MoCEntityManderin> type, World world) {
+        super(type, world);
         this.setType(7);
     }
     
     @Override
     public ResourceLocation getTexture() {
-        return MoCreatures.proxy.getTexture("smallfish_manderin.png");
+        return MoCreatures.getTexture("smallfish_manderin.png");
     }
 
     @Override

@@ -4,23 +4,23 @@ import com.google.common.base.Predicate;
 import drzhark.mocreatures.entity.MoCEntityTameableAquatic;
 import drzhark.mocreatures.entity.ai.EntityAIFleeFromEntityMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.init.MoCEntities;
 import drzhark.mocreatures.init.MoCItems;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class MoCEntityMediumFish extends MoCEntityTameableAquatic {
 
     public static final String fishNames[] = {"Salmon", "Cod", "Bass"};
 
-    public MoCEntityMediumFish(World world) {
-        super(world);
-        setSize(0.6F, 0.3F);
+    public MoCEntityMediumFish(EntityType<? extends MoCEntityMediumFish> type, World world) {
+        super(type, world);
         setEdad(30 + this.rand.nextInt(70));
     }
 
@@ -32,33 +32,33 @@ public class MoCEntityMediumFish extends MoCEntityTameableAquatic {
             return new MoCEntityCod(world);
         }
         if (type == 3) {
-            return new MoCEntityBass(world);
+            return new MoCEntityBass(MoCEntities.BASS, world);
         }
 
         return new MoCEntitySalmon(world);
     }
 
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(3, new EntityAIFleeFromEntityMoC(this, new Predicate<Entity>() {
+    protected void registerGoals() {
+        this.goalSelector.addGoal(3, new EntityAIFleeFromEntityMoC(this, new Predicate<Entity>() {
 
             public boolean apply(Entity entity) {
-                return (entity.height > 0.6F && entity.width > 0.3F);
+                return (entity.getHeight() > 0.6F && entity.getWidth() > 0.3F);
             }
         }, 2.0F, 0.6D, 1.5D));
-        this.tasks.addTask(5, new EntityAIWanderMoC2(this, 1.0D, 50));
+        this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 1.0D, 50));
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
     }
 
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(this.rand.nextInt(fishNames.length) + 1);
         }
     }
@@ -67,11 +67,11 @@ public class MoCEntityMediumFish extends MoCEntityTameableAquatic {
     protected void dropFewItems(boolean flag, int x) {
         int i = this.rand.nextInt(100);
         if (i < 70) {
-            entityDropItem(new ItemStack(Items.FISH, 1, 0), 0.0F);
+            entityDropItem(new ItemStack(Items.COD, 1, 0), 0.0F);
         } else {
             int j = this.rand.nextInt(2);
             for (int k = 0; k < j; k++) {
-                entityDropItem(new ItemStack(MoCItems.mocegg, 1, getEggNumber()), 0.0F);
+                entityDropItem(new ItemStack(MoCItems.MOCEGG, 1, getEggNumber()), 0.0F);
             }
         }
     }
@@ -89,7 +89,7 @@ public class MoCEntityMediumFish extends MoCEntityTameableAquatic {
                 this.setHealth(getMaxHealth());
             }
         }
-        if (!this.isInsideOfMaterial(Material.WATER)) {
+        if (!this.isInWater()) {
             this.prevRenderYawOffset = this.renderYawOffset = this.rotationYaw = this.prevRotationYaw;
             this.rotationPitch = this.prevRotationPitch;
         }
@@ -102,7 +102,7 @@ public class MoCEntityMediumFish extends MoCEntityTameableAquatic {
 
     @Override
     public float getAdjustedYOffset() {
-        if (!this.isInsideOfMaterial(Material.WATER)) {
+        if (!this.isInWater()) {
             return 1F;
         }
         return 0.5F;
@@ -113,10 +113,10 @@ public class MoCEntityMediumFish extends MoCEntityTameableAquatic {
         return !getIsTamed();
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public float yawRotationOffset() {
-        if (!this.isInsideOfMaterial(Material.WATER)) {
+        if (!this.isInWater()) {
             return 90F;
         }
         return 90F + super.yawRotationOffset();

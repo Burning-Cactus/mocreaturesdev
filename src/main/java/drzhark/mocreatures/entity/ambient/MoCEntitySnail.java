@@ -3,10 +3,11 @@ package drzhark.mocreatures.entity.ambient;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityAmbient;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -17,27 +18,26 @@ public class MoCEntitySnail extends MoCEntityAmbient {
 
     private static final DataParameter<Boolean> IS_HIDDING = EntityDataManager.<Boolean>createKey(MoCEntitySnail.class, DataSerializers.BOOLEAN);
     
-    public MoCEntitySnail(World world) {
-        super(world);
-        setSize(0.2F, 0.2F);
+    public MoCEntitySnail(EntityType<? extends MoCEntitySnail> type, World world) {
+        super(type, world);
     }
 
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityAIWanderMoC2(this, 0.8D));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(1, new EntityAIWanderMoC2(this, 0.8D));
     }
     
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(IS_HIDDING, Boolean.valueOf(false));
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.10D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.10D);
     }
 
     @Override
@@ -47,28 +47,28 @@ public class MoCEntitySnail extends MoCEntityAmbient {
 
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(this.rand.nextInt(6) + 1);
         }
     }
 
     @Override
     public ResourceLocation getTexture() {
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
-                return MoCreatures.proxy.getTexture("snaila.png");
+                return MoCreatures.getTexture("snaila.png");
             case 2:
-                return MoCreatures.proxy.getTexture("snailb.png");
+                return MoCreatures.getTexture("snailb.png");
             case 3:
-                return MoCreatures.proxy.getTexture("snailc.png");
+                return MoCreatures.getTexture("snailc.png");
             case 4:
-                return MoCreatures.proxy.getTexture("snaild.png");
+                return MoCreatures.getTexture("snaild.png");
             case 5:
-                return MoCreatures.proxy.getTexture("snaile.png");
+                return MoCreatures.getTexture("snaile.png");
             case 6:
-                return MoCreatures.proxy.getTexture("snailf.png");
+                return MoCreatures.getTexture("snailf.png");
             default:
-                return MoCreatures.proxy.getTexture("snaila.png");
+                return MoCreatures.getTexture("snaila.png");
         }
     }
 
@@ -81,12 +81,12 @@ public class MoCEntitySnail extends MoCEntityAmbient {
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
 
         if (!this.world.isRemote) {
-            EntityLivingBase entityliving = getBoogey(3D);
-            if ((entityliving != null) && entityliving.height > 0.5F && entityliving.width > 0.5F && canEntityBeSeen(entityliving)) {
+            LivingEntity entityliving = getBoogey(3D);
+            if ((entityliving != null) && entityliving.getHeight() > 0.5F && entityliving.getWidth() > 0.5F && canEntityBeSeen(entityliving)) {
                 if (!getIsHiding()) {
                     setIsHiding(true);
                 }
@@ -97,7 +97,7 @@ public class MoCEntitySnail extends MoCEntityAmbient {
             /**
              * snails without a shell won't hide
              */
-            if (getIsHiding() && this.getType() > 4) {
+            if (getIsHiding() && this.getSubType() > 4) {
                 setIsHiding(false);
             }
         }
@@ -108,8 +108,8 @@ public class MoCEntitySnail extends MoCEntityAmbient {
     }
 
     @Override
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
 
         if (getIsHiding()) {
             this.prevRenderYawOffset = this.renderYawOffset = this.rotationYaw = this.prevRotationYaw;

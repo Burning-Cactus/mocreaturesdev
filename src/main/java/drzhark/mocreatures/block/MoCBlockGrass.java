@@ -20,7 +20,7 @@ public class MoCBlockGrass extends MoCBlock {
                 .hardnessAndResistance(0.5F)
                 .harvestTool(ToolType.SHOVEL)
                 .harvestLevel(0)
-                .tickRandomly();
+                .tickRandomly()
         );
     }
 

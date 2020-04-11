@@ -2,7 +2,8 @@ package drzhark.mocreatures.entity.ambient;
 
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityInsect;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -11,15 +12,15 @@ import net.minecraft.world.World;
 
 public class MoCEntityButterfly extends MoCEntityInsect {
 
-    public MoCEntityButterfly(World world) {
-        super(world);
+    public MoCEntityButterfly(EntityType<? extends MoCEntityButterfly> type, World world) {
+        super(type, world);
     }
 
     private int fCounter;
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
 
         if (!this.world.isRemote) {
             if (getIsFlying() && this.rand.nextInt(200) == 0) {
@@ -30,36 +31,36 @@ public class MoCEntityButterfly extends MoCEntityInsect {
 
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(this.rand.nextInt(10) + 1);
         }
     }
 
     @Override
     public ResourceLocation getTexture() {
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
-                return MoCreatures.proxy.getTexture("bfagalaisurticae.png");
+                return MoCreatures.getTexture("bfagalaisurticae.png");
             case 2:
-                return MoCreatures.proxy.getTexture("bfargyreushyperbius.png");
+                return MoCreatures.getTexture("bfargyreushyperbius.png");
             case 3:
-                return MoCreatures.proxy.getTexture("bfathymanefte.png");
+                return MoCreatures.getTexture("bfathymanefte.png");
             case 4:
-                return MoCreatures.proxy.getTexture("bfcatopsiliapomona.png");
+                return MoCreatures.getTexture("bfcatopsiliapomona.png");
             case 5:
-                return MoCreatures.proxy.getTexture("bfmorphopeleides.png");
+                return MoCreatures.getTexture("bfmorphopeleides.png");
             case 6:
-                return MoCreatures.proxy.getTexture("bfvanessaatalanta.png");
+                return MoCreatures.getTexture("bfvanessaatalanta.png");
             case 7:
-                return MoCreatures.proxy.getTexture("bfpierisrapae.png");
+                return MoCreatures.getTexture("bfpierisrapae.png");
             case 8:
-                return MoCreatures.proxy.getTexture("mothcamptogrammabilineata.png");
+                return MoCreatures.getTexture("mothcamptogrammabilineata.png");
             case 9:
-                return MoCreatures.proxy.getTexture("mothidiaaemula.png");
+                return MoCreatures.getTexture("mothidiaaemula.png");
             case 10:
-                return MoCreatures.proxy.getTexture("moththyatirabatis.png");
+                return MoCreatures.getTexture("moththyatirabatis.png");
             default:
-                return MoCreatures.proxy.getTexture("bfpierisrapae.png");
+                return MoCreatures.getTexture("bfpierisrapae.png");
         }
     }
 
@@ -76,7 +77,7 @@ public class MoCEntityButterfly extends MoCEntityInsect {
 
     @Override
     public float getSizeFactor() {
-        if (getType() < 8) {
+        if (getSubType() < 8) {
             return 0.7F;
         }
         return 1.0F;
@@ -85,13 +86,13 @@ public class MoCEntityButterfly extends MoCEntityInsect {
     @Override
     public boolean isMyFavoriteFood(ItemStack stack) {
         return !stack.isEmpty()
-                && (stack.getItem() == Item.getItemFromBlock(Blocks.RED_FLOWER) || stack.getItem() == Item
-                        .getItemFromBlock(Blocks.YELLOW_FLOWER));
+                && (stack.getItem() == Item.getItemFromBlock(Blocks.POPPY) || stack.getItem() == Item
+                        .getItemFromBlock(Blocks.DANDELION));
     }
 
     @Override
     public boolean isAttractedToLight() {
-        return getType() > 7;
+        return getSubType() > 7;
     }
 
     @Override

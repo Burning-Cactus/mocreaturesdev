@@ -357,35 +357,6 @@ public class MoCProxy implements IProxy {
         this.mocSettingsConfig.save();
     }
 
-    // Client stuff
-    public void registerRenderers() {
-        // Nothing here as this is the server side proxy
-    }
-
-    public void registerRenderInformation() {
-        //client
-    }
-
-    @Override
-    public Object getServerGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Object getClientGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /***
-     * Dummy to know if is dedicated server or not
-     *
-     * @return
-     */
-    public int getProxyMode() {
-        return 1;
-    }
 
     /**
      * Sets the name client side. Name is synchronized with datawatchers
@@ -397,7 +368,4 @@ public class MoCProxy implements IProxy {
         //client side only
     }
 
-    public void initGUI() {
-        // client side only
-    }
 }

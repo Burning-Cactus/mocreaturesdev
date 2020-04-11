@@ -4,7 +4,8 @@ import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityInsect;
 import drzhark.mocreatures.init.MoCSoundEvents;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -16,14 +17,14 @@ public class MoCEntityCricket extends MoCEntityInsect
     private int jumpCounter;
     private int soundCounter;
 
-    public MoCEntityCricket(World world) {
-        super(world);
+    public MoCEntityCricket(EntityType<? extends MoCEntityCricket> type, World world) {
+        super(type, world);
         this.texture = "cricketa.png";
     }
 
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             int i = this.rand.nextInt(100);
             if (i <= 50) {
                 setType(1);
@@ -35,29 +36,29 @@ public class MoCEntityCricket extends MoCEntityInsect
 
     @Override
     public ResourceLocation getTexture() {
-        if (getType() == 1) {
-            return MoCreatures.proxy.getTexture("cricketa.png");
+        if (getSubType() == 1) {
+            return MoCreatures.getTexture("cricketa.png");
         } else {
-            return MoCreatures.proxy.getTexture("cricketb.png");
+            return MoCreatures.getTexture("cricketb.png");
         }
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
         if (!this.world.isRemote) {
             if (getIsFlying() && this.rand.nextInt(50) == 0) {
                 setIsFlying(false);
             }
 
             if (getIsFlying() || !this.onGround) {
-                EntityPlayer ep = this.world.getClosestPlayerToEntity(this, 5D);
+                PlayerEntity ep = this.world.getClosestPlayer(this, 5D);
                 if (ep != null && --this.soundCounter == -1) {
                     MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_CRICKET_FLY);
                     this.soundCounter = 10;
                 }
             } else if (!DimensionManager.getWorld(0).isDaytime()) {
-                EntityPlayer ep = this.world.getClosestPlayerToEntity(this, 12D);
+                PlayerEntity ep = this.world.getClosestPlayer(this, 12D);
                 if (ep != null && --this.soundCounter == -1) {
                     MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_CRICKET_AMBIENT);
                     this.soundCounter = 20;
@@ -71,15 +72,13 @@ public class MoCEntityCricket extends MoCEntityInsect
     }
 
     @Override
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
         if (!this.world.isRemote) {
-            if (onGround && ((motionX > 0.05D) || (motionZ > 0.05D) || (motionX < -0.05D) || (motionZ < -0.05D)))
+            if (onGround && ((getMotion().x > 0.05D) || (getMotion().z > 0.05D) || (getMotion().x < -0.05D) || (getMotion().z < -0.05D)))
                 if (this.jumpCounter == 0 && this.onGround
-                        && ((this.motionX > 0.05D) || (this.motionZ > 0.05D) || (this.motionX < -0.05D) || (this.motionZ < -0.05D))) {
-                    this.motionY = 0.45D;
-                    this.motionX *= 5D;
-                    this.motionZ *= 5D;
+                        && ((this.getMotion().x > 0.05D) || (this.getMotion().z > 0.05D) || (this.getMotion().x < -0.05D) || (this.getMotion().z < -0.05D))) {
+                    this.setMotion(this.getMotion().x*5D, 0.45D, this.getMotion().z*5D);
                     this.jumpCounter = 1;
                 }
         }

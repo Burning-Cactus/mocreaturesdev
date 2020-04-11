@@ -3,8 +3,9 @@ package drzhark.mocreatures.entity.ambient;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.MoCEntityInsect;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -16,26 +17,26 @@ public class MoCEntityAnt extends MoCEntityInsect {
 
     private static final DataParameter<Boolean> FOUND_FOOD = EntityDataManager.<Boolean>createKey(MoCEntityAnt.class, DataSerializers.BOOLEAN);
     
-    public MoCEntityAnt(World world) {
-        super(world);
+    public MoCEntityAnt(EntityType<? extends MoCEntityAnt> type, World world) {
+        super(type, world);
         this.texture = "ant.png";
     }
 
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityAIWanderMoC2(this, 1.2D));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(1, new EntityAIWanderMoC2(this, 1.2D));
     }
     
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(FOUND_FOOD, Boolean.valueOf(false));
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
     }
 
     public boolean getHasFood() {
@@ -47,21 +48,21 @@ public class MoCEntityAnt extends MoCEntityInsect {
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
 
         if (!this.world.isRemote) {
             if (!getHasFood()) {
-                EntityItem entityitem = MoCTools.getClosestFood(this, 8D);
+                ItemEntity entityitem = MoCTools.getClosestFood(this, 8D);
                 if (entityitem == null || entityitem.isDead) {
                     return;
                 }
                 if (entityitem.getRidingEntity() == null) {
                     float f = entityitem.getDistance(this);
                     if (f > 1.0F) {
-                        int i = MathHelper.floor(entityitem.posX);
-                        int j = MathHelper.floor(entityitem.posY);
-                        int k = MathHelper.floor(entityitem.posZ);
+                        int i = MathHelper.floor(entityitem.getPosX());
+                        int j = MathHelper.floor(entityitem.getPosY());
+                        int k = MathHelper.floor(entityitem.getPosZ());
                         faceLocation(i, j, k, 30F);
 
                         getMyOwnPath(entityitem, f);
@@ -79,7 +80,7 @@ public class MoCEntityAnt extends MoCEntityInsect {
 
         if (getHasFood()) {
             if (!this.isBeingRidden()) {
-                EntityItem entityitem = MoCTools.getClosestFood(this, 2D);
+                ItemEntity entityitem = MoCTools.getClosestFood(this, 2D);
                 if (entityitem != null && entityitem.getRidingEntity() == null) {
                     entityitem.startRiding(this);
                     return;
@@ -93,11 +94,11 @@ public class MoCEntityAnt extends MoCEntityInsect {
         }
     }
 
-    private void exchangeItem(EntityItem entityitem) {
-        EntityItem cargo = new EntityItem(this.world, this.posX, this.posY + 0.2D, this.posZ, entityitem.getItem());
+    private void exchangeItem(ItemEntity entityitem) {
+        ItemEntity cargo = new ItemEntity(this.world, this.getPosX(), this.getPosY() + 0.2D, this.getPosZ(), entityitem.getItem());
         entityitem.setDead();
         if (!this.world.isRemote) {
-            this.world.spawnEntity(cargo);
+            this.world.addEntity(cargo);
         }
     }
 

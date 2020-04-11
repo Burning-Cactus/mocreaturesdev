@@ -3,23 +3,24 @@ package drzhark.mocreatures.entity.ambient;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.MoCEntityInsect;
 import drzhark.mocreatures.init.MoCSoundEvents;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.world.World;
 
 public class MoCEntityFly extends MoCEntityInsect {
 
-    public MoCEntityFly(World world) {
-        super(world);
+    public MoCEntityFly(EntityType<? extends MoCEntityFly> type, World world) {
+        super(type, world);
         this.texture = "fly.png";
     }
 
     private int soundCount;// = 50;
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
 
         if (!this.world.isRemote) {
 
@@ -27,7 +28,7 @@ public class MoCEntityFly extends MoCEntityInsect {
                 setIsFlying(false);
             }
             if (getIsFlying() && --this.soundCount == -1) {
-                EntityPlayer ep = this.world.getClosestPlayerToEntity(this, 5D);
+                PlayerEntity ep = this.world.getClosestPlayer(this, 5D);
                 if (ep != null) {
                     MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_FLY_AMBIENT);
                     this.soundCount = 55;

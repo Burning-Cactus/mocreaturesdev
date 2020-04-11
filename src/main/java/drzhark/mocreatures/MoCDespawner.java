@@ -93,7 +93,7 @@ public class MoCDespawner {
 
     public final static int despawnVanillaAnimals(ServerWorld world, int minDespawnLightLevel, int maxDespawnLightLevel) {
         int count = 0;
-        for (int j = 0; j < world.loadedEntityList.size(); j++) {
+        for (int j = 0; j < world.getEntities().count(); j++) {
             Entity entity = (Entity) world.loadedEntityList.get(j);
             if (!(entity instanceof LivingEntity)) {
                 continue;

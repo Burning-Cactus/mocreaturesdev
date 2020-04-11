@@ -12,6 +12,7 @@ import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageHeart;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -33,9 +34,9 @@ public class MoCEntityFishy extends MoCEntityTameableAquatic {
     public static final String fishNames[] = {"Blue", "Orange", "Cyan", "Greeny", "Green", "Purple", "Yellow", "Striped", "Yellowy", "Red"};
     private static final DataParameter<Boolean> HAS_EATEN = EntityDataManager.<Boolean>createKey(MoCEntityFishy.class, DataSerializers.BOOLEAN);
     
-    public MoCEntityFishy(World world) {
-        super(world);
-        setSize(0.3F, 0.3F);
+    public MoCEntityFishy(EntityType<? extends MoCEntityFishy> type, World world) {
+        super(type, world);
+        setSize();
         setEdad(50 + this.rand.nextInt(50));
     }
 

@@ -33,7 +33,6 @@ public class MoCEntityKittyBed extends LivingEntity {
 
     public MoCEntityKittyBed(EntityType<? extends MoCEntityKittyBed> type, World world) {
         super(type, world);
-        setSize(1.0F, 0.3F);
         this.milklevel = 0.0F;
     }
 

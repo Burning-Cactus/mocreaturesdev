@@ -38,9 +38,8 @@ public class MoCEntityLitterBox extends LivingEntity {
     private static final DataParameter<Boolean> PICKED_UP = EntityDataManager.<Boolean>createKey(MoCEntityLitterBox.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> USED_LITTER = EntityDataManager.<Boolean>createKey(MoCEntityLitterBox.class, DataSerializers.BOOLEAN);
 
-    public MoCEntityLitterBox(World world) {
-        super(world);
-        setSize(1.0F, 0.3F);
+    public MoCEntityLitterBox(EntityType<? extends MoCEntityLitterBox> type, World world) {
+        super(type, world);
     }
 
     public ResourceLocation getTexture() {

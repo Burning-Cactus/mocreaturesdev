@@ -5,21 +5,22 @@ import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.IMoCTameable;
 import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class MoCEntityBlackBear extends MoCEntityBear {
 
-    public MoCEntityBlackBear(World world) {
-        super(world);
+    public MoCEntityBlackBear(EntityType<? extends MoCEntityBlackBear> type, World world) {
+        super(type, world);
     }
 
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(1);
         }
         super.selectType();
@@ -27,7 +28,7 @@ public class MoCEntityBlackBear extends MoCEntityBear {
     
     @Override
     public ResourceLocation getTexture() {
-        return MoCreatures.proxy.getTexture("bearblack.png");
+        return MoCreatures.getTexture("bearblack.png");
     }
     
     @Override
@@ -47,7 +48,7 @@ public class MoCEntityBlackBear extends MoCEntityBear {
     
     public double getAttackRange() {
         int factor = 1;
-        if (this.world.getDifficulty().getDifficultyId() > 1) {
+        if (this.world.getDifficulty().getId() > 1) {
             factor = 2;
         }
         return 6D * factor;
@@ -55,7 +56,7 @@ public class MoCEntityBlackBear extends MoCEntityBear {
 
     @Override
     public int getAttackStrength() {
-        int factor = (this.world.getDifficulty().getDifficultyId());
+        int factor = (this.world.getDifficulty().getId());
         return 2 * factor;
     }
     
@@ -65,7 +66,7 @@ public class MoCEntityBlackBear extends MoCEntityBear {
     }
     
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
             return tameResult;
@@ -90,7 +91,7 @@ public class MoCEntityBlackBear extends MoCEntityBear {
 
             return true;
         }
-        if (!stack.isEmpty() && getIsTamed() && (stack.getItem() == MoCItems.whip)) {
+        if (!stack.isEmpty() && getIsTamed() && (stack.getItem() == MoCItems.WHIP)) {
             if (getBearState() == 0) {
                 setBearState(2);
             }else {
@@ -98,7 +99,7 @@ public class MoCEntityBlackBear extends MoCEntityBear {
             }
             return true;
         }
-        if (this.getIsRideable() && this.getIsAdult() && (!this.getIsChested() || !player.isSneaking()) && !this.isBeingRidden()) {
+        if (this.getIsRideable() && this.getIsAdult() && (!this.getIsChested() || !player.isCrouching()) && !this.isBeingRidden()) {
             if (player.startRiding(this)) {
                 player.rotationYaw = this.rotationYaw;
                 player.rotationPitch = this.rotationPitch;

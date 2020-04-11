@@ -12,7 +12,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.List;
 
@@ -24,8 +23,7 @@ public class MoCEntityInsect extends MoCEntityAmbient {
     private static final DataParameter<Boolean> IS_FLYING = EntityDataManager.<Boolean>createKey(MoCEntityInsect.class, DataSerializers.BOOLEAN);
     
     public MoCEntityInsect(EntityType<? extends MoCEntityInsect> type, World world) {
-        super(world);
-        setSize(0.2F, 0.2F);
+        super(type, world);
         this.goalSelector.addGoal(2, this.wander = new EntityAIWanderMoC2(this, 1.0D, 80));
     }
 

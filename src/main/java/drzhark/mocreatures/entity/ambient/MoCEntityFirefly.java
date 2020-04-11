@@ -3,24 +3,25 @@ package drzhark.mocreatures.entity.ambient;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.MoCEntityInsect;
 import drzhark.mocreatures.init.MoCSoundEvents;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
 public class MoCEntityFirefly extends MoCEntityInsect {
 
     private int soundCount;
 
-    public MoCEntityFirefly(World world) {
-        super(world);
+    public MoCEntityFirefly(EntityType<? extends MoCEntityFirefly> type, World world) {
+        super(type, world);
         this.texture = "firefly.png";
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
 
         if (!this.world.isRemote) {
-            EntityPlayer ep = this.world.getClosestPlayerToEntity(this, 5D);
+            PlayerEntity ep = this.world.getClosestPlayer(this, 5D);
             if (ep != null && getIsFlying() && --this.soundCount == -1) {
                 MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_CRICKET_FLY);
                 this.soundCount = 20;

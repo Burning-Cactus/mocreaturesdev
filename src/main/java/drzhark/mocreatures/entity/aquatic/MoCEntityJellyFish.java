@@ -4,9 +4,10 @@ import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityTameableAquatic;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -19,34 +20,33 @@ public class MoCEntityJellyFish extends MoCEntityTameableAquatic {
     private int poisoncounter;
     private static final DataParameter<Boolean> GLOWS = EntityDataManager.<Boolean>createKey(MoCEntityJellyFish.class, DataSerializers.BOOLEAN);
     
-    public MoCEntityJellyFish(World world) {
-        super(world);
-        setSize(0.3F, 0.5F);
+    public MoCEntityJellyFish(EntityType<? extends MoCEntityJellyFish> type, World world) {
+        super(type, world);
         setEdad(50 + (this.rand.nextInt(50)));
     }
 
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(5, new EntityAIWanderMoC2(this, 0.5D, 120));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 0.5D, 120));
     }
     
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
     }
 
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(this.rand.nextInt(5) + 1);
         }
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(GLOWS, Boolean.valueOf(false));
     }
 
@@ -65,40 +65,40 @@ public class MoCEntityJellyFish extends MoCEntityTameableAquatic {
 
     @Override
     public ResourceLocation getTexture() {
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
-                return MoCreatures.proxy.getTexture("jellyfisha.png");
+                return MoCreatures.getTexture("jellyfisha.png");
             case 2:
-                return MoCreatures.proxy.getTexture("jellyfishb.png");
+                return MoCreatures.getTexture("jellyfishb.png");
             case 3:
-                return MoCreatures.proxy.getTexture("jellyfishc.png");
+                return MoCreatures.getTexture("jellyfishc.png");
             case 4:
-                return MoCreatures.proxy.getTexture("jellyfishd.png");
+                return MoCreatures.getTexture("jellyfishd.png");
             case 5:
-                return MoCreatures.proxy.getTexture("jellyfishe.png");
+                return MoCreatures.getTexture("jellyfishe.png");
             case 6:
-                return MoCreatures.proxy.getTexture("jellyfishf.png");
+                return MoCreatures.getTexture("jellyfishf.png");
             case 7:
-                return MoCreatures.proxy.getTexture("jellyfishg.png");
+                return MoCreatures.getTexture("jellyfishg.png");
             case 8:
-                return MoCreatures.proxy.getTexture("jellyfishh.png");
+                return MoCreatures.getTexture("jellyfishh.png");
             case 9:
-                return MoCreatures.proxy.getTexture("jellyfishi.png");
+                return MoCreatures.getTexture("jellyfishi.png");
             case 10:
-                return MoCreatures.proxy.getTexture("jellyfishj.png");
+                return MoCreatures.getTexture("jellyfishj.png");
             case 11:
-                return MoCreatures.proxy.getTexture("jellyfishk.png");
+                return MoCreatures.getTexture("jellyfishk.png");
             case 12:
-                return MoCreatures.proxy.getTexture("jellyfishl.png");
+                return MoCreatures.getTexture("jellyfishl.png");
 
             default:
-                return MoCreatures.proxy.getTexture("jellyfisha.png");
+                return MoCreatures.getTexture("jellyfisha.png");
         }
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
         if (!this.world.isRemote) {
 
             if (this.rand.nextInt(200) == 0) {

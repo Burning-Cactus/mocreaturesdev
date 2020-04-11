@@ -2,29 +2,29 @@ package drzhark.mocreatures.entity.ambient;
 
 import drzhark.mocreatures.entity.MoCEntityAmbient;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.world.World;
 
 public class MoCEntityMaggot extends MoCEntityAmbient {
 
-    public MoCEntityMaggot(World world) {
-        super(world);
-        setSize(0.2F, 0.2F);
+    public MoCEntityMaggot(EntityType<? extends MoCEntityMaggot> type, World world) {
+        super(type, world);
         this.texture = "maggot.png";
     }
     
     @Override
     protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityAIWanderMoC2(this, 0.8D));
+        this.goalSelector.addGoal(1, new EntityAIWanderMoC2(this, 0.8D));
     }
     
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
     }
 
     @Override

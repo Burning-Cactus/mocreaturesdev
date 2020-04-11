@@ -6,13 +6,18 @@ import drzhark.mocreatures.entity.MoCEntityTameableAquatic;
 import drzhark.mocreatures.entity.ai.EntityAIFleeFromEntityMoC;
 import drzhark.mocreatures.entity.ai.EntityAIPanicMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.init.MoCEntities;
 import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -20,60 +25,59 @@ public class MoCEntitySmallFish extends MoCEntityTameableAquatic {
 
     public static final String fishNames[] = {"Anchovy", "Angelfish", "Angler", "Clownfish", "Goldfish", "Hippotang", "Manderin"};
 
-    public MoCEntitySmallFish(World world) {
-        super(world);
-        setSize(0.3F, 0.3F);
+    public MoCEntitySmallFish(EntityType<? extends MoCEntitySmallFish> type, World world) {
+        super(type, world);
         setEdad(70 + this.rand.nextInt(30));
     }
 
     public static MoCEntitySmallFish createEntity(World world, int type) {
         if (type == 1) {
-            return new MoCEntityAnchovy(world);
+            return new MoCEntityAnchovy(MoCEntities.ANCHOVY, world);
         }
         if (type == 2) {
-            return new MoCEntityAngelFish(world);
+            return new MoCEntityAngelFish(MoCEntities.ANGELFISH, world);
         }
         if (type == 3) {
-            return new MoCEntityAngler(world);
+            return new MoCEntityAngler(MoCEntities.ANGLER, world);
         }
         if (type == 4) {
-            return new MoCEntityClownFish(world);
+            return new MoCEntityClownFish(MoCEntities.CLOWNFISH, world);
         }
         if (type == 5) {
-            return new MoCEntityGoldFish(world);
+            return new MoCEntityGoldFish(MoCEntities.GOLDFISH, world);
         }
         if (type == 6) {
-            return new MoCEntityHippoTang(world);
+            return new MoCEntityHippoTang(MoCEntities.HIPPOTANG, world);
         }
         if (type == 7) {
-            return new MoCEntityManderin(world);
+            return new MoCEntityManderin(MoCEntities.MANDERIN, world);
         }
 
-        return new MoCEntityClownFish(world);
+        return new MoCEntityClownFish(MoCEntities.CLOWNFISH, world);
     }
 
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityAIPanicMoC(this, 1.3D));
-        this.tasks.addTask(2, new EntityAIFleeFromEntityMoC(this, new Predicate<Entity>() {
+    protected void registerGoals() {
+        this.goalSelector.addGoal(1, new EntityAIPanicMoC(this, 1.3D));
+        this.goalSelector.addGoal(2, new EntityAIFleeFromEntityMoC(this, new Predicate<Entity>() {
 
             public boolean apply(Entity entity) {
-                return (entity.height > 0.3F || entity.width > 0.3F);
+                return (entity.getHeight() > 0.3F || entity.getWidth() > 0.3F);
             }
         }, 2.0F, 0.6D, 1.5D));
-        this.tasks.addTask(5, new EntityAIWanderMoC2(this, 1.0D, 80));
+        this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 1.0D, 80));
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
     }
 
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(this.rand.nextInt(fishNames.length) + 1);
         }
 
@@ -82,23 +86,23 @@ public class MoCEntitySmallFish extends MoCEntityTameableAquatic {
     @Override
     public ResourceLocation getTexture() {
 
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
-                return MoCreatures.proxy.getTexture("smallfish_anchovy.png");
+                return MoCreatures.getTexture("smallfish_anchovy.png");
             case 2:
-                return MoCreatures.proxy.getTexture("smallfish_angelfish.png");
+                return MoCreatures.getTexture("smallfish_angelfish.png");
             case 3:
-                return MoCreatures.proxy.getTexture("smallfish_angler.png");
+                return MoCreatures.getTexture("smallfish_angler.png");
             case 4:
-                return MoCreatures.proxy.getTexture("smallfish_clownfish.png");
+                return MoCreatures.getTexture("smallfish_clownfish.png");
             case 5:
-                return MoCreatures.proxy.getTexture("smallfish_goldfish.png");
+                return MoCreatures.getTexture("smallfish_goldfish.png");
             case 6:
-                return MoCreatures.proxy.getTexture("smallfish_hippotang.png");
+                return MoCreatures.getTexture("smallfish_hippotang.png");
             case 7:
-                return MoCreatures.proxy.getTexture("smallfish_manderin.png");
+                return MoCreatures.getTexture("smallfish_manderin.png");
             default:
-                return MoCreatures.proxy.getTexture("smallfish_clownfish.png");
+                return MoCreatures.getTexture("smallfish_clownfish.png");
         }
     }
 
@@ -111,18 +115,18 @@ public class MoCEntitySmallFish extends MoCEntityTameableAquatic {
     protected void dropFewItems(boolean flag, int x) {
         int i = this.rand.nextInt(100);
         if (i < 70) {
-            entityDropItem(new ItemStack(Items.FISH, 1, 0), 0.0F);
+            entityDropItem(new ItemStack(Items.COD, 1, 0), 0.0F);
         } else {
             int j = this.rand.nextInt(2);
             for (int k = 0; k < j; k++) {
-                entityDropItem(new ItemStack(MoCItems.mocegg, 1, getEggNumber()), 0.0F);
+                entityDropItem(new ItemStack(MoCItems.MOCEGG, 1, getEggNumber()), 0.0F);
             }
         }
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
 
         if (!this.world.isRemote) {
 
@@ -154,7 +158,7 @@ public class MoCEntitySmallFish extends MoCEntityTameableAquatic {
         return !getIsTamed();
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public float yawRotationOffset() {
         if (!this.isInWater()) {

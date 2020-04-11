@@ -11,6 +11,7 @@ import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -22,9 +23,8 @@ public class MoCEntityCrab extends MoCEntityTameableAmbient
 
 {
 
-    public MoCEntityCrab(World world) {
-        super(world);
-        setSize(0.3F, 0.3F);
+    public MoCEntityCrab(EntityType<? extends MoCEntityCrab> type, World world) {
+        super(type, world);
         setEdad(50 + this.rand.nextInt(50));
     }
 
@@ -50,7 +50,7 @@ public class MoCEntityCrab extends MoCEntityTameableAmbient
 
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(this.rand.nextInt(5) + 1);
         }
 
@@ -58,20 +58,20 @@ public class MoCEntityCrab extends MoCEntityTameableAmbient
 
     @Override
     public ResourceLocation getTexture() {
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
-                return MoCreatures.proxy.getTexture("craba.png");
+                return MoCreatures.getTexture("craba.png");
             case 2:
-                return MoCreatures.proxy.getTexture("crabb.png");
+                return MoCreatures.getTexture("crabb.png");
             case 3:
-                return MoCreatures.proxy.getTexture("crabc.png");
+                return MoCreatures.getTexture("crabc.png");
             case 4:
-                return MoCreatures.proxy.getTexture("crabd.png");
+                return MoCreatures.getTexture("crabd.png");
             case 5:
-                return MoCreatures.proxy.getTexture("crabe.png");
+                return MoCreatures.getTexture("crabe.png");
 
             default:
-                return MoCreatures.proxy.getTexture("craba.png");
+                return MoCreatures.getTexture("craba.png");
         }
     }
 

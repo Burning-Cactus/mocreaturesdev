@@ -10,6 +10,7 @@ import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageHeart;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -46,8 +47,8 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
     private boolean hasEaten;
     private int gestationtime;
     
-    public MoCEntityTameableAquatic(World world) {
-        super(world);
+    public MoCEntityTameableAquatic(EntityType<? extends MoCEntityTameableAquatic> type, World world) {
+        super(type, world);
     }
 
     @Override
@@ -439,8 +440,8 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
     }
     
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
         //breeding code
         if (!this.world.isRemote && readytoBreed() && this.rand.nextInt(100) == 0) {
             doBreeding();

@@ -47,6 +47,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -79,7 +80,7 @@ public class MoCTools {
                 SlimeEntity var6 = new SlimeEntity(world);
                 //var6.setSlimeSize(1);  TODO FIX
                 var6.setLocationAndAngles(entity.getPosX() + var4, entity.getPosY() + 0.5D, entity.getPosZ() + var5, world.rand.nextFloat() * 360.0F, 0.0F);
-                world.spawnEntity(var6);
+                world.addEntity(var6);
             }
         }
     }
@@ -664,92 +665,92 @@ public class MoCTools {
 
         ItemEntity entityitem = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Blocks.LOG, 16));
         entityitem.setPickupDelay(10);
-        world.spawnEntity(entityitem);
+        world.addEntity(entityitem);
 
         ItemEntity entityitem2 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Items.DIAMOND, 64));
         entityitem2.setPickupDelay(10);
-        world.spawnEntity(entityitem2);
+        world.addEntity(entityitem2);
 
         ItemEntity entityitem3 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Blocks.PUMPKIN, 6));
         entityitem3.setPickupDelay(10);
-        world.spawnEntity(entityitem3);
+        world.addEntity(entityitem3);
 
         ItemEntity entityitem4 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Blocks.COBBLESTONE, 64));
         entityitem4.setPickupDelay(10);
-        world.spawnEntity(entityitem4);
+        world.addEntity(entityitem4);
 
         ItemEntity entityitem5 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Items.APPLE, 24));
         entityitem5.setPickupDelay(10);
-        world.spawnEntity(entityitem5);
+        world.addEntity(entityitem5);
 
         ItemEntity entityitem6 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Items.LEATHER, 64));
         entityitem6.setPickupDelay(10);
-        world.spawnEntity(entityitem6);
+        world.addEntity(entityitem6);
 
         ItemEntity entityitem7 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(MoCItems.RECORDSHUFFLE, 6));
         entityitem7.setPickupDelay(10);
-        world.spawnEntity(entityitem7);
+        world.addEntity(entityitem7);
 
         ItemEntity entityitem8 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Items.IRON_INGOT, 64));
         entityitem8.setPickupDelay(10);
-        world.spawnEntity(entityitem8);
+        world.addEntity(entityitem8);
 
         ItemEntity entityitem9 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Items.GOLD_INGOT, 12));
         entityitem9.setPickupDelay(10);
-        world.spawnEntity(entityitem9);
+        world.addEntity(entityitem9);
 
         ItemEntity entityitem10 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Items.STRING, 32));
         entityitem10.setPickupDelay(10);
-        world.spawnEntity(entityitem10);
+        world.addEntity(entityitem10);
 
         ItemEntity entityitem12 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Blocks.POPPY, 6));
         entityitem12.setPickupDelay(10);
-        world.spawnEntity(entityitem12);
+        world.addEntity(entityitem12);
 
         ItemEntity entityitem13 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Items.BLAZE_ROD, 12));
         entityitem13.setPickupDelay(10);
-        world.spawnEntity(entityitem13);
+        world.addEntity(entityitem13);
 
         ItemEntity entityitem14 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Items.ENDER_PEARL, 12));
         entityitem14.setPickupDelay(10);
-        world.spawnEntity(entityitem14);
+        world.addEntity(entityitem14);
 
         ItemEntity entityitem15 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Items.GHAST_TEAR, 12));
         entityitem15.setPickupDelay(10);
-        world.spawnEntity(entityitem15);
+        world.addEntity(entityitem15);
 
         ItemEntity entityitem16 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Blocks.LAPIS_BLOCK, 2));
         entityitem16.setPickupDelay(10);
-        world.spawnEntity(entityitem16);
+        world.addEntity(entityitem16);
 
         ItemEntity entityitem17 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Items.BONE, 12));
         entityitem17.setPickupDelay(10);
-        world.spawnEntity(entityitem17);
+        world.addEntity(entityitem17);
 
         ItemEntity entityitem18 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(MoCItems.UNICORNHORN, 16));
         entityitem18.setPickupDelay(10);
-        world.spawnEntity(entityitem18);
+        world.addEntity(entityitem18);
 
         ItemEntity entityitem19 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Blocks.FIRE, 32));
         entityitem19.setPickupDelay(10);
-        world.spawnEntity(entityitem19);
+        world.addEntity(entityitem19);
 
         ItemEntity entityitem20 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(MoCItems.ESSENCEDARKNESS, 6));
         entityitem20.setPickupDelay(10);
-        world.spawnEntity(entityitem20);
+        world.addEntity(entityitem20);
 
         ItemEntity entityitem21 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(MoCItems.ESSENCEUNDEAD, 6));
         entityitem21.setPickupDelay(10);
-        world.spawnEntity(entityitem21);
+        world.addEntity(entityitem21);
 
         ItemEntity entityitem22 = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(MoCItems.ESSENCEFIRE, 6));
         entityitem22.setPickupDelay(10);
-        world.spawnEntity(entityitem22);
+        world.addEntity(entityitem22);
 
         ItemEntity entityitem23 =
                 new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Item.getItemFromBlock(Blocks.WOOL), 6, 15));
         entityitem23.setPickupDelay(10);
-        world.spawnEntity(entityitem23);
+        world.addEntity(entityitem23);
 
     }
 
@@ -891,13 +892,13 @@ public class MoCTools {
                     try {
                         event =
                                 new BlockEvent.BreakEvent(entity.world, chunkposition, blockstate, FakePlayerFactory.get(
-                                        DimensionManager.getWorld(entity.world.provider.getDimensionType().getId()), MoCreatures.MOCFAKEPLAYER));
+                                        DimensionManager.getWorld(entity.world.dimension.getType().getId()), MoCreatures.MOCFAKEPLAYER));
                     } catch (Throwable t) {
                     }
                 }
                 if (event != null && !event.isCanceled()) {
                     blockstate.getBlock().dropBlockAsItemWithChance(entity.world, chunkposition, blockstate, 0.3F, 1);
-                    entity.world.setBlockToAir(chunkposition);
+                    entity.world.setBlockState(chunkposition, Blocks.AIR.getDefaultState());
                     // pass explosion instance to fix BlockTNT NPE's
                     Explosion explosion =
                             new Explosion(entity.world, null, chunkposition.getX(), chunkposition.getY(), chunkposition.getZ(), 3f, false, Explosion.Mode.BREAK);
@@ -1220,7 +1221,7 @@ public class MoCTools {
 
         if (MoCreatures.proxy.enableOwnership) {
             if (storedCreature == null) {
-                ep.sendMessage(new TextComponentTranslation(TextFormatting.RED + "ERROR:" + TextFormatting.WHITE
+                ep.sendMessage(new TranslationTextComponent(TextFormatting.RED + "ERROR:" + TextFormatting.WHITE
                         + "The stored creature is NULL and could not be created. Report to admin."));
                 return false;
             }
@@ -1234,7 +1235,7 @@ public class MoCTools {
                 }
                 if (count >= max) {
                     String message = "\2474" + ep.getName() + " can not tame more creatures, limit of " + max + " reached";
-                    ep.sendMessage(new TextComponentTranslation(message));
+                    ep.sendMessage(new TranslationTextComponent(message));
                     return false;
                 }
             }
@@ -1253,7 +1254,7 @@ public class MoCTools {
     public static int numberTamedByPlayer(PlayerEntity ep) {
         if (MoCreatures.instance.mapData != null) {
             if (MoCreatures.instance.mapData.getPetData(ep.getUniqueID()) != null) {
-                return MoCreatures.instance.mapData.getPetData(ep.getUniqueID()).getTamedList().tagCount();
+                return MoCreatures.instance.mapData.getPetData(ep.getUniqueID()).getTamedList().size();
             }
         }
         return 0;
@@ -1330,7 +1331,7 @@ public class MoCTools {
 
             ItemEntity entityitem = new ItemEntity(entity.world, i + f, j + f1, k + f2, itemstack);
             entityitem.setMotion((float) entity.world.rand.nextGaussian() * f3, ((float) entity.world.rand.nextGaussian() * f3) + 0.2F, (float) entity.world.rand.nextGaussian() * f3);
-            entity.world.spawnEntity(entityitem);
+            entity.world.addEntity(entityitem);
             animalchest.setInventorySlotContents(l, ItemStack.EMPTY);
         }
     }
@@ -1359,7 +1360,7 @@ public class MoCTools {
                 nbtt.putString("Name", entity.getPetName());
                 nbtt.putBoolean("Rideable", entity.getIsRideable());
                 nbtt.putInt("Armor", entity.getArmorType());
-                nbtt.putInt("CreatureType", entity.getType());
+                nbtt.putInt("CreatureType", entity.getSubType());
                 nbtt.putBoolean("Adult", entity.getIsAdult());
                 nbtt.putString("OwnerName", epOwner != null ? epOwner.getName().toString() : "");
                 if (entity.getOwnerId() != null) {
@@ -1383,7 +1384,7 @@ public class MoCTools {
             } else {
                 ItemEntity entityitem = new ItemEntity(entity.world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), stack);
                 entityitem.setPickupDelay(20);
-                entity.world.spawnEntity(entityitem);
+                entity.world.addEntity(entityitem);
             }
         }
     }
@@ -1427,7 +1428,7 @@ public class MoCTools {
                         new ItemEntity(((LivingEntity) entity).world, ((LivingEntity) entity).getPosX(), ((LivingEntity) entity).getPosY(),
                                 ((LivingEntity) entity).getPosZ(), stack);
                 entityitem.setPickupDelay(20);
-                ((LivingEntity) entity).world.spawnEntity(entityitem);
+                ((LivingEntity) entity).world.addEntity(entityitem);
             }
         }
     }
@@ -1440,16 +1441,16 @@ public class MoCTools {
      */
     public static ItemStack getProperAmulet(MoCEntityAnimal entity) {
         if (entity instanceof MoCEntityHorse) {
-            if (entity.getType() == 26 || entity.getType() == 27 || entity.getType() == 28) {
+            if (entity.getSubType() == 26 || entity.getSubType() == 27 || entity.getSubType() == 28) {
                 return new ItemStack(MoCItems.AMULETBONEFULL, 1);
             }
-            if (entity.getType() > 47 && entity.getType() < 60) {
+            if (entity.getSubType() > 47 && entity.getSubType() < 60) {
                 return new ItemStack(MoCItems.AMULETFAIRYFULL., 1);
             }
-            if (entity.getType() == 39 || entity.getType() == 40) {
+            if (entity.getSubType() == 39 || entity.getSubType() == 40) {
                 return new ItemStack(MoCItems.AMULETPEGASUSFULL, 1);
             }
-            if (entity.getType() == 21 || entity.getType() == 22) {
+            if (entity.getSubType() == 21 || entity.getSubType() == 22) {
                 return new ItemStack(MoCItems.AMULETGHOSTFULL, 1);
             }
         }
@@ -1465,16 +1466,16 @@ public class MoCTools {
      */
     public static ItemStack getProperEmptyAmulet(MoCEntityAnimal entity) {
         if (entity instanceof MoCEntityHorse) {
-            if (entity.getType() == 26 || entity.getType() == 27 || entity.getType() == 28) {
+            if (entity.getSubType() == 26 || entity.getSubType() == 27 || entity.getSubType() == 28) {
                 return new ItemStack(MoCItems.AMULETBONE, 1);
             }
-            if (entity.getType() > 49 && entity.getType() < 60) {
+            if (entity.getSubType() > 49 && entity.getSubType() < 60) {
                 return new ItemStack(MoCItems.AMULETFAIRY, 1);
             }
-            if (entity.getType() == 39 || entity.getType() == 40) {
+            if (entity.getSubType() == 39 || entity.getSubType() == 40) {
                 return new ItemStack(MoCItems.AMULETPEGASUS, 1);
             }
-            if (entity.getType() == 21 || entity.getType() == 22) {
+            if (entity.getSubType() == 21 || entity.getSubType() == 22) {
                 return new ItemStack(MoCItems.AMULETGHOST, 1);
             }
         }
@@ -1509,7 +1510,7 @@ public class MoCTools {
                 float var5 = (i / 2 - 0.5F) * 1 / 4.0F;
                 MoCEntityMaggot maggot = new MoCEntityMaggot(world);
                 maggot.setLocationAndAngles(entity.getPosX() + var4, entity.getPosY() + 0.5D, entity.getPosZ() + var5, world.rand.nextFloat() * 360.0F, 0.0F);
-                world.spawnEntity(maggot);
+                world.addEntity(maggot);
             }
         }
     }
@@ -1627,7 +1628,7 @@ public class MoCTools {
     public static void ThrowStone(Entity throwerEntity, int X, int Y, int Z, BlockState state, double speedMod, double height) {
         MoCEntityThrowableRock etrock =
                 new MoCEntityThrowableRock(throwerEntity.world, throwerEntity, throwerEntity.posX, throwerEntity.posY + 0.5D, throwerEntity.posZ);//, false, false);
-        throwerEntity.world.spawnEntity(etrock);
+        throwerEntity.world.addEntity(etrock);
         etrock.setState(state);
         etrock.setBehavior(0);
         double x = ((X - throwerEntity.getPosX()) / speedMod);

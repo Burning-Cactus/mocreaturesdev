@@ -5,10 +5,11 @@ import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -16,43 +17,42 @@ import net.minecraft.world.World;
 
 public class MoCEntityShark extends MoCEntityTameableAquatic {
 
-    public MoCEntityShark(World world) {
-        super(world);
+    public MoCEntityShark(EntityType<? extends MoCEntityShark> type, World world) {
+        super(type, world);
         this.texture = "shark.png";
-        setSize(1.7F, 0.8F);
         setEdad(60 + this.rand.nextInt(100));
     }
 
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, true));
-        this.tasks.addTask(5, new EntityAIWanderMoC2(this, 1.0D, 30));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTargetMoC(this, EntityPlayer.class, true));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 1.0D, 30));
+        this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
+        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
     }
 
     @Override
     public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        if (super.attackEntityFrom(damagesource, i) && (this.world.getDifficulty().getDifficultyId() > 0)) {
+        if (super.attackEntityFrom(damagesource, i) && (this.world.getDifficulty().getId() > 0)) {
             Entity entity = damagesource.getTrueSource();
             if (this.isRidingOrBeingRiddenBy(entity)) {
                 return true;
             }
-            if (entity != this && entity instanceof EntityLivingBase) {
-                setAttackTarget((EntityLivingBase) entity);
+            if (entity != this && entity instanceof LivingEntity) {
+                setAttackTarget((LivingEntity) entity);
                 return true;
             } else {
                 return false;
@@ -68,12 +68,12 @@ public class MoCEntityShark extends MoCEntityTameableAquatic {
         if (i < 90) {
             int j = this.rand.nextInt(3) + 1;
             for (int l = 0; l < j; l++) {
-                entityDropItem(new ItemStack(MoCItems.sharkteeth, 1, 0), 0.0F);
+                entityDropItem(new ItemStack(MoCItems.SHARKTEETH, 1, 0), 0.0F);
             }
-        } else if ((this.world.getDifficulty().getDifficultyId() > 0) && (getEdad() > 150)) {
+        } else if ((this.world.getDifficulty().getId() > 0) && (getEdad() > 150)) {
             int k = this.rand.nextInt(3);
             for (int i1 = 0; i1 < k; i1++) {
-                entityDropItem(new ItemStack(MoCItems.mocegg, 1, 11), 0.0F);
+                entityDropItem(new ItemStack(MoCItems.MOCEGG, 1, 11), 0.0F);
             }
         }
     }
@@ -110,8 +110,8 @@ public class MoCEntityShark extends MoCEntityTameableAquatic {
      }*/
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
         if (!this.world.isRemote) {
             if (!getIsAdult() && (this.rand.nextInt(50) == 0)) {
                 setEdad(getEdad() + 1);

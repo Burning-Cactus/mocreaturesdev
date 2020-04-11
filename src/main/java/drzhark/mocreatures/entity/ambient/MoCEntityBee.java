@@ -7,10 +7,11 @@ package drzhark.mocreatures.entity.ambient;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.MoCEntityInsect;
 import drzhark.mocreatures.init.MoCSoundEvents;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -22,18 +23,18 @@ public class MoCEntityBee extends MoCEntityInsect
 
     private int soundCount;
 
-    public MoCEntityBee(World world) {
-        super(world);
+    public MoCEntityBee(EntityType<? extends MoCEntityBee> type, World world) {
+        super(type, world);
         this.texture = "bee.png";
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
 
         if (!this.world.isRemote) {
             if (getIsFlying() && --this.soundCount == -1) {
-                EntityPlayer ep = this.world.getClosestPlayerToEntity(this, 5D);
+                PlayerEntity ep = this.world.getClosestPlayer(this, 5D);
                 if (ep != null) {
                     MoCTools.playCustomSound(this, getMySound());
                     this.soundCount = 20;
@@ -67,9 +68,9 @@ public class MoCEntityBee extends MoCEntityInsect
     public boolean attackEntityFrom(DamageSource damagesource, float i) {
         if (super.attackEntityFrom(damagesource, i)) {
             Entity entity = damagesource.getTrueSource();
-            if (entity instanceof EntityLivingBase) {
-                EntityLivingBase entityliving = (EntityLivingBase) entity;
-                if ((entity != this) && (this.world.getDifficulty().getDifficultyId() > 0)) {
+            if (entity instanceof LivingEntity) {
+                LivingEntity entityliving = (LivingEntity) entity;
+                if ((entity != this) && (this.world.getDifficulty().getId() > 0)) {
                     setAttackTarget(entityliving);
                 }
                 return true;
@@ -83,8 +84,8 @@ public class MoCEntityBee extends MoCEntityInsect
     @Override
     public boolean isMyFavoriteFood(ItemStack stack) {
         return !stack.isEmpty()
-                && (stack.getItem() == Item.getItemFromBlock(Blocks.RED_FLOWER) || stack.getItem() == Item
-                        .getItemFromBlock(Blocks.YELLOW_FLOWER));
+                && (stack.getItem() == Item.getItemFromBlock(Blocks.POPPY) || stack.getItem() == Item
+                        .getItemFromBlock(Blocks.DANDELION));
     }
 
     @Override

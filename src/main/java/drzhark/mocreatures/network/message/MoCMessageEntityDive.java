@@ -24,7 +24,7 @@ public class MoCMessageEntityDive implements IMoCMessage {
     }
 
     public static boolean onMessage(MoCMessageEntityDive message, Supplier<NetworkEvent.Context> ctx) {
-        NetworkEvent.Context context = ctx.get(); context.
+        NetworkEvent.Context context = ctx.get();
         if (ctx.getServerHandler().player.getRidingEntity() != null && ctx.getServerHandler().player.getRidingEntity() instanceof IMoCEntity) {
             ((IMoCEntity) ctx.getServerHandler().player.getRidingEntity()).makeEntityDive();
         }
