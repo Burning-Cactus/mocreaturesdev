@@ -4,30 +4,34 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.ITeleporter;
 
 import java.util.Random;
 
-public class MoCDirectTeleporter extends Teleporter {
+public class MoCDirectTeleporter implements ITeleporter {
 
     private boolean portalDone;
+    protected final ServerWorld world;
+    protected final Random random;
 
-    public MoCDirectTeleporter(ServerWorld par1WorldServer) {
-        super(par1WorldServer);
+    public MoCDirectTeleporter(ServerWorld worldIn) {
+        world = worldIn;
+        random = new Random(worldIn.getSeed());
     }
 
-    @Override
     public void placeInPortal(Entity par1Entity, float rotationYaw) {
         int var9 = MathHelper.floor(par1Entity.getPosX());
         int var10 = MathHelper.floor(par1Entity.getPosY()) - 1;
         int var11 = MathHelper.floor(par1Entity.getPosZ());
         par1Entity.setLocationAndAngles(var9, var10, var11, par1Entity.rotationYaw, 0.0F);
-        par1Entity.motionX = par1Entity.motionY = par1Entity.motionZ = 0.0D;
+        par1Entity.setMotion(Vec3d.ZERO);
     }
 
-    public void createPortal(World par1World, Random par2Random) {
+    public void makePortal(World par1World, Random par2Random) {
         MoCWorldGenPortal myPortal =
                 new MoCWorldGenPortal(Blocks.QUARTZ_BLOCK, 2, Blocks.QUARTZ_STAIRS, 0, Blocks.QUARTZ_BLOCK, 1, Blocks.QUARTZ_BLOCK, 0);
         for (int i = 0; i < 14; i++) {

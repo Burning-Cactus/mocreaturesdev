@@ -81,7 +81,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
     private static final DataParameter<Boolean> BRED = EntityDataManager.<Boolean>createKey(MoCEntityHorse.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> ARMOR_TYPE = EntityDataManager.<Integer>createKey(MoCEntityHorse.class, DataSerializers.VARINT);
 
-    public MoCEntityHorse(EntityType<? extends MoCEntityHorse> type, World world) {
+    public MoCEntityHorse(EntityType<? extends MoCEntityHorse> type, World world) { //TODO: Set fire immunity for Nightmare in the damage event
         super(type, world);
         this.gestationtime = 0;
         this.eatenpumpkin = false;
@@ -491,7 +491,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
     @Override
     public double getCustomJump() {
         double HorseJump = 0.35D;
-        if (geSubtType() < 6) // tier 1
+        if (getSubType() < 6) // tier 1
         {
             HorseJump = 0.35;
         } else if (getSubType() > 5 && getSubType() < 11) // tier 2
@@ -604,7 +604,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
     protected Item getDropItem() {
         boolean flag = (this.rand.nextInt(100) < MoCreatures.proxy.rareItemDropChance);
 
-        if (flag && (this.geSubtType() == 36 || (this.getSubType() >= 50 && this.getSubType() < 60))) // unicorn
+        if (flag && (this.getSubType() == 36 || (this.getSubType() >= 50 && this.getSubType() < 60))) // unicorn
         {
             return MoCItems.UNICORNHORN;
         }

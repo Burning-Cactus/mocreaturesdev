@@ -3,7 +3,6 @@ package drzhark.mocreatures.entity.ai;
 import drzhark.mocreatures.entity.MoCEntityAnimal;
 import drzhark.mocreatures.entity.monster.MoCEntityOgre;
 import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -48,8 +47,8 @@ public abstract class EntitiAITargetMoC extends Goal {
      *
      * @param attacker entity which is attacking
      * @param target attack target
-     * @param includeInvincibles should ignore {@link net.minecraft.entity.player.PlayerEntity#capabilities
-     * EntityPlayer.capabilities}.{@link net.minecraft.entity.player.PlayerCapabilities#disableDamage disableDamage}
+     * @param includeInvincibles should ignore {@link net.minecraft.entity.player.PlayerEntity#//capabilities
+     * EntityPlayer.capabilities}.{@link net.minecraft.entity.player//.PlayerCapabilities#disableDamage disableDamage}
      * @param checkSight should check if attacker can see target
      */
     public static boolean isSuitableTarget(LivingEntity attacker, LivingEntity target, boolean includeInvincibles, boolean checkSight) {
@@ -191,9 +190,9 @@ public abstract class EntitiAITargetMoC extends Goal {
     /**
      * Checks to see if this entity can find a short path to the given target.
      */
-    private boolean canEasilyReach(LivingEntity p_75295_1_) {
+    private boolean canEasilyReach(LivingEntity target) {
         this.targetSearchDelay = 10 + this.taskOwner.getRNG().nextInt(5);
-        Path path = this.taskOwner.getNavigator().getPathToEntity(p_75295_1_);
+        Path path = this.taskOwner.getNavigator().getPathToEntity(target, 0);
 
         if (path == null) {
             //System.out.println("couldn't find path");
@@ -204,8 +203,8 @@ public abstract class EntitiAITargetMoC extends Goal {
             if (pathpoint == null) {
                 return false;
             } else {
-                int i = pathpoint.x - MathHelper.floor(p_75295_1_.getPosX());
-                int j = pathpoint.z - MathHelper.floor(p_75295_1_.getPosZ());
+                int i = pathpoint.x - MathHelper.floor(target.getPosX());
+                int j = pathpoint.z - MathHelper.floor(target.getPosZ());
                 return i * i + j * j <= 2.25D;
             }
         }

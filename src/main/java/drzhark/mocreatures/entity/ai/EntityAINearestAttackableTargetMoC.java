@@ -5,13 +5,9 @@ import com.google.common.base.Predicates;
 import drzhark.mocreatures.entity.IMoCEntity;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.EntitySelectors;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -60,7 +56,7 @@ public class EntityAINearestAttackableTargetMoC extends EntitiAITargetMoC {
                     if (entitylivingbaseIn instanceof PlayerEntity) {
                         double d0 = EntityAINearestAttackableTargetMoC.this.getTargetDistance();
 
-                        if (entitylivingbaseIn.isSneaking()) {
+                        if (entitylivingbaseIn.isCrouching()) {
                             d0 *= 0.800000011920929D;
                         }
 

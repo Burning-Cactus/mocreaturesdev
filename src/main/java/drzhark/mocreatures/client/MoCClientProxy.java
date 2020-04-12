@@ -496,7 +496,7 @@ public class MoCClientProxy extends MoCProxy {
 
     @SuppressWarnings("unused")
     @Override
-    public void hammerFX(EntityPlayer entity) {
+    public void hammerFX(PlayerEntity entity) {
         int densityInt = (MoCreatures.proxy.getParticleFX());
         if (densityInt == 0) {
             return;

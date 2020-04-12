@@ -2,18 +2,18 @@ package drzhark.mocreatures.dimension;
 
 import drzhark.mocreatures.init.MoCBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
+import net.minecraft.world.gen.feature.AbstractTreeFeature;
+import net.minecraft.world.gen.feature.TreeFeatureConfig;
 
 import java.util.Random;
 
-public class MoCWorldGenBigTree extends WorldGenAbstractTree {
+public class MoCBigTreeFeature<T extends TreeFeatureConfig> extends AbstractTreeFeature<T> {
 
-    public MoCWorldGenBigTree(boolean par1) {
+    public MoCBigTreeFeature(boolean par1) {
         super(par1);
     }
 
@@ -27,10 +27,10 @@ public class MoCWorldGenBigTree extends WorldGenAbstractTree {
      * @param heightlimit
      * @param leafdist
      */
-    public MoCWorldGenBigTree(boolean par1, IBlockState iblockstateLog, IBlockState iblockstateleaf, int trunksize, int heightlimit, int leafdist) {
+    public MoCBigTreeFeature(boolean par1, BlockState iblockstateLog, BlockState iblockstateleaf, int trunksize, int heightlimit, int leafdist) {
         super(par1);
-        this.iBlockStateLog = iblockstateLog;
-        this.iBlockStateLeaf = iblockstateleaf;
+        this.blockStateLog = iblockstateLog;
+        this.blockStateLeaf = iblockstateleaf;
         this.trunkSize = trunksize;
         this.heightLimitLimit = heightlimit;
         this.leafDistanceLimit = leafdist;
@@ -56,8 +56,8 @@ public class MoCWorldGenBigTree extends WorldGenAbstractTree {
     double branchSlope = 0.381D;
     double scaleWidth = 1.0D;
     double leafDensity = 1.0D;
-    private IBlockState iBlockStateLog;
-    private IBlockState iBlockStateLeaf;
+    private BlockState blockStateLog;
+    private BlockState blockStateLeaf;
 
     /**
      * Currently always 1, can be set to 2 in the class constructor to generate

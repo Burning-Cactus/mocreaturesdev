@@ -1,15 +1,17 @@
 package drzhark.mocreatures.dimension;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IRenderHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class MoCSkyRenderer extends IRenderHandler {
+public class MoCSkyRenderer implements IRenderHandler {
+
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void render(float partialTicks, WorldClient world, Minecraft mc) {
+    @OnlyIn(Dist.CLIENT)
+    public void render(int ticks, float partialTicks, ClientWorld world, Minecraft mc) {
+
     }
 }

@@ -7,7 +7,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
 
-public class MoCWorldGenPortal extends WorldGenerator {
+public class MoCWorldGenPortal extends Generator {
 
     private Block pillarBlock;
     private Block stairBlock;

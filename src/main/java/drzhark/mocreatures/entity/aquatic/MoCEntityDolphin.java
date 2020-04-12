@@ -5,6 +5,7 @@ import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityTameableAquatic;
 import drzhark.mocreatures.entity.ai.EntityAIPanicMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.init.MoCEntities;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageHeart;
@@ -247,10 +248,10 @@ public class MoCEntityDolphin extends MoCEntityTameableAquatic {
         return MoCSoundEvents.ENTITY_DOLPHIN_UPSET;
     }
 
-    @Override
-    protected Item getDropItem() {
-        return Items.COD;
-    }
+//    @Override TODO: Dolphin loot table
+//    protected Item getDropItem() {
+//        return Items.COD;
+//    }
 
     @Override
     protected float getSoundVolume() {
@@ -341,7 +342,7 @@ public class MoCEntityDolphin extends MoCEntityTameableAquatic {
                     ItemEntity entityitem1 = getClosestFish(this, 2D);
                     if ((this.rand.nextInt(20) == 0) && (entityitem1 != null) && (this.deathTime == 0)) {
 
-                        entityitem1.setDead();
+                        entityitem1.remove();
                         setTemper(getTemper() + 25);
                         if (getTemper() > getMaxTemper()) {
                             setTemper(getMaxTemper() - 1);
@@ -385,7 +386,7 @@ public class MoCEntityDolphin extends MoCEntityTameableAquatic {
                 if (this.gestationtime <= 50) {
                     continue;
                 }
-                MoCEntityDolphin babydolphin = new MoCEntityDolphin(this.world);
+                MoCEntityDolphin babydolphin = new MoCEntityDolphin(MoCEntities.DOLPHIN this.world);
                 babydolphin.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
                 if (this.world.addEntity(babydolphin)) {
                     MoCTools.playCustomSound(this, SoundEvents.ENTITY_CHICKEN_EGG);

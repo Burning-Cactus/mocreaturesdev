@@ -12,7 +12,6 @@ import net.minecraft.pathfinding.NodeProcessor;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 
 public class EntityAIMoverHelperMoC extends MovementController {
 
@@ -233,11 +232,10 @@ public class EntityAIMoverHelperMoC extends MovementController {
             double d4 = Math.sin((double) (this.theCreature.ticksExisted + this.theCreature.getEntityId()) * 0.75D) * 0.01D;
             double d5 = Math.cos((double) (this.theCreature.rotationYaw * (float) Math.PI / 180.0F));
             double d6 = Math.sin((double) (this.theCreature.rotationYaw * (float) Math.PI / 180.0F));
-            this.theCreature.motionX += d4 * d5;
-            this.theCreature.motionZ += d4 * d6;
+            this.theCreature.getMotion().add(d4 * d5,
+                    (d4 * (d6 + d5) * 0.25D) + ((double)this.theCreature.getAIMoveSpeed() * d1 * 1.5D),
+                    d4 * d6);
             //d4 = Math.sin((double)(this.theCreature.ticksExisted + this.theCreature.getEntityId()) * 0.75D) * 0.05D;
-            this.theCreature.motionY += d4 * (d6 + d5) * 0.25D;
-            this.theCreature.motionY += (double) this.theCreature.getAIMoveSpeed() * d1 * 1.5D;
         } //TODO: Fix the motion field calls in this class
     }
     
@@ -251,15 +249,15 @@ public class EntityAIMoverHelperMoC extends MovementController {
             int distY = MoCTools.distanceToFloor(this.theCreature);
             if (distY <= ((IMoCEntity) theCreature).minFlyingHeight()
                     && (this.theCreature.collidedHorizontally || this.theCreature.world.rand.nextInt(100) == 0)) {
-                this.theCreature.motionY += 0.02D;
+                this.theCreature.getMotion().add(0, 0.02D, 0);
             }
             if (distY > ((IMoCEntity) theCreature).maxFlyingHeight() || this.theCreature.world.rand.nextInt(150) == 0) {
-                this.theCreature.motionY -= 0.02D;
+                this.theCreature.getMotion().subtract(0, 0.02D, 0);
             }
 
         } else {
-            if (this.theCreature.motionY < 0) {
-                this.theCreature.motionY *= 0.6D;
+            if (this.theCreature.getMotion().y < 0) {
+                this.theCreature.getMotion().mul(1, 0.6D, 1);
             }
         }
 
@@ -276,24 +274,23 @@ public class EntityAIMoverHelperMoC extends MovementController {
         double distToSurface = (MoCTools.waterSurfaceAtGivenEntity(theCreature) - theCreature.getPosY());
         if (distToSurface > ((IMoCEntity) theCreature).getDivingDepth()) {
             if (theCreature.getMotion().getY() < 0) {
-                theCreature.motionY = 0;
+                theCreature.setMotion(theCreature.getMotion().x, 0, theCreature.getMotion().z);
             }
-            theCreature.motionY += 0.001D;// 0.001
-            theCreature.motionY += (distToSurface * 0.01);
+            theCreature.getMotion().add(0, 0.001D + distToSurface * 0.01, 0);
         }
 
         if (!theCreature.getNavigator().noPath() && theCreature.collidedHorizontally) {
             if (theCreature instanceof MoCEntityAquatic) {
-                theCreature.getMotion().getY() = 0.05D;
+                theCreature.getMotion().add(0, 0.05D, 0);
             } else {
                 ((IMoCEntity) theCreature).forceEntityJump();
             }
         }
 
-        if ((this.theCreature.getAttackTarget() != null && ((this.theCreature.getAttackTarget().posY < (this.posY - 0.5D)) && this.theCreature
+        if ((this.theCreature.getAttackTarget() != null && ((this.theCreature.getAttackTarget().getPosY() < (this.posY - 0.5D)) && this.theCreature
                 .getDistance(this.theCreature.getAttackTarget()) < 10F))) {
-            if (this.theCreature.motionY < -0.1) {
-                this.theCreature.motionY = -0.1;
+            if (this.theCreature.getMotion().y < -0.1) {
+                this.theCreature.getMotion().subtract(0, -0.1, 0);
             }
             return;
         }

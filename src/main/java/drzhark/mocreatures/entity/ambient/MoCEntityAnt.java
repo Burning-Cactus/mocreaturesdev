@@ -54,7 +54,7 @@ public class MoCEntityAnt extends MoCEntityInsect {
         if (!this.world.isRemote) {
             if (!getHasFood()) {
                 ItemEntity entityitem = MoCTools.getClosestFood(this, 8D);
-                if (entityitem == null || entityitem.isDead) {
+                if (entityitem == null || !entityitem.isAlive()) {
                     return;
                 }
                 if (entityitem.getRidingEntity() == null) {
@@ -96,7 +96,7 @@ public class MoCEntityAnt extends MoCEntityInsect {
 
     private void exchangeItem(ItemEntity entityitem) {
         ItemEntity cargo = new ItemEntity(this.world, this.getPosX(), this.getPosY() + 0.2D, this.getPosZ(), entityitem.getItem());
-        entityitem.setDead();
+        entityitem.remove();
         if (!this.world.isRemote) {
             this.world.addEntity(cargo);
         }

@@ -149,7 +149,7 @@ public class MoCEntityLitterBox extends LivingEntity {
                         || (stack.getItem() == Items.IRON_PICKAXE) || (stack.getItem() == Items.GOLDEN_PICKAXE) || (stack.getItem() == Items.DIAMOND_PICKAXE))) {
             player.inventory.addItemStackToInventory(new ItemStack(MoCItems.LITTERBOX));
             this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, (((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F) + 1.0F) * 2.0F);
-            setDead();
+            remove();
             return true;
         }
 

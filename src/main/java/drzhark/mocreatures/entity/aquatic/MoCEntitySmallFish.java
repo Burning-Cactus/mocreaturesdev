@@ -11,15 +11,12 @@ import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MoCEntitySmallFish extends MoCEntityTameableAquatic {
 
@@ -111,7 +108,7 @@ public class MoCEntitySmallFish extends MoCEntityTameableAquatic {
         return true;
     }
 
-    @Override
+    @Override //TODO: Small fish loot table
     protected void dropFewItems(boolean flag, int x) {
         int i = this.rand.nextInt(100);
         if (i < 70) {

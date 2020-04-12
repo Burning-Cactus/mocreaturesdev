@@ -11,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.feature.AbstractTreeFeature;
 import net.minecraft.world.gen.feature.ShrubFeature;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenShrub;
@@ -21,7 +22,7 @@ import java.util.Random;
 
 public class BiomeGenWyvernLair extends Biome {
 
-    private MoCWorldGenBigTree wyvernGenBigTree;
+    private MoCBigTreeFeature wyvernGenBigTree;
     private WorldGenShrub worldGenShrub;
 
     public BiomeGenWyvernLair(Biome.Builder biomeProperties) {
@@ -33,9 +34,9 @@ public class BiomeGenWyvernLair extends Biome {
         this.getSpawns(EntityClassification.CREATURE).add(new SpawnListEntry(MoCEntityDragonfly.class, 8, 2, 3));
         this.getSpawns(EntityClassification.CREATURE).add(new SpawnListEntry(MoCEntitySnake.class, 6, 1, 2));
         this.getSpawns(EntityClassification.CREATURE).add(new SpawnListEntry(MoCEntityWyvern.class, 10, 1, 4));
-        this.topBlock = MoCBlocks.WYVERN_GRASS.get().getDefaultState();
-        this. = MoCBlocks.WYVERN_DIRT.get();
-        this.wyvernGenBigTree = new MoCWorldGenBigTree(false, MoCBlocks.mocLog.getDefaultState(), MoCBlocks.mocLeaf.getDefaultState(), 2, 30, 10);
+        this.topBlock = MoCBlocks.WYVERN_GRASS.getDefaultState();
+        this. = MoCBlocks.WYVERN_DIRT;
+        this.wyvernGenBigTree = new MoCBigTreeFeature(false, MoCBlocks.WYVERN_LOG.getDefaultState(), MoCBlocks.WYVERN_LEAVES.getDefaultState(), 2, 30, 10);
         this.worldGenShrub = new ShrubFeature(Blocks.DIRT.getDefaultState(), Blocks.AIR.getDefaultState());
         this.decorator = new BiomeWyvernDecorator();
     }
@@ -44,7 +45,7 @@ public class BiomeGenWyvernLair extends Biome {
      * Gets a WorldGen appropriate for this biome.
      */
     @Override
-    public WorldGenAbstractTree getRandomTreeFeature(Random par1Random) {
+    public AbstractTreeFeature getRandomTreeFeature(Random par1Random) {
         if (par1Random.nextInt(10) == 0) {
             return this.wyvernGenBigTree;
         } else {

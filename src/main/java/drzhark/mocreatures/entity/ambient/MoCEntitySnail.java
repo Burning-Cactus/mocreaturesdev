@@ -116,10 +116,10 @@ public class MoCEntitySnail extends MoCEntityAmbient {
         }
     }
 
-    @Override
-    protected Item getDropItem() {
-        return Items.SLIME_BALL;
-    }
+//    @Override TODO: Snail loot table
+//    protected Item getDropItem() {
+//        return Items.SLIME_BALL;
+//    }
 
     @Override
     public boolean isOnLadder() {

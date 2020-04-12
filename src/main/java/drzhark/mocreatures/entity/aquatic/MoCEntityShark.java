@@ -62,7 +62,7 @@ public class MoCEntityShark extends MoCEntityTameableAquatic {
         }
     }
 
-    @Override
+    @Override //TODO: Shark loot table
     protected void dropFewItems(boolean flag, int x) {
         int i = this.rand.nextInt(100);
         if (i < 90) {

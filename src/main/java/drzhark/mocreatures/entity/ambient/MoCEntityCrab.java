@@ -79,10 +79,10 @@ public class MoCEntityCrab extends MoCEntityTameableAmbient
     public void fall(float f, float f1) {
     }
 
-    @Override
-    protected Item getDropItem() {
-        return MoCItems.CRABRAW;
-    }
+//    @Override TODO: Crab loot table
+//    protected Item getDropItem() {
+//        return MoCItems.CRABRAW;
+//    }
 
     @Override
     public boolean isOnLadder() {

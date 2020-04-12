@@ -1,13 +1,13 @@
 package drzhark.mocreatures.data;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.datafix.IDataFixer;
+import com.mojang.datafixers.DataFixer;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.datafix.IDataWalker;
 
 public class EntityDataWalker implements IDataWalker
 {
     @Override
-    public NBTTagCompound process(IDataFixer fixer, NBTTagCompound compound, int version) {
+    public CompoundNBT process(DataFixer fixer, CompoundNBT compound, int version) {
         final String entityId = compound.getString("id");
         if (entityId.contains("mocreatures.")) {
             String entityName = entityId.replace("mocreatures.", "").toLowerCase();
@@ -15,7 +15,7 @@ public class EntityDataWalker implements IDataWalker
                 entityName = "wildpolarbear";
             }
             final String fixedEntityId = "mocreatures:" + entityName;
-            compound.setString("id", fixedEntityId);
+            compound.putString("id", fixedEntityId);
         }
         return compound;
     }

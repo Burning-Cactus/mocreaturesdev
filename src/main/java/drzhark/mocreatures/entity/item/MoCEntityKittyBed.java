@@ -36,14 +36,14 @@ public class MoCEntityKittyBed extends LivingEntity {
         this.milklevel = 0.0F;
     }
 
-    public MoCEntityKittyBed(EntityType<? extends MoCEntityKittyBed> type, World world, double d, double d1, double d2) {
-        this(type, world);
-    }
-
-    public MoCEntityKittyBed(EntityType<? extends MoCEntityKittyBed> type, World world, int i) {
-        this(type, world);
-        setSheetColor(i);
-    }
+//    public MoCEntityKittyBed(EntityType<? extends MoCEntityKittyBed> type, World world, double d, double d1, double d2) {
+//        this(type, world);
+//    }
+//
+//    public MoCEntityKittyBed(EntityType<? extends MoCEntityKittyBed> type, World world, int i) {
+//        this(type, world);
+//        setSheetColor(i);
+//    }
 
     public ResourceLocation getTexture() {
         return MoCreatures.getTexture("fullkittybed.png");
@@ -195,7 +195,7 @@ public class MoCEntityKittyBed extends LivingEntity {
             final int color = getSheetColor();
             player.inventory.addItemStackToInventory(new ItemStack(MoCItems.KITTYBED[color], 1));
             this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, (((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F) + 1.0F) * 2.0F);
-            setDead();
+            remove();
             return true;
         }
         if (this.getRidingEntity() == null) {
@@ -211,10 +211,10 @@ public class MoCEntityKittyBed extends LivingEntity {
     }
 
     @Override
-    public void move(MoverType type, double d, double d1, double d2) {
+    public void move(MoverType type, Vec3d motion) {
         if ((this.getRidingEntity() != null) || !this.onGround || !MoCreatures.proxy.staticLitter) {
             if (!this.world.isRemote) {
-                super.move(type, d, d1, d2);
+                super.move(type, motion);
             }
         }
     }

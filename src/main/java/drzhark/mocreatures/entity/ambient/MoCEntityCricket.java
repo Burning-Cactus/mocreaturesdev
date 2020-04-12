@@ -57,7 +57,7 @@ public class MoCEntityCricket extends MoCEntityInsect
                     MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_CRICKET_FLY);
                     this.soundCounter = 10;
                 }
-            } else if (!DimensionManager.getWorld(0).isDaytime()) {
+            } else if (!world.isDaytime()) { //TODO: Formerly was Dimensionmanager.getWorld(), check if this still works!
                 PlayerEntity ep = this.world.getClosestPlayer(this, 12D);
                 if (ep != null && --this.soundCounter == -1) {
                     MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_CRICKET_AMBIENT);

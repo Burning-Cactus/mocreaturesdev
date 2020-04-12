@@ -83,7 +83,7 @@ public class MoCEntityPiranha extends MoCEntitySmallFish {
         return true;
     }
 
-    @Override
+    @Override //TODO: Piranha loot table
     protected void dropFewItems(boolean flag, int x) {
         int i = this.rand.nextInt(100);
         if (i < 70) {

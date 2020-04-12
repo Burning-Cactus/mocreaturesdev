@@ -113,14 +113,14 @@ public class MoCEntityJellyFish extends MoCEntityTameableAquatic {
         }
     }
 
-    @Override
-    protected Item getDropItem() {
-        boolean flag = this.rand.nextInt(2) == 0;
-        if (flag) {
-            return Items.SLIME_BALL;
-        }
-        return null;
-    }
+//    @Override TODO: Jellyfish loot table
+//    protected Item getDropItem() {
+//        boolean flag = this.rand.nextInt(2) == 0;
+//        if (flag) {
+//            return Items.SLIME_BALL;
+//        }
+//        return null;
+//    }
 
     @Override
     public float pitchRotationOffset() {

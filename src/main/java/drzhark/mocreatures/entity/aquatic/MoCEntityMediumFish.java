@@ -26,16 +26,16 @@ public class MoCEntityMediumFish extends MoCEntityTameableAquatic {
 
     public static MoCEntityMediumFish createEntity(World world, int type) {
         if (type == 1) {
-            return new MoCEntitySalmon(world);
+            return new MoCEntitySalmon(MoCEntities.SALMON, world);
         }
         if (type == 2) {
-            return new MoCEntityCod(world);
+            return new MoCEntityCod(MoCEntities.COD, world);
         }
         if (type == 3) {
             return new MoCEntityBass(MoCEntities.BASS, world);
         }
 
-        return new MoCEntitySalmon(world);
+        return new MoCEntitySalmon(MoCEntities.SALMON, world);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class MoCEntityMediumFish extends MoCEntityTameableAquatic {
         }
     }
 
-    @Override
+    @Override //TODO: Mediumfish loot table
     protected void dropFewItems(boolean flag, int x) {
         int i = this.rand.nextInt(100);
         if (i < 70) {
@@ -81,8 +81,8 @@ public class MoCEntityMediumFish extends MoCEntityTameableAquatic {
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
 
         if (!this.world.isRemote) {
             if (getIsTamed() && this.rand.nextInt(100) == 0 && getHealth() < getMaxHealth()) {

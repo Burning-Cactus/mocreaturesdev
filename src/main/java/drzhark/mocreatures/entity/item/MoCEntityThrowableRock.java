@@ -40,20 +40,20 @@ public class MoCEntityThrowableRock extends Entity {
     private static final DataParameter<Integer> MASTERS_ID = EntityDataManager.<Integer>createKey(MoCEntityThrowableRock.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> BEHAVIOUR_TYPE = EntityDataManager.<Integer>createKey(MoCEntityThrowableRock.class, DataSerializers.VARINT);
 
-    public MoCEntityThrowableRock(EntityType<? extends MoCEntityThrowableRock> type, World par1World) {
-        super(type, par1World);
+    public MoCEntityThrowableRock(EntityType<? extends MoCEntityThrowableRock> type, World worldIn) {
+        super(type, worldIn);
         this.preventEntitySpawning = true;
         //this.yOffset = this.height / 2.0F;
     }
 
-    public MoCEntityThrowableRock(EntityType<? extends MoCEntityThrowableRock> type, World par1World, Entity entitythrower, double par2, double par4, double par6)//, int behavior)//, int bMetadata)
+    public MoCEntityThrowableRock(EntityType<? extends MoCEntityThrowableRock> type, World par1World, Entity entitythrower, double x, double y, double z)//, int behavior)//, int bMetadata)
     {
         this(type, par1World);
-        this.setPosition(par2, par4, par6);
+        this.setPosition(x, y, z);
         this.rockTimer = 250;
-        this.prevPosX = this.oPosX = par2;
-        this.prevPosY = this.oPosY = par4;
-        this.prevPosZ = this.oPosZ = par6;
+        this.prevPosX = this.oPosX = x;
+        this.prevPosY = this.oPosY = y;
+        this.prevPosZ = this.oPosZ = z;
         this.setMasterID(entitythrower.getEntityId());
     }
 

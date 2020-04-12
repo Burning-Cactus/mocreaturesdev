@@ -16,7 +16,7 @@ public class MoCEntityMaggot extends MoCEntityAmbient {
     }
     
     @Override
-    protected void initEntityAI() {
+    protected void registerGoals() {
         this.goalSelector.addGoal(1, new EntityAIWanderMoC2(this, 0.8D));
     }
     
@@ -31,10 +31,10 @@ public class MoCEntityMaggot extends MoCEntityAmbient {
     public void fall(float f, float f1) {
     }
 
-    @Override
-    protected Item getDropItem() {
-        return Items.SLIME_BALL;
-    }
+//    @Override TODO: Maggot loot table
+//    protected Item getDropItem() {
+//        return Items.SLIME_BALL;
+//    }
 
     @Override
     public boolean isOnLadder() {

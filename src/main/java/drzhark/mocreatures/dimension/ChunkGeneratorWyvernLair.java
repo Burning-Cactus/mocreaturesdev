@@ -2,6 +2,8 @@ package drzhark.mocreatures.dimension;
 
 import drzhark.mocreatures.init.MoCBlocks;
 import net.minecraft.block.BlockFalling;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
@@ -12,23 +14,26 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorSimplex;
+import net.minecraft.world.gen.feature.EndIslandFeature;
 import net.minecraft.world.gen.feature.WorldGenEndIsland;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 
 import java.util.List;
 import java.util.Random;
 
-public class ChunkGeneratorWyvernLair implements IChunkGenerator
+public class ChunkGeneratorWyvernLair implements NoiseChunkGenerator
 {
     /** RNG. */
     private final Random rand;
-    protected static final IBlockState WYVERN_STONE = MoCBlocks.mocStone.getDefaultState();
-    protected static final IBlockState WYVERN_DIRT = MoCBlocks.mocDirt.getDefaultState();
-    protected static final IBlockState WYVERN_GRASS = MoCBlocks.mocGrass.getDefaultState();
-    protected static final IBlockState AIR = Blocks.AIR.getDefaultState();
+    protected static final BlockState WYVERN_STONE = MoCBlocks.WYVERN_STONE.getDefaultState();
+    protected static final BlockState WYVERN_DIRT = MoCBlocks.WYVERN_DIRT.getDefaultState();
+    protected static final BlockState WYVERN_GRASS = MoCBlocks.WYVERN_GRASS.getDefaultState();
+    protected static final BlockState AIR = Blocks.AIR.getDefaultState();
     private NoiseGeneratorOctaves lperlinNoise1;
     private NoiseGeneratorOctaves lperlinNoise2;
     private NoiseGeneratorOctaves perlinNoise1;
@@ -48,7 +53,7 @@ public class ChunkGeneratorWyvernLair implements IChunkGenerator
     double[] pnr;
     double[] ar;
     double[] br;
-    private final WorldGenEndIsland endIslands = new WorldGenEndIsland();
+    private final EndIslandFeature endIslands = new EndIslandFeature();
     // temporary variables used during event handling
     private int chunkX = 0;
     private int chunkZ = 0;
@@ -119,17 +124,17 @@ public class ChunkGeneratorWyvernLair implements IChunkGenerator
 
                             for (int j2 = 0; j2 < 8; ++j2)
                             {
-                                IBlockState iblockstate = AIR;
+                                BlockState blockstate = AIR;
 
                                 if (d15 > 0.0D)
                                 {
-                                    iblockstate = WYVERN_STONE;
+                                    blockstate = WYVERN_STONE;
                                 }
 
                                 int k2 = i2 + i1 * 8;
                                 int l2 = l1 + k1 * 4;
                                 int i3 = j2 + j1 * 8;
-                                primer.setBlockState(k2, l2, i3, iblockstate);
+                                primer.setBlockState(k2, l2, i3, blockstate);
                                 d15 += d16;
                             }
 
@@ -155,11 +160,11 @@ public class ChunkGeneratorWyvernLair implements IChunkGenerator
                 byte b0 = 5;
                 int k = -1;
                 
-                IBlockState iblockstateTopBlock = WYVERN_GRASS;
-                IBlockState iblockstateFillerBlock = WYVERN_DIRT;
+                BlockState iblockstateTopBlock = WYVERN_GRASS;
+                BlockState iblockstateFillerBlock = WYVERN_DIRT;
 
                 for (int l = 127; l >= 0; --l) {
-                    IBlockState iblockstate2 = primer.getBlockState(i, l, j);
+                    BlockState iblockstate2 = primer.getBlockState(i, l, j);
 
                     if (iblockstate2.getMaterial() == Material.AIR)
                     {

@@ -1,6 +1,7 @@
 package drzhark.mocreatures.entity.ai;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.math.RayTraceResult;
@@ -10,11 +11,11 @@ import net.minecraft.world.World;
 public class PathNavigateFlyerMoC extends PathNavigator {
 
     public PathNavigateFlyerMoC(LivingEntity entitylivingIn, World worldIn) {
-        super(entitylivingIn, worldIn);
+        super((MobEntity)entitylivingIn, worldIn);
     }
 
     protected PathFinder getPathFinder() {
-        return new PathFinder(new FlyNodeProcessor());
+        return new PathFinder(new FlyNodeProcessor(), 0);
     }
 
     /**
