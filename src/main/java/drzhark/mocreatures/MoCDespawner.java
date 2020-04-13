@@ -76,14 +76,14 @@ public class MoCDespawner {
             double d2 = ((Entity) (entityplayer)).getPosZ() - entityliving.getPosZ();
             double d3 = d * d + d1 * d1 + d2 * d2;
             if (d3 > 16384D) {
-                entityliving.setDead();
+                entityliving.remove();
                 return 1;
             }
             if (entityliving.getIdleTime() > 600 && world.rand.nextInt(800) == 0) {
                 if (d3 < 1024D) {
                     //entityliving.attackEntityFrom(DamageSource.generic, 0);
                 } else {
-                    entityliving.setDead();
+                    entityliving.remove();
                     return 1;
                 }
             }
@@ -122,7 +122,7 @@ public class MoCDespawner {
     public static boolean isValidLightLevel(Entity entity, ServerWorld world, int lightLevel, boolean checkAmbientLightLevel) {
         if (entity.isCreatureType(EntityClassification.MONSTER, false)) {
             return true;
-        } else if (entity.isCreatureType(EntityClassification.AMBIENT, false) && !checkAmbientLightLevel) {
+        } else if (entity.isType(EntityClassification.AMBIENT, false) && !checkAmbientLightLevel) {
             return true;
         } else if (!entity.isCreatureType(EntityClassification.CREATURE, false)) {
             return true;

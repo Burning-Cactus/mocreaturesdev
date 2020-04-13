@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.DoubleNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.world.storage.SaveHandler;
@@ -97,7 +98,7 @@ public class MoCPetMapData extends WorldSavedData {
 
         for (int j = 0; j < i; ++j) {
             double d1 = adouble[j];
-            nbttaglist.add(new NBTTagDouble(d1));
+            nbttaglist.add(new DoubleNBT(d1));
         }
 
         return nbttaglist;

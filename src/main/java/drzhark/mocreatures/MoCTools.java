@@ -120,7 +120,7 @@ public class MoCTools {
                 ((float) world.rand.nextGaussian() * f3) + 0.2F,
                 (float) world.rand.nextGaussian() * f3
         );
-        world.spawnEntity(entityitem);
+        world.addEntity(entityitem);
     }
 
     public static void bigsmack(Entity entity, Entity entity1, float force) {
@@ -190,7 +190,7 @@ public class MoCTools {
 
             if (entityliving != null) {
                 entityliving.setLocationAndAngles(player.getPosX() - 1, player.getPosY(), player.getPosZ() - 1, player.rotationYaw, player.rotationPitch);
-                world.spawnEntity(entityliving);
+                world.addEntity(entityliving);
             }
         }
     }
@@ -213,7 +213,7 @@ public class MoCTools {
                 ILivingEntityData entitylivingdata = null;
                 entityToSpawn.onInitalSpawn(player.world.getDifficultyForLocation(new BlockPos(entityToSpawn)), entitylivingdata); // onSpawnWithEgg
                 entityToSpawn.setLocationAndAngles(player.getPosX(), player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
-                world.spawnEntity(entityToSpawn);
+                world.addEntity(entityToSpawn);
             }
         }
     }
@@ -599,7 +599,7 @@ public class MoCTools {
     }
 
     public static String biomeName(World world, BlockPos pos) {
-        BiomeProvider biomeProvider = world.getBiomeProvider();
+        BiomeProvider biomeProvider = world.get();
         if (biomeProvider == null) {
             return null;
         }

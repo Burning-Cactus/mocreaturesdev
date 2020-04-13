@@ -171,7 +171,7 @@ public class MoCItems {
     public static final Item SCROLLOFOWNER = null;
 
     // foods
-    public static final MoCItemFood COOKEDTURKEY = new MoCItemFood("turkeycooked", 8, 0.6F, false);
+    public static final MoCItemFood TURKEYCOOKED = new MoCItemFood("turkeycooked", 8, 0.6F, false);
     public static final MoCItemFood CRABRAW = (MoCItemFood) new MoCItemFood("crabraw", 2, 0.3F, false).setPotionEffect(new EffectInstance(Effects.HUNGER, 30, 0), 0.8F);
     public static final MoCItemFood CRABCOOKED = new MoCItemFood("crabcooked", 6, 0.6F, false);
     public static final MoCItemFood OMELET = new MoCItemFood("omelet", 4, 0.6F, false);
@@ -180,7 +180,7 @@ public class MoCItems {
     public static final MoCItemFood RATBURGER = new MoCItemFood("ratburger", 8, 0.6F, false);
     public static final MoCItemFood RATCOOKED = new MoCItemFood("ratcooked", 4, 0.6F, false);
     public static final MoCItemFood RATRAW = (MoCItemFood) new MoCItemFood("ratraw", 2, 0.3F, false).setPotionEffect(new EffectInstance(Effects.HUNGER, 30, 0), 0.8F);
-    public static final MoCItemFood RAWTURKEY = (MoCItemFood) new MoCItemFood("turkeyraw", 3, 0.3F, false).setPotionEffect(new EffectInstance(Effects.HUNGER, 30, 0), 0.8F);
+    public static final MoCItemFood TURKEYRAW = (MoCItemFood) new MoCItemFood("turkeyraw", 3, 0.3F, false).setPotionEffect(new EffectInstance(Effects.HUNGER, 30, 0), 0.8F);
     public static final MoCItemFood TURTLERAW = new MoCItemFood("turtleraw", 2, 0.3F, false);
     public static final MoCItemFood TURTLESOUP = new MoCItemTurtleSoup("turtlesoup", 6, 0.6F, false);
 

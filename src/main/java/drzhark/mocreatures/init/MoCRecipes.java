@@ -19,15 +19,7 @@ public class MoCRecipes {
         @SubscribeEvent
         public static void registerRecipes(final RegistryEvent.Register<IRecipe> event) {
 
-            GameRegistry.addSmelting(MoCItems.crabraw, new ItemStack(MoCItems.crabcooked, 1), 0F);
 
-            GameRegistry.addSmelting(MoCItems.ratRaw, new ItemStack(MoCItems.ratCooked, 1), 0F);
-
-            GameRegistry.addSmelting(MoCItems.ostrichraw, new ItemStack(MoCItems.ostrichcooked, 1), 0F);
-
-            GameRegistry.addSmelting(MoCItems.rawTurkey, new ItemStack(MoCItems.cookedTurkey, 1), 0F);
-
-            GameRegistry.addSmelting(MoCItems.mocegg, new ItemStack(MoCItems.omelet, 1), 0F);
 
             GameRegistry.addSmelting(Items.EGG, new ItemStack(MoCItems.omelet, 1), 0F);
         }
