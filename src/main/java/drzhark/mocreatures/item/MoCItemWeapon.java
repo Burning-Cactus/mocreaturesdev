@@ -52,8 +52,8 @@ public class MoCItemWeapon extends MoCItem {
 
     /**
      *
-     * @param par1
-     * @param par2ToolMaterial
+     * @param materialIn
+     * @param fragile
      * @param damageType 0 = default, 1 = poison, 2 = slow down, 3 = fire, 4 =
      *        confusion, 5 = blindness
      */
@@ -93,7 +93,7 @@ public class MoCItemWeapon extends MoCItem {
         if (this.breakable) {
             i = 10;
         }
-        par1ItemStack.damageItem(i, attacker, ); //TODO: Add lambda function the way vanilla does it to send break animation
+        par1ItemStack.damageItem(i, attacker, d -> d.sendBreakAnimation(EquipmentSlotType.MAINHAND)); //TODO: Add lambda function the way vanilla does it to send break animation
         int potionTime = 100;
         switch (this.specialWeaponType) {
             case 1: //poison

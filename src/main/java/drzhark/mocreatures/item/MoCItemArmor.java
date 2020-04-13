@@ -1,24 +1,17 @@
 package drzhark.mocreatures.item;
 
-import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.MoCProxy;
 import drzhark.mocreatures.MoCTools;
-import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.world.World;
 
 public class MoCItemArmor extends ArmorItem {
 
-    public MoCItemArmor(ArmorMaterial materialIn, int renderIndex, EquipmentSlotType equipmentSlotIn, Item.Properties builder) {
+    public MoCItemArmor(IArmorMaterial materialIn, int renderIndex, EquipmentSlotType equipmentSlotIn, Item.Properties builder) {
         super(materialIn, equipmentSlotIn, builder);
 //        super(materialIn, renderIndex, equipmentSlotIn);
 //        this.setCreativeTab(MoCreatures.tabMoC);

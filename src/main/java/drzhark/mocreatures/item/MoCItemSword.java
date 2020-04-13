@@ -25,10 +25,10 @@ public class MoCItemSword extends SwordItem {
 //        this.setUnlocalizedName(name);
     }
 
-    public MoCItemSword(IItemTier material, int strength, float speed, int damageType, Item.Properties builder) {
+    public MoCItemSword(IItemTier material, int strength, float speed, int damageType, boolean fragile, Item.Properties builder) {
         super(material, strength, speed, builder);
         this.specialWeaponType = damageType;
-//        this.breakable = fragile;
+        this.breakable = fragile;
     }
 
     /**
