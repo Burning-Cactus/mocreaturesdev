@@ -1,27 +1,31 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import drzhark.mocreatures.client.model.MoCModelBunny;
 import drzhark.mocreatures.entity.passive.MoCEntityBunny;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderBunny extends MoCRenderMoC<MoCEntityBunny> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderBunny<T extends MoCEntityBunny, M extends MoCModelBunny<T>> extends MoCRenderMoC<T, M> {
 
     @Override
-    protected ResourceLocation getEntityTexture(MoCEntityBunny entitybunny) {
+    public ResourceLocation getEntityTexture(MoCEntityBunny entitybunny) {
         return ((MoCEntityBunny) entitybunny).getTexture();
     }
 
-    public MoCRenderBunny(ModelBase modelbase, float f) {
-        super(modelbase, f);
+    public MoCRenderBunny(EntityRendererManager manager, M modelbase, float f) {
+        super(manager, modelbase, f);
     }
 
     @Override
-    public void doRender(MoCEntityBunny entitybunny, double d, double d1, double d2, float f, float f1) {
-        super.doRender(entitybunny, d, d1, d2, f, f1);
+    public void render(T entity, double d, double d1, double d2, float f, float f1) {
+        super.render(entity,
     }
 
     @Override
@@ -40,12 +44,12 @@ public class MoCRenderBunny extends MoCRenderMoC<MoCEntityBunny> {
 
     protected void rotBunny(MoCEntityBunny entitybunny) {
         if (!entitybunny.onGround && (entitybunny.getRidingEntity() == null)) {
-            if (entitybunny.motionY > 0.5D) {
+            if (entitybunny.getMotion().y > 0.5D) {
                 GL11.glRotatef(35F, -1F, 0.0F, 0.0F);
-            } else if (entitybunny.motionY < -0.5D) {
+            } else if (entitybunny.getMotion().y < -0.5D) {
                 GL11.glRotatef(-35F, -1F, 0.0F, 0.0F);
             } else {
-                GL11.glRotatef((float) (entitybunny.motionY * 70D), -1F, 0.0F, 0.0F);
+                GL11.glRotatef((float) (entitybunny.getMotion().y * 70D), -1F, 0.0F, 0.0F);
             }
         }
     }

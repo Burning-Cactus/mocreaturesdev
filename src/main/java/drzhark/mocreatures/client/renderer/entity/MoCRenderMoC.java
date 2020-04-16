@@ -1,35 +1,41 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.client.MoCClientProxy;
 import drzhark.mocreatures.entity.IMoCEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderMoC<T extends EntityLiving> extends RenderLiving<T> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderMoC<T extends LivingEntity, M extends EntityModel<T>> extends LivingRenderer<T, M> {
 
-    public MoCRenderMoC(ModelBase modelbase, float f) {
-        super(MoCClientProxy.mc.getRenderManager(), modelbase, f);
+    public MoCRenderMoC(EntityRendererManager manager, M modelBase, float f) {
+        super(manager, modelBase, f);
     }
 
     @Override
-    public void doRender(T entity, double d, double d1, double d2, float f, float f1) {
-        doRenderMoC(entity, d, d1, d2, f, f1);
-    }
-
-    public void doRenderMoC(T entity, double d, double d1, double d2, float f, float f1) {
-        super.doRender(entity, d, d1, d2, f, f1);
-        IMoCEntity entityMoC = (IMoCEntity) entity;
+    public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+        IMoCEntity entityMoC = (IMoCEntity) entityIn;
         boolean flag = MoCreatures.proxy.getDisplayPetName() && !(entityMoC.getPetName().isEmpty());
         boolean flag1 = MoCreatures.proxy.getDisplayPetHealth();
         if (entityMoC.renderName()) {
@@ -56,8 +62,8 @@ public class MoCRenderMoC<T extends EntityLiving> extends RenderLiving<T> {
                     }
                     tessellator1.getBuffer().begin(7, DefaultVertexFormats.POSITION_COLOR);
                     // might break SSP
-                    float f8 = ((EntityLiving) entityMoC).getHealth();
-                    float f9 = ((EntityLiving) entityMoC).getMaxHealth();
+                    float f8 = ((LivingEntity) entityMoC).getHealth();
+                    float f9 = ((LivingEntity) entityMoC).getMaxHealth();
                     float f10 = f8 / f9;
                     float f11 = 40F * f10;
                     tessellator1.getBuffer().pos(-20F + f11, -10 + yOff, 0.0D).color(0.7F, 0.0F, 0.0F, 1.0F).endVertex();
@@ -96,8 +102,9 @@ public class MoCRenderMoC<T extends EntityLiving> extends RenderLiving<T> {
                 GL11.glPopMatrix();
             }
         }
-
     }
+
+
 
     protected void stretch(IMoCEntity mocreature) {
         float f = mocreature.getSizeFactor();
@@ -107,9 +114,9 @@ public class MoCRenderMoC<T extends EntityLiving> extends RenderLiving<T> {
     }
 
     @Override
-    protected void preRenderCallback(T entityliving, float f) {
+    protected void preRenderCallback(T entityliving, MatrixStack stack, float f) {
         IMoCEntity mocreature = (IMoCEntity) entityliving;
-        super.preRenderCallback(entityliving, f);
+        super.preRenderCallback(entityliving, stack, f);
         //adjustOffsets is not working well
         //adjustOffsets(mocreature.getAdjustedXOffset(), mocreature.getAdjustedYOffset(), mocreature.getAdjustedZOffset());
         adjustPitch(mocreature);
@@ -161,7 +168,7 @@ public class MoCRenderMoC<T extends EntityLiving> extends RenderLiving<T> {
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(EntityLiving entity) {
+    public ResourceLocation getEntityTexture(T entity) {
         return ((IMoCEntity) entity).getTexture();
     }
 

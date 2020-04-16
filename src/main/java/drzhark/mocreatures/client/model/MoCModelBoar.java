@@ -1,14 +1,15 @@
 package drzhark.mocreatures.client.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.google.common.collect.ImmutableList;
+import drzhark.mocreatures.entity.passive.MoCEntityBoar;
+import net.minecraft.client.renderer.entity.model.AgeableModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelBoar extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelBoar<T extends MoCEntityBoar> extends AgeableModel<T> {
 
     ModelRenderer Head;
     ModelRenderer Trout;
@@ -122,38 +123,9 @@ public class MoCModelBoar extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        this.Head.render(f5);
-        this.Trout.render(f5);
-        this.Tusks.render(f5);
-        this.Jaw.render(f5);
-        this.LeftEar.render(f5);
-        this.RightEar.render(f5);
-        this.HeadMane.render(f5);
-        this.Body.render(f5);
-        this.BodyMane.render(f5);
-        this.Tail.render(f5);
-        this.UpperLegRight.render(f5);
-        this.LowerLegRight.render(f5);
-        this.UpperLegLeft.render(f5);
-        this.LowerLegLeft.render(f5);
-        this.UpperHindLegRight.render(f5);
-        this.LowerHindLegRight.render(f5);
-        this.UpperHindLegLeft.render(f5);
-        this.LowerHindLegLeft.render(f5);
-    }
-
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
-    }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
-        float XAngle = (f4 / 57.29578F);
-        float YAngle = f3 / 57.29578F;
+    public void setRotationAngles(T t, float legMove1, float legMove2, float v2, float pitch, float yaw) {
+        float XAngle = (yaw / 57.29578F);
+        float YAngle = pitch / 57.29578F;
         this.Head.rotateAngleX = 0.2617994F + XAngle;
         this.Head.rotateAngleY = YAngle;
         this.HeadMane.rotateAngleX = 0.4363323F + XAngle;
@@ -169,8 +141,8 @@ public class MoCModelBoar extends ModelBase {
         this.RightEar.rotateAngleX = 0.6981317F + XAngle;
         this.RightEar.rotateAngleY = YAngle;
 
-        float LLegRotX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
-        float RLegRotX = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.4F * f1;
+        float LLegRotX = MathHelper.cos(legMove1 * 0.6662F) * 1.4F * legMove2;
+        float RLegRotX = MathHelper.cos((legMove1 * 0.6662F) + 3.141593F) * 1.4F * legMove2;
 
         this.UpperLegLeft.rotateAngleX = LLegRotX;
         this.LowerLegLeft.rotateAngleX = LLegRotX;
@@ -184,6 +156,42 @@ public class MoCModelBoar extends ModelBase {
 
         this.Tail.rotateAngleZ = LLegRotX * 0.2F;
 
+    }
+
+    @Override
+    protected Iterable<ModelRenderer> getHeadParts() {
+        return ImmutableList.of(
+                Head,
+                Trout,
+                Tusks,
+                Jaw,
+                LeftEar,
+                RightEar,
+                HeadMane
+        );
+    }
+
+    @Override
+    protected Iterable<ModelRenderer> getBodyParts() {
+        return ImmutableList.of(
+                Body,
+                BodyMane,
+                Tail,
+                UpperLegRight,
+                LowerLegRight,
+                UpperLegLeft,
+                LowerLegLeft,
+                UpperHindLegRight,
+                LowerHindLegRight,
+                UpperHindLegLeft,
+                LowerHindLegLeft
+        );
+    }
+
+    private void setRotation(ModelRenderer model, float x, float y, float z) {
+        model.rotateAngleX = x;
+        model.rotateAngleY = y;
+        model.rotateAngleZ = z;
     }
 
 }

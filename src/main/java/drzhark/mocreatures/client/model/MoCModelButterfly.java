@@ -1,16 +1,22 @@
 package drzhark.mocreatures.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.ambient.MoCEntityButterfly;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelButterfly extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelButterfly<T extends MoCEntityButterfly> extends EntityModel<T> {
 
     ModelRenderer Abdomen;
     ModelRenderer FrontLegs;
@@ -111,6 +117,11 @@ public class MoCModelButterfly extends ModelBase {
     }
 
     @Override
+    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
+
+    }
+
+    @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         super.render(entity, f, f1, f2, f3, f4, f5);
         MoCEntityButterfly butterfly = (MoCEntityButterfly) entity;
@@ -203,4 +214,8 @@ public class MoCModelButterfly extends ModelBase {
 
     }
 
+    @Override
+    public void render(MatrixStack matrixStack, IVertexBuilder iVertexBuilder, int i, int i1, float v, float v1, float v2, float v3) {
+
+    }
 }

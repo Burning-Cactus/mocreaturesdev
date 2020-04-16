@@ -1,14 +1,20 @@
 package drzhark.mocreatures.client.model;
 
+import com.google.common.collect.ImmutableList;
+import drzhark.mocreatures.entity.aquatic.MoCEntityDolphin;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelDolphin extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelDolphin<T extends MoCEntityDolphin> extends SegmentedModel<T> {
 
     public ModelRenderer UHead;
     public ModelRenderer DHead;
@@ -58,6 +64,17 @@ public class MoCModelDolphin extends ModelBase {
         this.RightFin.setRotationPoint(-10F, 27.5F, -3F);
         this.RightFin.rotateAngleY = 0.5235988F;
         this.RightFin.rotateAngleZ = -0.5235988F;
+    }
+
+    @Override
+    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
+
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(this.Body, this.PTail, this.UHead, this. DHead, this.UpperFin,
+                this.LTailFin, this.RTailFin, this.LeftFin, this.RightFin);
     }
 
     @Override

@@ -3,13 +3,17 @@ package drzhark.mocreatures.client.model;
 import drzhark.mocreatures.entity.monster.MoCEntityOgre;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelOgre extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelOgre<T extends MoCEntityOgre> extends SegmentedModel<T> {
 
     ModelRenderer Head;
     ModelRenderer Brow;
@@ -587,10 +591,20 @@ public class MoCModelOgre extends ModelBase {
     }
 
     @Override
+    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
+
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return null;
+    }
+
+    @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         //super.render(entity, f, f1, f2, f3, f4, f5);
         MoCEntityOgre entityogre = (MoCEntityOgre) entity;
-        this.type = entityogre.getType();
+        this.type = entityogre.getSubType();
         //int leftAttack = entityogre.attackCounterLeft;
         //int rightAttack = entityogre.attackCounterRight;
         this.attackCounter = entityogre.attackCounter;

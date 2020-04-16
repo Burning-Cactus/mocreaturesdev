@@ -1,16 +1,17 @@
 package drzhark.mocreatures.client.model;
 
+import com.google.common.collect.ImmutableList;
 import drzhark.mocreatures.entity.ambient.MoCEntityBee;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelBee extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelBee<T extends MoCEntityBee> extends SegmentedModel<T> {
 
     ModelRenderer Abdomen;
     ModelRenderer FrontLegs;
@@ -97,11 +98,31 @@ public class MoCModelBee extends ModelBase {
     }
 
     @Override
+    public void setRotationAngles(T entitybee, float legMove1, float legMove2, float v2, float v3, float v4) {
+        boolean onGround = (!entitybee.getIsFlying() || entitybee.getMotion().y < -0.1D);
+        //super.setRotationAngles(f, f1, f2, f3, f4, f5);
+        float WingRot = MathHelper.cos((v2 * 3.0F)) * 0.7F;
+        this.RightWing.rotateAngleZ = WingRot;
+        this.LeftWing.rotateAngleZ = -WingRot;
+        float legMov = 0F;
+        float legMovB = 0F;
+
+        if (!onGround) {
+            legMov = (legMove2 * 1.5F);
+            legMovB = legMov;
+        } else {
+            legMov = MathHelper.cos((legMove1 * 1.5F) + 3.141593F) * 2.0F * legMove2;
+            legMovB = MathHelper.cos(legMove1 * 1.5F) * 2.0F * legMove2;
+        }
+
+        this.FrontLegs.rotateAngleX = 0.1487144F + legMov;
+        this.MidLegs.rotateAngleX = 0.5948578F + legMovB;
+        this.RearLegs.rotateAngleX = 1.070744F + legMov;
+
+    }
+
+    @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        MoCEntityBee entitybee = (MoCEntityBee) entity;
-        boolean isFlying = (entitybee.getIsFlying() || entitybee.motionY < -0.1D);
-        setRotationAngles(f, f1, f2, f3, f4, f5, !isFlying);
         this.Abdomen.render(f5);
         this.FrontLegs.render(f5);
         this.RAntenna.render(f5);
@@ -135,24 +156,23 @@ public class MoCModelBee extends ModelBase {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, boolean onGround) {
-        //super.setRotationAngles(f, f1, f2, f3, f4, f5);
-        float WingRot = MathHelper.cos((f2 * 3.0F)) * 0.7F;
-        this.RightWing.rotateAngleZ = WingRot;
-        this.LeftWing.rotateAngleZ = -WingRot;
-        float legMov = 0F;
-        float legMovB = 0F;
 
-        if (!onGround) {
-            legMov = (f1 * 1.5F);
-            legMovB = legMov;
-        } else {
-            legMov = MathHelper.cos((f * 1.5F) + 3.141593F) * 2.0F * f1;
-            legMovB = MathHelper.cos(f * 1.5F) * 2.0F * f1;
-        }
-
-        this.FrontLegs.rotateAngleX = 0.1487144F + legMov;
-        this.MidLegs.rotateAngleX = 0.5948578F + legMovB;
-        this.RearLegs.rotateAngleX = 1.070744F + legMov;
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(
+                Abdomen,
+                FrontLegs,
+                RAntenna,
+                LAntenna,
+                RightWing,
+                LeftWing,
+                RearLegs,
+                MidLegs,
+                Head,
+                Mouth,
+                Tail,
+                FoldedWings,
+                Thorax
+        );
     }
 }

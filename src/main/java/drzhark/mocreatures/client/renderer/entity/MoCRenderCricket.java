@@ -1,38 +1,41 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import drzhark.mocreatures.client.model.MoCModelCricket;
 import drzhark.mocreatures.entity.ambient.MoCEntityCricket;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderCricket extends MoCRenderMoC<MoCEntityCricket> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderCricket<T extends MoCEntityCricket, M extends MoCModelCricket<T>> extends MoCRenderMoC<T, M> {
 
-    public MoCRenderCricket(ModelBase modelbase) {
-        super(modelbase, 0.0F);
+    public MoCRenderCricket(EntityRendererManager manager, M modelbase, float f) {
+        super(manager, modelbase, f);
     }
+
 
     @Override
-    protected void preRenderCallback(MoCEntityCricket entitycricket, float par2) {
-        rotateCricket((MoCEntityCricket) entitycricket);
+    protected void preRenderCallback(T entitycricket, MatrixStack matrixStack, float par2) {
+        rotateCricket(entitycricket, matrixStack);
     }
 
-    protected void rotateCricket(MoCEntityCricket entitycricket) {
+    protected void rotateCricket(MoCEntityCricket entitycricket, MatrixStack matrixStackIn) {
         if (!entitycricket.onGround) {
-            if (entitycricket.motionY > 0.5D) {
+            if (entitycricket.getMotion().y > 0.5D) {
                 GL11.glRotatef(35F, -1F, 0.0F, 0.0F);
-            } else if (entitycricket.motionY < -0.5D) {
+            } else if (entitycricket.getMotion().y < -0.5D) {
                 GL11.glRotatef(-35F, -1F, 0.0F, 0.0F);
             } else {
-                GL11.glRotatef((float) (entitycricket.motionY * 70D), -1F, 0.0F, 0.0F);
+                GL11.glRotatef((float) (entitycricket.getMotion().y * 70D), -1F, 0.0F, 0.0F);
             }
         }
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(MoCEntityCricket par1Entity) {
-        return ((MoCEntityCricket) par1Entity).getTexture();
+    public ResourceLocation getEntityTexture(T par1Entity) {
+        return (par1Entity).getTexture();
     }
 }

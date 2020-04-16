@@ -1,29 +1,31 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import drzhark.mocreatures.client.model.MoCModelBird;
 import drzhark.mocreatures.entity.passive.MoCEntityBird;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderBird extends MoCRenderMoC<MoCEntityBird> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderBird<T extends MoCEntityBird, M extends MoCModelBird<T>> extends MoCRenderMoC<T, M> {
 
     @Override
-    protected ResourceLocation getEntityTexture(EntityLiving par1Entity) {
+    public ResourceLocation getEntityTexture(T par1Entity) {
         return ((MoCEntityBird) par1Entity).getTexture();
     }
 
-    public MoCRenderBird(ModelBase modelbase, float f) {
-        super(modelbase, f);
+    public MoCRenderBird(EntityRendererManager manager, M modelbase, float f) {
+        super(manager, modelbase, f);
     }
 
     @Override
-    public void doRender(MoCEntityBird entitybird, double d, double d1, double d2, float f, float f1) {
-        super.doRender(entitybird, d, d1, d2, f, f1);
+    public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 
     }
 
@@ -35,9 +37,9 @@ public class MoCRenderBird extends MoCRenderMoC<MoCEntityBird> {
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityBird entitybird, float f) {
+    protected void preRenderCallback(MoCEntityBird entitybird, MatrixStack matrixStack, float f) {
         if (!entitybird.world.isRemote && (entitybird.getRidingEntity() != null)) {
-            GL11.glTranslatef(0.0F, 1.3F, 0.0F);
+            matrixStack.translate(0.0F, 1.3F, 0.0F);
         }
     }
 }

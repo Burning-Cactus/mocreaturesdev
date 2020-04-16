@@ -1,17 +1,22 @@
 package drzhark.mocreatures.client.model;
 
+import com.google.common.collect.ImmutableList;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.passive.MoCEntityWyvern;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.AgeableModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelWyvern extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelWyvern<T extends MoCEntityWyvern> extends AgeableModel<T> {
 
     ModelRenderer back4;
     ModelRenderer back3;
@@ -777,6 +782,21 @@ public class MoCModelWyvern extends ModelBase {
         this.diamondchestarmor.addBox(-5.5F, 2.2F, -13.5F, 11, 11, 5);
         this.diamondchestarmor.setRotationPoint(0F, 0F, 0F);
         setRotation(this.diamondchestarmor, -0.2602503F, 0F, 0F);
+    }
+
+    @Override
+    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
+
+    }
+
+    @Override
+    protected Iterable<ModelRenderer> getHeadParts() {
+        return ImmutableList.of(this.MainHead)
+    }
+
+    @Override
+    protected Iterable<ModelRenderer> getBodyParts() {
+        return null;
     }
 
     @Override

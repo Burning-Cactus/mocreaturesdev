@@ -13,13 +13,17 @@ package drzhark.mocreatures.client.model;
 import drzhark.mocreatures.entity.passive.MoCEntityOstrich;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.AgeableModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelOstrich extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelOstrich<T extends MoCEntityOstrich> extends AgeableModel<T> {
 
     public MoCModelOstrich() {
         this.textureWidth = 128;

@@ -1,18 +1,22 @@
 package drzhark.mocreatures.client.model;
 
 import drzhark.mocreatures.entity.monster.MoCEntityHorseMob;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelNewHorseMob extends MoCModelNewHorse {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelNewHorseMob<T extends MoCEntityHorseMob> extends SegmentedModel<T> {
 
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         MoCEntityHorseMob entityhorse = (MoCEntityHorseMob) entity;
 
-        int type = entityhorse.getType();
+        int type = entityhorse.getSubType();
         boolean wings = (entityhorse.isFlyer());
         boolean eating = (entityhorse.eatingCounter != 0);//entityhorse.getEating();
         boolean standing = (entityhorse.standCounter != 0 && entityhorse.getRidingEntity() == null);
@@ -68,5 +72,15 @@ public class MoCModelNewHorseMob extends MoCModelNewHorse {
             this.MidWingR.render(f5);
             this.OuterWingR.render(f5);
         }
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return null;
+    }
+
+    @Override
+    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
+
     }
 }

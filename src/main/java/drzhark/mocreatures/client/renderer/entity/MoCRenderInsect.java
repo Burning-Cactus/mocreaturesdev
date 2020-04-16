@@ -1,16 +1,17 @@
 package drzhark.mocreatures.client.renderer.entity;
 
 import drzhark.mocreatures.entity.MoCEntityInsect;
-import net.minecraft.client.model.ModelBase;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderInsect<T extends MoCEntityInsect> extends MoCRenderMoC<T> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderInsect<T extends MoCEntityInsect, M extends EntityModel<T>> extends MoCRenderMoC<T, M> {
 
-    public MoCRenderInsect(ModelBase modelbase) {
-        super(modelbase, 0.0F);
+    public MoCRenderInsect(EntityRendererManager manager, M modelbase, float f) {
+        super(manager, modelbase, f);
 
     }
 

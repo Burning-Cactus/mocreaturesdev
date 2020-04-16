@@ -3,14 +3,18 @@ package drzhark.mocreatures.client.model;
 import drzhark.mocreatures.entity.ambient.MoCEntityFly;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelFly extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelFly<T extends MoCEntityFly> extends SegmentedModel<T> {
 
     ModelRenderer FrontLegs;
     ModelRenderer RearLegs;
@@ -84,6 +88,16 @@ public class MoCModelFly extends ModelBase {
         this.FoldedWings.setRotationPoint(0F, 20.5F, -2F);
         setRotation(this.FoldedWings, 0.0872665F, 0F, 0F);
 
+    }
+
+    @Override
+    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
+
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return null;
     }
 
     @Override

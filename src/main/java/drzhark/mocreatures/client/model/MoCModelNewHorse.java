@@ -29,16 +29,16 @@
 package drzhark.mocreatures.client.model;
 
 import drzhark.mocreatures.entity.passive.MoCEntityHorse;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.AgeableModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelNewHorse extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelNewHorse<T extends MoCEntityHorse> extends AgeableModel<T> {
 
     ModelRenderer Head;
     ModelRenderer UMouth;
@@ -349,6 +349,21 @@ public class MoCModelNewHorse extends ModelBase {
         this.ButterflyR.setRotationPoint(-4.5F, 3F, -2F);
         setRotation(this.ButterflyR, 0F, 0F, 0.78539F);
 
+    }
+
+    @Override
+    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
+
+    }
+
+    @Override
+    protected Iterable<ModelRenderer> getHeadParts() {
+        return null;
+    }
+
+    @Override
+    protected Iterable<ModelRenderer> getBodyParts() {
+        return null;
     }
 
     @Override

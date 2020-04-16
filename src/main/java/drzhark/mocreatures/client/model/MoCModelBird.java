@@ -1,15 +1,17 @@
 package drzhark.mocreatures.client.model;
 
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.passive.MoCEntityBird;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelBird extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelBird<T extends MoCEntityBird> extends SegmentedModel<T> {
 
     public ModelRenderer head;
     public ModelRenderer body;
@@ -52,35 +54,40 @@ public class MoCModelBird extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        MoCEntityBird bird = (MoCEntityBird) entity;
+    public void setRotationAngles(T bird, float legMove1, float legMove2, float v2, float pitch, float yaw) {
         this.isOnAir = bird.isOnAir() && bird.getRidingEntity() == null;
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        this.head.render(f5);
-        this.beak.render(f5);
-        this.body.render(f5);
-        this.leftleg.render(f5);
-        this.rightleg.render(f5);
-        this.rwing.render(f5);
-        this.lwing.render(f5);
-        this.tail.render(f5);
-    }
-
-    @Override
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-        this.head.rotateAngleX = -(f4 / 2.0F / 57.29578F);
+        this.head.rotateAngleX = -(yaw / 2.0F / 57.29578F);
         //head.rotateAngleY = f3 / 2.0F / 57.29578F; //fixed SMP bug
-        this.head.rotateAngleY = f3 / 57.29578F;
+        this.head.rotateAngleY = pitch / 57.29578F;
         this.beak.rotateAngleY = this.head.rotateAngleY;
 
         if (this.isOnAir) {
             this.leftleg.rotateAngleX = 1.4F;
             this.rightleg.rotateAngleX = 1.4F;
         } else {
-            this.leftleg.rotateAngleX = MathHelper.cos(f * 0.6662F) * f1;
-            this.rightleg.rotateAngleX = MathHelper.cos((f * 0.6662F) + 3.141593F) * f1;
+            this.leftleg.rotateAngleX = MathHelper.cos(legMove1 * 0.6662F) * legMove2;
+            this.rightleg.rotateAngleX = MathHelper.cos((legMove1 * 0.6662F) + 3.141593F) * legMove2;
         }
-        this.rwing.rotateAngleZ = f2;
-        this.lwing.rotateAngleZ = -f2;
+        this.rwing.rotateAngleZ = v2;
+        this.lwing.rotateAngleZ = -v2;
+    }
+
+    @Override
+    public void render(MatrixStack matrixStack, IVertexBuilder iVertexBuilder, int i, int i1, float v, float v1, float v2, float v3) {
+        super.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(
+                head,
+                body,
+                leftleg,
+                rightleg,
+                rwing,
+                lwing,
+                beak,
+                tail
+        );
     }
 }

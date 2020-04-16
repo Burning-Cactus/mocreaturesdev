@@ -1,37 +1,39 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import drzhark.mocreatures.client.model.MoCModelBear;
 import drzhark.mocreatures.entity.passive.MoCEntityBear;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderBear extends MoCRenderMoC<MoCEntityBear> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderBear<T extends MoCEntityBear, M extends MoCModelBear<T>> extends MoCRenderMoC<T, M> {
 
-    public MoCRenderBear(MoCModelBear modelbase, float f) {
-        super(modelbase, f);
+    public MoCRenderBear(EntityRendererManager manager, M modelbase, float f) {
+        super(manager, modelbase, f);
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityBear entitybear, float f) {
-        stretch(entitybear);
-        super.preRenderCallback(entitybear, f);
+    protected void preRenderCallback(T entitybear, MatrixStack matrixStackIn,  float f) {
+        stretch(entitybear, matrixStackIn);
+        super.preRenderCallback(entitybear, matrixStackIn, f);
 
     }
 
-    protected void stretch(MoCEntityBear entitybear) {
+    protected void stretch(T entitybear, MatrixStack matrixStack) {
         float sizeFactor = entitybear.getEdad() * 0.01F;
         if (entitybear.getIsAdult()) {
             sizeFactor = 1.0F;
         }
         sizeFactor *= entitybear.getBearSize();
-        GL11.glScalef(sizeFactor, sizeFactor, sizeFactor);
+        matrixStack.scale(sizeFactor, sizeFactor, sizeFactor);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(MoCEntityBear entitybear) {
+    public ResourceLocation getEntityTexture(MoCEntityBear entitybear) {
         return entitybear.getTexture();
     }
 }

@@ -1,15 +1,20 @@
 package drzhark.mocreatures.client.model;
 
+import com.google.common.collect.ImmutableList;
 import drzhark.mocreatures.entity.passive.MoCEntityBear;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.AgeableModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelBear extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelBear<T extends MoCEntityBear> extends AgeableModel<T> {
 
     public ModelRenderer Saddle;
     public ModelRenderer SaddleBack;
@@ -20,14 +25,18 @@ public class MoCModelBear extends ModelBase {
     public ModelRenderer SaddleFrontSitted;
     public ModelRenderer BagSitted;
 
-    ModelRenderer Tail;
+
+    ModelRenderer Head;
     ModelRenderer Mouth;
-    ModelRenderer LegFR1;
-    ModelRenderer Neck;
     ModelRenderer LEar;
     ModelRenderer Snout;
-    ModelRenderer Head;
     ModelRenderer REar;
+    ModelRenderer MouthOpen;
+
+
+    ModelRenderer Neck;
+    ModelRenderer Tail;
+    ModelRenderer LegFR1;
     ModelRenderer Abdomen;
     ModelRenderer Torso;
     ModelRenderer LegRR3;
@@ -41,7 +50,6 @@ public class MoCModelBear extends ModelBase {
     ModelRenderer LegRL1;
     ModelRenderer LegRL2;
     ModelRenderer LegRL3;
-    ModelRenderer MouthOpen;
 
     ModelRenderer BHead;
     ModelRenderer BSnout;
@@ -461,7 +469,24 @@ public class MoCModelBear extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
+
+    }
+
+    @Override
+    protected Iterable<ModelRenderer> getHeadParts() {
+        return ImmutableList.of(
+                Head
+        );
+    }
+
+    @Override
+    protected Iterable<ModelRenderer> getBodyParts() {
+        return null;
+    }
+
+    @Override
+    public void render(T entity, float f, float f1, float f2, float f3, float f4, float f5) {
         MoCEntityBear entitybear = (MoCEntityBear) entity;
         this.bearstate = entitybear.getBearState();
         boolean openMouth = (entitybear.mouthCounter != 0);

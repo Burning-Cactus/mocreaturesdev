@@ -1,22 +1,23 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import drzhark.mocreatures.client.model.MoCModelButterfly;
 import drzhark.mocreatures.entity.ambient.MoCEntityButterfly;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderButterfly extends MoCRenderInsect<MoCEntityButterfly> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderButterfly<T extends MoCEntityButterfly, M extends MoCModelButterfly<T>> extends MoCRenderInsect<T, M> {
 
-    public MoCRenderButterfly(ModelBase modelbase) {
-        super(modelbase);
+    public MoCRenderButterfly(EntityRendererManager manager, M modelbase, float f) {
+        super(manager, modelbase, f);
 
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityButterfly entitybutterfly, float par2) {
+    protected void preRenderCallback(T entitybutterfly, float par2) {
         if (entitybutterfly.isOnAir() || !entitybutterfly.onGround) {
             adjustHeight(entitybutterfly, entitybutterfly.tFloat());
         }
@@ -31,7 +32,7 @@ public class MoCRenderButterfly extends MoCRenderInsect<MoCEntityButterfly> {
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(MoCEntityButterfly entitybutterfly) {
+    public ResourceLocation getEntityTexture(MoCEntityButterfly entitybutterfly) {
         return entitybutterfly.getTexture();
     }
 }

@@ -1,14 +1,21 @@
 package drzhark.mocreatures.client.model;
 
+import com.google.common.collect.ImmutableList;
+import drzhark.mocreatures.entity.passive.MoCEntityDeer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.AgeableModel;
+import net.minecraft.client.renderer.entity.model.QuadrupedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelDeer extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelDeer<T extends MoCEntityDeer> extends AgeableModel<T> {
 
     public MoCModelDeer() {
         this.Head = new ModelRenderer(this, 0, 0);
@@ -53,6 +60,22 @@ public class MoCModelDeer extends ModelBase {
         this.Tail.addBox(-1.5F, -1F, 0.0F, 3, 2, 4, 0.0F);
         this.Tail.setRotationPoint(1.0F, 11F, 7F);
         this.Tail.rotateAngleX = 0.7854F;
+    }
+
+    @Override
+    protected Iterable<ModelRenderer> getHeadParts() {
+        return ImmutableList.of(this.Head);
+    }
+
+    @Override
+    protected Iterable<ModelRenderer> getBodyParts() {
+        return ImmutableList.of(this.Body, this.Neck, this.Leg1, this.Leg2, this.Leg3, this.Leg4,
+                this.Tail, this.LEar, this. REar, this.LeftAntler, this.RightAntler);
+    }
+
+    @Override
+    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
+
     }
 
     @Override

@@ -1,14 +1,19 @@
 package drzhark.mocreatures.client.model;
 
+import drzhark.mocreatures.entity.passive.MoCEntityCrocodile;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelCrocodile extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelCrocodile<T extends MoCEntityCrocodile> extends SegmentedModel<T> {
 
     public MoCModelCrocodile() {
         this.LJaw = new ModelRenderer(this, 42, 0);
@@ -288,6 +293,16 @@ public class MoCModelCrocodile extends ModelBase {
         this.TeethD1 = new ModelRenderer(this, 50, 10);
         this.TeethD1.addBox(-1.9F, 1F, -12.5F, 0, 1, 6);
         this.TeethD1.setRotationPoint(0F, 18F, -8F);
+    }
+
+    @Override
+    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
+
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return null;
     }
 
     public void model2() {

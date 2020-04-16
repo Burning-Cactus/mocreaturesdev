@@ -1,16 +1,21 @@
 package drzhark.mocreatures.client.model;
 
+import com.google.common.collect.ImmutableList;
 import drzhark.mocreatures.entity.ambient.MoCEntityDragonfly;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelDragonfly extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelDragonfly<T extends MoCEntityDragonfly> extends SegmentedModel<T> {
 
     ModelRenderer Abdomen;
     ModelRenderer FrontLegs;
@@ -94,6 +99,18 @@ public class MoCModelDragonfly extends ModelBase {
         this.WingRearLeft.setRotationPoint(1F, 20F, -1F);
         setRotation(this.WingRearLeft, 0F, -0.3490659F, 0.0872665F);
 
+    }
+
+    @Override
+    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
+
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(this.Abdomen, this.FrontLegs, this.RAntenna, this.LAntenna,
+                this.RearLegs, this.MidLegs, this.Mouth, this.WingRearRight, this.WingRearLeft,
+                this.Thorax, this.WingFrontRight, this.WingFrontLeft, this.Head);
     }
 
     @Override

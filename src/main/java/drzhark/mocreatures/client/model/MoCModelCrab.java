@@ -1,12 +1,16 @@
 package drzhark.mocreatures.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.ambient.MoCEntityCrab;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class MoCModelCrab extends ModelBase {
+public class MoCModelCrab<T extends MoCEntityCrab> extends EntityModel<T> {
 
     ModelRenderer Shell;
     ModelRenderer ShellRight;
@@ -235,6 +239,11 @@ public class MoCModelCrab extends ModelBase {
     }
 
     @Override
+    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
+
+    }
+
+    @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 
         MoCEntityCrab crab = (MoCEntityCrab) entity;
@@ -384,4 +393,8 @@ public class MoCModelCrab extends ModelBase {
 
     }
 
+    @Override
+    public void render(MatrixStack matrixStack, IVertexBuilder iVertexBuilder, int i, int i1, float v, float v1, float v2, float v3) {
+
+    }
 }

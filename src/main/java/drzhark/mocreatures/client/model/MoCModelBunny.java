@@ -1,14 +1,15 @@
 package drzhark.mocreatures.client.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.google.common.collect.ImmutableList;
+import drzhark.mocreatures.entity.passive.MoCEntityBunny;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelBunny extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelBunny<T extends MoCEntityBunny> extends SegmentedModel<T> {
 
     public ModelRenderer part1;
     public ModelRenderer part2;
@@ -61,25 +62,10 @@ public class MoCModelBunny extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        this.bunnyHat = entity.getRidingEntity() != null;
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        this.part1.render(f5);
-        this.part8.render(f5);
-        this.part9.render(f5);
-        this.part10.render(f5);
-        this.part11.render(f5);
-        this.part2.render(f5);
-        this.part3.render(f5);
-        this.part4.render(f5);
-        this.part5.render(f5);
-        this.part6.render(f5);
-        this.part7.render(f5);
-    }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
-        this.part1.rotateAngleX = -(f4 / 57.29578F);
-        this.part1.rotateAngleY = f3 / 57.29578F;
+    public void setRotationAngles(T entity, float legMove1, float legMove2, float v2, float pitch, float yaw) {
+        bunnyHat = entity.getRidingEntity() != null;
+        this.part1.rotateAngleX = -(yaw / 57.29578F);
+        this.part1.rotateAngleY = pitch / 57.29578F;
 
         this.part8.rotateAngleX = this.part1.rotateAngleX;
         this.part8.rotateAngleY = this.part1.rotateAngleY;
@@ -92,11 +78,28 @@ public class MoCModelBunny extends ModelBase {
         this.part2.rotateAngleX = 1.570796F;
         this.part3.rotateAngleX = 1.570796F;
         if (!this.bunnyHat) {
-            this.part4.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.0F * f1;
-            this.part6.rotateAngleX = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.2F * f1;
-            this.part5.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.0F * f1;
-            this.part7.rotateAngleX = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.2F * f1;
+            this.part4.rotateAngleX = MathHelper.cos(legMove1 * 0.6662F) * 1.0F * legMove2;
+            this.part6.rotateAngleX = MathHelper.cos((legMove1 * 0.6662F) + 3.141593F) * 1.2F * legMove2;
+            this.part5.rotateAngleX = MathHelper.cos(legMove1 * 0.6662F) * 1.0F * legMove2;
+            this.part7.rotateAngleX = MathHelper.cos((legMove1 * 0.6662F) + 3.141593F) * 1.2F * legMove2;
         }
 
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(
+                part1,
+                part2,
+                part3,
+                part4,
+                part5,
+                part6,
+                part7,
+                part8,
+                part9,
+                part10,
+                part11
+        );
     }
 }

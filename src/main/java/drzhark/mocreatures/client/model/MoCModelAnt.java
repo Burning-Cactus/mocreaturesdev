@@ -1,11 +1,12 @@
 package drzhark.mocreatures.client.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.google.common.collect.ImmutableList;
+import drzhark.mocreatures.entity.ambient.MoCEntityAnt;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 
-public class MoCModelAnt extends ModelBase {
+public class MoCModelAnt<T extends MoCEntityAnt> extends SegmentedModel<T> {
 
     ModelRenderer Head;
     ModelRenderer Mouth;
@@ -67,18 +68,12 @@ public class MoCModelAnt extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        this.Head.render(f5);
-        this.Mouth.render(f5);
-        this.RightAntenna.render(f5);
-        this.LeftAntenna.render(f5);
-        this.Thorax.render(f5);
-        this.Abdomen.render(f5);
-        this.MidLegs.render(f5);
-        this.FrontLegs.render(f5);
-        this.RearLegs.render(f5);
+    public void setRotationAngles(T entity, float legMove1, float legMove2, float v2, float pitch, float yaw) {
+        float legMov = MathHelper.cos((legMove1) + 3.141593F) * legMove2;
+        float legMovB = MathHelper.cos(legMove1) * legMove2;
+        this.FrontLegs.rotateAngleX = -0.6192304F + legMov;
+        this.MidLegs.rotateAngleX = 0.5948578F + legMovB;
+        this.RearLegs.rotateAngleX = 0.9136644F + legMov;
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -87,12 +82,19 @@ public class MoCModelAnt extends ModelBase {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
-        float legMov = MathHelper.cos((f) + 3.141593F) * f1;
-        float legMovB = MathHelper.cos(f) * f1;
-        this.FrontLegs.rotateAngleX = -0.6192304F + legMov;
-        this.MidLegs.rotateAngleX = 0.5948578F + legMovB;
-        this.RearLegs.rotateAngleX = 0.9136644F + legMov;
-    }
 
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(
+                Head,
+                Mouth,
+                RightAntenna,
+                LeftAntenna,
+                Thorax,
+                Abdomen,
+                MidLegs,
+                FrontLegs,
+                RearLegs
+        );
+    }
 }
