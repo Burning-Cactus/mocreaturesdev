@@ -6,6 +6,7 @@ import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.IMoCTameable;
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandSource;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.entity.Entity;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandMoCPets extends Command {
+public class CommandMoCPets implements Command<CommandSource> {
 
     private static List<String> commands = new ArrayList<String>();
     private static List<String> aliases = new ArrayList<String>();

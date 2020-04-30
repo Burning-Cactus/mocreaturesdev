@@ -40,7 +40,6 @@ public class MoCreatures {
 //    @Instance(MoCConstants.MOD_ID)
     public static MoCreatures instance;
 
-    public static IProxy proxy = DistExecutor.runForDist(()->()-> new MoCClientProxy(), ()->()-> new MoCProxy());
     public static final Logger LOGGER = LogManager.getLogger(MoCConstants.MOD_ID);
     public static final ItemGroup tabMoC = new MoCItemGroup("MoCreaturesTab");
     public MoCPetMapData mapData;
@@ -84,7 +83,6 @@ public class MoCreatures {
     //TODO: Register commands properly in 1.15
     private void onServerStart(FMLServerStartingEvent event) {
         CommandDispatcher dispatcher = event.getCommandDispatcher();
-        dispatcher.register(new CommandMoCreatures());
 //        proxy.initGUI();
 //        event.registerServerCommand(new CommandMoCreatures());
 //        event.registerServerCommand(new CommandMoCTP());

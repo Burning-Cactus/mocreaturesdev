@@ -27,11 +27,15 @@ public class MoCClientRegistry {
         //Creatures
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.BIRD, m -> new MoCRenderBird<>(m, new MoCModelBird<>(), 0.5F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.BEAR, m -> new MoCRenderBear<>(m, new MoCModelBear<>(), 0.5F));
+        RenderingRegistry.registerEntityRenderingHandler(MoCEntities.GRIZZLY_BEAR, m -> new MoCRenderBear<>(m, new MoCModelBear<>(), 0.5F));
+        RenderingRegistry.registerEntityRenderingHandler(MoCEntities.PANDA_BEAR, m -> new MoCRenderBear<>(m, new MoCModelBear<>(), 0.5F));
+        RenderingRegistry.registerEntityRenderingHandler(MoCEntities.POLAR_BEAR, m -> new MoCRenderBear<>(m, new MoCModelBear<>(), 0.5F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.BOAR, m -> new MoCRenderMoC<>(m, new MoCModelBoar<>(), 0.5F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.BUNNY, m -> new MoCRenderBunny<>(m, new MoCModelBunny<>(), 0.5F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.CROCODILE, m -> new MoCRenderCrocodile(m, new MoCModelCrocodile<>(), 0.5F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.DUCK, m -> new MoCRenderMoC<>(m, new MoCModelDuck<>(), 0.5F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.DEER, m -> new MoCRenderMoC<>(m, new MoCModelDeer<>(), 0.5F));
+        RenderingRegistry.registerEntityRenderingHandler(MoCEntities.ELEPHANT, m -> new MoCRenderMoC<>(m, new MoCModelElephant<>(), 0.5F));
     }
 
 }

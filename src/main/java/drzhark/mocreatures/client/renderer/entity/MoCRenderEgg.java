@@ -1,35 +1,36 @@
 package drzhark.mocreatures.client.renderer.entity;
 
-import drzhark.mocreatures.client.MoCClientProxy;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import drzhark.mocreatures.client.model.MoCModelEgg;
 import drzhark.mocreatures.entity.item.MoCEntityEgg;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderEgg extends RenderLiving<MoCEntityEgg> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderEgg<T extends MoCEntityEgg, M extends MoCModelEgg<T>> extends LivingRenderer<T, M> {
 
-    public MoCRenderEgg(ModelBase modelbase, float f) {
-        super(MoCClientProxy.mc.getRenderManager(), modelbase, f);
+    public MoCRenderEgg(EntityRendererManager manager, M modelbase, float f) {
+        super(manager, modelbase, f);
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityEgg entityegg, float f) {
+    protected void preRenderCallback(T entityegg, MatrixStack matrixStack, float f) {
         stretch(entityegg);
-        super.preRenderCallback(entityegg, f);
+        super.preRenderCallback(entityegg, matrixStack, f);
 
     }
 
-    protected void stretch(MoCEntityEgg entityegg) {
+    protected void stretch(T entityegg) {
         float f = entityegg.getSize() * 0.01F;
         GL11.glScalef(f, f, f);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(MoCEntityEgg entityegg) {
+    public ResourceLocation getEntityTexture(T entityegg) {
         return entityegg.getTexture();
     }
 }

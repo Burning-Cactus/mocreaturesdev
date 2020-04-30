@@ -8,7 +8,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.DoubleNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.world.storage.SaveHandler;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;

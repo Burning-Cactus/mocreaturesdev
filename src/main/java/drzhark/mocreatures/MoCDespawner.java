@@ -12,7 +12,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraft.world.server.ServerWorld;
 
 import java.util.ArrayList;
@@ -120,11 +119,11 @@ public class MoCDespawner {
     }
 
     public static boolean isValidLightLevel(Entity entity, ServerWorld world, int lightLevel, boolean checkAmbientLightLevel) {
-        if (entity.isCreatureType(EntityClassification.MONSTER, false)) {
+        if (entity.getClassification(false).equals(EntityClassification.MONSTER)) {
             return true;
-        } else if (entity.isType(EntityClassification.AMBIENT, false) && !checkAmbientLightLevel) {
+        } else if (entity.getClassification(false).equals(EntityClassification.AMBIENT) && !checkAmbientLightLevel) {
             return true;
-        } else if (!entity.isCreatureType(EntityClassification.CREATURE, false)) {
+        } else if (!entity.getClassification(false).equals(EntityClassification.CREATURE)) {
             return true;
         }
         int x = MathHelper.floor(entity.getPosX());

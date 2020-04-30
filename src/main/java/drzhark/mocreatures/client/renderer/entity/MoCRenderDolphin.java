@@ -1,38 +1,40 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import drzhark.mocreatures.MoCreatures;
-import drzhark.mocreatures.client.MoCClientProxy;
+import drzhark.mocreatures.client.model.MoCModelDolphin;
 import drzhark.mocreatures.entity.aquatic.MoCEntityDolphin;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderDolphin extends RenderLiving<MoCEntityDolphin> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderDolphin<T extends MoCEntityDolphin, M extends MoCModelDolphin<T>> extends LivingRenderer<T, M> {
 
-    public MoCRenderDolphin(ModelBase modelbase, float f) {
-        super(MoCClientProxy.mc.getRenderManager(), modelbase, f);
+    public MoCRenderDolphin(EntityRendererManager manager, M modelbase, float f) {
+        super(manager, modelbase, f);
     }
 
     @Override
-    public void doRender(MoCEntityDolphin entitydolphin, double d, double d1, double d2, float f, float f1) {
-        super.doRender(entitydolphin, d, d1, d2, f, f1);
-        boolean flag = MoCreatures.proxy.getDisplayPetName() && !(entitydolphin.getPetName().isEmpty());
+    public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+        boolean flag = MoCreatures.proxy.getDisplayPetName() && !(entityIn.getPetName().isEmpty());
         boolean flag1 = MoCreatures.proxy.getDisplayPetHealth();
         //boolean flag2 = MoCreatures.proxy.getdisplayPetIcons();
-        if (entitydolphin.renderName()) {
+        if (entityIn.renderName()) {
             float f2 = 1.6F;
             float f3 = 0.01666667F * f2;
-            float f4 = entitydolphin.getDistance(this.renderManager.renderViewEntity);
+            float f4 = entityIn.getDistance(this.renderManager.renderViewEntity);
             if (f4 < 16F) {
                 String s = "";
-                s = (new StringBuilder()).append(s).append(entitydolphin.getPetName()).toString();
+                s = (new StringBuilder()).append(s).append(entityIn.getPetName()).toString();
                 float f5 = 0.1F;
                 FontRenderer fontrenderer = getFontRendererFromRenderManager();
                 GL11.glPushMatrix();
@@ -50,9 +52,9 @@ public class MoCRenderDolphin extends RenderLiving<MoCEntityDolphin> {
                     }
                     tessellator.getBuffer().begin(7, DefaultVertexFormats.POSITION_COLOR);
                     // might break SSP
-                    float f6 = entitydolphin.getHealth();
+                    float f6 = entityIn.getHealth();
                     // maxhealth is always 30 for dolphins so we do not need to use a datawatcher
-                    float f7 = entitydolphin.getMaxHealth();
+                    float f7 = entityIn.getMaxHealth();
                     float f8 = f6 / f7;
                     float f9 = 40F * f8;
                     tessellator.getBuffer().pos(-20F + f9, -10 + byte0, 0.0D).color(0.7F, 0.0F, 0.0F, 1.0F).endVertex();
@@ -93,8 +95,8 @@ public class MoCRenderDolphin extends RenderLiving<MoCEntityDolphin> {
         }
     }
 
-    public void doRender2(MoCEntityDolphin entitydolphin, double d, double d1, double d2, float f, float f1) {
-        super.doRender(entitydolphin, d, d1, d2, f, f1);
+    public void doRender2(T entitydolphin, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
         if (entitydolphin.renderName()) {
             float f2 = 1.6F;
             float f3 = 0.01666667F * f2;

@@ -1,46 +1,47 @@
 package drzhark.mocreatures.client.renderer.entity;
 
-import drzhark.mocreatures.client.MoCClientProxy;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import drzhark.mocreatures.client.model.MoCModelCrocodile;
 import drzhark.mocreatures.entity.passive.MoCEntityCrocodile;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderCrocodile extends RenderLiving<MoCEntityCrocodile> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderCrocodile<T extends MoCEntityCrocodile, M extends MoCModelCrocodile<T>> extends LivingRenderer<T, M> {
 
-    public MoCRenderCrocodile(MoCModelCrocodile modelbase, float f) {
-        super(MoCClientProxy.mc.getRenderManager(), modelbase, f);
+    public MoCRenderCrocodile(EntityRendererManager manager, M modelbase, float f) {
+        super(manager, modelbase, f);
         this.croc = modelbase;
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(MoCEntityCrocodile entitycrocodile) {
-        return ((MoCEntityCrocodile) entitycrocodile).getTexture();
+    public ResourceLocation getEntityTexture(T entitycrocodile) {
+        return (entitycrocodile).getTexture();
     }
 
     @Override
-    public void doRender(MoCEntityCrocodile entitycrocodile, double d, double d1, double d2, float f, float f1) {
-        super.doRender(entitycrocodile, d, d1, d2, f, f1);
+    public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityCrocodile entitycrocodile, float f) {
+    protected void preRenderCallback(MoCEntityCrocodile entitycrocodile, MatrixStack matrixStack, float f) {
         this.croc.biteProgress = entitycrocodile.biteProgress;
         this.croc.swimming = entitycrocodile.isSwimming();
         this.croc.resting = entitycrocodile.getIsSitting();
         if (entitycrocodile.isSpinning()) {
-            spinCroc(entitycrocodile, (EntityLiving) entitycrocodile.getRidingEntity());
+            spinCroc(entitycrocodile, (LivingEntity) entitycrocodile.getRidingEntity());
         }
         stretch(entitycrocodile);
         if (entitycrocodile.getIsSitting()) {
-            if (!entitycrocodile.isInsideOfMaterial(Material.WATER)) {
+            if (!entitycrocodile.isInWater()) {
                 adjustHeight(entitycrocodile, 0.2F);
             } else {
                 //adjustHeight(entitycrocodile, 0.1F);
@@ -62,7 +63,7 @@ public class MoCRenderCrocodile extends RenderLiving<MoCEntityCrocodile> {
         GL11.glTranslatef(0.0F, FHeight, 0.0F);
     }
 
-    protected void spinCroc(MoCEntityCrocodile entitycrocodile, EntityLiving prey) {
+    protected void spinCroc(MoCEntityCrocodile entitycrocodile, LivingEntity prey) {
         int intSpin = entitycrocodile.spinInt;
         int direction = 1;
         if (intSpin > 40) {
