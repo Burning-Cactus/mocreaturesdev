@@ -28,6 +28,7 @@
 
 package drzhark.mocreatures.client.model;
 
+import com.google.common.collect.ImmutableList;
 import drzhark.mocreatures.entity.passive.MoCEntityHorse;
 import net.minecraft.client.renderer.entity.model.AgeableModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
@@ -358,7 +359,7 @@ public class MoCModelNewHorse<T extends MoCEntityHorse> extends AgeableModel<T> 
 
     @Override
     protected Iterable<ModelRenderer> getHeadParts() {
-        return null;
+        return ImmutableList.of(Head, UMouth, LMouth, UMouth2, LMouth2, Unicorn, Ear1, Ear2, MuleEarL, MuleEarR, Neck, HeadSaddle, Mane);
     }
 
     @Override
@@ -371,7 +372,7 @@ public class MoCModelNewHorse<T extends MoCEntityHorse> extends AgeableModel<T> 
         MoCEntityHorse entityhorse = (MoCEntityHorse) entity;
         //super.render(entity, f, f1, f2, f3, f4, f5);
 
-        int type = entityhorse.getType();
+        int type = entityhorse.getSubType();
         int vanishingInt = entityhorse.getVanishC();
         int wingflapInt = entityhorse.wingFlapCounter;
         boolean flapwings = (entityhorse.wingFlapCounter != 0);

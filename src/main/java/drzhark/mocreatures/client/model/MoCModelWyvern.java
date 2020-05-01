@@ -1,18 +1,17 @@
 package drzhark.mocreatures.client.model;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.passive.MoCEntityWyvern;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.model.AgeableModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
@@ -150,6 +149,9 @@ public class MoCModelWyvern<T extends MoCEntityWyvern> extends AgeableModel<T> {
     private boolean isSitting;
     private boolean isGhost;
     private int openMouth;
+    private float yOffset = 0F;
+    private float transparency = 0F;
+    private int armor = 0;
 
     public MoCModelWyvern() {
         this.textureWidth = 128;
@@ -785,8 +787,21 @@ public class MoCModelWyvern<T extends MoCEntityWyvern> extends AgeableModel<T> {
     }
 
     @Override
-    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
-
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        MoCEntityWyvern wyvern = (MoCEntityWyvern) entityIn;
+        this.armor = wyvern.getArmorType();
+        this.isRidden = (wyvern.isBeingRidden());
+        this.isChested = wyvern.getIsChested();
+        this.isSaddled = wyvern.getIsRideable();
+        this.flapwings = (wyvern.wingFlapCounter != 0);
+        this.onAir = wyvern.isOnAir() || wyvern.getIsFlying();
+        this.diving = (wyvern.diveCounter != 0);
+        this.isSitting = wyvern.getIsSitting();
+        this.isGhost = wyvern.getIsGhost();
+        this.openMouth = wyvern.mouthCounter;
+        yOffset = wyvern.getAdjustedYOffset();
+        transparency = wyvern.tFloat();
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);//, onAir, flapwings, isRidden, openMouth, diving, isSitting);
     }
 
     @Override
@@ -800,59 +815,42 @@ public class MoCModelWyvern<T extends MoCEntityWyvern> extends AgeableModel<T> {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        //super.render(entity, f, f1, f2, f3, f4, f5);
-
-        MoCEntityWyvern wyvern = (MoCEntityWyvern) entity;
-        int armor = wyvern.getArmorType();
-        this.isRidden = (wyvern.isBeingRidden());
-        this.isChested = wyvern.getIsChested();
-        this.isSaddled = wyvern.getIsRideable();
-        this.flapwings = (wyvern.wingFlapCounter != 0);
-        this.onAir = wyvern.isOnAir() || wyvern.getIsFlying();
-        this.diving = (wyvern.diveCounter != 0);
-        this.isSitting = wyvern.getIsSitting();
-        this.isGhost = wyvern.getIsGhost();
-        this.openMouth = wyvern.mouthCounter;
-
-        setRotationAngles(f, f1, f2, f3, f4, f5);//, onAir, flapwings, isRidden, openMouth, diving, isSitting);
-        float yOffset = wyvern.getAdjustedYOffset();
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0F, yOffset, 0F);
+    public void render(MatrixStack matrixStack, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        matrixStack.push();
+        matrixStack.translate(0F, yOffset, 0F);
 
         if (isGhost) {
-            float transparency = wyvern.tFloat();
             GL11.glEnable(3042 /* GL_BLEND */);
             GL11.glBlendFunc(770, 771);
             GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
             //GL11.glScalef(1.3F, 1.0F, 1.3F);
         }
-        this.back1.render(f5);
-        this.Tail.render(f5);
+        this.back1.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.Tail.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
-        this.chest.render(f5);
+        this.chest.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
-        this.LeftWing.render(f5);
-        this.RightWing.render(f5);
+        this.LeftWing.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.RightWing.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
-        this.rightshoulder.render(f5);
-        this.leftshoulder.render(f5);
+        this.rightshoulder.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.leftshoulder.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
-        this.neckplate3.render(f5);
-        this.neck3.render(f5);
-        this.torso.render(f5);
+        this.neckplate3.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.neck3.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.torso.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
         if (isChested) {
-            this.storage.render(f5);
+            this.storage.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         }
 
-        if (isSaddled) {
-            this.saddle.render(f5);
+        if (isSaddled) { //TODO: Figure out replacement for isHidden
+            this.saddle.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
             this.mouthrod.isHidden = false; //render(f5);
             this.helmetstrap1.isHidden = false; //render(f5);
             this.helmetstrap2.isHidden = false; //render(f5);
-            this.chestbelt.render(f5);
-            this.stomachbelt.render(f5);
+            this.chestbelt.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            this.stomachbelt.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
             if (isRidden) {
                 this.controlrope1.isHidden = false;
@@ -934,19 +932,19 @@ public class MoCModelWyvern<T extends MoCEntityWyvern> extends AgeableModel<T> {
 
         }
 
-        this.MainHead.render(f5);
-        this.leftupleg.render(f5);
-        this.rightupleg.render(f5);
+        this.MainHead.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.leftupleg.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.rightupleg.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
-        this.ironchestarmor.render(f5);
-        this.ironrightshoulderpad.render(f5);
-        this.ironleftshoulderpad.render(f5);
-        this.goldleftshoulder.render(f5);
-        this.goldchestarmor.render(f5);
-        this.goldrightshoulder.render(f5);
-        this.diamondleftshoulder.render(f5);
-        this.diamondrightshoulder.render(f5);
-        this.diamondchestarmor.render(f5);
+        this.ironchestarmor.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.ironrightshoulderpad.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.ironleftshoulderpad.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.goldleftshoulder.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.goldchestarmor.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.goldrightshoulder.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.diamondleftshoulder.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.diamondrightshoulder.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.diamondchestarmor.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         if (isGhost) {
             GL11.glDisable(3042/* GL_BLEND */);
         }
@@ -960,7 +958,7 @@ public class MoCModelWyvern<T extends MoCEntityWyvern> extends AgeableModel<T> {
     }
 
     @SuppressWarnings("unused")
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {//, boolean onAir, boolean flapwings, boolean rider, int openMouth, boolean diving, boolean sitting) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {//, boolean onAir, boolean flapwings, boolean rider, int openMouth, boolean diving, boolean sitting) {
         float RLegXRot = MathHelper.cos((f * 0.6662F) + 3.141593F) * 0.8F * f1;
         float LLegXRot = MathHelper.cos(f * 0.6662F) * 0.8F * f1;
 

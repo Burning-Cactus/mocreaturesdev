@@ -1,15 +1,17 @@
 package drzhark.mocreatures.client.model;
 
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.ambient.MoCEntitySnail;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelSnail extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelSnail<T extends MoCEntitySnail> extends SegmentedModel<T> {
 
     ModelRenderer Head;
     ModelRenderer Antenna;
@@ -17,6 +19,9 @@ public class MoCModelSnail extends ModelBase {
     ModelRenderer ShellUp;
     ModelRenderer ShellDown;
     ModelRenderer Tail;
+
+    boolean isHiding = false;
+    int type = 0;
 
     public MoCModelSnail() {
         this.textureWidth = 32;
@@ -52,25 +57,31 @@ public class MoCModelSnail extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        //super.render(entity, f, f1, f2, f3, f4, f5);
-        MoCEntitySnail snail = (MoCEntitySnail) entity;
-        boolean isHiding = snail.getIsHiding();
-        int type = snail.getType();
-
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-
-        if (isHiding && type < 5) {
-            this.ShellDown.render(f5);
-        } else {
-            this.Head.render(f5);
-            this.Antenna.render(f5);
-            this.Body.render(f5);
-            this.ShellUp.render(f5);
-            this.Tail.render(f5);
-        }
-
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        MoCEntitySnail snail = (MoCEntitySnail) entityIn;
+        isHiding = snail.getIsHiding();
+        type = snail.getSubType();
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(Head, Antenna, Body, ShellUp, ShellDown, Tail);
+    }
+
+    @Override
+    public void render(MatrixStack matrixStack, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (isHiding && type < 5) {
+            this.ShellDown.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        } else {
+            this.Head.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            this.Antenna.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            this.Body.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            this.ShellUp.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            this.Tail.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        }
+    }
+
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
         model.rotateAngleX = x;
@@ -78,8 +89,7 @@ public class MoCModelSnail extends ModelBase {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
-        //super.setRotationAngles(f, f1, f2, f3, f4, f5);
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         float tailMov = MathHelper.cos((f2 * 0.3F)) * 0.8F;
         if (f1 < 0.1F) {
             tailMov = 0F;

@@ -3,8 +3,6 @@ package drzhark.mocreatures.client.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.ambient.MoCEntityCrab;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -239,35 +237,10 @@ public class MoCModelCrab<T extends MoCEntityCrab> extends EntityModel<T> {
     }
 
     @Override
-    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
-
-    }
-
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-
-        MoCEntityCrab crab = (MoCEntityCrab) entity;
+    public void setRotationAngles(T entity, float v, float v1, float v2, float v3, float v4) {
+        MoCEntityCrab crab = entity;
         this.fleeing = crab.isFleeing();
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-
-        this.Shell.render(f5);
-        this.ShellRight.render(f5);
-        this.ShellLeft.render(f5);
-        this.ShellBack.render(f5);
-        this.LeftEye.render(f5);
-        this.LeftEyeBase.render(f5);
-        this.RightEyeBase.render(f5);
-        this.RightEye.render(f5);
-        this.RightArmA.render(f5);
-        this.LeftArmA.render(f5);
-        this.LeftLeg1A.render(f5);
-        this.LeftLeg2A.render(f5);
-        this.LeftLeg3A.render(f5);
-        this.LeftLeg4A.render(f5);
-        this.RightLeg1A.render(f5);
-        this.RightLeg2A.render(f5);
-        this.RightLeg3A.render(f5);
-        this.RightLeg4A.render(f5);
+        setRotationAngles(v1, v, v2);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -276,7 +249,7 @@ public class MoCModelCrab<T extends MoCEntityCrab> extends EntityModel<T> {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1, float f2) {
         /**
          * f = distance walked f1 = speed 0 - 1 f2 = timer
          */
@@ -395,6 +368,23 @@ public class MoCModelCrab<T extends MoCEntityCrab> extends EntityModel<T> {
 
     @Override
     public void render(MatrixStack matrixStack, IVertexBuilder iVertexBuilder, int i, int i1, float v, float v1, float v2, float v3) {
-
+        this.Shell.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.ShellRight.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.ShellLeft.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.ShellBack.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.LeftEye.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.LeftEyeBase.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.RightEyeBase.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.RightEye.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.RightArmA.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.LeftArmA.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.LeftLeg1A.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.LeftLeg2A.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.LeftLeg3A.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.LeftLeg4A.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.RightLeg1A.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.RightLeg2A.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.RightLeg3A.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.RightLeg4A.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
     }
 }

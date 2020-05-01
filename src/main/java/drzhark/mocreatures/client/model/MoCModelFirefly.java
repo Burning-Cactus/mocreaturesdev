@@ -1,16 +1,17 @@
 package drzhark.mocreatures.client.model;
 
+import com.google.common.collect.ImmutableList;
 import drzhark.mocreatures.entity.ambient.MoCEntityFirefly;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelFirefly extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelFirefly<T extends MoCEntityFirefly> extends SegmentedModel<T> {
 
     //fields
     ModelRenderer Antenna;
@@ -105,9 +106,20 @@ public class MoCModelFirefly extends ModelBase {
     }
 
     @Override
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(Antenna, RearLegs, MidLegs, Head, Tail, Abdomen, FrontLegs, RightShellOpen, LeftShellOpen, Thorax,
+                RightShell, LeftShell, RightWing, LeftWing);
+    }
+
+    @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         MoCEntityFirefly entityfirefly = (MoCEntityFirefly) entity;
-        boolean isFlying = (entityfirefly.getIsFlying() || entityfirefly.motionY < -0.1D);
+        boolean isFlying = (entityfirefly.getIsFlying() || entityfirefly.getMotion().y < -0.1D);
 
         setRotationAngles(f, f1, f2, f3, f4, f5, isFlying);
         this.Antenna.render(f5);

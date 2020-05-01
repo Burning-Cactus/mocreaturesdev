@@ -1,11 +1,13 @@
 package drzhark.mocreatures.client.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import com.google.common.collect.ImmutableList;
+import drzhark.mocreatures.entity.passive.MoCEntityEnt;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class MoCModelEnt extends ModelBase {
+public class MoCModelEnt<T extends MoCEntityEnt> extends SegmentedModel<T> {
 
     ModelRenderer Body;
     ModelRenderer LShoulder;
@@ -197,52 +199,15 @@ public class MoCModelEnt extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        this.Body.render(f5);
-        this.LShoulder.render(f5);
-        this.LArm.render(f5);
-        this.LWrist.render(f5);
-        this.LHand.render(f5);
-        this.LFingers.render(f5);
-        this.RShoulder.render(f5);
-        this.RArm.render(f5);
-        this.RWrist.render(f5);
-        this.RHand.render(f5);
-        this.RFingers.render(f5);
-        this.LLeg.render(f5);
-        this.LThigh.render(f5);
-        this.LKnee.render(f5);
-        this.LAnkle.render(f5);
-        this.LFoot.render(f5);
-        this.RLeg.render(f5);
-        this.RThigh.render(f5);
-        this.RKnee.render(f5);
-        this.RAnkle.render(f5);
-        this.RFoot.render(f5);
-        this.Neck.render(f5);
-        this.Face.render(f5);
-        this.Head.render(f5);
-        this.Nose.render(f5);
-        this.Mouth.render(f5);
-        this.TreeBase.render(f5);
-        this.Leave1.render(f5);
-        this.Leave2.render(f5);
-        this.Leave3.render(f5);
-        this.Leave4.render(f5);
-        this.Leave5.render(f5);
-        this.Leave6.render(f5);
-        this.Leave7.render(f5);
-        this.Leave8.render(f5);
-        this.Leave9.render(f5);
-        this.Leave10.render(f5);
-        this.Leave11.render(f5);
-        this.Leave12.render(f5);
-        this.Leave13.render(f5);
-        this.Leave14.render(f5);
-        this.Leave15.render(f5);
-        this.Leave16.render(f5);
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(Body, LShoulder, LArm, LWrist, LHand, LFingers, RShoulder, RArm, RWrist, RHand, RFingers, LLeg, LThigh, LKnee,
+                LAnkle, LFoot, RLeg, RThigh, RKnee, RAnkle, RFoot, Neck, Face, Head, Nose, Mouth, TreeBase, Leave1, Leave2, Leave3, Leave4,
+                Leave5, Leave6, Leave7, Leave8, Leave9, Leave10, Leave11, Leave12, Leave13, Leave14, Leave15, Leave16);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -251,8 +216,7 @@ public class MoCModelEnt extends ModelBase {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
-        //super.setRotationAngles(f, f1, f2, f3, f4, f5);
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         float radianF = 57.29578F;
 
         float RArmXRot = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 2.0F * f1 * 0.5F;

@@ -1,15 +1,15 @@
 package drzhark.mocreatures.client.model;
 
+import com.google.common.collect.ImmutableList;
 import drzhark.mocreatures.entity.monster.MoCEntityWWolf;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelWolf extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelWolf<T extends MoCEntityWWolf> extends SegmentedModel<T> {
 
     ModelRenderer Head;
     ModelRenderer MouthB;
@@ -224,54 +224,34 @@ public class MoCModelWolf extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        MoCEntityWWolf entitywolf = (MoCEntityWWolf) entity;
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        MoCEntityWWolf entitywolf = (MoCEntityWWolf) entityIn;
         boolean openMouth = (entitywolf.mouthCounter != 0);
         boolean moveTail = (entitywolf.tailCounter != 0);
 
-        setRotationAngles(f, f1, f2, f3, f4, f5, moveTail);
-        this.Head.render(f5);
-
-        this.Nose2.render(f5);
-        this.Neck.render(f5);
-        this.Neck2.render(f5);
-        this.LSide.render(f5);
-        this.RSide.render(f5);
-        this.Nose.render(f5);
-
-        if (openMouth) {
-            this.MouthOpen.render(f5);
-            this.UTeeth.render(f5);
-            this.LTeeth.render(f5);
-
-        } else {
-            this.Mouth.render(f5);
-            this.MouthB.render(f5);
-        }
-        this.REar.render(f5);
-        this.LEar.render(f5);
-        this.Chest.render(f5);
-        this.Body.render(f5);
-        this.TailA.render(f5);
-        this.TailB.render(f5);
-        this.TailC.render(f5);
-        this.TailD.render(f5);
-        this.Leg4A.render(f5);
-        this.Leg4D.render(f5);
-        this.Leg4B.render(f5);
-        this.Leg4C.render(f5);
-        this.Leg3B.render(f5);
-        this.Leg2A.render(f5);
-        this.Leg2B.render(f5);
-        this.Leg2C.render(f5);
-        this.Leg3D.render(f5);
-        this.Leg3C.render(f5);
-        this.Leg3A.render(f5);
-        this.Leg1A.render(f5);
-        this.Leg1B.render(f5);
-        this.Leg1C.render(f5);
-
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, moveTail);
     }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(Head, Nose2, Neck, Neck2, LSide, RSide, Nose, Mouth, MouthB, REar, LEar, Chest, Body,
+                TailA, TailB, TailC, TailD, Leg4A, Leg4D, Leg4B, Leg4C, Leg3B, Leg2A, Leg2B, Leg2C, Leg3D, Leg3C, Leg3A, Leg1A, Leg1B,
+                Leg1C);
+    }
+
+//    @Override
+//    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+
+//        if (openMouth) { TODO: Get open mouth working
+//            this.MouthOpen.render(f5);
+//            this.UTeeth.render(f5);
+//            this.LTeeth.render(f5);
+//
+//        } else {
+//            this.Mouth.render(f5);
+//            this.MouthB.render(f5);
+//        }
+//    }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
         model.rotateAngleX = x;
@@ -279,7 +259,7 @@ public class MoCModelWolf extends ModelBase {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, boolean tail) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, boolean tail) {
 
         this.Head.rotateAngleX = f4 / 57.29578F;
         this.Head.rotateAngleY = f3 / 57.29578F;

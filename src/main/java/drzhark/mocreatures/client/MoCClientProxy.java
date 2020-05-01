@@ -214,6 +214,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -1289,7 +1290,7 @@ public class MoCClientProxy extends MoCProxy {
 
     @Override
     public void printMessageToPlayer(String msg) {
-        Minecraft.getMinecraft().player.sendMessage(new TextComponentTranslation(msg));
+        Minecraft.getInstance().player.sendMessage(new TranslationTextComponent(msg));
     }
 
     public static <T, E> T getKeyByValue(Map<T, E> map, E value) {

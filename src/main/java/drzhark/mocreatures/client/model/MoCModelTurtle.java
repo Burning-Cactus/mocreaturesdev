@@ -1,15 +1,16 @@
 package drzhark.mocreatures.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.passive.MoCEntityTurtle;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelTurtle extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelTurtle<T extends MoCEntityTurtle> extends EntityModel<T> {
 
     public MoCModelTurtle() {
         this.Shell = new ModelRenderer(this, 28, 0);
@@ -55,28 +56,15 @@ public class MoCModelTurtle extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        //super.render(entity, f, f1, f2, f3, f4, f5);
-        MoCEntityTurtle entityturtle = (MoCEntityTurtle) entity;
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        MoCEntityTurtle entityturtle = (MoCEntityTurtle) entityIn;
         this.TMNT = entityturtle.isTMNT();
         this.turtleHat = entityturtle.getRidingEntity() != null;
         this.isSwimming = entityturtle.isInWater();
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        this.Shell.render(f5);
-        this.ShellUp.render(f5);
-        if (!this.TMNT) {
-            this.ShellTop.render(f5);
-        }
-        this.Belly.render(f5);
-        this.Leg1.render(f5);
-        this.Leg2.render(f5);
-        this.Leg3.render(f5);
-        this.Leg4.render(f5);
-        this.Head.render(f5);
-        this.Tail.render(f5);
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         //super.setRotationAngles(f, f1, f2, f3, f4, f5);
         if (this.upsidedown) {
             float f25 = this.swingProgress;
@@ -208,4 +196,19 @@ public class MoCModelTurtle extends ModelBase {
     private boolean isSwimming;
     public float swingProgress;
 
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        this.Shell.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.ShellUp.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        if (!this.TMNT) {
+            this.ShellTop.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        }
+        this.Belly.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.Leg1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.Leg2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.Leg3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.Leg4.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.Tail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+    }
 }

@@ -1,11 +1,12 @@
 package drzhark.mocreatures.client.model;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import drzhark.mocreatures.entity.monster.MoCEntityWerewolf;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelWereHuman extends ModelBiped {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelWereHuman<T extends MoCEntityWerewolf> extends BipedModel<T> {
 
     public MoCModelWereHuman() {
         //TODO 4.1 FIX

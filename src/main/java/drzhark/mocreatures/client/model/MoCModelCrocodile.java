@@ -1,16 +1,11 @@
 package drzhark.mocreatures.client.model;
 
 import drzhark.mocreatures.entity.passive.MoCEntityCrocodile;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @OnlyIn(Dist.CLIENT)
 public class MoCModelCrocodile<T extends MoCEntityCrocodile> extends SegmentedModel<T> {
@@ -296,8 +291,8 @@ public class MoCModelCrocodile<T extends MoCEntityCrocodile> extends SegmentedMo
     }
 
     @Override
-    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
-
+    public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float time, float pitch, float yaw) {
+        setRotationAngles(limbSwing, limbSwingAmount, time, pitch, yaw);
     }
 
     @Override
@@ -309,60 +304,7 @@ public class MoCModelCrocodile<T extends MoCEntityCrocodile> extends SegmentedMo
 
     }
 
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        this.LJaw.render(f5);
-        this.TailA.render(f5);
-        this.TailB.render(f5);
-        this.TailC.render(f5);
-        this.UJaw.render(f5);
-        this.Head.render(f5);
-        this.Body.render(f5);
-        this.Leg1.render(f5);
-        this.Leg3.render(f5);
-        this.Leg2.render(f5);
-        this.Leg4.render(f5);
-        this.TailD.render(f5);
-        this.Leg1A.render(f5);
-        this.Leg2A.render(f5);
-        this.Leg3A.render(f5);
-        this.Leg4A.render(f5);
-        this.UJaw2.render(f5);
-        this.LJaw2.render(f5);
-        this.TeethA.render(f5);
-        this.TeethB.render(f5);
-        this.TeethC.render(f5);
-        this.TeethD.render(f5);
-        this.TeethF.render(f5);
-        this.Spike0.render(f5);
-        this.Spike1.render(f5);
-        this.Spike2.render(f5);
-        this.Spike3.render(f5);
-        this.Spike4.render(f5);
-        this.Spike5.render(f5);
-        this.Spike6.render(f5);
-        this.Spike7.render(f5);
-        this.Spike8.render(f5);
-        this.Spike9.render(f5);
-        this.Spike10.render(f5);
-        this.Spike11.render(f5);
-        this.SpikeBack0.render(f5);
-        this.SpikeBack1.render(f5);
-        this.SpikeBack2.render(f5);
-        this.SpikeBack3.render(f5);
-        this.SpikeBack4.render(f5);
-        this.SpikeBack5.render(f5);
-        this.SpikeEye.render(f5);
-        this.SpikeEye1.render(f5);
-        this.TeethA1.render(f5);
-        this.TeethB1.render(f5);
-        this.TeethC1.render(f5);
-        this.TeethD1.render(f5);
-    }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         //super.setRotationAngles(f, f1, f2, f3, f4, f5);
         this.Head.rotateAngleX = f4 / 57.29578F;
         this.Head.rotateAngleY = f3 / 57.29578F;

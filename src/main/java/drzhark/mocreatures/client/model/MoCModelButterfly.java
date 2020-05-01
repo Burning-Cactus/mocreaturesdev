@@ -3,16 +3,12 @@ package drzhark.mocreatures.client.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.ambient.MoCEntityButterfly;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
@@ -121,39 +117,6 @@ public class MoCModelButterfly<T extends MoCEntityButterfly> extends EntityModel
 
     }
 
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        MoCEntityButterfly butterfly = (MoCEntityButterfly) entity;
-        boolean flying = (butterfly.getIsFlying() || butterfly.motionY < -0.1D);
-        setRotationAngles(f, f1, f2, f3, f4, f5, !flying);
-        this.Abdomen.render(f5);
-        this.FrontLegs.render(f5);
-        this.RightAntenna.render(f5);
-        this.LeftAntenna.render(f5);
-        this.RearLegs.render(f5);
-        this.MidLegs.render(f5);
-        this.Head.render(f5);
-        this.Thorax.render(f5);
-
-        this.Mouth.render(f5);
-
-        GL11.glPushMatrix();
-        GL11.glEnable(3042 /* GL_BLEND */);
-        float transparency = 0.8F;
-        GL11.glBlendFunc(770, 771);
-        GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
-        //GL11.glScalef(1.3F, 1.0F, 1.3F);
-        this.WingRight.render(f5);
-        this.WingLeft.render(f5);
-        this.WingRightFront.render(f5);
-        this.WingLeftFront.render(f5);
-        this.WingRightBack.render(f5);
-        this.WingLeftBack.render(f5);
-        GL11.glDisable(3042/* GL_BLEND */);
-        GL11.glPopMatrix();
-    }
-
     private void setRotation(ModelRenderer model, float x, float y, float z) {
         model.rotateAngleX = x;
         model.rotateAngleY = y;
@@ -214,8 +177,35 @@ public class MoCModelButterfly<T extends MoCEntityButterfly> extends EntityModel
 
     }
 
-    @Override
+    @Override       //TODO: Fix rotation angles
     public void render(MatrixStack matrixStack, IVertexBuilder iVertexBuilder, int i, int i1, float v, float v1, float v2, float v3) {
+        MoCEntityButterfly butterfly = (MoCEntityButterfly) entity;
+        boolean flying = (butterfly.getIsFlying() || butterfly.getMotion().y < -0.1D);
+        setRotationAngles(f, f1, f2, f3, f4, f5, !flying);
+        this.Abdomen.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.FrontLegs.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.RightAntenna.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.LeftAntenna.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.RearLegs.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.MidLegs.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.Head.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.Thorax.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
 
+        this.Mouth.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+
+        GL11.glPushMatrix();
+        GL11.glEnable(3042 /* GL_BLEND */);
+        float transparency = 0.8F;
+        GL11.glBlendFunc(770, 771);
+        GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
+        //GL11.glScalef(1.3F, 1.0F, 1.3F);
+        this.WingRight.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.WingLeft.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.WingRightFront.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.WingLeftFront.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.WingRightBack.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.WingLeftBack.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        GL11.glDisable(3042/* GL_BLEND */);
+        GL11.glPopMatrix();
     }
 }

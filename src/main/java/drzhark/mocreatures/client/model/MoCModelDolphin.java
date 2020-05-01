@@ -2,16 +2,12 @@ package drzhark.mocreatures.client.model;
 
 import com.google.common.collect.ImmutableList;
 import drzhark.mocreatures.entity.aquatic.MoCEntityDolphin;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @OnlyIn(Dist.CLIENT)
 public class MoCModelDolphin<T extends MoCEntityDolphin> extends SegmentedModel<T> {
@@ -67,8 +63,8 @@ public class MoCModelDolphin<T extends MoCEntityDolphin> extends SegmentedModel<
     }
 
     @Override
-    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
-
+    public void setRotationAngles(T t, float limbSwing, float limbSwingAmount, float time, float headPitch, float headYaw) {
+        setRotationAngles(limbSwing, limbSwingAmount);
     }
 
     @Override
@@ -77,21 +73,7 @@ public class MoCModelDolphin<T extends MoCEntityDolphin> extends SegmentedModel<
                 this.LTailFin, this.RTailFin, this.LeftFin, this.RightFin);
     }
 
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        this.Body.render(f5);
-        this.PTail.render(f5);
-        this.UHead.render(f5);
-        this.DHead.render(f5);
-        this.UpperFin.render(f5);
-        this.LTailFin.render(f5);
-        this.RTailFin.render(f5);
-        this.LeftFin.render(f5);
-        this.RightFin.render(f5);
-    }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1) {
         this.RTailFin.rotateAngleX = MathHelper.cos(f * 0.4F) * f1;
         this.LTailFin.rotateAngleX = MathHelper.cos(f * 0.4F) * f1;
     }

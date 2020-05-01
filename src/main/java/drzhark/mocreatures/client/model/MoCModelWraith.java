@@ -1,23 +1,22 @@
 package drzhark.mocreatures.client.model;
 
 import drzhark.mocreatures.entity.monster.MoCEntityWraith;
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelWraith extends ModelBiped {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelWraith<T extends MoCEntityWraith> extends BipedModel<T> {
 
     private int attackCounter;
 
     public MoCModelWraith() {
         //TODO 4.1 FIX
         super(12F, 0.0F, 64, 32);
-        this.leftArmPose = ModelBiped.ArmPose.EMPTY;
-        this.rightArmPose = ModelBiped.ArmPose.EMPTY;
+        this.leftArmPose = BipedModel.ArmPose.EMPTY;
+        this.rightArmPose = BipedModel.ArmPose.EMPTY;
         this.isSneak = false;
         this.bipedHead = new ModelRenderer(this, 0, 40);
         this.bipedHead.addBox(-4F, -8F, -4F, 1, 1, 1, 0.0F);
@@ -45,11 +44,8 @@ public class MoCModelWraith extends ModelBiped {
     }
 
     @Override
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity par7Entity) {
-
-        if (par7Entity instanceof MoCEntityWraith) {
-            this.attackCounter = ((MoCEntityWraith) par7Entity).attackCounter;
-        }
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.attackCounter = ((MoCEntityWraith) entityIn).attackCounter;
 
         float f6 = MathHelper.sin(this.swingProgress * 3.141593F);
         float f7 = MathHelper.sin((1.0F - ((1.0F - this.swingProgress) * (1.0F - this.swingProgress))) * 3.141593F);
@@ -67,12 +63,12 @@ public class MoCModelWraith extends ModelBiped {
             this.bipedLeftArm.rotateAngleX = -1.570796F;
             this.bipedRightArm.rotateAngleX -= (f6 * 1.2F) - (f7 * 0.4F);
             this.bipedLeftArm.rotateAngleX -= (f6 * 1.2F) - (f7 * 0.4F);
-            this.bipedRightArm.rotateAngleX += MathHelper.sin(f2 * 0.067F) * 0.05F;
-            this.bipedLeftArm.rotateAngleX -= MathHelper.sin(f2 * 0.067F) * 0.05F;
+            this.bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
+            this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
         }
 
-        this.bipedRightArm.rotateAngleZ += (MathHelper.cos(f2 * 0.09F) * 0.05F) + 0.05F;
-        this.bipedLeftArm.rotateAngleZ -= (MathHelper.cos(f2 * 0.09F) * 0.05F) + 0.05F;
+        this.bipedRightArm.rotateAngleZ += (MathHelper.cos(ageInTicks * 0.09F) * 0.05F) + 0.05F;
+        this.bipedLeftArm.rotateAngleZ -= (MathHelper.cos(ageInTicks * 0.09F) * 0.05F) + 0.05F;
 
     }
 }

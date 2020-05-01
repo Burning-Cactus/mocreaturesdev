@@ -1,16 +1,18 @@
 package drzhark.mocreatures.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.passive.MoCEntitySnake;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelSnake extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelSnake<T extends MoCEntitySnake> extends EntityModel<T> {
 
     public MoCModelSnake() {
         this.textureWidth = 64;
@@ -141,10 +143,126 @@ public class MoCModelSnake extends ModelBase {
     }
 
     @Override
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
+    }
+
+    @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         //super.render(entity, f, f1, f2, f3, f4, f5);
+
+    }
+
+    @SuppressWarnings("unused")
+    private void setRotation(ModelRenderer model, float x, float y, float z) {
+        model.rotateAngleX = x;
+        model.rotateAngleY = y;
+        model.rotateAngleZ = z;
+    }
+
+    public void setRotationAngles(float f3, float f4, float f6, float f7, float frattle, boolean nearP, int type) {
+        float rAX = (f4 / 57.29578F);// * 1.5F;
+        float rAY = (f3 / 57.29578F);// * 1.5F;
+        this.Head.rotateAngleX = rAX;
+        this.Head.rotateAngleY = rAY;
+        this.bodySnake[0].rotateAngleX = rAX * 0.95F;/// 1.5F;
+        this.bodySnake[1].rotateAngleX = rAX * 0.90F;/// 2F;
+        this.bodySnake[2].rotateAngleX = rAX * 0.85F;/// 2.5F;
+        this.bodySnake[3].rotateAngleX = rAX * 0.80F;/// 3.0F;
+        this.bodySnake[4].rotateAngleX = rAX * 0.75F;/// 3.5F;
+
+        float f8 = (MathHelper.cos(f6 * 10F) / 40F);
+
+        this.Nose.rotateAngleX = this.Head.rotateAngleX - f7;
+        this.LNose.rotateAngleX = this.Head.rotateAngleX + f7;
+        this.Tongue1.rotateAngleX = this.Head.rotateAngleX + f8;
+        this.Tongue.rotateAngleX = this.Head.rotateAngleX + f8;
+        this.Tongue0.rotateAngleX = this.LNose.rotateAngleX;
+        this.TeethUR.rotateAngleX = this.Head.rotateAngleX - f7;
+        this.TeethUL.rotateAngleX = this.Head.rotateAngleX - f7;
+        this.bodySnake[0].rotateAngleY = 0.0F + (rAY * 0.85F);/// 1.5F;
+        this.bodySnake[1].rotateAngleY = 0.0F + (rAY * 0.65F);/// 2.0F;
+        this.bodySnake[2].rotateAngleY = 0.0F + (rAY * 0.45F);/// 2.5F;
+        this.bodySnake[3].rotateAngleY = 0.0F + (rAY * 0.25F);/// 3.0F;
+        this.bodySnake[4].rotateAngleY = 0.0F + (rAY * 0.10F);/// 3.5F;
+        this.Nose.rotateAngleY = this.Head.rotateAngleY;
+        this.Tongue.rotateAngleY = this.Head.rotateAngleY;
+        this.Tongue0.rotateAngleY = this.Head.rotateAngleY;
+        this.Tongue1.rotateAngleY = this.Head.rotateAngleY;
+        this.LNose.rotateAngleY = this.Head.rotateAngleY;
+        this.TeethUR.rotateAngleY = this.Head.rotateAngleY;
+        this.TeethUL.rotateAngleY = this.Head.rotateAngleY;
+
+        if (type == 6) //cobra
+        {
+            this.Wing1L.rotateAngleX = this.bodySnake[1].rotateAngleX;
+            this.Wing1L.rotateAngleY = this.bodySnake[1].rotateAngleY;
+            this.Wing1R.rotateAngleX = this.bodySnake[1].rotateAngleX;
+            this.Wing1R.rotateAngleY = this.bodySnake[1].rotateAngleY;
+
+            this.Wing2L.rotateAngleX = this.bodySnake[2].rotateAngleX;
+            this.Wing2L.rotateAngleY = this.bodySnake[2].rotateAngleY;
+            this.Wing2R.rotateAngleX = this.bodySnake[2].rotateAngleX;
+            this.Wing2R.rotateAngleY = this.bodySnake[2].rotateAngleY;
+
+            this.Wing3L.rotateAngleX = this.bodySnake[3].rotateAngleX;
+            this.Wing3L.rotateAngleY = this.bodySnake[3].rotateAngleY;
+            this.Wing3R.rotateAngleX = this.bodySnake[3].rotateAngleX;
+            this.Wing3R.rotateAngleY = this.bodySnake[3].rotateAngleY;
+
+            this.Wing4L.rotateAngleX = this.bodySnake[4].rotateAngleX;
+            this.Wing4L.rotateAngleY = this.bodySnake[4].rotateAngleY;
+            this.Wing4R.rotateAngleX = this.bodySnake[4].rotateAngleX;
+            this.Wing4R.rotateAngleY = this.bodySnake[4].rotateAngleY;
+
+            this.Wing5L.rotateAngleX = this.bodySnake[4].rotateAngleX;
+            this.Wing5L.rotateAngleY = this.bodySnake[4].rotateAngleY;
+            this.Wing5R.rotateAngleX = this.bodySnake[4].rotateAngleX;
+            this.Wing5R.rotateAngleY = this.bodySnake[4].rotateAngleY;
+        }
+
+        if (type == 7) //rattlesnake
+        {
+            if (nearP || frattle != 0.0F) {
+                this.Tail.rotateAngleX = ((MathHelper.cos(f3 * 10F) * 20F) + 90F) / 57.29578F;
+                //Tail.rotateAngleX = ((MathHelper.cos(f3*10F)*20F) + 90F)/57.29578F;
+            } else {
+                this.Tail.rotateAngleX = 0.0F;
+            }
+        }
+        //super.setRotationAngles(f, f1, f2, f3, f4, f5);
+    }
+
+    ModelRenderer Head;
+    ModelRenderer Nose;
+    ModelRenderer Tongue0;
+    ModelRenderer Tongue;
+    ModelRenderer Tongue1;
+    ModelRenderer LNose;
+    ModelRenderer TeethUR;
+    ModelRenderer TeethUL;
+    ModelRenderer Tail;
+
+    ModelRenderer Wing1L;
+    ModelRenderer Wing1R;
+    ModelRenderer Wing2L;
+    ModelRenderer Wing2R;
+    ModelRenderer Wing3R;
+    ModelRenderer Wing3L;
+    ModelRenderer Wing4R;
+    ModelRenderer Wing4L;
+    ModelRenderer Wing5L;
+    ModelRenderer Wing5R;
+
+    public ModelRenderer bodySnake[];
+    //public ModelRenderer WingL[];
+    //public ModelRenderer WingR[];
+    private final int bodyparts = 40;
+
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         MoCEntitySnake entitysnake = (MoCEntitySnake) entity;
-        int typeI = entitysnake.getType();
+        int typeI = entitysnake.getSubType();
         float tongueOff = entitysnake.getfTongue();
         float mouthOff = entitysnake.getfMouth();
         float rattleOff = entitysnake.getfRattle();
@@ -181,7 +299,7 @@ public class MoCModelSnake extends ModelBase {
                 /* if (i > (bodyparts/3) && (i <2*bodyparts/3)) {
                        direction = -1;
                    } else {
-                       direction = 1; 
+                       direction = 1;
                    }*/
 
                 //this shortens the snake while resting
@@ -189,32 +307,32 @@ public class MoCModelSnake extends ModelBase {
                 //GL11.glTranslatef(0.0F, 0.0F, -0.05F*i);
             } else
 
-            //climbing animation
-            if (climbing && i < this.bodyparts / 2) {
-                yOff = (i - (this.bodyparts / 2)) * 0.08F;
-                GL11.glTranslatef(0.0F, yOff / 3.0F, -yOff * 1.2F);
-            } else
+                //climbing animation
+                if (climbing && i < this.bodyparts / 2) {
+                    yOff = (i - (this.bodyparts / 2)) * 0.08F;
+                    GL11.glTranslatef(0.0F, yOff / 3.0F, -yOff * 1.2F);
+                } else
 
-            //raises head of snakes near player
-            if (nearplayer || picked)//&& !(picked && fsize<0.6F))//&& !picked)
-            {
-                if (i < this.bodyparts / 3) {
-                    yOff = (i - (this.bodyparts / 3)) * 0.09F;
-                    float zOff = (i - (this.bodyparts / 3)) * 0.065F;
-                    // if (picked) { yOff = yOff*-1F; //zOff = zOff*-1F; }
-                    GL11.glTranslatef(0.0F, yOff / 1.5F, -zOff * f6);
-                }
+                    //raises head of snakes near player
+                    if (nearplayer || picked)//&& !(picked && fsize<0.6F))//&& !picked)
+                    {
+                        if (i < this.bodyparts / 3) {
+                            yOff = (i - (this.bodyparts / 3)) * 0.09F;
+                            float zOff = (i - (this.bodyparts / 3)) * 0.065F;
+                            // if (picked) { yOff = yOff*-1F; //zOff = zOff*-1F; }
+                            GL11.glTranslatef(0.0F, yOff / 1.5F, -zOff * f6);
+                        }
 
-                if (i < this.bodyparts / 6) {
-                    sideperf = 0.0F;
-                } else {
-                    sideperf = ((i - 7) / (this.bodyparts / 3F));
-                    if (sideperf > 1.0F) {
-                        sideperf = 1.0F;
+                        if (i < this.bodyparts / 6) {
+                            sideperf = 0.0F;
+                        } else {
+                            sideperf = ((i - 7) / (this.bodyparts / 3F));
+                            if (sideperf > 1.0F) {
+                                sideperf = 1.0F;
+                            }
+                        }
+
                     }
-                }
-
-            }
 
             //raises tail of rattlesnakes
             if (typeI == 7 && nearplayer && i > (5 * this.bodyparts / 6) && !picked)//&& not picked
@@ -332,111 +450,4 @@ public class MoCModelSnake extends ModelBase {
             GL11.glPopMatrix();
         }
     }
-
-    @SuppressWarnings("unused")
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
-    }
-
-    public void setRotationAngles(float f3, float f4, float f6, float f7, float frattle, boolean nearP, int type) {
-        float rAX = (f4 / 57.29578F);// * 1.5F;
-        float rAY = (f3 / 57.29578F);// * 1.5F;
-        this.Head.rotateAngleX = rAX;
-        this.Head.rotateAngleY = rAY;
-        this.bodySnake[0].rotateAngleX = rAX * 0.95F;/// 1.5F;
-        this.bodySnake[1].rotateAngleX = rAX * 0.90F;/// 2F;
-        this.bodySnake[2].rotateAngleX = rAX * 0.85F;/// 2.5F;
-        this.bodySnake[3].rotateAngleX = rAX * 0.80F;/// 3.0F;
-        this.bodySnake[4].rotateAngleX = rAX * 0.75F;/// 3.5F;
-
-        float f8 = (MathHelper.cos(f6 * 10F) / 40F);
-
-        this.Nose.rotateAngleX = this.Head.rotateAngleX - f7;
-        this.LNose.rotateAngleX = this.Head.rotateAngleX + f7;
-        this.Tongue1.rotateAngleX = this.Head.rotateAngleX + f8;
-        this.Tongue.rotateAngleX = this.Head.rotateAngleX + f8;
-        this.Tongue0.rotateAngleX = this.LNose.rotateAngleX;
-        this.TeethUR.rotateAngleX = this.Head.rotateAngleX - f7;
-        this.TeethUL.rotateAngleX = this.Head.rotateAngleX - f7;
-        this.bodySnake[0].rotateAngleY = 0.0F + (rAY * 0.85F);/// 1.5F;
-        this.bodySnake[1].rotateAngleY = 0.0F + (rAY * 0.65F);/// 2.0F;
-        this.bodySnake[2].rotateAngleY = 0.0F + (rAY * 0.45F);/// 2.5F;
-        this.bodySnake[3].rotateAngleY = 0.0F + (rAY * 0.25F);/// 3.0F;
-        this.bodySnake[4].rotateAngleY = 0.0F + (rAY * 0.10F);/// 3.5F;
-        this.Nose.rotateAngleY = this.Head.rotateAngleY;
-        this.Tongue.rotateAngleY = this.Head.rotateAngleY;
-        this.Tongue0.rotateAngleY = this.Head.rotateAngleY;
-        this.Tongue1.rotateAngleY = this.Head.rotateAngleY;
-        this.LNose.rotateAngleY = this.Head.rotateAngleY;
-        this.TeethUR.rotateAngleY = this.Head.rotateAngleY;
-        this.TeethUL.rotateAngleY = this.Head.rotateAngleY;
-
-        if (type == 6) //cobra
-        {
-            this.Wing1L.rotateAngleX = this.bodySnake[1].rotateAngleX;
-            this.Wing1L.rotateAngleY = this.bodySnake[1].rotateAngleY;
-            this.Wing1R.rotateAngleX = this.bodySnake[1].rotateAngleX;
-            this.Wing1R.rotateAngleY = this.bodySnake[1].rotateAngleY;
-
-            this.Wing2L.rotateAngleX = this.bodySnake[2].rotateAngleX;
-            this.Wing2L.rotateAngleY = this.bodySnake[2].rotateAngleY;
-            this.Wing2R.rotateAngleX = this.bodySnake[2].rotateAngleX;
-            this.Wing2R.rotateAngleY = this.bodySnake[2].rotateAngleY;
-
-            this.Wing3L.rotateAngleX = this.bodySnake[3].rotateAngleX;
-            this.Wing3L.rotateAngleY = this.bodySnake[3].rotateAngleY;
-            this.Wing3R.rotateAngleX = this.bodySnake[3].rotateAngleX;
-            this.Wing3R.rotateAngleY = this.bodySnake[3].rotateAngleY;
-
-            this.Wing4L.rotateAngleX = this.bodySnake[4].rotateAngleX;
-            this.Wing4L.rotateAngleY = this.bodySnake[4].rotateAngleY;
-            this.Wing4R.rotateAngleX = this.bodySnake[4].rotateAngleX;
-            this.Wing4R.rotateAngleY = this.bodySnake[4].rotateAngleY;
-
-            this.Wing5L.rotateAngleX = this.bodySnake[4].rotateAngleX;
-            this.Wing5L.rotateAngleY = this.bodySnake[4].rotateAngleY;
-            this.Wing5R.rotateAngleX = this.bodySnake[4].rotateAngleX;
-            this.Wing5R.rotateAngleY = this.bodySnake[4].rotateAngleY;
-        }
-
-        if (type == 7) //rattlesnake
-        {
-            if (nearP || frattle != 0.0F) {
-                this.Tail.rotateAngleX = ((MathHelper.cos(f3 * 10F) * 20F) + 90F) / 57.29578F;
-                //Tail.rotateAngleX = ((MathHelper.cos(f3*10F)*20F) + 90F)/57.29578F;
-            } else {
-                this.Tail.rotateAngleX = 0.0F;
-            }
-        }
-        //super.setRotationAngles(f, f1, f2, f3, f4, f5);
-    }
-
-    ModelRenderer Head;
-    ModelRenderer Nose;
-    ModelRenderer Tongue0;
-    ModelRenderer Tongue;
-    ModelRenderer Tongue1;
-    ModelRenderer LNose;
-    ModelRenderer TeethUR;
-    ModelRenderer TeethUL;
-    ModelRenderer Tail;
-
-    ModelRenderer Wing1L;
-    ModelRenderer Wing1R;
-    ModelRenderer Wing2L;
-    ModelRenderer Wing2R;
-    ModelRenderer Wing3R;
-    ModelRenderer Wing3L;
-    ModelRenderer Wing4R;
-    ModelRenderer Wing4L;
-    ModelRenderer Wing5L;
-    ModelRenderer Wing5R;
-
-    public ModelRenderer bodySnake[];
-    //public ModelRenderer WingL[];
-    //public ModelRenderer WingR[];
-    private final int bodyparts = 40;
-
 }

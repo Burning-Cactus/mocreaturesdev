@@ -1,17 +1,15 @@
 package drzhark.mocreatures.client.model;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.ambient.MoCEntityDragonfly;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
@@ -102,8 +100,11 @@ public class MoCModelDragonfly<T extends MoCEntityDragonfly> extends SegmentedMo
     }
 
     @Override
-    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
-
+    public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float time, float pitch, float yaw) {
+        MoCEntityDragonfly dragonfly = (MoCEntityDragonfly) entity;
+        //boolean onGround = dragonfly.onGround;
+        boolean isFlying = (dragonfly.getIsFlying() || dragonfly.getMotion().y < -0.1D);
+        setRotationAngles(limbSwing, limbSwingAmount, time, isFlying);
     }
 
     @Override
@@ -114,22 +115,17 @@ public class MoCModelDragonfly<T extends MoCEntityDragonfly> extends SegmentedMo
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-
-        MoCEntityDragonfly dragonfly = (MoCEntityDragonfly) entity;
-        //boolean onGround = dragonfly.onGround;
-        boolean isFlying = (dragonfly.getIsFlying() || dragonfly.motionY < -0.1D);
-        setRotationAngles(f, f1, f2, f3, f4, f5, isFlying);
-        this.Head.render(f5);
-        this.Abdomen.render(f5);
-        this.FrontLegs.render(f5);
-        this.RAntenna.render(f5);
-        this.LAntenna.render(f5);
-        this.RearLegs.render(f5);
-        this.MidLegs.render(f5);
-        this.Mouth.render(f5);
-        this.Thorax.render(f5);
+    public void render(MatrixStack matrixStack, IVertexBuilder vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        super.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.Head.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.Abdomen.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.FrontLegs.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.RAntenna.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.LAntenna.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.RearLegs.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.MidLegs.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.Mouth.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.Thorax.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
         GL11.glPushMatrix();
         GL11.glEnable(3042 /* GL_BLEND */);
@@ -143,7 +139,6 @@ public class MoCModelDragonfly<T extends MoCEntityDragonfly> extends SegmentedMo
         this.WingRearLeft.render(f5);
         GL11.glDisable(3042/* GL_BLEND */);
         GL11.glPopMatrix();
-
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -152,7 +147,7 @@ public class MoCModelDragonfly<T extends MoCEntityDragonfly> extends SegmentedMo
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, boolean flying) {
+    public void setRotationAngles(float f, float f1, float f2, boolean flying) {
         //super.setRotationAngles(f, f1, f2, f3, f4, f5);
 
         /**

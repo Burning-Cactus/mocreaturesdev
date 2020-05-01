@@ -2,17 +2,11 @@ package drzhark.mocreatures.client.model;
 
 import com.google.common.collect.ImmutableList;
 import drzhark.mocreatures.entity.passive.MoCEntityDeer;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.model.AgeableModel;
-import net.minecraft.client.renderer.entity.model.QuadrupedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @OnlyIn(Dist.CLIENT)
 public class MoCModelDeer<T extends MoCEntityDeer> extends AgeableModel<T> {
@@ -74,28 +68,11 @@ public class MoCModelDeer<T extends MoCEntityDeer> extends AgeableModel<T> {
     }
 
     @Override
-    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
-
+    public void setRotationAngles(T t, float limbSwing, float limbSwingAmount, float time, float headPitch, float headYaw) {
+        setRotationAngles(limbSwing, limbSwingAmount);
     }
 
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        this.Body.render(f5);
-        this.Neck.render(f5);
-        this.Head.render(f5);
-        this.Leg1.render(f5);
-        this.Leg2.render(f5);
-        this.Leg3.render(f5);
-        this.Leg4.render(f5);
-        this.Tail.render(f5);
-        this.LEar.render(f5);
-        this.REar.render(f5);
-        this.LeftAntler.render(f5);
-        this.RightAntler.render(f5);
-    }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1) {
         this.Leg1.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
         this.Leg2.rotateAngleX = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.4F * f1;
         this.Leg3.rotateAngleX = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.4F * f1;

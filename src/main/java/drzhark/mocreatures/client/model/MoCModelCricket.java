@@ -3,16 +3,11 @@ package drzhark.mocreatures.client.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.ambient.MoCEntityCricket;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
@@ -38,6 +33,8 @@ public class MoCModelCricket<T extends MoCEntityCricket> extends EntityModel<T> 
     ModelRenderer LeftWing;
     ModelRenderer RightWing;
     ModelRenderer FoldedWings;
+
+    boolean isFlying = false;
 
     public MoCModelCricket() {
         this.textureWidth = 32;
@@ -143,54 +140,10 @@ public class MoCModelCricket<T extends MoCEntityCricket> extends EntityModel<T> 
     }
 
     @Override
-    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
-
-    }
-
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(T entity, float v, float v1, float v2, float v3, float v4) {
         MoCEntityCricket entitycricket = (MoCEntityCricket) entity;
-        boolean isFlying = (entitycricket.getIsFlying() || entitycricket.motionY < -0.1D);
-        setRotationAngles(f, f1, f2, f3, f4, f5, isFlying);
-        this.Head.render(f5);
-        this.Antenna.render(f5);
-        this.AntennaB.render(f5);
-        this.Thorax.render(f5);
-        this.Abdomen.render(f5);
-        this.TailA.render(f5);
-        this.TailB.render(f5);
-        this.FrontLegs.render(f5);
-        this.MidLegs.render(f5);
-
-        if (!isFlying) {
-
-            this.ThighLeft.render(f5);
-            this.ThighRight.render(f5);
-            this.LegLeft.render(f5);
-            this.LegRight.render(f5);
-            this.FoldedWings.render(f5);
-
-        } else {
-
-            this.ThighLeftB.render(f5);
-            this.ThighRightB.render(f5);
-            this.LegLeftB.render(f5);
-            this.LegRightB.render(f5);
-            GL11.glPushMatrix();
-            GL11.glEnable(3042 /* GL_BLEND */);
-            float transparency = 0.6F;
-            GL11.glBlendFunc(770, 771);
-            GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
-            this.LeftWing.render(f5);
-            this.RightWing.render(f5);
-            GL11.glDisable(3042/* GL_BLEND */);
-            GL11.glPopMatrix();
-
-        }
-
-        /*
-         * if (isFlying) { }else { }
-         */
+        isFlying = (entitycricket.getIsFlying() || entitycricket.getMotion().y < -0.1D);
+        setRotationAngles(v, v1, v2, isFlying);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -199,7 +152,7 @@ public class MoCModelCricket<T extends MoCEntityCricket> extends EntityModel<T> 
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, boolean isFlying) {
+    public void setRotationAngles(float f, float f1, float f2, boolean isFlying) {
 
         float legMov = 0F;
         float legMovB = 0F;
@@ -228,6 +181,44 @@ public class MoCModelCricket<T extends MoCEntityCricket> extends EntityModel<T> 
 
     @Override
     public void render(MatrixStack matrixStack, IVertexBuilder iVertexBuilder, int i, int i1, float v, float v1, float v2, float v3) {
+        this.Head.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.Antenna.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.AntennaB.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.Thorax.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.Abdomen.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.TailA.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.TailB.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.FrontLegs.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.MidLegs.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
 
+        if (!isFlying) {
+
+            this.ThighLeft.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+            this.ThighRight.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+            this.LegLeft.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+            this.LegRight.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+            this.FoldedWings.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+
+        } else {
+
+            this.ThighLeftB.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+            this.ThighRightB.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+            this.LegLeftB.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+            this.LegRightB.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+            GL11.glPushMatrix();
+            GL11.glEnable(3042 /* GL_BLEND */);
+            float transparency = 0.6F;
+            GL11.glBlendFunc(770, 771);
+            GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
+            this.LeftWing.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+            this.RightWing.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+            GL11.glDisable(3042/* GL_BLEND */);
+            GL11.glPopMatrix();
+
+        }
+
+        /*
+         * if (isFlying) { }else { }
+         */
     }
 }
