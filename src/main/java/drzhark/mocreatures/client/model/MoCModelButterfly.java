@@ -1,6 +1,7 @@
 package drzhark.mocreatures.client.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.ambient.MoCEntityButterfly;
 import net.minecraft.client.renderer.entity.model.EntityModel;
@@ -113,8 +114,10 @@ public class MoCModelButterfly<T extends MoCEntityButterfly> extends EntityModel
     }
 
     @Override
-    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
-
+    public void setRotationAngles(T entityIn, float v, float v1, float v2, float v3, float v4) {
+        MoCEntityButterfly butterfly = (MoCEntityButterfly) entityIn;
+        boolean flying = (butterfly.getIsFlying() || butterfly.getMotion().y < -0.1D);
+        setRotationAngles(v, v1, v2, v3, v4, !flying);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -123,7 +126,7 @@ public class MoCModelButterfly<T extends MoCEntityButterfly> extends EntityModel
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, boolean onGround) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, boolean onGround) {
 
         /**
          * buttefly to have two / 3 movs: 1 slow movement when idle on ground
@@ -178,34 +181,32 @@ public class MoCModelButterfly<T extends MoCEntityButterfly> extends EntityModel
     }
 
     @Override       //TODO: Fix rotation angles
-    public void render(MatrixStack matrixStack, IVertexBuilder iVertexBuilder, int i, int i1, float v, float v1, float v2, float v3) {
-        MoCEntityButterfly butterfly = (MoCEntityButterfly) entity;
-        boolean flying = (butterfly.getIsFlying() || butterfly.getMotion().y < -0.1D);
-        setRotationAngles(f, f1, f2, f3, f4, f5, !flying);
-        this.Abdomen.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
-        this.FrontLegs.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
-        this.RightAntenna.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
-        this.LeftAntenna.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
-        this.RearLegs.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
-        this.MidLegs.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
-        this.Head.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
-        this.Thorax.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+    public void render(MatrixStack matrixStack, IVertexBuilder iVertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 
-        this.Mouth.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
+        this.Abdomen.render(matrixStack, iVertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.FrontLegs.render(matrixStack, iVertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.RightAntenna.render(matrixStack, iVertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.LeftAntenna.render(matrixStack, iVertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.RearLegs.render(matrixStack, iVertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.MidLegs.render(matrixStack, iVertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.Head.render(matrixStack, iVertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.Thorax.render(matrixStack, iVertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
-        GL11.glPushMatrix();
-        GL11.glEnable(3042 /* GL_BLEND */);
-        float transparency = 0.8F;
-        GL11.glBlendFunc(770, 771);
-        GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
+        this.Mouth.render(matrixStack, iVertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+
+        matrixStack.push();
+//        GL11.glEnable(3042 /* GL_BLEND */);
+//        float transparency = 0.8F;
+//        GL11.glBlendFunc(770, 771);
+//        GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
         //GL11.glScalef(1.3F, 1.0F, 1.3F);
-        this.WingRight.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
-        this.WingLeft.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
-        this.WingRightFront.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
-        this.WingLeftFront.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
-        this.WingRightBack.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
-        this.WingLeftBack.render(matrixStack, iVertexBuilder, i, i1, v, v1, v2, v3);
-        GL11.glDisable(3042/* GL_BLEND */);
-        GL11.glPopMatrix();
+        this.WingRight.render(matrixStack, iVertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.WingLeft.render(matrixStack, iVertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.WingRightFront.render(matrixStack, iVertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.WingLeftFront.render(matrixStack, iVertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.WingRightBack.render(matrixStack, iVertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.WingLeftBack.render(matrixStack, iVertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+//        GL11.glDisable(3042/* GL_BLEND */);
+        matrixStack.pop();
     }
 }

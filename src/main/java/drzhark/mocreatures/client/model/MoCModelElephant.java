@@ -578,8 +578,19 @@ public class MoCModelElephant<T extends MoCEntityElephant> extends AgeableModel<
     }
 
     @Override
-    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
+    public void setRotationAngles(T entity, float v, float v1, float v2, float v3, float v4) {
+        MoCEntityElephant elephant = (MoCEntityElephant) entity;
+        this.tusks = elephant.getTusks();
+        int type = elephant.getSubType();
+        this.tailCounter = elephant.tailCounter;
+        this.earCounter = elephant.earCounter;
+        this.trunkCounter = elephant.trunkCounter;
+        int harness = elephant.getArmorType();
+        int storage = elephant.getStorage();
+        this.isSitting = (elephant.sitCounter != 0);
+        //boolean moveTail = (elephant.tailCounter != 0);
 
+        setRotationAngles(v, v1, v2, v3, v4);
     }
 
     @Override
@@ -595,18 +606,7 @@ public class MoCModelElephant<T extends MoCEntityElephant> extends AgeableModel<
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         //super.render(entity, f, f1, f2, f3, f4, f5);
-        MoCEntityElephant elephant = (MoCEntityElephant) entity;
-        this.tusks = elephant.getTusks();
-        int type = elephant.getSubType();
-        this.tailCounter = elephant.tailCounter;
-        this.earCounter = elephant.earCounter;
-        this.trunkCounter = elephant.trunkCounter;
-        int harness = elephant.getArmorType();
-        int storage = elephant.getStorage();
-        this.isSitting = (elephant.sitCounter != 0);
-        //boolean moveTail = (elephant.tailCounter != 0);
 
-        setRotationAngles(f, f1, f2, f3, f4, f5);
 
         if (tusks == 0) {
             this.LeftTuskB.render(f5);
@@ -866,7 +866,7 @@ public class MoCModelElephant<T extends MoCEntityElephant> extends AgeableModel<
 
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {//, byte tusks, boolean sitting, boolean tail) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {//, byte tusks, boolean sitting, boolean tail) {
 
         float RLegXRot = MathHelper.cos((f * 0.6662F) + 3.141593F) * 0.8F * f1;
         float LLegXRot = MathHelper.cos(f * 0.6662F) * 0.8F * f1;
@@ -1152,7 +1152,7 @@ public class MoCModelElephant<T extends MoCEntityElephant> extends AgeableModel<
      * Used for leg adjustment - anteroposterior movement
      *
      * @param target
-     * @param attached
+     * @param origin
      */
     private void adjustXRotationPoints(ModelRenderer target, ModelRenderer origin) {
         //rotation point Z and Y adjusted for legs =

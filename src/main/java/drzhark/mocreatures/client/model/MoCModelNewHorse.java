@@ -29,6 +29,8 @@
 package drzhark.mocreatures.client.model;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.passive.MoCEntityHorse;
 import net.minecraft.client.renderer.entity.model.AgeableModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
@@ -352,28 +354,18 @@ public class MoCModelNewHorse<T extends MoCEntityHorse> extends AgeableModel<T> 
 
     }
 
+    /**
+     * Note: I copied most of the code over from the original render function, since the new render function doesn't have an entity parameter.
+     * the vanilla horse model sets the extra parts as visible using setRotationAngles, so I am basing this code off of that. The vast
+     * majority of the code here will have to be rewritten later, but this should compile for now.
+     *  - Burning Cactus
+     */
     @Override
-    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
-
-    }
-
-    @Override
-    protected Iterable<ModelRenderer> getHeadParts() {
-        return ImmutableList.of(Head, UMouth, LMouth, UMouth2, LMouth2, Unicorn, Ear1, Ear2, MuleEarL, MuleEarR, Neck, HeadSaddle, Mane);
-    }
-
-    @Override
-    protected Iterable<ModelRenderer> getBodyParts() {
-        return null;
-    }
-
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        MoCEntityHorse entityhorse = (MoCEntityHorse) entity;
-        //super.render(entity, f, f1, f2, f3, f4, f5);
-
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        MoCEntityHorse entityhorse = (MoCEntityHorse) entityIn;
         int type = entityhorse.getSubType();
         int vanishingInt = entityhorse.getVanishC();
+        boolean isGhost = entityhorse.getIsGhost();
         int wingflapInt = entityhorse.wingFlapCounter;
         boolean flapwings = (entityhorse.wingFlapCounter != 0);
         boolean shuffling = (entityhorse.shuffleCounter != 0);
@@ -390,101 +382,74 @@ public class MoCModelNewHorse<T extends MoCEntityHorse> extends AgeableModel<T> 
         boolean floating = (entityhorse.getIsGhost() || (entityhorse.isFlyer() && entityhorse.isOnAir()));
         //                || (entityhorse.getRidingEntity() == null && !entityhorse.onGround)
         //                || (entityhorse.isBeingRidden() && !entityhorse.getRidingEntity().onGround));
-        setRotationAngles(f, f1, f2, f3, f4, f5, eating, rider, floating, standing, saddled, moveTail, wings, flapwings, shuffling, type);
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, eating, rider, floating, standing, saddled, moveTail, wings, flapwings, shuffling, type);
+        boolean corporeal = !isGhost && vanishingInt == 0;
 
-        if (!entityhorse.getIsGhost() && vanishingInt == 0) {
-            if (saddled) {
-                this.HeadSaddle.render(f5);
-                this.Saddle.render(f5);
-                this.SaddleB.render(f5);
-                this.SaddleC.render(f5);
-                this.SaddleL.render(f5);
-                this.SaddleL2.render(f5);
-                this.SaddleR.render(f5);
-                this.SaddleR2.render(f5);
-                this.SaddleMouthL.render(f5);
-                this.SaddleMouthR.render(f5);
-                if (rider) {
-                    this.SaddleMouthLine.render(f5);
-                    this.SaddleMouthLineR.render(f5);
+
+//        if (!isGhost && vanishingInt == 0) {
+//            if (saddled) {
+        boolean showSaddle = (corporeal && saddled);
+
+        this.HeadSaddle.showModel = showSaddle;
+        this.Saddle.showModel = showSaddle;
+        this.SaddleB.showModel = showSaddle;
+        this.SaddleC.showModel = showSaddle;
+        this.SaddleL.showModel = showSaddle;
+        this.SaddleL2.showModel = showSaddle;
+        this.SaddleR.showModel = showSaddle;
+        this.SaddleR2.showModel = showSaddle;
+        this.SaddleMouthL.showModel = showSaddle;
+        this.SaddleMouthR.showModel = showSaddle;
+        if (rider) {
+            this.SaddleMouthLine.showModel = showSaddle;
+            this.SaddleMouthLineR.showModel = showSaddle;
                 }
-
-            }
+//
+//            }
 
             if (type == 65 || type == 66 || type == 67) //mule, donkey or zonkey
             {
-                this.MuleEarL.render(f5);
-                this.MuleEarR.render(f5);
+                this.MuleEarL.showModel = true;
+                this.MuleEarR.showModel = true;
             } else {
-                this.Ear1.render(f5);
-                this.Ear2.render(f5);
+                this.Ear1.showModel = true;
+                this.Ear2.showModel = true;
 
             }
-            this.Neck.render(f5);
-            this.Head.render(f5);
-            if (openMouth) {
-                this.UMouth2.render(f5);
-                this.LMouth2.render(f5);
-            } else {
-                this.UMouth.render(f5);
-                this.LMouth.render(f5);
-            }
-            this.Mane.render(f5);
-            this.Body.render(f5);
-            this.TailA.render(f5);
-            this.TailB.render(f5);
-            this.TailC.render(f5);
+            this.UMouth2.showModel = openMouth;
+            this.LMouth2.showModel = openMouth;
+            this.UMouth.showModel = !openMouth;
+            this.LMouth.showModel = !openMouth;
 
-            this.Leg1A.render(f5);
-            this.Leg1B.render(f5);
-            this.Leg1C.render(f5);
+            this.Unicorn.showModel = entityhorse.isUnicorned();
 
-            this.Leg2A.render(f5);
-            this.Leg2B.render(f5);
-            this.Leg2C.render(f5);
-
-            this.Leg3A.render(f5);
-            this.Leg3B.render(f5);
-            this.Leg3C.render(f5);
-
-            this.Leg4A.render(f5);
-            this.Leg4B.render(f5);
-            this.Leg4C.render(f5);
-
-            if (entityhorse.isUnicorned()) {
-                this.Unicorn.render(f5);
-            }
-
-            if (entityhorse.getIsChested()) {
-                this.Bag1.render(f5);
-                this.Bag2.render(f5);
-            }
+            this.Bag1.showModel = entityhorse.getIsChested();
+            this.Bag2.showModel = entityhorse.getIsChested();
 
             if (entityhorse.isFlyer() && type < 45) { //pegasus
-                this.MidWing.render(f5);
-                this.InnerWing.render(f5);
-                this.OuterWing.render(f5);
-                this.InnerWingR.render(f5);
-                this.MidWingR.render(f5);
-                this.OuterWingR.render(f5);
+                this.MidWing.showModel = true;
+                this.InnerWing.showModel = true;
+                this.OuterWing.showModel = true;
+                this.InnerWingR.showModel = true;
+                this.MidWingR.showModel = true;
+                this.OuterWingR.showModel = true;
             } else if (type > 44 && type < 60) { //fairys
-                GL11.glPushMatrix();
-                GL11.glEnable(3042 /* GL_BLEND */);
-                float transparency = 0.7F;
-                GL11.glBlendFunc(770, 771);
-                GL11.glColor4f(1.2F, 1.2F, 1.2F, transparency);
-                GL11.glScalef(1.3F, 1.0F, 1.3F);
-                this.ButterflyL.render(f5);
-                this.ButterflyR.render(f5);
-                GL11.glDisable(3042/* GL_BLEND */);
-                GL11.glPopMatrix();
+//                GL11.glPushMatrix();
+//                GL11.glEnable(3042 /* GL_BLEND */);
+//                float transparency = 0.7F;
+//                GL11.glBlendFunc(770, 771);
+//                GL11.glColor4f(1.2F, 1.2F, 1.2F, transparency);
+//                GL11.glScalef(1.3F, 1.0F, 1.3F);
+                this.ButterflyL.showModel = true;
+                this.ButterflyR.showModel = true;
+//                GL11.glDisable(3042/* GL_BLEND */);
+//                GL11.glPopMatrix();
             }/*
-              * else { ButterflyL.render(f5); ButterflyR.render(f5); }
-              */
-
-        } else
+             * else { ButterflyL.render(f5); ButterflyR.render(f5); }
+             */
+            if(!corporeal)
         //rendering a ghost or vanishing
-        {
+            {
             float transparency; //= entityhorse.tFloat();
 
             if (vanishingInt != 0)// && vanishingInt > 30)
@@ -494,102 +459,107 @@ public class MoCModelNewHorse<T extends MoCEntityHorse> extends AgeableModel<T> 
                 transparency = entityhorse.tFloat();
             }
 
-            GL11.glPushMatrix();
-            GL11.glEnable(3042 /* GL_BLEND */);
-            GL11.glBlendFunc(770, 771);
-            GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
-            GL11.glScalef(1.3F, 1.0F, 1.3F);
+//            GL11.glPushMatrix();
+//            GL11.glEnable(3042 /* GL_BLEND */);
+//            GL11.glBlendFunc(770, 771);
+//            GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
+//            GL11.glScalef(1.3F, 1.0F, 1.3F);
 
-            this.Ear1.render(f5);
-            this.Ear2.render(f5);
+//            this.Ear1.showModel = true;
+//            this.Ear2.showModel = true;
+//
+//            this.Neck.render(f5);
+//            this.Head.render(f5);
+            this.UMouth2.showModel = openMouth;
+            this.LMouth2.showModel = openMouth;
+            this.UMouth.showModel = !openMouth;
+            this.LMouth.showModel = !openMouth;
 
-            this.Neck.render(f5);
-            this.Head.render(f5);
-            if (openMouth) {
-                this.UMouth2.render(f5);
-                this.LMouth2.render(f5);
-            } else {
-                this.UMouth.render(f5);
-                this.LMouth.render(f5);
-            }
-
-            this.Mane.render(f5);
-            this.Body.render(f5);
-            this.TailA.render(f5);
-            this.TailB.render(f5);
-            this.TailC.render(f5);
-
-            this.Leg1A.render(f5);
-            this.Leg1B.render(f5);
-            this.Leg1C.render(f5);
-
-            this.Leg2A.render(f5);
-            this.Leg2B.render(f5);
-            this.Leg2C.render(f5);
-
-            this.Leg3A.render(f5);
-            this.Leg3B.render(f5);
-            this.Leg3C.render(f5);
-
-            this.Leg4A.render(f5);
-            this.Leg4B.render(f5);
-            this.Leg4C.render(f5);
+//            this.Mane.render(f5);
+//            this.Body.render(f5);
+//            this.TailA.render(f5);
+//            this.TailB.render(f5);
+//            this.TailC.render(f5);
+//
+//            this.Leg1A.render(f5);
+//            this.Leg1B.render(f5);
+//            this.Leg1C.render(f5);
+//
+//            this.Leg2A.render(f5);
+//            this.Leg2B.render(f5);
+//            this.Leg2C.render(f5);
+//
+//            this.Leg3A.render(f5);
+//            this.Leg3B.render(f5);
+//            this.Leg3C.render(f5);
+//
+//            this.Leg4A.render(f5);
+//            this.Leg4B.render(f5);
+//            this.Leg4C.render(f5);
 
             if (type == 39 || type == 40 || type == 28) {
-                this.MidWing.render(f5);
-                this.InnerWing.render(f5);
-                this.OuterWing.render(f5);
-                this.InnerWingR.render(f5);
-                this.MidWingR.render(f5);
-                this.OuterWingR.render(f5);
+                this.MidWing.showModel = true;
+                this.InnerWing.showModel = true;
+                this.OuterWing.showModel = true;
+                this.InnerWingR.showModel = true;
+                this.MidWingR.showModel = true;
+                this.OuterWingR.showModel = true;
             }
             if (type >= 50 && type < 60) {
-                this.ButterflyL.render(f5);
-                this.ButterflyR.render(f5);
+                this.ButterflyL.showModel = true;
+                this.ButterflyR.showModel = true;
             }
 
-            if (saddled) {
-                this.HeadSaddle.render(f5);
-                this.Saddle.render(f5);
-                this.SaddleB.render(f5);
-                this.SaddleC.render(f5);
-                this.SaddleL.render(f5);
-                this.SaddleL2.render(f5);
-                this.SaddleR.render(f5);
-                this.SaddleR2.render(f5);
-                this.SaddleMouthL.render(f5);
-                this.SaddleMouthR.render(f5);
-                if (rider) {
-                    this.SaddleMouthLine.render(f5);
-                    this.SaddleMouthLineR.render(f5);
-                }
+                this.HeadSaddle.showModel = saddled;
+                this.Saddle.showModel = saddled;
+                this.SaddleB.showModel = saddled;
+                this.SaddleC.showModel = saddled;
+                this.SaddleL.showModel = saddled;
+                this.SaddleL2.showModel = saddled;
+                this.SaddleR.showModel = saddled;
+                this.SaddleR2.showModel = saddled;
+                this.SaddleMouthL.showModel = saddled;
+                this.SaddleMouthR.showModel = saddled;
+                this.SaddleMouthLine.showModel = rider && saddled;
+                this.SaddleMouthLineR.showModel = rider && saddled;
 
-            }
-
-            GL11.glDisable(3042/* GL_BLEND */);
-            GL11.glPopMatrix();
+//            GL11.glDisable(3042/* GL_BLEND */);
+//            GL11.glPopMatrix();
 
             if (type == 21 || type == 22)//|| (type >=50 && type <60))
             {
-                float wingTransparency = 0F;
-                if (wingflapInt != 0) {
-                    wingTransparency = 1F - (((float) wingflapInt) / 25);
-                }
-                if (wingTransparency > transparency) {
-                    wingTransparency = transparency;
-                }
-                GL11.glPushMatrix();
-                GL11.glEnable(3042 /* GL_BLEND */);
-                GL11.glBlendFunc(770, 771);
-                GL11.glColor4f(0.8F, 0.8F, 0.8F, wingTransparency);
-                GL11.glScalef(1.3F, 1.0F, 1.3F);
-                this.ButterflyL.render(f5);
-                this.ButterflyR.render(f5);
-                GL11.glDisable(3042/* GL_BLEND */);
-                GL11.glPopMatrix();
+//                float wingTransparency = 0F;
+//                if (wingflapInt != 0) {
+//                    wingTransparency = 1F - (((float) wingflapInt) / 25);
+//                }
+//                if (wingTransparency > transparency) {
+//                    wingTransparency = transparency;
+//                }
+//                GL11.glPushMatrix();
+//                GL11.glEnable(3042 /* GL_BLEND */);
+//                GL11.glBlendFunc(770, 771);
+//                GL11.glColor4f(0.8F, 0.8F, 0.8F, wingTransparency);
+//                GL11.glScalef(1.3F, 1.0F, 1.3F);
+                this.ButterflyL.showModel = true;
+                this.ButterflyR.showModel = true;
+//                GL11.glDisable(3042/* GL_BLEND */);
+//                GL11.glPopMatrix();
             }
         }
 
+    }
+
+
+    @Override
+    protected Iterable<ModelRenderer> getHeadParts() {
+        return ImmutableList.of(Head, UMouth, LMouth, UMouth2, LMouth2, Unicorn, Ear1, Ear2, MuleEarL, MuleEarR, Neck, HeadSaddle, Mane);
+    }
+
+    @Override
+    protected Iterable<ModelRenderer> getBodyParts() {
+        return ImmutableList.of(Body, TailA, TailB, TailC, Leg1A, Leg1B, Leg1C, Leg2A, Leg2B, Leg2C, Leg3A, Leg3B, Leg3C, Leg4A, Leg4B, Leg4C,
+                Bag1, Bag2, Saddle, SaddleB, SaddleC, SaddleL, SaddleL2, SaddleR, SaddleR2, SaddleMouthL, SaddleMouthR, SaddleMouthLine,
+                SaddleMouthLineR, MidWing, InnerWing, OuterWing, InnerWingR, MidWingR, OuterWingR, ButterflyL, ButterflyR);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -598,7 +568,7 @@ public class MoCModelNewHorse<T extends MoCEntityHorse> extends AgeableModel<T> 
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, boolean eating, boolean rider, boolean floating,
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, boolean eating, boolean rider, boolean floating,
             boolean standing, boolean saddled, boolean tail, boolean wings, boolean flapwings, boolean shuffle, int type) {
         float RLegXRot = MathHelper.cos((f * 0.6662F) + 3.141593F) * 0.8F * f1;
         float LLegXRot = MathHelper.cos(f * 0.6662F) * 0.8F * f1;

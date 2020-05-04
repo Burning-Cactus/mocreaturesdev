@@ -1,20 +1,18 @@
 package drzhark.mocreatures.client;
 
-import drzhark.mocreatures.MoCProxy;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.particle.*;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class MoCEntityFXUndead extends Particle {
+import javax.annotation.Nullable;
 
-    public MoCEntityFXUndead(World par1World, double par2, double par4, double par6) {
-        super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
+@OnlyIn(Dist.CLIENT)
+public class MoCEntityFXUndead extends SpriteTexturedParticle {
+
+    public MoCEntityFXUndead(World par1World, double x, double y, double z) {
+        super(par1World, x, y, z, 0.0D, 0.0D, 0.0D);
         this.motionX *= 0.8D;
         this.motionY *= 0.8D;
         this.motionZ *= 0.8D;
@@ -22,26 +20,26 @@ public class MoCEntityFXUndead extends Particle {
 
         this.setSize(0.01F, 0.01F);
         this.particleGravity = 0.06F;
-        this.particleMaxAge = (int) (32.0D / (Math.random() * 0.8D + 0.2D));
+        this.maxAge = (int) (32.0D / (Math.random() * 0.8D + 0.2D));
         this.particleScale *= 0.8F;
     }
 
     /**
      * sets which texture to use (2 = items.png)
      */
-    @Override
-    public int getFXLayer() {
-        if (this.onGround) {
-            return 1;
-        }
-        return 2;
-    }
+//    @Override
+//    public int getFXLayer() {
+//        if (this.onGround) {
+//            return 1;
+//        }
+//        return 2;
+//    } TODO: Select textures properly
 
     /**
      * Called to update the entity's position/logic.
      */
     @Override
-    public void onUpdate() {
+    public void tick() {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
@@ -58,9 +56,14 @@ public class MoCEntityFXUndead extends Particle {
             this.motionZ *= 0.7D;
         }
 
-        if (this.particleMaxAge-- <= 0) {
+        if (this.maxAge-- <= 0) {
             this.setExpired();
         }
+    }
+
+    @Override
+    public IParticleRenderType getRenderType() {
+        return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
 
     private String getCurrentTexture() {
@@ -70,25 +73,43 @@ public class MoCEntityFXUndead extends Particle {
         return "fxundead2.png";
     }
 
-    @Override
-    public void renderParticle(BufferBuilder worldRendererIn, Entity entityIn, float partialTicks, float par3, float par4, float par5, float par6, float par7) {
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation("mocreatures", MoCProxy.MISC_TEXTURE
-                + getCurrentTexture()));
-        float sizeFactor = 0.1F * this.particleScale;
-        float var13 = (float) (this.prevPosX + (this.posX - this.prevPosX) * partialTicks - interpPosX);
-        float var14 = (float) (this.prevPosY + (this.posY - this.prevPosY) * partialTicks - interpPosY);
-        float var15 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * partialTicks - interpPosZ);
-        float var16 = 1F;
-        int i = this.getBrightnessForRender(partialTicks);
-        int j = i >> 16 & 65535;
-        int k = i & 65535;
-        worldRendererIn.pos(var13 - par3 * sizeFactor - par6 * sizeFactor, var14 - par4 * sizeFactor, var15 - par5 * sizeFactor - par7
-                * sizeFactor).tex(0D, 1D).color(this.particleRed * var16, this.particleGreen * var16, this.particleBlue * var16, 1.0F).lightmap(j, k).endVertex();
-        worldRendererIn.pos(var13 - par3 * sizeFactor + par6 * sizeFactor, var14 + par4 * sizeFactor, var15 - par5 * sizeFactor + par7
-                * sizeFactor).tex(1D, 1D).color(this.particleRed * var16, this.particleGreen * var16, this.particleBlue * var16, 1.0F).lightmap(j, k).endVertex();
-        worldRendererIn.pos(var13 + par3 * sizeFactor + par6 * sizeFactor, var14 + par4 * sizeFactor, var15 + par5 * sizeFactor + par7
-                * sizeFactor).tex(1D, 0D).color(this.particleRed * var16, this.particleGreen * var16, this.particleBlue * var16, 1.0F).lightmap(j, k).endVertex();
-        worldRendererIn.pos(var13 + par3 * sizeFactor - par6 * sizeFactor, var14 - par4 * sizeFactor, var15 + par5 * sizeFactor - par7
-                * sizeFactor).tex(0D, 0D).color(this.particleRed * var16, this.particleGreen * var16, this.particleBlue * var16, 1.0F).lightmap(j, k).endVertex();
+//    @Override
+//    public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks) {
+//        FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation("mocreatures", MoCProxy.MISC_TEXTURE
+//                + getCurrentTexture()));
+//        float sizeFactor = 0.1F * this.particleScale;
+//        float var13 = (float) (this.prevPosX + (this.posX - this.prevPosX) * partialTicks - interpPosX);
+//        float var14 = (float) (this.prevPosY + (this.posY - this.prevPosY) * partialTicks - interpPosY);
+//        float var15 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * partialTicks - interpPosZ);
+//        float var16 = 1F;
+//        int i = this.getBrightnessForRender(partialTicks);
+//        int j = i >> 16 & 65535;
+//        int k = i & 65535;
+//        worldRendererIn.pos(var13 - par3 * sizeFactor - par6 * sizeFactor, var14 - par4 * sizeFactor, var15 - par5 * sizeFactor - par7
+//                * sizeFactor).tex(0D, 1D).color(this.particleRed * var16, this.particleGreen * var16, this.particleBlue * var16, 1.0F).lightmap(j, k).endVertex();
+//        worldRendererIn.pos(var13 - par3 * sizeFactor + par6 * sizeFactor, var14 + par4 * sizeFactor, var15 - par5 * sizeFactor + par7
+//                * sizeFactor).tex(1D, 1D).color(this.particleRed * var16, this.particleGreen * var16, this.particleBlue * var16, 1.0F).lightmap(j, k).endVertex();
+//        worldRendererIn.pos(var13 + par3 * sizeFactor + par6 * sizeFactor, var14 + par4 * sizeFactor, var15 + par5 * sizeFactor + par7
+//                * sizeFactor).tex(1D, 0D).color(this.particleRed * var16, this.particleGreen * var16, this.particleBlue * var16, 1.0F).lightmap(j, k).endVertex();
+//        worldRendererIn.pos(var13 + par3 * sizeFactor - par6 * sizeFactor, var14 - par4 * sizeFactor, var15 + par5 * sizeFactor - par7
+//                * sizeFactor).tex(0D, 0D).color(this.particleRed * var16, this.particleGreen * var16, this.particleBlue * var16, 1.0F).lightmap(j, k).endVertex();
+//    }
+
+
+    public static class Factory implements IParticleFactory<BasicParticleType> {
+        private final IAnimatedSprite spriteSet;
+
+        public Factory(IAnimatedSprite sprite) {
+            spriteSet = sprite;
+        }
+
+        @Nullable
+        @Override
+        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            MoCEntityFXUndead undeadParticle = new MoCEntityFXUndead(worldIn, x, y, z);
+            undeadParticle.selectSpriteRandomly(spriteSet);
+            return undeadParticle;
+        }
     }
+
 }

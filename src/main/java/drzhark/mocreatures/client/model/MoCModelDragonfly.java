@@ -127,18 +127,18 @@ public class MoCModelDragonfly<T extends MoCEntityDragonfly> extends SegmentedMo
         this.Mouth.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         this.Thorax.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
-        GL11.glPushMatrix();
-        GL11.glEnable(3042 /* GL_BLEND */);
-        float transparency = 0.6F;
-        GL11.glBlendFunc(770, 771);
-        GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
+        matrixStack.push();
+//        GL11.glEnable(3042 /* GL_BLEND */);
+//        float transparency = 0.6F;
+//        GL11.glBlendFunc(770, 771);
+//        GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
         //GL11.glScalef(1.3F, 1.0F, 1.3F);
-        this.WingRearRight.render(f5);
-        this.WingFrontRight.render(f5);
-        this.WingFrontLeft.render(f5);
-        this.WingRearLeft.render(f5);
-        GL11.glDisable(3042/* GL_BLEND */);
-        GL11.glPopMatrix();
+        this.WingRearRight.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.WingFrontRight.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.WingFrontLeft.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        this.WingRearLeft.render(matrixStack, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+//        GL11.glDisable(3042/* GL_BLEND */);
+        matrixStack.pop();
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {

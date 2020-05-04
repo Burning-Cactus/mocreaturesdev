@@ -119,36 +119,37 @@ public class MoCModelBee<T extends MoCEntityBee> extends SegmentedModel<T> {
         this.MidLegs.rotateAngleX = 0.5948578F + legMovB;
         this.RearLegs.rotateAngleX = 1.070744F + legMov;
 
+        FoldedWings.showModel = onGround;
+
+
     }
 
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        this.Abdomen.render(f5);
-        this.FrontLegs.render(f5);
-        this.RAntenna.render(f5);
-        this.LAntenna.render(f5);
-
-        this.RearLegs.render(f5);
-        this.MidLegs.render(f5);
-        this.Head.render(f5);
-        this.Mouth.render(f5);
-        this.Tail.render(f5);
-        this.Thorax.render(f5);
-
-        if (!isFlying) {
-            this.FoldedWings.render(f5);
-        } else {
-            GL11.glPushMatrix();
-            GL11.glEnable(3042 /* GL_BLEND */);
-            float transparency = 0.6F;
-            GL11.glBlendFunc(770, 771);
-            GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
-            this.LeftWing.render(f5);
-            this.RightWing.render(f5);
-            GL11.glDisable(3042/* GL_BLEND */);
-            GL11.glPopMatrix();
-        }
-    }
+//    @Override
+//    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+//        this.Abdomen.render(f5);
+//        this.FrontLegs.render(f5);
+//        this.RAntenna.render(f5);
+//        this.LAntenna.render(f5);
+//
+//        this.RearLegs.render(f5);
+//        this.MidLegs.render(f5);
+//        this.Head.render(f5);
+//        this.Mouth.render(f5);
+//        this.Tail.render(f5);
+//        this.Thorax.render(f5);
+//
+//        } else {
+//            GL11.glPushMatrix();
+//            GL11.glEnable(3042 /* GL_BLEND */);
+//            float transparency = 0.6F;
+//            GL11.glBlendFunc(770, 771);
+//            GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
+//            this.LeftWing.render(f5);
+//            this.RightWing.render(f5);
+//            GL11.glDisable(3042/* GL_BLEND */);
+//            GL11.glPopMatrix();
+//        }
+//    }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
         model.rotateAngleX = x;
@@ -171,7 +172,6 @@ public class MoCModelBee<T extends MoCEntityBee> extends SegmentedModel<T> {
                 Head,
                 Mouth,
                 Tail,
-                FoldedWings,
                 Thorax
         );
     }

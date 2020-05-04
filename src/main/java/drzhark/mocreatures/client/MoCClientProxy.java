@@ -244,10 +244,6 @@ public class MoCClientProxy extends MoCProxy {
         mocTextures.loadTextures();
     }
 
-    @Override
-    public ResourceLocation getTexture(String texture) {
-        return mocTextures.getTexture(texture);
-    }
 
     @SuppressWarnings({"deprecation", "unchecked", "rawtypes"})
     @Deprecated
