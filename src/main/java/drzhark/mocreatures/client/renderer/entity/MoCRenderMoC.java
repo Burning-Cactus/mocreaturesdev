@@ -1,6 +1,7 @@
 package drzhark.mocreatures.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.client.MoCClientProxy;
 import drzhark.mocreatures.entity.IMoCEntity;
@@ -47,11 +48,11 @@ public class MoCRenderMoC<T extends LivingEntity, M extends EntityModel<T>> exte
                 s = (new StringBuilder()).append(s).append(entityMoC.getPetName()).toString();
                 float f7 = 0.1F;
                 FontRenderer fontrenderer = getFontRendererFromRenderManager();
-                GL11.glPushMatrix();
-                GL11.glTranslatef((float) d + 0.0F, (float) d1 + f7, (float) d2);
-                GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-                GL11.glScalef(-f3, -f3, f3);
+                RenderSystem.pushMatrix();
+                RenderSystem.translatef((float) d + 0.0F, (float) d1 + f7, (float) d2);
+                RenderSystem.normal3f(0.0F, 1.0F, 0.0F);
+                RenderSystem.rotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+                RenderSystem.scalef(-f3, -f3, f3);
                 GL11.glDisable(2896 /* GL_LIGHTING */);
                 Tessellator tessellator1 = Tessellator.getInstance();
                 int yOff = entityMoC.nameYOffset();
@@ -99,7 +100,7 @@ public class MoCRenderMoC<T extends LivingEntity, M extends EntityModel<T>> exte
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 }
                 GL11.glEnable(2896 /* GL_LIGHTING */);
-                GL11.glPopMatrix();
+                RenderSystem.popMatrix();
             }
         }
     }

@@ -2,6 +2,7 @@ package drzhark.mocreatures.client.handlers;
 
 import drzhark.guiapi.GuiModScreen;
 import drzhark.guiapi.ModSettingScreen;
+import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.client.MoCClientProxy;
 import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.network.MoCMessageHandler;
@@ -9,12 +10,18 @@ import drzhark.mocreatures.network.message.MoCMessageEntityDive;
 import drzhark.mocreatures.network.message.MoCMessageEntityJump;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+@Mod.EventBusSubscriber(modid = MoCConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class MoCKeyHandler {
 
     int keyCount;
@@ -42,7 +49,7 @@ public class MoCKeyHandler {
             keyPressed = Keyboard.getEventKey();
         }
 
-        EntityPlayer ep = MoCClientProxy.mc.player;
+        PlayerEntity ep = MoCClientProxy.mc.player;
         if (ep == null) {
             return;
         }

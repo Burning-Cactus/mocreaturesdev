@@ -9,20 +9,13 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class MoCEntityWraith extends MoCEntityMob//MoCEntityFlyerMob
 {
@@ -52,10 +45,10 @@ public class MoCEntityWraith extends MoCEntityMob//MoCEntityFlyerMob
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
     }
 
-    @Override
-    protected Item getDropItem() {
-        return Items.GUNPOWDER;
-    }
+//    @Override TODO: Wraith Loot Table
+//    protected Item getDropItem() {
+//        return Items.GUNPOWDER;
+//    }
 
     @Override
     protected SoundEvent getDeathSound() {

@@ -75,7 +75,7 @@ public class MoCItemWeapon extends MoCItem {
             return 15.0F;
         } else {
             Material material = state.getMaterial();
-            return material != Material.PLANTS && material != Material.VINE && material != Material.CORAL && material != Material.LEAVES
+            return material != Material.PLANTS && material != Material.CORAL && material != Material.LEAVES
                     && material != Material.GOURD ? 1.0F : 1.5F;
         }
     }
@@ -126,11 +126,11 @@ public class MoCItemWeapon extends MoCItem {
     /**
      * Returns True is the item is renderer in full 3D when hold.
      */
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public boolean isFull3D() {
-        return true;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public boolean isFull3D() {
+//        return true;
+//    }
 
     /**
      * returns the action that specifies what animation to play when the items
@@ -218,6 +218,7 @@ public class MoCItemWeapon extends MoCItem {
             multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier",
                     (double) this.attackDamage, 0));
         }
+        new AttributeModifier();
         return multimap;
     }
 }

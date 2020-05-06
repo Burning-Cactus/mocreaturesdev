@@ -5,19 +5,11 @@ import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -87,7 +79,7 @@ public class ItemStaffTeleport extends MoCItem {
                 }
                 MoCreatures.proxy.teleportFX(player);
                // player.setItemInUse(stack, 200);
-                stack.damageItem(1, player);
+                stack.damageItem(1, player, d -> d.sendBreakAnimation(hand));
 
                 return ActionResult.resultSuccess(stack);
             }

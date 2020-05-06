@@ -258,8 +258,8 @@ public class MoCItems {
                     new MoCItemRecord(0,  MoCSoundEvents.ITEM_RECORD_SHUFFLING, new Item.Properties()).setRegistryName("recordshuffle"),
 
                     new MoCItem(new Item.Properties()).setRegistryName("animalhide"),
-                    RAWTURKEY,
-                    COOKEDTURKEY,
+                    TURKEYRAW,
+                    TURKEYCOOKED,
                     new MoCItemArmor(MoCArmorMaterial.HIDEARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties()).setRegistryName("chesthide"),
                     new MoCItemArmor(MoCArmorMaterial.HIDEARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties()).setRegistryName("helmethide"),
                     new MoCItemArmor(MoCArmorMaterial.HIDEARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties()).setRegistryName("legshide"),

@@ -2,6 +2,7 @@ package drzhark.mocreatures.entity.monster;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.passive.MoCEntityBear;
@@ -138,8 +139,8 @@ public class MoCEntityWWolf extends MoCEntityMob {
             if (!(entity1 instanceof LivingEntity) || (entity1 == entity) || (entity1 == entity.getRidingEntity())
                     || (entity1 == entity.getRidingEntity()) || (entity1 instanceof PlayerEntity) || (entity1 instanceof MobEntity)
                     || (entity1 instanceof MoCEntityBigCat) || (entity1 instanceof MoCEntityBear) || (entity1 instanceof CowEntity)
-                    || ((entity1 instanceof WolfEntity) && !(MoCreatures.proxy.attackWolves))
-                    || ((entity1 instanceof MoCEntityHorse) && !(MoCreatures.proxy.attackHorses))) {
+                    || ((entity1 instanceof WolfEntity) && !(MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.attackWolves.get()))
+                    || ((entity1 instanceof MoCEntityHorse) && !(MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.attackHorses.get()))) {
                 continue;
             }
             double d2 = entity1.getDistanceSq(entity.getPosX(), entity.getPosY(), entity.getPosZ());
@@ -152,10 +153,10 @@ public class MoCEntityWWolf extends MoCEntityMob {
         return entityliving;
     }
 
-    @Override
-    protected Item getDropItem() {
-        return MoCItems.FUR;
-    }
+//    @Override TODO: WWolf Drops
+//    protected Item getDropItem() {
+//        return MoCItems.FUR;
+//    }
 
     @Override
     protected SoundEvent getDeathSound() {

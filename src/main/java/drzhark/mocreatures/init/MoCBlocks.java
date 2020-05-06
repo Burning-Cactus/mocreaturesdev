@@ -13,12 +13,14 @@ import drzhark.mocreatures.block.MoCBlockRock;
 import drzhark.mocreatures.block.MoCBlockTallGrass;
 import drzhark.mocreatures.block.MultiItemBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -76,20 +78,20 @@ public class MoCBlocks {
             final IForgeRegistry<Block> registry = event.getRegistry();
 
             final Block[] blocks = {
-                    new MoCBlockRock(Block.Properties.create(Material.ROCK)).setRegistryName("wyvern_stone"),
+                    new MoCBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5F, 10.0F).harvestTool(ToolType.PICKAXE).harvestLevel(1).tickRandomly()).setRegistryName("wyvern_stone"),
                     new MoCBlockGrass(Block.Properties.create(Material.PLANTS)).setRegistryName("wyvern_grass"),
-                    new MoCBlockDirt(Block.Properties.create(Material.EARTH)).setRegistryName("wyvern_dirt"),
+                    new MoCBlock(Block.Properties.create(Material.EARTH).sound(SoundType.GROUND).harvestTool(ToolType.SHOVEL).harvestLevel(0).hardnessAndResistance(0.6F).tickRandomly()).setRegistryName("wyvern_dirt"),
                     new MoCBlockLeaf(Block.Properties.create(Material.LEAVES)).setRegistryName("wyvern_leaves"),
-                    new MoCBlockLog(Block.Properties.create(Material.WOOD)).setRegistryName("wyvern_log"),
+                    new MoCBlock(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(2.0F).harvestTool(ToolType.AXE).harvestLevel(0)).setRegistryName("wyvern_log"),
                     new MoCBlockTallGrass(Block.Properties.create(Material.TALL_PLANTS)).setRegistryName("wyvern_tallgrass"),
-                    new MoCBlockPlanks(Block.Properties.create(Material.WOOD)).setRegistryName("wyvern_woodplank"),
-                    new MoCBlockRock(Block.Properties.create(Material.ROCK)).setRegistryName("ogre_stone"),
+                    new MoCBlock(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD)).setRegistryName("wyvern_woodplank"),
+                    new MoCBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5F, 10.0F).harvestTool(ToolType.PICKAXE).harvestLevel(1).tickRandomly()).setRegistryName("ogre_stone"),
                     new MoCBlockGrass(Block.Properties.create(Material.PLANTS)).setRegistryName("ogre_grass"),
-                    new MoCBlockDirt(Block.Properties.create(Material.EARTH)).setRegistryName("ogre_dirt"),
+                    new MoCBlock(Block.Properties.create(Material.EARTH).sound(SoundType.GROUND).harvestTool(ToolType.SHOVEL).harvestLevel(0).hardnessAndResistance(0.6F).tickRandomly()).setRegistryName("ogre_dirt"),
                     new MoCBlockLeaf(Block.Properties.create(Material.LEAVES)).setRegistryName("ogre_leaves"),
-                    new MoCBlockLog(Block.Properties.create(Material.WOOD)).setRegistryName("ogre_log"),
+                    new MoCBlock(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(2.0F).harvestTool(ToolType.AXE).harvestLevel(0)).setRegistryName("ogre_log"),
                     new MoCBlockTallGrass(Block.Properties.create(Material.TALL_PLANTS)).setRegistryName("ogre_tallgrass"),
-                    new MoCBlockPlanks(Block.Properties.create(Material.WOOD)).setRegistryName("ogre_woodplank")
+                    new MoCBlock(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD)).setRegistryName("ogre_woodplank")
             };
             registry.registerAll(blocks);
         }

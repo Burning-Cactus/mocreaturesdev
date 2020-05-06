@@ -4,6 +4,7 @@ import drzhark.mocreatures.entity.aquatic.MoCEntityFishy;
 import drzhark.mocreatures.entity.aquatic.MoCEntityMediumFish;
 import drzhark.mocreatures.entity.aquatic.MoCEntitySmallFish;
 import drzhark.mocreatures.entity.item.MoCEntityEgg;
+import drzhark.mocreatures.init.MoCEntities;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,7 +27,7 @@ public class MoCItemEgg extends MoCItem {
 
     public MoCItemEgg(Item.Properties builder) {
         super(builder.maxStackSize(16));
-        setHasSubtypes(true);
+//        setHasSubtypes(true);
     }
 
     @Override
@@ -38,9 +39,9 @@ public class MoCItemEgg extends MoCItem {
             if (i == 30) {
                 i = 31; //for ostrich eggs. placed eggs become stolen eggs.
             }
-            MoCEntityEgg entityegg = new MoCEntityEgg(world, i);
+            MoCEntityEgg entityegg = new MoCEntityEgg(MoCEntities.EGG, world, i);
             entityegg.setPosition(player.getPosX(), player.getPosY(), player.getPosZ());
-            player.world.spawnEntity(entityegg);
+            player.world.addEntity(entityegg);
             entityegg.getMotion().add((world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F, world.rand.nextFloat() * 0.05F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F);
         }
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);

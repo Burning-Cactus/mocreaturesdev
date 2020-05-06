@@ -2,11 +2,7 @@ package drzhark.mocreatures.entity.monster;
 
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
-import drzhark.mocreatures.init.MoCItems;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -37,12 +33,12 @@ public class MoCEntityFireOgre extends MoCEntityOgre{
         return true;
     }
     
-    @Override
-    protected Item getDropItem() {
-        boolean flag = (this.rand.nextInt(100) < MoCreatures.proxy.rareItemDropChance);
-        if (!flag) {
-            return Item.getItemFromBlock(Blocks.FIRE);
-        }
-        return MoCItems.HEARTFIRE;
-    } 
+//    @Override TODO: Fire Ogre Loot Table
+//    protected Item getDropItem() {
+//        boolean flag = (this.rand.nextInt(100) < MoCreatures.proxy.rareItemDropChance);
+//        if (!flag) {
+//            return Item.getItemFromBlock(Blocks.FIRE);
+//        }
+//        return MoCItems.HEARTFIRE;
+//    }
 }

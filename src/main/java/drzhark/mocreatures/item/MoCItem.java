@@ -9,14 +9,4 @@ public class MoCItem extends Item {
     public MoCItem(Item.Properties builder) {
         super(builder);
     }
-
-//    public MoCItem(String name) {
-//        this(name, 0);
-//    }
-//
-//    public MoCItem(String name, int meta) {
-//        this.setCreativeTab(MoCreatures.tabMoC);
-//        this.setRegistryName(MoCConstants.MOD_ID, name);
-//        this.setUnlocalizedName(name);
-//    }
 }

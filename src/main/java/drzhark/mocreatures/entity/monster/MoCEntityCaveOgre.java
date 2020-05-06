@@ -46,9 +46,9 @@ public class MoCEntityCaveOgre extends MoCEntityOgre{
         return 50F;
     }
     
-    @Override
-    protected Item getDropItem() {
-        return Items.DIAMOND;
-    } 
+//    @Override TODO: Cave Ogre Drops
+//    protected Item getDropItem() {
+//        return Items.DIAMOND;
+//    }
     
 }

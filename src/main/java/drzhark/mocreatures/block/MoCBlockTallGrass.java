@@ -13,6 +13,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
@@ -20,9 +22,10 @@ import net.minecraftforge.common.IShearable;
 import java.util.List;
 import java.util.Random;
 
-public class MoCBlockTallGrass extends MoCBlockBush implements IShearable {
+public class MoCBlockTallGrass extends MoCBlock implements IShearable {
 
     protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.8D, 0.9D);
+    protected static final VoxelShape SHAPE = VoxelShapes.create(AABB);
 
     public MoCBlockTallGrass(Block.Properties builder) {
         super(builder
@@ -36,9 +39,13 @@ public class MoCBlockTallGrass extends MoCBlockBush implements IShearable {
 //        }
 //    }
 
-    @Override
     public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
         return AABB;
+    }
+
+    @Override
+    public VoxelShape getShape() {
+        return this.SHAPE;
     }
 
     /**

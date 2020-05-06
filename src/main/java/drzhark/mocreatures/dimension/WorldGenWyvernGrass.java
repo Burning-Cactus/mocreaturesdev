@@ -5,11 +5,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
 
-public class WorldGenWyvernGrass extends WorldGenerator {
+public class WorldGenWyvernGrass extends Feature<NoFeatureConfig> {
 
     /** Stores ID for WorldGenTallGrass */
     private BlockState iBlockStateGrass;

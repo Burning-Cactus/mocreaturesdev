@@ -2,11 +2,8 @@ package drzhark.mocreatures;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
-import drzhark.mocreatures.client.MoCClientProxy;
 import drzhark.mocreatures.client.renderer.texture.MoCTextures;
-import drzhark.mocreatures.command.CommandMoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
-import drzhark.mocreatures.util.IProxy;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
@@ -16,7 +13,6 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -32,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
-import java.util.function.BiFunction;
 
 @Mod(MoCConstants.MOD_ID)
 public class MoCreatures {
@@ -161,24 +156,17 @@ public class MoCreatures {
         //showCreaturePedia(entityplayer, s);
     }
 
-    public static void updateSettings() {
-        proxy.readGlobalConfigValues();
-    }
+//    public static void updateSettings() {
+//        proxy.readGlobalConfigValues();
+//    }
 
-    //TODO: Fix the isServer() method
-    public static boolean isServer() {
-        return (FMLCommonLaunchHandler.getDist() == Dist.DEDICATED_SERVER);
-    }
+    //TODO: Fix the isServer() method (might not be necessary anymore, use world.isRemote or some other means
+//    public static boolean isServer() {
+//        return (FMLCommonLaunchHandler.getDist() == Dist.DEDICATED_SERVER);
+//    }
 
     public static ResourceLocation getTexture(String texture) {
         return MOCTEXTURES.getTexture(texture);
-    }
-
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class MoCDimensions {
-
-
-
     }
 
 }

@@ -28,10 +28,10 @@ public class MoCEntityFlameWraith extends MoCEntityWraith implements IMob {
         getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
     }
 
-    @Override
-    protected Item getDropItem() {
-        return Items.REDSTONE;
-    }
+//    @Override TODO: Flame Wraith Drops
+//    protected Item getDropItem() {
+//        return Items.REDSTONE;
+//    }
 
     @Override
     public void livingTick() {

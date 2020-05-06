@@ -4,16 +4,17 @@ import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.MoCPetData;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
 import drzhark.mocreatures.entity.passive.MoCEntityBigCat;
 import drzhark.mocreatures.entity.passive.MoCEntityHorse;
 import drzhark.mocreatures.entity.passive.MoCEntityWyvern;
+import drzhark.mocreatures.init.MoCEntities;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAppear;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,7 +29,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 import java.util.List;
 import java.util.UUID;
@@ -78,11 +78,11 @@ public class MoCItemHorseAmulet extends MoCItem {
                 MoCEntityTameableAnimal storedCreature;
                 this.spawnClass = this.spawnClass.replace(MoCConstants.MOD_PREFIX, "").toLowerCase();
                 if (this.spawnClass.equalsIgnoreCase("Wyvern")) { //ghost wyvern
-                    storedCreature = new MoCEntityWyvern(worldIn);
+                    storedCreature = new MoCEntityWyvern(MoCEntities.WYVERN, worldIn);
                     ((MoCEntityWyvern) storedCreature).setIsGhost(true);
                     this.isGhost = true;
                 } else if (this.spawnClass.equalsIgnoreCase("WildHorse")) {
-                    storedCreature = new MoCEntityHorse(worldIn);
+                    storedCreature = new MoCEntityHorse(MoCEntities.WYVERN, worldIn);
                 } else {
                     storedCreature = (MoCEntityTameableAnimal) EntityList.createEntityByIDFromName(new ResourceLocation(MoCConstants.MOD_PREFIX + this.spawnClass.toLowerCase()), worldIn);
                     if (storedCreature instanceof MoCEntityBigCat) {
@@ -102,24 +102,24 @@ public class MoCItemHorseAmulet extends MoCItem {
                 storedCreature.setArmorType(this.armor);
                 storedCreature.setOwnerPetId(this.PetId);
                 storedCreature.setOwnerId(player.getUniqueID());
-                this.ownerName = player.getName();
+                this.ownerName = player.getName().toString();
 
                 if (this.ownerUniqueId == null) {
                     this.ownerUniqueId = player.getUniqueID();
                     if (MoCreatures.instance.mapData != null) {
                         final MoCPetData newOwner = MoCreatures.instance.mapData.getPetData(player.getUniqueID());
-                        int maxCount = MoCreatures.proxy.maxTamed;
+                        int maxCount = MoCConfig.COMMON_CONFIG.OWNERSHIP.maxTamedPerPlayer.get();
                         if (MoCTools.isThisPlayerAnOP(player)) {
-                            maxCount = MoCreatures.proxy.maxOPTamed;
+                            maxCount = MoCConfig.COMMON_CONFIG.OWNERSHIP.maxTamedPerOP.get();
                         }
                         if (newOwner == null) {
-                            if (maxCount > 0 || !MoCreatures.proxy.enableOwnership) {
+                            if (maxCount > 0 || !MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get()) {
                                 // create new PetData for new owner
                                 MoCreatures.instance.mapData.updateOwnerPet(storedCreature);
                             }
                         } else // add pet to existing pet data
                         {
-                            if (newOwner.getTamedList().size() < maxCount || !MoCreatures.proxy.enableOwnership) {
+                            if (newOwner.getTamedList().size() < maxCount || !MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get()) {
                                 MoCreatures.instance.mapData.updateOwnerPet(storedCreature);
                             }
                         }
@@ -129,18 +129,18 @@ public class MoCItemHorseAmulet extends MoCItem {
                     if (!(this.ownerUniqueId.equals(player.getUniqueID())) && MoCreatures.instance.mapData != null) {
                         final MoCPetData oldOwner = MoCreatures.instance.mapData.getPetData(this.ownerUniqueId);
                         final MoCPetData newOwner = MoCreatures.instance.mapData.getPetData(player.getUniqueID());
-                        int maxCount = MoCreatures.proxy.maxTamed;
+                        int maxCount = MoCConfig.COMMON_CONFIG.OWNERSHIP.maxTamedPerPlayer.get();
                         if (MoCTools.isThisPlayerAnOP(player)) {
-                            maxCount = MoCreatures.proxy.maxOPTamed;
+                            maxCount = MoCConfig.COMMON_CONFIG.OWNERSHIP.maxTamedPerOP.get();
                         }
                         if (newOwner == null) {
-                            if (maxCount > 0 || !MoCreatures.proxy.enableOwnership) {
+                            if (maxCount > 0 || !MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get()) {
                                 // create new PetData for new owner
                                 MoCreatures.instance.mapData.updateOwnerPet(storedCreature);
                             }
                         } else // add pet to existing pet data
                         {
-                            if (newOwner.getTamedList().size() < maxCount || !MoCreatures.proxy.enableOwnership) {
+                            if (newOwner.getTamedList().size() < maxCount || !MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get()) {
                                 MoCreatures.instance.mapData.updateOwnerPet(storedCreature);
                             }
                         }
@@ -157,7 +157,7 @@ public class MoCItemHorseAmulet extends MoCItem {
                     }
                 }
 
-                if (player.world.spawnEntity(storedCreature)) {
+                if (player.world.addEntity(storedCreature)) {
                     MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAppear(storedCreature.getEntityId()), new TargetPoint(
                             player.world.dimension.getType().getId(), player.getPosX(), player.getPosY(), player.getPosZ(), 64));
                     MoCTools.playCustomSound(storedCreature, MoCSoundEvents.ENTITY_GENERIC_MAGIC_APPEAR);

@@ -13,9 +13,9 @@ public class MoCConfig {
 
 
     public static class CommonConfig {
-        public static General GENERAL;
-        public static Global GLOBAL;
-        public static Ownership OWNERSHIP;
+        public General GENERAL;
+        public Global GLOBAL;
+        public Ownership OWNERSHIP;
 
 
         public CommonConfig(ForgeConfigSpec.Builder builder) {

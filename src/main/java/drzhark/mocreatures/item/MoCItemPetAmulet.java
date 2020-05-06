@@ -4,6 +4,7 @@ import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.MoCPetData;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.IMoCTameable;
 import drzhark.mocreatures.entity.passive.MoCEntityBigCat;
@@ -13,19 +14,13 @@ import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAppear;
 import drzhark.mocreatures.util.MoCLog;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -34,9 +29,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.UUID;
@@ -58,7 +50,7 @@ public class MoCItemPetAmulet extends MoCItem {
 
     public MoCItemPetAmulet(Item.Properties builder) {
         super(builder.maxStackSize(1));
-        setHasSubtypes(true);
+//        setHasSubtypes(true);
     }
 
     public MoCItemPetAmulet(Item.Properties builder, int type) {
@@ -127,18 +119,18 @@ public class MoCItemPetAmulet extends MoCItem {
                         this.ownerUniqueId = player.getUniqueID();
                         if (MoCreatures.instance.mapData != null) {
                             final MoCPetData newOwner = MoCreatures.instance.mapData.getPetData(player.getUniqueID());
-                            int maxCount = MoCreatures.proxy.maxTamed;
+                            int maxCount = MoCConfig.COMMON_CONFIG.OWNERSHIP.maxTamedPerPlayer.get();
                             if (MoCTools.isThisPlayerAnOP(player)) {
-                                maxCount = MoCreatures.proxy.maxOPTamed;
+                                maxCount = MoCConfig.COMMON_CONFIG.OWNERSHIP.maxTamedPerOP.get();
                             }
                             if (newOwner == null) {
-                                if (maxCount > 0 || !MoCreatures.proxy.enableOwnership) {
+                                if (maxCount > 0 || !MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get()) {
                                     // create new PetData for new owner
                                     MoCreatures.instance.mapData.updateOwnerPet(storedCreature);
                                 }
                             } else // add pet to existing pet data
                             {
-                                if (newOwner.getTamedList().size() < maxCount || !MoCreatures.proxy.enableOwnership) {
+                                if (newOwner.getTamedList().size() < maxCount || !MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get()) {
                                     MoCreatures.instance.mapData.updateOwnerPet(storedCreature);
                                 }
                             }
@@ -148,12 +140,12 @@ public class MoCItemPetAmulet extends MoCItem {
                         if (!(this.ownerUniqueId.equals(player.getUniqueID())) && MoCreatures.instance.mapData != null) {
                             MoCPetData oldOwner = MoCreatures.instance.mapData.getPetData(this.ownerUniqueId);
                             MoCPetData newOwner = MoCreatures.instance.mapData.getPetData(player.getUniqueID());
-                            int maxCount = MoCreatures.proxy.maxTamed;
+                            int maxCount = MoCConfig.COMMON_CONFIG.OWNERSHIP.maxTamedPerPlayer.get();
                             if (MoCTools.isThisPlayerAnOP(player)) {
-                                maxCount = MoCreatures.proxy.maxOPTamed;
+                                maxCount = MoCConfig.COMMON_CONFIG.OWNERSHIP.maxTamedPerOP.get();
                             }
                             if ((newOwner != null && newOwner.getTamedList().size() < maxCount) || (newOwner == null && maxCount > 0)
-                                    || !MoCreatures.proxy.enableOwnership) {
+                                    || !MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get()) {
                                 MoCreatures.instance.mapData.updateOwnerPet(storedCreature);
                             }
                             // remove pet entry from old owner
@@ -169,7 +161,7 @@ public class MoCItemPetAmulet extends MoCItem {
                         }
                     }
 
-                    if (player.getEntityWorld().spawnEntity((LivingEntity) storedCreature)) {
+                    if (player.getEntityWorld().addEntity((LivingEntity) storedCreature)) {
                         MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAppear(((LivingEntity) storedCreature).getEntityId()),
                                 new TargetPoint(player.getEntityWorld().dimension.getType().getId(), player.getPosX(), player.getPosY(),
                                         player.getPosZ(), 64));
@@ -185,7 +177,7 @@ public class MoCItemPetAmulet extends MoCItem {
                     }
                 }
             } catch (Exception ex) {
-                if (MoCreatures.proxy.debug) {
+                if (MoCConfig.COMMON_CONFIG.GLOBAL.debug.get()) {
                     MoCLog.logger.warn("Error spawning creature from fishnet/amulet " + ex);
                 }
             }

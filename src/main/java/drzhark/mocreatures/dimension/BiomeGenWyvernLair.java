@@ -5,6 +5,7 @@ import drzhark.mocreatures.entity.passive.MoCEntityBunny;
 import drzhark.mocreatures.entity.passive.MoCEntitySnake;
 import drzhark.mocreatures.entity.passive.MoCEntityWyvern;
 import drzhark.mocreatures.init.MoCBlocks;
+import drzhark.mocreatures.init.MoCEntities;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.init.Blocks;
@@ -23,17 +24,17 @@ import java.util.Random;
 public class BiomeGenWyvernLair extends Biome {
 
     private MoCBigTreeFeature wyvernGenBigTree;
-    private WorldGenShrub worldGenShrub;
+    private ShrubFeature worldGenShrub;
 
     public BiomeGenWyvernLair(Biome.Builder biomeProperties) {
         super(biomeProperties);
         this.getSpawns(EntityClassification.CREATURE).clear();
         this.getSpawns(EntityClassification.MONSTER).clear();
         this.getSpawns(EntityClassification.WATER_CREATURE).clear();
-        this.getSpawns(EntityClassification.CREATURE).add(new SpawnListEntry(MoCEntityBunny.class, 6, 2, 3));
-        this.getSpawns(EntityClassification.CREATURE).add(new SpawnListEntry(MoCEntityDragonfly.class, 8, 2, 3));
-        this.getSpawns(EntityClassification.CREATURE).add(new SpawnListEntry(MoCEntitySnake.class, 6, 1, 2));
-        this.getSpawns(EntityClassification.CREATURE).add(new SpawnListEntry(MoCEntityWyvern.class, 10, 1, 4));
+        this.getSpawns(EntityClassification.CREATURE).add(new SpawnListEntry(MoCEntities.BUNNY, 6, 2, 3));
+        this.getSpawns(EntityClassification.CREATURE).add(new SpawnListEntry(MoCEntities.DRAGONFLY, 8, 2, 3));
+        this.getSpawns(EntityClassification.CREATURE).add(new SpawnListEntry(MoCEntities.SNAKE, 6, 1, 2));
+        this.getSpawns(EntityClassification.CREATURE).add(new SpawnListEntry(MoCEntities.WYVERN, 10, 1, 4));
         this.topBlock = MoCBlocks.WYVERN_GRASS.getDefaultState();
         this. = MoCBlocks.WYVERN_DIRT;
         this.wyvernGenBigTree = new MoCBigTreeFeature(false, MoCBlocks.WYVERN_LOG.getDefaultState(), MoCBlocks.WYVERN_LEAVES.getDefaultState(), 2, 30, 10);
@@ -58,7 +59,7 @@ public class BiomeGenWyvernLair extends Biome {
      */
     @Override
     public WorldGenerator getRandomWorldGenForGrass(Random par1Random) {
-        return new WorldGenWyvernGrass(MoCBlocks.WYVERN_TALLGRASS.get().getDefaultState());
+        return new WorldGenWyvernGrass(MoCBlocks.WYVERN_TALLGRASS.getDefaultState());
     }
 
     @Override
