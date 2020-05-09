@@ -1,5 +1,6 @@
 package drzhark.mocreatures;
 
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.IMoCTameable;
 import drzhark.mocreatures.entity.MoCEntityAnimal;
@@ -15,10 +16,7 @@ import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.inventory.MoCAnimalChest;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageNameGUI;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.JukeboxBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.*;
@@ -30,7 +28,9 @@ import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -62,8 +62,10 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.extensions.IForgeFluid;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import java.util.ArrayList;
@@ -601,7 +603,7 @@ public class MoCTools {
         return 0.0F;
     }
 
-    public static String biomeName(World world, BlockPos pos) {
+    public static String biomeName(World world, BlockPos pos) { //TODO: Rewrite this after doing world gen
         BiomeProvider biomeProvider = world.get;
         if (biomeProvider == null) {
             return null;
@@ -623,7 +625,7 @@ public class MoCTools {
 
     public static void destroyDrops(Entity entity, double d) {
 
-        if (!MoCreatures.proxy.destroyDrops) {
+        if (!MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.destroyDrops.get()) {
             return;
         }
 
@@ -635,7 +637,7 @@ public class MoCTools {
                 continue;
             }
             ItemEntity entityitem = (ItemEntity) entity1;
-            if ((entityitem != null) && (entityitem.getAge() < 50)) {
+            if ((entityitem.getAge() < 50)) {
                 entityitem.remove();
             }
         }
@@ -801,7 +803,7 @@ public class MoCTools {
                         BlockState blockstate = entity.world.getBlockState(pos);
                         if (blockstate.getBlock() != Blocks.AIR) {
                             f4 = blockstate.getBlockHardness(entity.world, pos);
-                            f2 -= (blockstate.getBlock().getExplosionResistance(entity) + 0.3F) * (f3 / 10F);
+                            f2 -= (blockstate.getBlock().getExplosionResistance() + 0.3F) * (f3 / 10F);
                         }
                         if ((f2 > 0.0F) && (d10 > entity.getPosY()) && (f4 < 3F)) {
                             hashset.add(pos);
@@ -1222,19 +1224,19 @@ public class MoCTools {
             return false;
         }
 
-        if (MoCreatures.proxy.enableOwnership) {
+        if (MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get()) {
             if (storedCreature == null) {
                 ep.sendMessage(new TranslationTextComponent(TextFormatting.RED + "ERROR:" + TextFormatting.WHITE
                         + "The stored creature is NULL and could not be created. Report to admin."));
                 return false;
             }
             int max = 0;
-            max = MoCreatures.proxy.maxTamed;
+            max = MoCConfig.COMMON_CONFIG.OWNERSHIP.maxTamedPerPlayer.get();
             // only check count for new pets as owners may be changing the name
             if (!MoCreatures.instance.mapData.isExistingPet(ep.getUniqueID(), storedCreature)) {
                 int count = MoCTools.numberTamedByPlayer(ep);
                 if (isThisPlayerAnOP(ep)) {
-                    max = MoCreatures.proxy.maxOPTamed;
+                    max = MoCConfig.COMMON_CONFIG.OWNERSHIP.maxTamedPerOP.get();
                 }
                 if (count >= max) {
                     String message = "\2474" + ep.getName() + " can not tame more creatures, limit of " + max + " reached";
@@ -1675,7 +1677,7 @@ public class MoCTools {
      * @return
      */
     public static boolean isItemEdible(Item item1) {
-        return (item1 instanceof ItemFood) || (item1.getTags().contains(Tags.Items.SEEDS)) || item1 == Items.WHEAT || item1 == Items.SUGAR || item1 == Items.CAKE
+        return (item1.isFood()) || (item1.getTags().contains(Tags.Items.SEEDS)) || item1 == Items.WHEAT || item1 == Items.SUGAR || item1 == Items.CAKE
                 || item1 == Items.EGG;
     }
     

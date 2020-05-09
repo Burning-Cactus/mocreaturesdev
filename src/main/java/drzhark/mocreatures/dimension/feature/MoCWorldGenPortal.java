@@ -1,13 +1,17 @@
-package drzhark.mocreatures.dimension;
+package drzhark.mocreatures.dimension.feature;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 import java.util.Random;
 
-public class MoCWorldGenPortal extends Generator {
+public class MoCWorldGenPortal extends Feature<NoFeatureConfig> { //TODO: Low priority, move this
 
     private Block pillarBlock;
     private Block stairBlock;
@@ -37,7 +41,7 @@ public class MoCWorldGenPortal extends Generator {
     }
 
     @Override
-    public boolean generate(World world, Random random, BlockPos pos) {
+    public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         if (world.getBlockState(pos).getBlock() == this.centerBlock || world.getBlockState(pos.down()).getBlock() == this.centerBlock
                 || world.getBlockState(pos.up()).getBlock() == this.centerBlock) {
             return true;

@@ -1,4 +1,4 @@
-package drzhark.mocreatures.dimension;
+package drzhark.mocreatures.dimension.feature;
 
 import drzhark.mocreatures.block.MoCBlockTallGrass;
 import net.minecraft.block.Block;

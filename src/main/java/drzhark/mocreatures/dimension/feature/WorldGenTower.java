@@ -1,30 +1,35 @@
-package drzhark.mocreatures.dimension;
+package drzhark.mocreatures.dimension.feature;
 
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 import java.util.Random;
+import java.util.function.Function;
 
-public class WorldGenTower extends WorldGenerator {
+public class WorldGenTower extends Feature<NoFeatureConfig> {
 
     private Block MainBlock;
     private Block brickBlock;
 
-    public WorldGenTower(Block Main, Block Brick, Block Deco) {
+    public WorldGenTower(Function<Dynamic<?>, ? extends NoFeatureConfig> function, Block Main, Block Brick, Block Deco) {
+        super(function);
         this.MainBlock = Main;
         this.brickBlock = Brick;
     }
 
-    public WorldGenTower(Block Main, int MainMeta, Block Brick, int BrickMeta, Block Deco, int DecoMeta) {
-        this.MainBlock = Main;
-        this.brickBlock = Brick;
+    public WorldGenTower(Function<Dynamic<?>, ? extends NoFeatureConfig> function) {
+        super(function);
     }
 
     @Override
-    public boolean generate(World world, Random rand, BlockPos pos) {
+    public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         int t = 3;
         int x = pos.getX();
         int y = pos.getY();
@@ -60,7 +65,7 @@ public class WorldGenTower extends WorldGenerator {
 
             for (int Nx = x - 3; Nx < x + 4; Nx++) {
                 for (int Nz = z - 3; Nz < z + 4; Nz++) {
-                    world.setBlockState(new BlockPos(Nx, y - 1, Nz), Blocks.FLOWING_LAVA.getDefaultState(), t);
+                    world.setBlockState(new BlockPos(Nx, y - 1, Nz), Blocks.LAVA.getDefaultState(), t);
                 }
             }
 

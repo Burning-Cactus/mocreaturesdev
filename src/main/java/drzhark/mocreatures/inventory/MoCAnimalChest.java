@@ -51,7 +51,7 @@ public class MoCAnimalChest extends InventoryBasic implements ILockableContainer
             if (var3 != null) {
                 CompoundNBT var4 = new CompoundNBT();
                 var4.putByte("Slot", (byte) var2);
-                var3.writeToNBT(var4);
+                var3.write(var4);
                 var1.add(var4);
             }
         }

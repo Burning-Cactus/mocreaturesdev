@@ -1,21 +1,12 @@
 package drzhark.mocreatures.block;
 
-import drzhark.mocreatures.init.MoCBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ToolType;
 
 import java.util.Random;
 
-public class MoCBlockGrass extends MoCBlock implements IGrowable {
+public class MoCBlockGrass extends MoCBlock {
 
     public MoCBlockGrass(Block.Properties builder) {
         super(builder
@@ -25,21 +16,6 @@ public class MoCBlockGrass extends MoCBlock implements IGrowable {
                 .harvestLevel(0)
                 .tickRandomly()
         );
-    }
-
-    @Override
-    public boolean canGrow(IBlockReader iBlockReader, BlockPos blockPos, BlockState blockState, boolean b) {
-        return true;
-    }
-
-    @Override
-    public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, BlockState blockState) {
-        return false;
-    }
-
-    @Override
-    public void grow(ServerWorld serverWorld, Random random, BlockPos blockPos, BlockState blockState) {
-
     }
 
 //    public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand) {

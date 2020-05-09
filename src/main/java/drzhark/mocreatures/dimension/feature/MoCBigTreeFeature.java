@@ -1,34 +1,40 @@
-package drzhark.mocreatures.dimension;
+package drzhark.mocreatures.dimension.feature;
 
+import com.mojang.datafixers.Dynamic;
 import drzhark.mocreatures.init.MoCBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.AbstractTreeFeature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
 
 import java.util.Random;
+import java.util.Set;
+import java.util.function.Function;
 
 public class MoCBigTreeFeature<T extends TreeFeatureConfig> extends AbstractTreeFeature<T> {
 
-    public MoCBigTreeFeature(boolean par1) {
-        super(par1);
+    public MoCBigTreeFeature(Function<Dynamic<?>, ? extends T> function) {
+        super(function);
     }
 
     /**
      * Generates a Big Tree with the given log and leaf block IDs
      *
      * @param par1
-     * @param logblockID
-     * @param leafblockID
+     * @param iblockstateLog
+     * @param iblockstateleaf
      * @param trunksize
      * @param heightlimit
      * @param leafdist
      */
-    public MoCBigTreeFeature(boolean par1, BlockState iblockstateLog, BlockState iblockstateleaf, int trunksize, int heightlimit, int leafdist) {
-        super(par1);
+    public MoCBigTreeFeature(Function<Dynamic<?>, ? extends T> function, BlockState iblockstateLog, BlockState iblockstateleaf, int trunksize, int heightlimit, int leafdist) {
+        super(function);
         this.blockStateLog = iblockstateLog;
         this.blockStateLeaf = iblockstateleaf;
         this.trunkSize = trunksize;
@@ -175,7 +181,7 @@ public class MoCBigTreeFeature<T extends TreeFeatureConfig> extends AbstractTree
                 } else {
                     var11[var9] = var10[var9] + var13;
                     BlockPos pos = new BlockPos(var11[0], var11[1], var11[2]);
-                    IBlockState blockstate = this.world.getBlockState(pos);
+                    BlockState blockstate = this.world.getBlockState(pos);
                     Block block = blockstate.getBlock();
 
                     if (block != Blocks.AIR && block != this.iBlockStateLeaf.getBlock())//BlockLeafID)//Block.leaves)
@@ -227,7 +233,7 @@ public class MoCBigTreeFeature<T extends TreeFeatureConfig> extends AbstractTree
 
         for (int var5 = par2 + this.leafDistanceLimit; var4 < var5; ++var4) {
             float var6 = this.leafSize(var4 - par2);
-            this.func_150529_a(par1, var4, par3, var6, (byte) 1, MoCBlocks.mocLeaf);
+            this.func_150529_a(par1, var4, par3, var6, (byte) 1, MoCBlocks.WYVERN_LEAVES);
         }
     }
 
@@ -409,7 +415,7 @@ public class MoCBigTreeFeature<T extends TreeFeatureConfig> extends AbstractTree
             System.out.println("invalid tree location option b = " +  iblockstate2.getBlock());
         }
         */
-        if (block != MoCBlocks.mocDirt && block != MoCBlocks.mocGrass) {
+        if ((block != MoCBlocks.WYVERN_DIRT && block != MoCBlocks.OGRE_DIRT) && (block != MoCBlocks.WYVERN_GRASS && block != MoCBlocks.OGRE_GRASS)) {
             return false;
         } else {
             int var4 = this.checkBlockLine(var1, var2);
@@ -460,5 +466,10 @@ public class MoCBigTreeFeature<T extends TreeFeatureConfig> extends AbstractTree
             this.generateLeafNodeBases();
             return true;
         }
+    }
+
+    @Override
+    protected boolean func_225557_a_(IWorldGenerationReader generationReader, Random rand, BlockPos p_225557_3_, Set<BlockPos> p_225557_4_, Set<BlockPos> p_225557_5_, MutableBoundingBox p_225557_6_, T p_225557_7_) {
+        return false;
     }
 }

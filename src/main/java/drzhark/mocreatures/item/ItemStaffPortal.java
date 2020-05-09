@@ -18,6 +18,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
@@ -164,14 +165,14 @@ public class ItemStaffPortal extends MoCItem {
         this.portalPosX = nbt.getInt("portalPosX");
         this.portalPosY = nbt.getInt("portalPosY");
         this.portalPosZ = nbt.getInt("portalPosZ");
-        this.portalDimension = DimensionType.getById(nbt.getInt("portalDimension"));
+        this.portalDimension = DimensionType.byName(new ResourceLocation(nbt.getString("portalDimension")));
     }
 
     public void writeToNBT(CompoundNBT nbt) {
         nbt.putInt("portalPosX", this.portalPosX);
         nbt.putInt("portalPosY", this.portalPosY);
         nbt.putInt("portalPosZ", this.portalPosZ);
-        nbt.putInt("portalDimension", this.portalDimension.getId());
+        nbt.putString("portalDimension", this.portalDimension.toString()); //TODO: This probably will break when I test it.
     }
 
     @Override

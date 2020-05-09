@@ -1,11 +1,14 @@
-package drzhark.mocreatures.dimension;
+package drzhark.mocreatures.dimension.gen;
 
+import drzhark.mocreatures.dimension.feature.MoCWorldGenPortal;
+import drzhark.mocreatures.dimension.feature.WorldGenTower;
 import drzhark.mocreatures.init.MoCBlocks;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -14,19 +17,19 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorSimplex;
 import net.minecraft.world.gen.feature.EndIslandFeature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.WorldGenEndIsland;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 
 import java.util.List;
 import java.util.Random;
 
-public class ChunkGeneratorWyvernLair implements NoiseChunkGenerator
+public class ChunkGeneratorWyvernLair extends NoiseChunkGenerator<WyvernLairGenSettings>
 {
     /** RNG. */
     private final Random rand;
@@ -384,11 +387,11 @@ public class ChunkGeneratorWyvernLair implements NoiseChunkGenerator
     private boolean portalDone = false;
 
     public void generateTower(World par1World, Random par2Random, int par3, int par4) {
-        WorldGenTower myTower = new WorldGenTower(Blocks.GRASS, Blocks.DOUBLE_STONE_SLAB, Blocks.LAPIS_ORE);
+        WorldGenTower myTower = new WorldGenTower(() -> , Blocks.GRASS, Blocks.SMOOTH_STONE, Blocks.LAPIS_ORE);
         if (!this.towerDone) {
             int randPosX = par3 + par2Random.nextInt(16) + 8;
             int randPosZ = par4 + par2Random.nextInt(16) + 8;
-            this.towerDone = myTower.generate(par1World, par2Random, new BlockPos(randPosX, 61, randPosZ));
+            this.towerDone = myTower.place(par1World, this, par2Random, new BlockPos(randPosX, 61, randPosZ), new NoFeatureConfig());
         }
     }
 
@@ -398,33 +401,33 @@ public class ChunkGeneratorWyvernLair implements NoiseChunkGenerator
         for (int i = 0; i < 16; i++) {
             if (!this.portalDone) {
                 int randPosY = 56 + i;
-                this.portalDone = myPortal.generate(par1World, par2Random, new BlockPos(0, randPosY, 0));
+                this.portalDone = myPortal.place(par1World, this, par2Random, new BlockPos(0, randPosY, 0), new NoFeatureConfig());
             }
         }
     }
 
-    public boolean generateStructures(Chunk chunkIn, int x, int z)
+    public List<Biome.SpawnListEntry> getPossibleCreatures(EntityClassification creatureType, BlockPos pos)
     {
-        return false;
-    }
-
-    public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
-    {
-        return this.world.getBiome(pos).getSpawnableList(creatureType);
+        return this.world.getBiome(pos).getSpawns(creatureType);
     }
 
     @Override
-    public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean findUnexplored) {
-        return null;
+    protected double[] getBiomeNoiseColumn(int noiseX, int noiseZ) {
+        return new double[0];
     }
 
     @Override
-    public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
-        return false;
+    protected double func_222545_a(double p_222545_1_, double p_222545_3_, int p_222545_5_) {
+        return 0;
     }
 
     @Override
-    public void recreateStructures(Chunk chunkIn, int x, int z)
-    {
+    protected void fillNoiseColumn(double[] noiseColumn, int noiseX, int noiseZ) {
+
+    }
+
+    @Override
+    public int getGroundHeight() {
+        return 64;
     }
 }

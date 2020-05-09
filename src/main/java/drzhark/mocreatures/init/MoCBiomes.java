@@ -1,7 +1,7 @@
 package drzhark.mocreatures.init;
 
 import drzhark.mocreatures.MoCConstants;
-import drzhark.mocreatures.dimension.BiomeGenWyvernLair;
+import drzhark.mocreatures.dimension.WyvernLairBiome;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.BiomeProperties;
 import net.minecraftforge.common.BiomeDictionary;
@@ -16,7 +16,7 @@ import net.minecraftforge.registries.ObjectHolder;
 @ObjectHolder(MoCConstants.MOD_ID)
 public class MoCBiomes {
 
-    public static Biome WyvernLairBiome = new BiomeGenWyvernLair(new Biome.Builder(/*"WyvernLair"*/).setBaseHeight(0.3F).setHeightVariation(1.5F));
+    public static final Biome WYVERNBIOME = new WyvernLairBiome(new Biome.Builder().setBaseHeight(0.3F));
 
     @Mod.EventBusSubscriber(modid = MoCConstants.MOD_ID)
     public static class RegistrationHandler {
@@ -29,7 +29,7 @@ public class MoCBiomes {
         @SubscribeEvent
         public static void registerBiomes(final RegistryEvent.Register<Biome> event) {
             final IForgeRegistry<Biome> registry = event.getRegistry();
-            registerBiome(registry, WyvernLairBiome, "wyvernbiome", BiomeManager.BiomeType.WARM, 1000, Type.FOREST, Type.END);
+            registerBiome(registry, WYVERNBIOME, "wyvernbiome", BiomeManager.BiomeType.WARM, 1000, Type.FOREST, Type.END);
         }
 
         private static <T extends Biome> void registerBiome(final IForgeRegistry<Biome> registry, final T biome, final String biomeName, final BiomeManager.BiomeType biomeType, final int weight, final BiomeDictionary.Type... types) {

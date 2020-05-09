@@ -1,5 +1,7 @@
 package drzhark.mocreatures.dimension;
 
+import drzhark.mocreatures.dimension.gen.ChunkGeneratorWyvernLair;
+import drzhark.mocreatures.dimension.gen.WyvernLairGenSettings;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3d;
@@ -22,6 +24,7 @@ public class WyvernLairDimension extends Dimension {
 
     @Override
     public ChunkGenerator<?> createChunkGenerator() {
+        WyvernLairGenSettings generationSettings = new WyvernLairGenSettings();
         return new ChunkGeneratorWyvernLair(this.world, false, this.world.getSeed());
     }
 

@@ -6,11 +6,13 @@ import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.IMoCTameable;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageUpdatePetName;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -52,8 +54,8 @@ public class MoCGUIEntityNamer extends Screen {
 
     public void updateName() {
         this.NamedEntity.setPetName(this.NameToSet);
-        MoCMessageHandler.INSTANCE.sendToServer(new MoCMessageUpdatePetName(((EntityLiving) this.NamedEntity).getEntityId(), this.NameToSet));
-        this.mc.displayGuiScreen(null);
+        MoCMessageHandler.INSTANCE.sendToServer(new MoCMessageUpdatePetName(((LivingEntity) this.NamedEntity).getEntityId(), this.NameToSet));
+        Minecraft.getInstance().displayGuiScreen(null);
     }
 
     @Override

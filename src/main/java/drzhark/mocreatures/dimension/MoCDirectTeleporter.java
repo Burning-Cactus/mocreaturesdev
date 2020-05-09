@@ -1,12 +1,14 @@
 package drzhark.mocreatures.dimension;
 
+import drzhark.mocreatures.dimension.feature.MoCWorldGenPortal;
+import drzhark.mocreatures.init.MoCDimensions;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.ITeleporter;
 
@@ -37,7 +39,7 @@ public class MoCDirectTeleporter implements ITeleporter {
         for (int i = 0; i < 14; i++) {
             if (!this.portalDone) {
                 int randPosY = 58 + i;//par2Random.nextInt(8);
-                this.portalDone = myPortal.generate(par1World, par2Random, new BlockPos(0, randPosY, 0));
+                this.portalDone = myPortal.place(par1World, , par2Random, new BlockPos(0, randPosY, 0), new NoFeatureConfig());
             }
         }
     }

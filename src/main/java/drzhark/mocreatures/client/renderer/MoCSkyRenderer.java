@@ -1,4 +1,4 @@
-package drzhark.mocreatures.dimension;
+package drzhark.mocreatures.client.renderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
@@ -7,7 +7,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IRenderHandler;
 
 public class MoCSkyRenderer implements IRenderHandler {
-
 
     @Override
     @OnlyIn(Dist.CLIENT)

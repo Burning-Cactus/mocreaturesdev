@@ -62,7 +62,7 @@ public class MoCItems {
     public static final Item STAFFTELEPORT = null;
 
     public static final Item MEDALLION = null;
-    //public static final MoCItemKittyBed[] KITTYBED = new MoCItemKittyBed[16]; TODO: Make the kittybed work.
+    //public static final MoCItemKittyBed[] KITTYBED = new MoCItemKittyBed[16]; TODO: Make the kittybed work. 99% sure I'll register different kittybed items for each color.
     public static final Item LITTERBOX = null;
     public static final Item WOOLBALL = null;
 
@@ -171,18 +171,18 @@ public class MoCItems {
     public static final Item SCROLLOFOWNER = null;
 
     // foods
-    public static final MoCItemFood TURKEYCOOKED = new MoCItemFood("turkeycooked", 8, 0.6F, false);
-    public static final MoCItemFood CRABRAW = (MoCItemFood) new MoCItemFood("crabraw", 2, 0.3F, false).setPotionEffect(new EffectInstance(Effects.HUNGER, 30, 0), 0.8F);
-    public static final MoCItemFood CRABCOOKED = new MoCItemFood("crabcooked", 6, 0.6F, false);
-    public static final MoCItemFood OMELET = new MoCItemFood("omelet", 4, 0.6F, false);
-    public static final MoCItemFood OSTRICHRAW = (MoCItemFood) new MoCItemFood("ostrichraw", 2, 0.3F, false).setPotionEffect(new EffectInstance(Effects.HUNGER, 30, 0), 0.8F);
-    public static final MoCItemFood OSTRICHCOOKED = new MoCItemFood("ostrichcooked", 6, 0.6F, false);
-    public static final MoCItemFood RATBURGER = new MoCItemFood("ratburger", 8, 0.6F, false);
-    public static final MoCItemFood RATCOOKED = new MoCItemFood("ratcooked", 4, 0.6F, false);
-    public static final MoCItemFood RATRAW = (MoCItemFood) new MoCItemFood("ratraw", 2, 0.3F, false).setPotionEffect(new EffectInstance(Effects.HUNGER, 30, 0), 0.8F);
-    public static final MoCItemFood TURKEYRAW = (MoCItemFood) new MoCItemFood("turkeyraw", 3, 0.3F, false).setPotionEffect(new EffectInstance(Effects.HUNGER, 30, 0), 0.8F);
-    public static final MoCItemFood TURTLERAW = new MoCItemFood("turtleraw", 2, 0.3F, false);
-    public static final MoCItemFood TURTLESOUP = new MoCItemTurtleSoup("turtlesoup", 6, 0.6F, false);
+    public static final Item TURKEY_RAW = null;
+    public static final Item TURKEY_COOKED = null;
+    public static final Item CRAB_RAW = null;
+    public static final Item CRAB_COOKED = null;
+    public static final Item OMELET = null;
+    public static final Item OSTRICH_RAW = null;
+    public static final Item OSTRICH_COOKED = null;
+    public static final Item RAT_BURGER = null;
+    public static final Item RAT_COOKED = null;
+    public static final Item RAT_RAW = null;
+    public static final Item TURTLE_RAW = null;
+    public static final Item TURTLE_SOUP = null;
 
     @Mod.EventBusSubscriber(modid = MoCConstants.MOD_ID)
     public static class RegistrationHandler {
@@ -211,9 +211,9 @@ public class MoCItems {
                     new MoCItemArmor(MoCArmorMaterial.CROCARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties()).setRegistryName("legscroc"),
                     new MoCItemArmor(MoCArmorMaterial.CROCARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties()).setRegistryName("bootscroc"),
                     new MoCItem(new Item.Properties()).setRegistryName("fur"),
-                    OMELET,
-                    TURTLERAW,
-                    TURTLESOUP,
+                    new MoCItem(new Item.Properties().food(MoCFoods.OMELET)).setRegistryName("omelet"),
+                    new MoCItem(new Item.Properties().food(MoCFoods.TURTLE_RAW)).setRegistryName("turtle_raw"),
+                    new MoCItem(new Item.Properties().food(MoCFoods.TURTLE_SOUP)).setRegistryName("turtle_soup"),
                     new ItemStaffPortal().setRegistryName("staffportal"),                       //STAFFPORTAL
                     new ItemStaffTeleport().setRegistryName("staffteleport"),                   //STAFFTELEPORT
                     new ItemBuilderHammer().setRegistryName("builderhammer"),                   //BUILDERHAMMER
@@ -252,21 +252,21 @@ public class MoCItems {
                     new MoCItem(new Item.Properties()).setRegistryName("heartfire"),
                     new MoCItem(new Item.Properties()).setRegistryName("heartundead"),
                     new MoCItem(new Item.Properties()).setRegistryName("unicornhorn"),
-                    OSTRICHRAW,
-                    OSTRICHCOOKED,
+                    new MoCItem(new Item.Properties().food(MoCFoods.OSTRICH_RAW)).setRegistryName("ostrich_raw"),
+                    new MoCItem(new Item.Properties().food(MoCFoods.OSTRICH_COOKED)).setRegistryName("ostrich_cooked"),
                     new MoCItem(new Item.Properties()).setRegistryName("horsearmorcrystal"),
                     new MoCItemRecord(0,  MoCSoundEvents.ITEM_RECORD_SHUFFLING, new Item.Properties()).setRegistryName("recordshuffle"),
 
                     new MoCItem(new Item.Properties()).setRegistryName("animalhide"),
-                    TURKEYRAW,
-                    TURKEYCOOKED,
+                    new MoCItem(new Item.Properties().food(MoCFoods.TURKEY_RAW)).setRegistryName("turkey_raw"),
+                    new MoCItem(new Item.Properties().food(MoCFoods.TURKEY_COOKED)).setRegistryName("turkey_cooked"),
                     new MoCItemArmor(MoCArmorMaterial.HIDEARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties()).setRegistryName("chesthide"),
                     new MoCItemArmor(MoCArmorMaterial.HIDEARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties()).setRegistryName("helmethide"),
                     new MoCItemArmor(MoCArmorMaterial.HIDEARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties()).setRegistryName("legshide"),
                     new MoCItemArmor(MoCArmorMaterial.HIDEARMOR, 4, EquipmentSlotType.FEET, new Item.Properties()).setRegistryName("bootshide"),
-                    RATRAW,
-                    RATCOOKED,
-                    RATBURGER,
+                    new MoCItem(new Item.Properties().food(MoCFoods.RAT_RAW)).setRegistryName("rat_raw"),
+                    new MoCItem(new Item.Properties().food(MoCFoods.RAT_COOKED)).setRegistryName("rat_cooked"),
+                    new MoCItem(new Item.Properties().food(MoCFoods.RAT_BURGER)).setRegistryName("rat_burger"),
 
                     new MoCItem(new Item.Properties()).setRegistryName("chitincave"),
                     new MoCItem(new Item.Properties()).setRegistryName("chitinfrost"),
@@ -315,8 +315,8 @@ public class MoCItems {
                     new MoCItem(new Item.Properties()).setRegistryName("scrollfreedom"),
                     new MoCItem(new Item.Properties()).setRegistryName("scrollofsale"),
                     new MoCItem(new Item.Properties()).setRegistryName("scrollofowner"),
-                    CRABRAW,
-                    CRABCOOKED
+                    new MoCItem(new Item.Properties().food(MoCFoods.CRAB_RAW)).setRegistryName("crab_raw"),
+                    new MoCItem(new Item.Properties().food(MoCFoods.CRAB_COOKED)).setRegistryName("crab_cooked")
             ));
 
             final IForgeRegistry<Item> registry = event.getRegistry();
@@ -331,9 +331,9 @@ public class MoCItems {
 //                }
 //            }
 //
-            for (final Item item : items) {
-                registry.register(item);
-                ITEMS.add(item);
+//            for (final Item item : items) {
+//                registry.register(item);
+//                ITEMS.add(item);
 //                if (!MoCreatures.isServer()) {
 //                    ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(MoCConstants.MOD_PREFIX + item.getUnlocalizedName().replace("item.",  ""), "inventory"));
 //                }
@@ -344,7 +344,7 @@ public class MoCItems {
 //                        }
 //                    }
 //                }
-            }
+//            }
         }
     }
 }

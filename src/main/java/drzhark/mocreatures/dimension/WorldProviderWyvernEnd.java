@@ -1,6 +1,8 @@
 package drzhark.mocreatures.dimension;
 
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.client.renderer.MoCSkyRenderer;
+import drzhark.mocreatures.dimension.gen.ChunkGeneratorWyvernLair;
 import drzhark.mocreatures.init.MoCBiomes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
