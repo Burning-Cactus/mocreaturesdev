@@ -13,18 +13,18 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import java.util.Random;
 import java.util.function.Function;
 
-public class WorldGenTower extends Feature<NoFeatureConfig> {
+public class MoCTowerFeature extends Feature<NoFeatureConfig> {
 
     private Block MainBlock;
     private Block brickBlock;
 
-    public WorldGenTower(Function<Dynamic<?>, ? extends NoFeatureConfig> function, Block Main, Block Brick, Block Deco) {
+    public MoCTowerFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> function, Block Main, Block Brick, Block Deco) {
         super(function);
         this.MainBlock = Main;
         this.brickBlock = Brick;
     }
 
-    public WorldGenTower(Function<Dynamic<?>, ? extends NoFeatureConfig> function) {
+    public MoCTowerFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> function) {
         super(function);
     }
 
