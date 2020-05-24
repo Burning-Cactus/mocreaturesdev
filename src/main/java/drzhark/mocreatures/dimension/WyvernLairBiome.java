@@ -1,11 +1,8 @@
 package drzhark.mocreatures.dimension;
 
 import drzhark.mocreatures.dimension.feature.MoCBigTreeFeature;
-import drzhark.mocreatures.dimension.feature.MoCFeatures;
-import drzhark.mocreatures.dimension.feature.WorldGenTower;
-import drzhark.mocreatures.init.MoCBlocks;
+import drzhark.mocreatures.init.MoCFeatures;
 import drzhark.mocreatures.init.MoCEntities;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
@@ -16,8 +13,6 @@ import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.Random;
 
 public class WyvernLairBiome extends Biome {
 

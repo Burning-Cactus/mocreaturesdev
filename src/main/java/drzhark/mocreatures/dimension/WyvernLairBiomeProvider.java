@@ -5,33 +5,31 @@ import drzhark.mocreatures.init.MoCBiomes;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
 
-import java.util.Arrays;
 import java.util.Set;
 
-public class BiomeProviderWyvernLair extends BiomeProvider {
+public class WyvernLairBiomeProvider extends BiomeProvider {
 
     /** The biome generator object. */
-    private Biome biomeGenerator = MoCBiomes.WYVERNBIOME;
-    private float hellTemperature;
+    private Biome biomeGenerator;
 
     private static final Set<Biome> biomes = ImmutableSet.of(MoCBiomes.WYVERNBIOME);
 
-    /** The rainfall in the world */
-    private float rainfall;
-
-    public BiomeProviderWyvernLair(Biome par1Biome, float par2, float par3) {
+    public WyvernLairBiomeProvider(WyvernLairBiomeProviderSettings settings) {
         super(biomes);
-        this.biomeGenerator = par1Biome;
-        this.hellTemperature = par2;
-        this.rainfall = par3;
+        biomeGenerator = MoCBiomes.WYVERNBIOME;
+    }
+
+    @Override
+    public Biome getNoiseBiome(int i, int i1, int i2) {
+        return this.biomeGenerator;
     }
 
     /**
      * Returns the Biome related to the x, z position on the world.
      */
-    public Biome getBiomeGenAt(int par1, int par2) {
-        return this.biomeGenerator;
-    }
+//    public Biome getBiomeGenAt(int par1, int par2) {
+//        return this.biomeGenerator;
+//    }
 
     /**
      * Returns an array of biomes for the location input.
@@ -45,14 +43,14 @@ public class BiomeProviderWyvernLair extends BiomeProvider {
      * Returns a list of temperatures to use for the specified blocks. Args:
      * listToReuse, x, y, width, length
      */
-    public float[] getTemperatures(float[] par1ArrayOfFloat, int xStart, int zStart, int xSize, int zSize) {
-        if (par1ArrayOfFloat == null || par1ArrayOfFloat.length < xSize * zSize) {
-            par1ArrayOfFloat = new float[xSize * zSize];
-        }
-
-        Arrays.fill(par1ArrayOfFloat, 0, xSize * zSize, this.hellTemperature);
-        return par1ArrayOfFloat;
-    }
+//    public float[] getTemperatures(float[] par1ArrayOfFloat, int xStart, int zStart, int xSize, int zSize) {
+//        if (par1ArrayOfFloat == null || par1ArrayOfFloat.length < xSize * zSize) {
+//            par1ArrayOfFloat = new float[xSize * zSize];
+//        }
+//
+//        Arrays.fill(par1ArrayOfFloat, 0, xSize * zSize, this.hellTemperature);
+//        return par1ArrayOfFloat;
+//    }
 
     /**
      * Returns biomes to use for the blocks and loads the other data like
@@ -91,8 +89,4 @@ public class BiomeProviderWyvernLair extends BiomeProvider {
 //                + random.nextInt(range * 2 + 1)) : null;
 //    }
 
-    @Override
-    public Biome getNoiseBiome(int i, int i1, int i2) {
-        return this.biomeGenerator;
-    }
 }

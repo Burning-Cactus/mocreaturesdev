@@ -2,7 +2,7 @@ package drzhark.mocreatures.dimension;
 
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.client.renderer.MoCSkyRenderer;
-import drzhark.mocreatures.dimension.gen.ChunkGeneratorWyvernLair;
+import drzhark.mocreatures.dimension.gen.WyvernLairChunkGenerator;
 import drzhark.mocreatures.init.MoCBiomes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -25,7 +25,7 @@ public class WorldProviderWyvernEnd extends WorldProviderSurface {
      */
     @Override
     protected void init() {
-        this.biomeProvider = new BiomeProviderWyvernLair(MoCBiomes.WyvernLairBiome, 0.5F, 0.0F);
+        this.biomeProvider = new WyvernLairBiomeProvider(MoCBiomes.WyvernLairBiome, 0.5F, 0.0F);
         setDimension(MoCreatures.WyvernLairDimensionID);
         setCustomSky();
     }
@@ -35,7 +35,7 @@ public class WorldProviderWyvernEnd extends WorldProviderSurface {
      */
     @Override
     public IChunkGenerator createChunkGenerator() {
-        return new ChunkGeneratorWyvernLair(this.world, false, this.world.getSeed());
+        return new WyvernLairChunkGenerator(this.world, false, this.world.getSeed());
     }
 
     private void setCustomSky() {

@@ -24,7 +24,7 @@ public class MoCDimensions {
     public static final ModDimension WYVERN_LAIR = new ModDimension() {
         @Override
         public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
-            return WyvernLairDimension::new; //TODO: Wyvern Lair Dimension
+            return WyvernLairDimension::new;
         }
     };
 

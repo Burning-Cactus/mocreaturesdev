@@ -1,7 +1,7 @@
 package drzhark.mocreatures.dimension.gen;
 
 import drzhark.mocreatures.dimension.feature.MoCWorldGenPortal;
-import drzhark.mocreatures.dimension.feature.WorldGenTower;
+import drzhark.mocreatures.dimension.feature.MoCTowerFeature;
 import drzhark.mocreatures.init.MoCBlocks;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockState;
@@ -387,7 +387,7 @@ public class ChunkGeneratorWyvernLair extends NoiseChunkGenerator<WyvernLairGenS
     private boolean portalDone = false;
 
     public void generateTower(World par1World, Random par2Random, int par3, int par4) {
-        WorldGenTower myTower = new WorldGenTower(() -> , Blocks.GRASS, Blocks.SMOOTH_STONE, Blocks.LAPIS_ORE);
+        MoCTowerFeature myTower = new MoCTowerFeature(() -> , Blocks.GRASS, Blocks.SMOOTH_STONE, Blocks.LAPIS_ORE);
         if (!this.towerDone) {
             int randPosX = par3 + par2Random.nextInt(16) + 8;
             int randPosZ = par4 + par2Random.nextInt(16) + 8;

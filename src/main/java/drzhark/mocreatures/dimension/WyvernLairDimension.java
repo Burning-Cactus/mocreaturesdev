@@ -1,7 +1,11 @@
 package drzhark.mocreatures.dimension;
 
-import drzhark.mocreatures.dimension.gen.ChunkGeneratorWyvernLair;
+import drzhark.mocreatures.dimension.gen.WyvernLairChunkGenerator;
 import drzhark.mocreatures.dimension.gen.WyvernLairGenSettings;
+import drzhark.mocreatures.init.MoCBiomeProviderTypes;
+import drzhark.mocreatures.init.MoCBlocks;
+import drzhark.mocreatures.init.MoCChunkGeneratorTypes;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3d;
@@ -24,14 +28,16 @@ public class WyvernLairDimension extends Dimension {
 
     @Override
     public ChunkGenerator<?> createChunkGenerator() {
-        WyvernLairGenSettings generationSettings = new WyvernLairGenSettings();
-        return new ChunkGeneratorWyvernLair(this.world, false, this.world.getSeed());
+        WyvernLairGenSettings settings = MoCChunkGeneratorTypes.BASIC_WYVERN_LAIR.createSettings();
+        settings.setDefaultBlock(MoCBlocks.WYVERN_DIRT.getDefaultState());
+        settings.setDefaultFluid(Blocks.WATER.getDefaultState());
+        return MoCChunkGeneratorTypes.BASIC_WYVERN_LAIR.create(this.world, MoCBiomeProviderTypes.WYVERN_BIOME_PROVIDER.create(MoCBiomeProviderTypes.WYVERN_BIOME_PROVIDER.createSettings(this.world.getWorldInfo())), settings);
     }
 
     @Nullable
     @Override
     public BlockPos findSpawn(ChunkPos chunkPosIn, boolean checkValid) {
-        Random random = new Random(this.world.getSeed());
+//        Random random = new Random(this.world.getSeed());
         return null;
     }
 
