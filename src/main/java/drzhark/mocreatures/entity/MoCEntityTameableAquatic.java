@@ -5,6 +5,7 @@ import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.MoCPetData;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
@@ -142,7 +143,7 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
         }
 
         //if the player interacting is not the owner, do nothing!
-        if (MoCreatures.proxy.enableOwnership && this.getOwnerId() != null
+        if (MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get() && this.getOwnerId() != null
                 && !player.getUniqueID().equals(this.getOwnerId())) {
             player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."));
             return false;
@@ -169,7 +170,7 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
 
         final ItemStack stack = player.getHeldItem(hand);
         //before ownership check
-        if (!stack.isEmpty() && getIsTamed() && ((stack.getItem() == MoCItems.SCROLLOFOWNER)) && MoCreatures.proxy.enableResetOwnership
+        if (!stack.isEmpty() && getIsTamed() && ((stack.getItem() == MoCItems.SCROLLOFOWNER)) && MoCConfig.COMMON_CONFIG.OWNERSHIP.enableResetOwnerScroll.get()
                 && MoCTools.isThisPlayerAnOP(player)) {
             stack.shrink(1);
             if (stack.isEmpty()) {
@@ -186,7 +187,7 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
             return true;
         }
         //if the player interacting is not the owner, do nothing!
-        if (MoCreatures.proxy.enableOwnership && getOwnerId() != null
+        if (MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get() && getOwnerId() != null
                 && !player.getUniqueID().equals(this.getOwnerId()) && !MoCTools.isThisPlayerAnOP(player)) {
             return true;
         }
@@ -259,7 +260,7 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
             player.setHeldItem(hand, ItemStack.EMPTY);
             if (!this.world.isRemote) {
                 MoCTools.dropAmulet(this, 1, player);
-                this.isDead = true;
+                this.remove();
             }
 
             return true;
@@ -270,11 +271,11 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
 
     // Fixes despawn issue when chunks unload and duplicated mounts when disconnecting on servers
     @Override
-    public void setDead() {
+    public void remove() {
         if (!this.world.isRemote && getIsTamed() && getHealth() > 0 && !this.riderIsDisconnecting) {
             return;
         }
-        super.setDead();
+        super.remove();
     }
 
     /**

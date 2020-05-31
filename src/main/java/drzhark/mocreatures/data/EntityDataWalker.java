@@ -6,6 +6,7 @@ import net.minecraft.util.datafix.IDataWalker;
 
 public class EntityDataWalker implements IDataWalker
 {
+    //TODO: This might need to be changed to a datafixer.
     @Override
     public CompoundNBT process(DataFixer fixer, CompoundNBT compound, int version) {
         final String entityId = compound.getString("id");

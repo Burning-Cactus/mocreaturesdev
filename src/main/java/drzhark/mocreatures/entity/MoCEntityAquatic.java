@@ -2,6 +2,7 @@ package drzhark.mocreatures.entity;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.ai.EntityAIMoverHelperMoC;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -206,7 +207,7 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
 
     @Override
     protected boolean canDespawn() {
-        if (MoCreatures.proxy.forceDespawns) {
+        if (MoCConfig.COMMON_CONFIG.GLOBAL.forceDespawns.get()) {
             return !getIsTamed();
         } else {
             return false;
@@ -222,9 +223,9 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     protected void playStepSound(BlockPos pos, Block par4) {
     }
 
-    @Override
-    public void fall(float f, float f1) {
-    }
+//    @Override
+//    public void fall(float f, float f1) {
+//    }
 
     public ItemEntity getClosestFish(Entity entity, double d) {
         double d1 = -1D;
@@ -550,11 +551,11 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
             double var8 = var2 * var2 + var4 * var4 + var6 * var6;
 
             if (this.canDespawn() && var8 > 16384.0D) {
-                this.setDead();
+                this.remove();
             }
             //changed from 600
             if (this.idleTime > 1800 && this.rand.nextInt(800) == 0 && var8 > 1024.0D && this.canDespawn()) {
-                this.setDead();
+                this.remove();
             } else if (var8 < 1024.0D) {
                 this.idleTime = 0;
             }
@@ -664,7 +665,7 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     private void getFished() {
         PlayerEntity entityplayer1 = this.world.getClosestPlayer(this, 18D);
         if (entityplayer1 != null) {
-            FishingBobberEntity fishHook = entityplayer1.fishEntity;
+            FishingBobberEntity fishHook = entityplayer1.fishingBobber;
             if (fishHook != null && fishHook.caughtEntity == null) {
                 float f = fishHook.getDistance(this);
                 if (f > 1) {

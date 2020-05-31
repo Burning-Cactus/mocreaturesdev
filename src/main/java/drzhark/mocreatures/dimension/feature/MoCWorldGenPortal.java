@@ -17,25 +17,17 @@ public class MoCWorldGenPortal extends Feature<NoFeatureConfig> { //TODO: Low pr
     private Block stairBlock;
     private Block wallBlock;
     private Block centerBlock;
-    private int pillarMetadata;
-    private int stairMetadata;
-    private int wallMetadata;
-    private int centerMetadata;
 
-    public MoCWorldGenPortal(Block pillar, int pillarMeta, Block stair, int stairMeta, Block wall, int wallMeta, Block center, int centerMeta) {
+    public MoCWorldGenPortal(Block pillar, Block stair, Block wall, Block center) {
         this.pillarBlock = pillar;
         this.stairBlock = stair;
         this.wallBlock = wall;
         this.centerBlock = center;
-        this.pillarMetadata = pillarMeta;
-        this.stairMetadata = stairMeta;
-        this.wallMetadata = wallMeta;
-        this.centerMetadata = centerMeta;
     }
 
     public boolean generatePillar(World world, BlockPos pos) {
         for (int nY = pos.getY(); nY < pos.getY() + 6; nY++) {
-            world.setBlockState(new BlockPos(pos.getX(), nY, pos.getZ()), this.pillarBlock.getStateFromMeta(this.pillarMetadata), 2);
+            world.setBlockState(new BlockPos(pos.getX(), nY, pos.getZ()), this.pillarBlock.getDefaultState(), 2);
         }
         return true;
     }

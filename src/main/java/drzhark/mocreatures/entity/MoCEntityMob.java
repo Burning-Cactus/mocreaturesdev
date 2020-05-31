@@ -1,6 +1,7 @@
 package drzhark.mocreatures.entity;
 
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.ai.EntityAIMoverHelperMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.entity.ai.PathNavigateFlyerMoC;
@@ -233,7 +234,7 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
                 || (entity instanceof PlayerEntity && this.getIsTamed()) || (entity instanceof MoCEntityKittyBed)
                 || (entity instanceof MoCEntityLitterBox)
                 || (this.getIsTamed() && (entity instanceof MoCEntityAnimal && ((MoCEntityAnimal) entity).getIsTamed()))
-                || ((entity instanceof WolfEntity) && !(MoCreatures.proxy.attackWolves)) || ((entity instanceof MoCEntityHorse) && !(MoCreatures.proxy.attackHorses)));
+                || ((entity instanceof WolfEntity) && !(MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.attackWolves.get())) || ((entity instanceof MoCEntityHorse) && !(MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.attackHorses.get())));
     }
 
     @Override
@@ -329,12 +330,12 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
 
     }
 
-    @Override
-    public void fall(float f, float f1) {
-        if (!isFlyer()) {
-            super.fall(f, f1);
-        }
-    }
+//    @Override
+//    public void fall(float f, float f1) {
+//        if (!isFlyer()) {
+//            super.fall(f, f1);
+//        }
+//    }
 
     @Override
     public boolean isOnLadder() {
@@ -425,12 +426,12 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
     }
 
     @Override
-    public void setDead() {
+    public void remove() {
         // Server check required to prevent tamed entities from being duplicated on client-side
         if (!this.world.isRemote && (getIsTamed()) && (getHealth() > 0)) {
             return;
         }
-        super.setDead();
+        super.remove();
     }
 
     @Override

@@ -17,7 +17,7 @@ public interface IMoCTameable extends IMoCEntity {
 
     void setTamed(boolean par1);
 
-    void setDead();
+    void remove();
 
     void writeAdditional(CompoundNBT nbttagcompound);
 

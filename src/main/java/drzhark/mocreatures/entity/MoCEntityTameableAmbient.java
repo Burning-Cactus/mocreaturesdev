@@ -5,6 +5,7 @@ import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.MoCPetData;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
@@ -105,7 +106,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
     public boolean attackEntityFrom(DamageSource damagesource, float i) {
         Entity entity = damagesource.getTrueSource();
         //this avoids damage done by Players to a tamed creature that is not theirs
-        if (MoCreatures.proxy.enableOwnership && this.getOwnerId() != null && entity != null
+        if (MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get() && this.getOwnerId() != null && entity != null
                 && entity instanceof PlayerEntity && !((PlayerEntity) entity).getUniqueID().equals(this.getOwnerId())
                 && !MoCTools.isThisPlayerAnOP(((PlayerEntity) entity))) {
             return false;
@@ -134,7 +135,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         }
 
         //if the player interacting is not the owner, do nothing!
-        if (MoCreatures.proxy.enableOwnership && this.getOwnerId() != null
+        if (MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get() && this.getOwnerId() != null
                 && !player.getUniqueID().equals(this.getOwnerId())) {
             player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."));
             return false;
@@ -165,7 +166,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         }
 
         //before ownership check
-        if (getIsTamed() && ((stack.getItem() == MoCItems.SCROLLOFOWNER)) && MoCreatures.proxy.enableResetOwnership
+        if (getIsTamed() && ((stack.getItem() == MoCItems.SCROLLOFOWNER)) && MoCConfig.COMMON_CONFIG.OWNERSHIP.enableResetOwnerScroll.get()
                 && MoCTools.isThisPlayerAnOP(player)) {
             stack.shrink(1);
             if (stack.isEmpty()) {
@@ -182,7 +183,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
             return true;
         }
         //if the player interacting is not the owner, do nothing!
-        if (MoCreatures.proxy.enableOwnership && this.getOwnerId() != null
+        if (MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get() && this.getOwnerId() != null
                 && !player.getUniqueID().equals(this.getOwnerId()) && !MoCTools.isThisPlayerAnOP(player)) {
             return true;
         }
@@ -253,7 +254,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
                     petData.setInAmulet(this.getOwnerPetId(), true);
                 }
                 MoCTools.dropAmulet(this, 1, player);
-                this.isDead = true;
+                this.remove();
             }
 
             return true;
@@ -285,11 +286,11 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
 
     // Fixes despawn issue when chunks unload and duplicated mounts when disconnecting on servers
     @Override
-    public void setDead() {
+    public void remove() {
         if (!this.world.isRemote && getIsTamed() && getHealth() > 0 && !this.riderIsDisconnecting) {
             return;
         }
-        super.setDead();
+        super.remove();
     }
 
     /**

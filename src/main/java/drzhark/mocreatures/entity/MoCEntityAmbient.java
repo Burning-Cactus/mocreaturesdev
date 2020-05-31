@@ -2,6 +2,7 @@ package drzhark.mocreatures.entity;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.ai.PathNavigateFlyerMoC;
 import drzhark.mocreatures.entity.item.MoCEntityEgg;
 import drzhark.mocreatures.entity.item.MoCEntityKittyBed;
@@ -163,7 +164,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
 
     @Override
     protected boolean canDespawn() {
-        if (MoCreatures.proxy.forceDespawns) {
+        if (MoCConfig.COMMON_CONFIG.GLOBAL.forceDespawns.get()) {
             return !getIsTamed();
         } else {
             return false;
@@ -690,8 +691,8 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
         return ((!(entity instanceof LivingEntity)) || (entity instanceof MobEntity) || (entity instanceof PlayerEntity && this.getIsTamed())
                 || (entity instanceof MoCEntityKittyBed) || (entity instanceof MoCEntityLitterBox)
                 || (this.getIsTamed() && (entity instanceof MoCEntityAnimal && ((MoCEntityAnimal) entity).getIsTamed()))
-                || ((entity instanceof WolfEntity) && !(MoCreatures.proxy.attackWolves))
-                || ((entity instanceof MoCEntityHorse) && !(MoCreatures.proxy.attackHorses))
+                || ((entity instanceof WolfEntity) && !(MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.attackWolves.get()))
+                || ((entity instanceof MoCEntityHorse) && !(MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.attackHorses.get()))
                 || (entity.getWidth() > this.getWidth() && entity.getHeight() > this.getHeight()) || (entity instanceof MoCEntityEgg));
     }
 
@@ -886,7 +887,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     public void setLeashHolder(Entity entityIn, boolean sendAttachNotification) {
         if (this.getIsTamed() && entityIn instanceof PlayerEntity) {
             PlayerEntity entityplayer = (PlayerEntity) entityIn;
-            if (MoCreatures.proxy.enableOwnership && this.getOwnerId() != null
+            if (MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get() && this.getOwnerId() != null
                     && !entityplayer.getUniqueID().equals(this.getOwnerId()) && !MoCTools.isThisPlayerAnOP((entityplayer))) {
                 return;
             }
