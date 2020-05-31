@@ -229,11 +229,11 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
             return MoCSoundEvents.ENTITY_LION_DEATH_BABY;
         }
     }
-
-    @Override
-    protected Item getDropItem() {
-        return MoCItems.BIGCATCLAW;
-    }
+//
+//    @Override
+//    protected Item getDropItem() {
+//        return MoCItems.BIGCATCLAW;
+//    }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
@@ -335,7 +335,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
 
             if (!getIsGhost() && getEdad() <10)
             {
-                this.setDead();
+                this.remove();
             }
             /*if (getHasEaten() && rand.nextInt(300) == 0)
             {
@@ -375,7 +375,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
                     getMyOwnPath(entityitem, f);
                 }
                 if ((f < 2.0F) && (entityitem != null) && (this.deathTime == 0)) {
-                    entityitem.setDead();
+                    entityitem.remove();
                     this.setHealth(getMaxHealth());
                     setHasEaten(true);
                     MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_GENERIC_EATING);
@@ -396,8 +396,8 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
 
         if (this.wingFlapCounter == 0) {
             this.wingFlapCounter = 1;
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
-                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
+//                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
     }
 
@@ -534,7 +534,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
                 }
                 this.dropMyStuff();
                 MoCTools.dropAmulet(this, 3, player);
-                this.isDead = true;
+                this.dead = true;
             }
 
             return true;
@@ -569,33 +569,33 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
         return getEdad() * 0.01F;
     }
 
-    @Override
-    public void fall(float f, float f1) {
-        if (isFlyer()) {
-            return;
-        }
-        float i = (float) (Math.ceil(f - 3F) / 2F);
-        if (!this.world.isRemote && (i > 0)) {
-            i /= 2;
-            if (i > 1F) {
-                attackEntityFrom(DamageSource.FALL, i);
-            }
-            if ((this.isBeingRidden()) && (i > 1F)) {
-                for (Entity entity : this.getRecursivePassengers())
-                {
-                    entity.attackEntityFrom(DamageSource.FALL, (float)i);
-                }
-            }
-            BlockState blockstate = this.world.getBlockState(new BlockPos(this.getPosX(), this.getPosY() - 0.2D - (double)this.prevRotationYaw, this.getPosZ()));
-            Block block = blockstate.getBlock();
-
-            if (blockstate.getMaterial() != Material.AIR && !this.isSilent())
-            {
-                SoundType soundtype = block.getSoundType(blockstate, world, new BlockPos(this.getPosX(), this.getPosY() - 0.2D - (double)this.prevRotationYaw, this.getPosZ()), this);
-                this.world.playSound((PlayerEntity) null, this.getPosX(), this.getPosY(), this.getPosZ(), soundtype.getStepSound(), this.getSoundCategory(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
-            }
-        }
-    }
+//    @Override
+//    public void fall(float f, float f1) {
+//        if (isFlyer()) {
+//            return;
+//        }
+//        float i = (float) (Math.ceil(f - 3F) / 2F);
+//        if (!this.world.isRemote && (i > 0)) {
+//            i /= 2;
+//            if (i > 1F) {
+//                attackEntityFrom(DamageSource.FALL, i);
+//            }
+//            if ((this.isBeingRidden()) && (i > 1F)) {
+//                for (Entity entity : this.getRecursivePassengers())
+//                {
+//                    entity.attackEntityFrom(DamageSource.FALL, (float)i);
+//                }
+//            }
+//            BlockState blockstate = this.world.getBlockState(new BlockPos(this.getPosX(), this.getPosY() - 0.2D - (double)this.prevRotationYaw, this.getPosZ()));
+//            Block block = blockstate.getBlock();
+//
+//            if (blockstate.getMaterial() != Material.AIR && !this.isSilent())
+//            {
+//                SoundType soundtype = block.getSoundType(blockstate, world, new BlockPos(this.getPosX(), this.getPosY() - 0.2D - (double)this.prevRotationYaw, this.getPosZ()), this);
+//                this.world.playSound((PlayerEntity) null, this.getPosX(), this.getPosY(), this.getPosZ(), soundtype.getStepSound(), this.getSoundCategory(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
+//            }
+//        }
+//    }
 
     private void openMouth() {
         this.mouthCounter = 1;

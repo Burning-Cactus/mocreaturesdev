@@ -118,7 +118,7 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
         }
 
         //this avoids damage done by Players to a tamed creature that is not theirs
-        if (MoCreatures.proxy.enableOwnership && this.getOwnerId() != null && entity != null
+        if (MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get() && this.getOwnerId() != null
                 && entity instanceof PlayerEntity && !((PlayerEntity) entity).getUniqueID().equals(this.getOwnerId())
                 && !MoCTools.isThisPlayerAnOP((PlayerEntity) entity)) {
             return false;
@@ -344,7 +344,7 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
                             // entity was cloned
                             nbt.remove("Cloned"); // clear flag
                             this.setTamed(false);
-                            this.setDead();
+                            this.remove();
                         }
                     }
                 }
@@ -353,22 +353,6 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
                 this.setOwnerPetId(-1);
             }
         }
-    }
-
-    /**
-     * If the rider should be dismounted from the entity when the entity goes
-     * under water
-     *
-     * @param rider The entity that is riding
-     * @return if the entity should be dismounted when under water
-     */
-    @Override
-    public boolean shouldDismountInWater(Entity rider) {
-        return !this.getIsTamed();
-    }
-
-    public boolean isBreedingItem(ItemStack par1ItemStack) {
-        return false;
     }
 
     // Override to fix heart animation on clients
@@ -495,10 +479,10 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
             }
 
             setGestationTime(getGestationTime()+1);
-            if (!this.world.isRemote) {
-                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
-                        new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-            }
+//            if (!this.world.isRemote) {
+//                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
+//                        new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//            }
 
             if (getGestationTime() <= 50) {
                 continue;

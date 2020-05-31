@@ -180,7 +180,7 @@ public class MoCEntityTurtle extends MoCEntityTameableAnimal {
                                 getMyOwnPath(entityitem, f);
                             }
                             if ((f < 2.0F) && (entityitem != null) && (this.deathTime == 0)) {
-                                entityitem.setDead();
+                                entityitem.remove();
                                 MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_TURTLE_EATING);
                                 PlayerEntity entityplayer = this.world.getClosestPlayer(this, 24D);
                                 if (entityplayer != null) {
@@ -328,26 +328,26 @@ public class MoCEntityTurtle extends MoCEntityTameableAnimal {
         return MoCSoundEvents.ENTITY_TURTLE_DEATH;
     }
 
-    @Override
-    protected Item getDropItem() {
-        if (getPetName().equals("Donatello") || getPetName().equals("donatello")) {
-            return MoCItems.BO;
-        }
-
-        if (getPetName().equals("Leonardo") || getPetName().equals("leonardo")) {
-            return MoCItems.KATANA;
-        }
-
-        if (getPetName().equals("Rafael") || getPetName().equals("rafael") || getPetName().equals("raphael") || getPetName().equals("Raphael")) {
-            return MoCItems.SAI;
-        }
-
-        if (getPetName().equals("Michelangelo") || getPetName().equals("michelangelo") || getPetName().equals("Michaelangelo")
-                || getPetName().equals("michaelangelo")) {
-            return MoCItems.NUNCHAKU;
-        }
-        return MoCItems.TURTLERAW;
-    }
+//    @Override
+//    protected Item getDropItem() {
+//        if (getPetName().equals("Donatello") || getPetName().equals("donatello")) {
+//            return MoCItems.BO;
+//        }
+//
+//        if (getPetName().equals("Leonardo") || getPetName().equals("leonardo")) {
+//            return MoCItems.KATANA;
+//        }
+//
+//        if (getPetName().equals("Rafael") || getPetName().equals("rafael") || getPetName().equals("raphael") || getPetName().equals("Raphael")) {
+//            return MoCItems.SAI;
+//        }
+//
+//        if (getPetName().equals("Michelangelo") || getPetName().equals("michelangelo") || getPetName().equals("Michaelangelo")
+//                || getPetName().equals("michaelangelo")) {
+//            return MoCItems.NUNCHAKU;
+//        }
+//        return MoCItems.TURTLERAW;
+//    }
 
     /**
      * Used to avoid rendering the top shell cube

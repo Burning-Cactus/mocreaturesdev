@@ -68,15 +68,14 @@ public class MoCEntitySilverSkeleton extends MoCEntityMob {
 
         super.livingTick();
     }
-
-    @Override
-    protected Item getDropItem() {
-        if (this.rand.nextInt(10) == 0) {
-            return MoCItems.SILVERSWORD;
-        }
-        return Items.BONE;
-
-    }
+//
+//    @Override
+//    protected Item getDropItem() {
+//        if (this.rand.nextInt(10) == 0) {
+//            return MoCItems.SILVERSWORD;
+//        }
+//        return Items.BONE;
+//    }
 
     @Override
     public void performAnimation(int animationType) {
@@ -100,12 +99,12 @@ public class MoCEntitySilverSkeleton extends MoCEntityMob {
 
             if (leftArmW) {
                 this.attackCounterLeft = 1;
-                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
-                        new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
+//                        new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             } else {
                 this.attackCounterRight = 1;
-                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 2),
-                        new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 2),
+//                        new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
         }
     }

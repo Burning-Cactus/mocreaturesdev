@@ -237,17 +237,17 @@ public class MoCEntityMole extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public boolean isEntityInvulnerable(DamageSource source) {
+    public boolean isInvulnerableTo(DamageSource source) {
         if (getState() == 2) {
             return true;
         }
-        return super.isEntityInvulnerable(source);
+        return super.isInvulnerableTo(source);
     }
 
-    @Override
-    protected Item getDropItem() {
-        return MoCItems.FUR;
-    }
+//    @Override
+//    protected Item getDropItem() {
+//        return MoCItems.FUR;
+//    }
 
     @Override
     protected SoundEvent getDeathSound() {

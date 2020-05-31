@@ -36,7 +36,7 @@ public class MoCEntityLion extends MoCEntityBigCat {
 
     @Override
     public ResourceLocation getTexture() {
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
                 return MoCreatures.getTexture("bcfemalelion.png");//lioness
             case 2:

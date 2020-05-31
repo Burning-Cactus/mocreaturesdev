@@ -4,7 +4,6 @@ import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -29,8 +28,8 @@ public class MoCEntityGreenOgre extends MoCEntityOgre{
             return MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.ogreStrength.get().floatValue();
     }
     
-    @Override //TODO: Drops are moved to json loot tables
-    protected Item getDropItem() {
-        return Item.getItemFromBlock(Blocks.OBSIDIAN);
-    } 
+//    @Override //TODO: Drops are moved to json loot tables
+//    protected Item getDropItem() {
+//        return Item.getItemFromBlock(Blocks.OBSIDIAN);
+//    }
 }

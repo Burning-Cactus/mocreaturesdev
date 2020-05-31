@@ -2,6 +2,7 @@ package drzhark.mocreatures.entity.passive;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
 import drzhark.mocreatures.entity.ai.EntityAIFleeFromPlayer;
 import drzhark.mocreatures.entity.ai.EntityAIHunt;
@@ -13,11 +14,9 @@ import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAnimation;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -31,6 +30,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
@@ -131,10 +131,6 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void fall(float f, float f1) {
-    }
-
-    @Override
     public boolean isOnLadder() {
         return this.collidedHorizontally;
     }
@@ -150,7 +146,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
 
     @Override
     protected boolean canDespawn() {
-        if (MoCreatures.proxy.forceDespawns) {
+        if (MoCConfig.COMMON_CONFIG.GLOBAL.forceDespawns.get()) {
             return !getIsTamed();
         } else {
             return false;
@@ -469,10 +465,10 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     public void setBiting(boolean flag) {
-        if (flag && !this.world.isRemote) {
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
-                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-        }
+//        if (flag && !this.world.isRemote) {
+//            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
+//                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//        }
         this.isBiting = flag;
     }
 
@@ -506,16 +502,16 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
         }
     }
 
-    @Override
-    protected void dropFewItems(boolean flag, int x) {
-        if (getEdad() > 60) {
-            int j = this.rand.nextInt(3);
-            for (int l = 0; l < j; l++) {
-
-                entityDropItem(new ItemStack(MoCItems.MOCEGG, 1, getSubType() + 20), 0.0F);
-            }
-        }
-    }
+//    @Override
+//    protected void dropFewItems(boolean flag, int x) {
+//        if (getEdad() > 60) {
+//            int j = this.rand.nextInt(3);
+//            for (int l = 0; l < j; l++) {
+//
+//                entityDropItem(new ItemStack(MoCItems.MOCEGG, 1, getSubType() + 20), 0.0F);
+//            }
+//        }
+//    }
 
     @Override
     public boolean canAttackTarget(LivingEntity entity) {
@@ -523,7 +519,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    protected void playStepSound(BlockPos pos, Block par4) {
+    protected void playStepSound(BlockPos pos, BlockState blockState) {
         if (isInWater()) {
             MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_SNAKE_SWIM);
         }
@@ -550,7 +546,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public boolean getCanSpawnHere() {
+    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
         return getCanSpawnHereCreature() && getCanSpawnHereLiving(); //&& checkSpawningBiome()
     }
 
@@ -622,7 +618,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
 
     @Override
     public boolean isMyHealFood(ItemStack stack) {
-        return !stack.isEmpty() && (stack.getItem() == MoCItems.RATRAW);
+        return !stack.isEmpty() && (stack.getItem() == MoCItems.RAT_RAW);
     }
 
     @Override

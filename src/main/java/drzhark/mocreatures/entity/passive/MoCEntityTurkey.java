@@ -77,14 +77,14 @@ public class MoCEntityTurkey extends MoCEntityTameableAnimal {
         return MoCSoundEvents.ENTITY_TURKEY_AMBIENT;
     }
 
-    @Override
-    protected Item getDropItem() {
-        boolean flag = (this.rand.nextInt(2) == 0);
-        if (flag) {
-            return MoCItems.RAWTURKEY;
-        }
-        return Items.FEATHER;
-    }
+//    @Override
+//    protected Item getDropItem() {
+//        boolean flag = (this.rand.nextInt(2) == 0);
+//        if (flag) {
+//            return MoCItems.RAW_TURKEY;
+//        }
+//        return Items.FEATHER;
+//    }
 
     @Override
     public boolean processInteract(PlayerEntity player, Hand hand) {

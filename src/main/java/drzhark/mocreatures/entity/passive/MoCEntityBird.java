@@ -135,10 +135,6 @@ public class MoCEntityBird extends MoCEntityTameableAnimal {
         this.dataManager.set(IS_FLYING, Boolean.valueOf(flag));
     }
 
-    @Override
-    public void fall(float f, float f1) {
-    }
-
     private int[] FindTreeTop(int i, int j, int k) {
         int l = i - 5;
         int i1 = k - 5;
@@ -243,11 +239,11 @@ public class MoCEntityBird extends MoCEntityTameableAnimal {
         }
         return false;
     }
-
-    @Override
-    protected Item getDropItem() {
-        return Items.FEATHER;
-    }
+//
+//    @Override
+//    protected Item getDropItem() {
+//        return Items.FEATHER;
+//    }
 
     @Override
     protected SoundEvent getDeathSound() {
@@ -390,7 +386,7 @@ public class MoCEntityBird extends MoCEntityTameableAnimal {
                     FlyToNextEntity(entityitem);
                     ItemEntity entityitem1 = getClosestItem(this, 1.0D, Items.WHEAT_SEEDS, Items.MELON_SEEDS);
                     if ((this.rand.nextInt(50) == 0) && (entityitem1 != null)) {
-                        entityitem1.setDead();
+                        entityitem1.remove();
                         setPreTamed(true);
                     }
                 }
@@ -455,11 +451,11 @@ public class MoCEntityBird extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void setDead() {
+    public void remove() {
         if (!this.world.isRemote && getIsTamed() && (this.getHealth() > 0)) {
             return;
         } else {
-            super.setDead();
+            super.remove();
             return;
         }
     }

@@ -4,6 +4,7 @@ import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.item.MoCEntityThrowableRock;
+import drzhark.mocreatures.init.MoCEntities;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -109,7 +110,7 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
         }
 
         //creates a dummy Trock on top of it
-        MoCEntityThrowableRock trock = new MoCEntityThrowableRock(this.world, this, this.getPosX(), this.getPosY() + 1.5D, this.getPosZ());
+        MoCEntityThrowableRock trock = new MoCEntityThrowableRock(MoCEntities.TROCK, this.world, this, this.getPosX(), this.getPosY() + 1.5D, this.getPosZ());
         this.world.addEntity(trock);
         trock.setState(tRockState);
         trock.setBehavior(1);
@@ -139,7 +140,7 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
                 MoCTools.ThrowStone(this, this.getAttackTarget(), this.tempRock.getState(), 10D, 0.25D);
             }
 
-            this.tempRock.setDead();
+            this.tempRock.remove();
             setHasRock(false);
             this.tcounter = 0;
         }
@@ -157,7 +158,7 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
      * Plays step sound at given x, y, z for the entity
      */
     @Override
-    protected void playStepSound(BlockPos pos, Block block) {
+    protected void playStepSound(BlockPos pos, BlockState block) {
         MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_GOLEM_WALK);
     }
 

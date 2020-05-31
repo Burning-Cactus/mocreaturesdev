@@ -5,13 +5,13 @@ import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.MoCPetData;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageHeart;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -33,14 +33,13 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTameable, IEntityOwnable {
+public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTameable {
 
     protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.<Optional<UUID>>createKey(MoCEntityTameableAnimal.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     protected static final DataParameter<Integer> PET_ID = EntityDataManager.<Integer>createKey(MoCEntityTameableAnimal.class, DataSerializers.VARINT);
@@ -110,7 +109,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
         }
 
         //this avoids damage done by Players to a tamed creature that is not theirs
-        if (MoCreatures.proxy.enableOwnership && this.getOwnerId() != null && entity != null
+        if ((MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get() && this.getOwnerId() != null
                 && entity instanceof PlayerEntity) && !((PlayerEntity) entity).getUniqueID().equals(this.getOwnerId())
                 && !MoCTools.isThisPlayerAnOP((PlayerEntity) entity)) {
             return false;
@@ -135,7 +134,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
         }
 
         //if the player interacting is not the owner, do nothing!
-        if (MoCreatures.proxy.enableOwnership && this.getOwnerId() != null
+        if (MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get() && this.getOwnerId() != null
                 && !player.getUniqueID().equals(this.getOwnerId())) {
             player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."));
             return false;
@@ -162,7 +161,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
 
         final ItemStack stack = player.getHeldItem(hand);
         //before ownership check
-        if (!stack.isEmpty() && getIsTamed() && ((stack.getItem() == MoCItems.SCROLLOFOWNER)) && MoCreatures.proxy.enableResetOwnership
+        if (!stack.isEmpty() && getIsTamed() && ((stack.getItem() == MoCItems.SCROLLOFOWNER)) && MoCConfig.COMMON_CONFIG.OWNERSHIP.enableResetOwnerScroll.get()
                 && MoCTools.isThisPlayerAnOP(player)) {
             stack.shrink(1);
             if (stack.isEmpty()) {
@@ -231,7 +230,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
                 }
                 this.dropMyStuff();
                 MoCTools.dropAmulet(this, 2, player);
-                this.isDead = true;
+                this.remove();
             }
 
             return true;
@@ -263,16 +262,16 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
 
     // Fixes despawn issue when chunks unload and duplicated mounts when disconnecting on servers
     @Override
-    public void setDead() {
+    public void remove() {
         if (!this.world.isRemote && getIsTamed() && getHealth() > 0) {
             return;
         }
-        super.setDead();
+        super.remove();
     }
 
     @Override
     protected boolean canDespawn() {
-        if (MoCreatures.proxy.forceDespawns) {
+        if (MoCConfig.COMMON_CONFIG.GLOBAL.forceDespawns.get()) {
             return !getIsTamed();
         } else {
             return false;
@@ -345,7 +344,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
                             // entity was cloned
                             nbt.remove("Cloned"); // clear flag
                             this.setTamed(false);
-                            this.setDead();
+                            this.remove();
                         }
                     }
                 }
@@ -486,10 +485,10 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
             }
 
             setGestationTime(getGestationTime()+1);
-            if (!this.world.isRemote) {
-                MoCMessageHandler.INSTANCE.sendTo(new MoCMessageHeart(this.getEntityId()),
-                        new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-            }
+//            if (!this.world.isRemote) {
+//                MoCMessageHandler.INSTANCE.sendTo(new MoCMessageHeart(this.getEntityId()),
+//                        new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//            }
 
             if (getGestationTime() <= 50) {
                 continue;

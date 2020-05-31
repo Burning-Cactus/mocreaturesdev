@@ -11,6 +11,7 @@ import drzhark.mocreatures.entity.item.MoCEntityLitterBox;
 import drzhark.mocreatures.entity.passive.MoCEntityHorse;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageHealth;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,10 +26,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.List;
@@ -184,28 +182,28 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
         return getBlockPathWeight(new BlockPos(i, j, k)) >= 0.0F;
     }
 
-    @Override
-    public boolean getCanSpawnHere() {
-        return (MoCreatures.entityMap.get(this.getClass()).getFrequency() > 0 && super.getCanSpawnHere());
-    }
+//    @Override
+//    public boolean getCanSpawnHere() {
+//        return (MoCreatures.entityMap.get(this.getClass()).getFrequency() > 0 && super.getCanSpawnHere());
+//    }
 
-    public boolean getCanSpawnHereMob() {
-        int i = MathHelper.floor(this.getPosX());
-        int j = MathHelper.floor(getBoundingBox().minY);
-        int k = MathHelper.floor(this.getPosZ());
-        BlockPos pos = new BlockPos(i, j, k);
-        if (this.world.getLightFor(EnumSkyBlock.SKY, pos) > this.rand.nextInt(32)) {
-            return false;
-        }
-        int l = this.world.getLightFromNeighbors(pos);
-        if (this.world.isThundering()) {
-            int i1 = this.world.getSkylightSubtracted();
-            this.world.setSkylightSubtracted(10);
-            l = this.world.getLightFromNeighbors(pos);
-            this.world.setSkylightSubtracted(i1);
-        }
-        return l <= this.rand.nextInt(8);
-    }
+//    public boolean getCanSpawnHereMob() {
+//        int i = MathHelper.floor(this.getPosX());
+//        int j = MathHelper.floor(getBoundingBox().minY);
+//        int k = MathHelper.floor(this.getPosZ());
+//        BlockPos pos = new BlockPos(i, j, k);
+//        if (this.world.getLightFor(LightType.SKY, pos) > this.rand.nextInt(32)) {
+//            return false;
+//        }
+//        int l = this.world.getLightFromNeighbors(pos);
+//        if (this.world.isThundering()) {
+//            int i1 = this.world.getSkylightSubtracted();
+//            this.world.setSkylightSubtracted(10);
+//            l = this.world.getLightFromNeighbors(pos);
+//            this.world.setSkylightSubtracted(i1);
+//        }
+//        return l <= this.rand.nextInt(8);
+//    }
 
     // TODO move this to a class accessible by MocEntityMob and MoCentityAnimals
     protected LivingEntity getClosestEntityLiving(Entity entity, double d) {
@@ -250,10 +248,10 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
                 MoCTools.forceDataSync(this);
             }*/
 
-            if (getIsTamed() && this.rand.nextInt(200) == 0) {
-                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new PacketDistributor.TargetPoint(
-                        this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-            }
+//            if (getIsTamed() && this.rand.nextInt(200) == 0) { TODO: Disabling the information packets for now, will fix them later.
+//                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new PacketDistributor.TargetPoint(
+//                        this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//            }
 
             if (this.isHarmedByDaylight()) {
                 if (this.world.isDaytime()) {
@@ -293,8 +291,8 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
     @Override
     public boolean attackEntityFrom(DamageSource damagesource, float i) {
         if (!this.world.isRemote && getIsTamed()) {
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new TargetPoint(
-                    this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new TargetPoint(
+//                    this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
         return super.attackEntityFrom(damagesource, i);
     }
@@ -315,7 +313,7 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
         nbttagcompound.putBoolean("Adult", getIsAdult());
         nbttagcompound.putInt("Edad", getEdad());
         nbttagcompound.putString("Name", getPetName());
-        nbttagcompound.putInt("TypeInt", getType());
+        nbttagcompound.putInt("TypeInt", getSubType());
 
     }
 
@@ -389,8 +387,9 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
 
     @Override
     public boolean renderName() {
-        return MoCreatures.proxy.getDisplayPetName()
-                && (getPetName() != null && !getPetName().equals("") && (!this.isBeingRidden()) && (this.getRidingEntity() == null));
+//        return MoCreatures.proxy.getDisplayPetName() TODO: Fix name rendering
+//                && (getPetName() != null && !getPetName().equals("") && (!this.isBeingRidden()) && (this.getRidingEntity() == null));
+        return false;
     }
 
     /*protected Vec3d findPossibleShelter() {
@@ -421,7 +420,7 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
     }
 
     @Override
-    protected boolean canDespawn() {
+    public boolean canDespawn(double d) {
         return !getIsTamed();
     }
 
@@ -579,22 +578,6 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
     @Override
     public boolean getIsFlying() {
         return isFlyer();
-    }
-
-    /**
-     * Returns true if the entity is of the @link{EnumCreatureType} provided
-     *
-     * @param type The EnumCreatureType type this entity is evaluating
-     * @param forSpawnCount If this is being invoked to check spawn count caps.
-     * @return If the creature is of the type provided
-     */
-    @Override
-    public boolean isCreatureType(EntityClassification type, boolean forSpawnCount) {
-        if (type == EntityClassification.MONSTER) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
 //    @Override

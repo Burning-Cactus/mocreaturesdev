@@ -8,29 +8,18 @@ import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -38,7 +27,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.world.BlockEvent;
@@ -77,6 +65,11 @@ public class MoCEntityEnt extends MoCEntityAnimal {
     }
 
     @Override
+    public boolean renderName() {
+        return false;
+    }
+
+    @Override
     public ResourceLocation getTexture() {
         switch (getSubType()) {
             case 1:
@@ -111,7 +104,7 @@ public class MoCEntityEnt extends MoCEntityAnimal {
         return false;
     }
 
-    @Override
+    /*@Override
     protected void dropFewItems(boolean flag, int x) {
         int i = this.rand.nextInt(3);
         int qty = this.rand.nextInt(12) + 4;
@@ -129,7 +122,7 @@ public class MoCEntityEnt extends MoCEntityAnimal {
 
         }
         entityDropItem(new ItemStack(Blocks.SAPLING, qty, typ), 0.0F);
-    }
+    }*/
 
     @Override
     protected SoundEvent getDeathSound() {
@@ -209,7 +202,7 @@ public class MoCEntityEnt extends MoCEntityAnimal {
         if (blockUnderFeet == Blocks.GRASS && blockOnFeet == Blocks.AIR) {
             BlockState iblockstate = getBlockStateToBePlanted();
             int plantChance = 3;
-            if (iblockstate.getBlock() == Blocks.SAPLING) {
+            if (iblockstate.getBlock() == Blocks.OAK_SAPLING) {
                 plantChance = 10;
             }
             //boolean cantPlant = false;

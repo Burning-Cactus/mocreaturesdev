@@ -14,11 +14,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
@@ -45,6 +42,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.server.ServerWorld;
@@ -170,8 +168,8 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
 
                 if (this.dCounter == 120) {
                     MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_GOLEM_DYING, 3F);
-                    MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
-                            new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//                    MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
+//                            new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
                 }
 
                 if (this.dCounter > 140) {
@@ -185,13 +183,13 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
             float distanceToTarget = this.getDistance(this.getAttackTarget());
             if (distanceToTarget > 6F) {
                 this.tcounter = 1;
-                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
-                        new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
+//                        new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
 
         }
         if (this.tcounter != 0) {
-            if (this.tcounter++ == 70 && this.getAttackTarget() != null && this.canShoot() && !this.getAttackTarget().isDead
+            if (this.tcounter++ == 70 && this.getAttackTarget() != null && this.canShoot() && this.getAttackTarget().isAlive()
                     && this.canEntityBeSeen(this.getAttackTarget())) {
                 shootBlock(this.getAttackTarget());
             } else if (this.tcounter > 90) {
@@ -210,15 +208,15 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
 
     private void destroyGolem() {
         List<Integer> usedBlocks = usedCubes();
-        if ((!usedBlocks.isEmpty()) && (MoCTools.mobGriefing(this.world)) && (MoCreatures.proxy.golemDestroyBlocks)) {
+        if ((!usedBlocks.isEmpty()) && (MoCTools.mobGriefing(this.world)) && (MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.golemDestroyBlocks.get())) {
             for (int i = 0; i < usedBlocks.size(); i++) {
                 Block block = Block.getStateById(generateBlock(this.golemCubes[usedBlocks.get(i)])).getBlock();
                 ItemEntity entityitem = new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), new ItemStack(block, 1));
                 entityitem.setPickupDelay(10);
-                this.world.spawnEntity(entityitem);
+                this.world.addEntity(entityitem);
             }
         }
-        this.setDead();
+        this.remove();
     }
 
     @Override
@@ -289,8 +287,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
     /**
      * When the golem receives the rock, called from within EntityTRock
      *
-     * @param ID = block id
-     * @param Metadata = block Metadata
+     * @param state - Blockstate
      */
     public void receiveRock(BlockState state) {
         if (!this.world.isRemote) {
@@ -310,7 +307,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
                     ItemEntity entityitem =
                             new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), new ItemStack(state.getBlock(), 1 /*, state.getBlock()*/));
                     entityitem.setPickupDelay(10);
-                    entityitem.setAgeToCreativeDespawnTime(); // 4800
+//                    entityitem.setAgeToCreativeDespawnTime(); // 4800
                 }
             }
         }
@@ -463,7 +460,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
             if ((MoCTools.mobGriefing(this.world)) && (MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.golemDestroyBlocks.get())) {
                 ItemEntity entityitem = new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), new ItemStack(block, 1/*, 0*/));
                 entityitem.setPickupDelay(10);
-                this.world(entityitem);
+                this.world.addEntity(entityitem);
             }
         }
     }
@@ -569,11 +566,11 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
      */
     public void saveGolemCube(byte slot, byte value) {
         this.golemCubes[slot] = value;
-        if (!this.world.isRemote && MoCreatures.proxy.worldInitDone) // Fixes CMS initialization during world load
-        {
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageTwoBytes(this.getEntityId(), slot, value), new TargetPoint(
-                    this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-        }
+//        if (!this.world.isRemote && MoCreatures.proxy.worldInitDone) // Fixes CMS initialization during world load
+//        {
+//            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageTwoBytes(this.getEntityId(), slot, value), new TargetPoint(
+//                    this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//        }
     }
 
     /**
@@ -1005,8 +1002,8 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
     }
 
     @Override
-    public boolean getCanSpawnHere() {
-        return (super.getCanSpawnHere()
+    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
+        return (super.canSpawn(worldIn, reason)
                 && this.world.canBlockSeeSky(new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosY()), MathHelper
                         .floor(this.getPosZ()))) && (this.getPosY() > 50D));
     }

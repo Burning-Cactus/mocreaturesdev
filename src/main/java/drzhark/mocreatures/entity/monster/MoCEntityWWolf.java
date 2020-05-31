@@ -25,6 +25,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
@@ -123,10 +124,10 @@ public class MoCEntityWWolf extends MoCEntityMob {
     }
 
     @Override
-    public boolean getCanSpawnHere() {
+    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
         return checkSpawningBiome()
                 && this.world.canBlockSeeSky(new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosY()), MathHelper
-                        .floor(this.getPosZ()))) && super.getCanSpawnHere();
+                        .floor(this.getPosZ()))) && super.canSpawn(worldIn, reason);
     }
 
     //TODO move this

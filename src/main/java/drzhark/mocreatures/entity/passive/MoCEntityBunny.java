@@ -8,23 +8,20 @@ import drzhark.mocreatures.entity.ai.EntityAIFollowAdult;
 import drzhark.mocreatures.entity.ai.EntityAIFollowOwnerPlayer;
 import drzhark.mocreatures.entity.ai.EntityAIPanicMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.init.MoCEntities;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -54,26 +51,26 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
     }
 
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIFollowOwnerPlayer(this, 0.8D, 6F, 5F));
-        this.tasks.addTask(2, new EntityAIPanicMoC(this, 1.0D));
-        this.tasks.addTask(3, new EntityAIFleeFromPlayer(this, 1.0D, 4D));
-        this.tasks.addTask(4, new EntityAIFollowAdult(this, 1.0D));
-        this.tasks.addTask(5, new EntityAIWanderMoC2(this, 0.8D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(1, new EntityAIFollowOwnerPlayer(this, 0.8D, 6F, 5F));
+        this.goalSelector.addGoal(2, new EntityAIPanicMoC(this, 1.0D));
+        this.goalSelector.addGoal(3, new EntityAIFleeFromPlayer(this, 1.0D, 4D));
+        this.goalSelector.addGoal(4, new EntityAIFollowAdult(this, 1.0D));
+        this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 0.8D));
+        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(HAS_EATEN, Boolean.valueOf(false));
     }
 
@@ -89,7 +86,7 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
     public void selectType() {
         checkSpawningBiome();
 
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(this.rand.nextInt(5) + 1);
         }
 
@@ -97,9 +94,9 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
 
     @Override
     public boolean checkSpawningBiome() {
-        int i = MathHelper.floor(this.posX);
-        int j = MathHelper.floor(getEntityBoundingBox().minY);
-        int k = MathHelper.floor(this.posZ);
+        int i = MathHelper.floor(this.getPosX());
+        int j = MathHelper.floor(getBoundingBox().minY);
+        int k = MathHelper.floor(this.getPosZ());
         BlockPos pos = new BlockPos(i, j, k);
 
         Biome currentbiome = MoCTools.Biomekind(this.world, pos);
@@ -115,25 +112,21 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
 
     @Override
     public ResourceLocation getTexture() {
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
-                return MoCreatures.proxy.getTexture("bunny.png");
+                return MoCreatures.getTexture("bunny.png");
             case 2:
-                return MoCreatures.proxy.getTexture("bunnyb.png");
+                return MoCreatures.getTexture("bunnyb.png");
             case 3:
-                return MoCreatures.proxy.getTexture("bunnyc.png");
+                return MoCreatures.getTexture("bunnyc.png");
             case 4:
-                return MoCreatures.proxy.getTexture("bunnyd.png");
+                return MoCreatures.getTexture("bunnyd.png");
             case 5:
-                return MoCreatures.proxy.getTexture("bunnye.png");
+                return MoCreatures.getTexture("bunnye.png");
 
             default:
-                return MoCreatures.proxy.getTexture("bunny.png");
+                return MoCreatures.getTexture("bunny.png");
         }
-    }
-
-    @Override
-    public void fall(float f, float f1) {
     }
 
     @Override
@@ -152,7 +145,7 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
             return tameResult;
@@ -183,8 +176,8 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
 
         if (this.getRidingEntity() != null) {
             this.rotationYaw = this.getRidingEntity().rotationYaw;
@@ -192,8 +185,8 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
         if (!this.world.isRemote) {
 
             if (--this.jumpTimer <= 0 && this.onGround
-                    && ((this.motionX > 0.05D) || (this.motionZ > 0.05D) || (this.motionX < -0.05D) || (this.motionZ < -0.05D))) {
-                this.motionY = 0.3D;
+                    && ((this.getMotion().x > 0.05D) || (this.getMotion().z > 0.05D) || (this.getMotion().x < -0.05D) || (this.getMotion().z < -0.05D))) {
+                this.setMotion(this.getMotion().x, 0.3D, this.getMotion().z);
                 this.jumpTimer = 15;
             }
 
@@ -205,7 +198,7 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
             } else if (this.bunnyReproduceTickerB < 127) {
                 this.bunnyReproduceTickerB++;
             } else {
-                List<Entity> list1 = this.world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().expand(4.0D, 4.0D, 4.0D));
+                List<Entity> list1 = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(4.0D, 4.0D, 4.0D));
                 for (int i1 = 0; i1 < list1.size(); i1++) {
                     Entity entity1 = (Entity) list1.get(i1);
                     if (!(entity1 instanceof MoCEntityBunny) || (entity1 == this)) {
@@ -216,15 +209,15 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
                             || !entitybunny.getHasEaten()) {
                         continue;
                     }
-                    MoCEntityBunny entitybunny1 = new MoCEntityBunny(this.world);
-                    entitybunny1.setPosition(this.posX, this.posY, this.posZ);
+                    MoCEntityBunny entitybunny1 = new MoCEntityBunny(MoCEntities.BUNNY, this.world);
+                    entitybunny1.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
                     entitybunny1.setAdult(false);
-                    int babytype = this.getType();
+                    int babytype = this.getSubType();
                     if (this.rand.nextInt(2) == 0) {
-                        babytype = entitybunny.getType();
+                        babytype = entitybunny.getSubType();
                     }
                     entitybunny1.setType(babytype);
-                    this.world.spawnEntity(entitybunny1);
+                    this.world.addEntity(entitybunny1);
                     MoCTools.playCustomSound(this, SoundEvents.ENTITY_CHICKEN_EGG);
                     proceed();
                     entitybunny.proceed();
@@ -268,8 +261,8 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
 
     @Override
     public double getYOffset() {
-        if (this.getRidingEntity() instanceof EntityPlayer) {
-            return ((EntityPlayer) this.getRidingEntity()).isSneaking() ? 0.25 : 0.5F;
+        if (this.getRidingEntity() instanceof PlayerEntity) {
+            return ((PlayerEntity) this.getRidingEntity()).isSneaking() ? 0.25 : 0.5F;
         }
 
         return super.getYOffset();

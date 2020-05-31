@@ -386,7 +386,7 @@ public class MoCEntityDolphin extends MoCEntityTameableAquatic {
                 if (this.gestationtime <= 50) {
                     continue;
                 }
-                MoCEntityDolphin babydolphin = new MoCEntityDolphin(MoCEntities.DOLPHIN this.world);
+                MoCEntityDolphin babydolphin = new MoCEntityDolphin(MoCEntities.DOLPHIN, this.world);
                 babydolphin.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
                 if (this.world.addEntity(babydolphin)) {
                     MoCTools.playCustomSound(this, SoundEvents.ENTITY_CHICKEN_EGG);

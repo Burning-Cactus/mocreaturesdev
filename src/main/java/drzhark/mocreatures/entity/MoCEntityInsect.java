@@ -63,10 +63,10 @@ public class MoCEntityInsect extends MoCEntityAmbient {
         super.livingTick();
 
         if (!this.world.isRemote) {
-            if (!getIsFlying() && isOnLadder() && !this.onGround) {
-                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
-                        new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-            }
+//            if (!getIsFlying() && isOnLadder() && !this.onGround) {
+//                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
+//                        new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//            }
 
             if (isFlyer() && !getIsFlying() && this.rand.nextInt(getFlyingFreq()) == 0) {
                 List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(4D, 4D, 4D));
@@ -123,10 +123,6 @@ public class MoCEntityInsect extends MoCEntityAmbient {
             this.climbCounter = 1;
         }
 
-    }
-
-    @Override
-    public void fall(float f, float f1) {
     }
 
     @Override

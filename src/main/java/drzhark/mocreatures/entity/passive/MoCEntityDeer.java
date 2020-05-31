@@ -7,16 +7,14 @@ import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
 import drzhark.mocreatures.entity.ai.EntityAIFleeFromEntityMoC;
 import drzhark.mocreatures.entity.ai.EntityAIFollowAdult;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
-import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIPanic;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.PanicGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -34,29 +32,29 @@ public class MoCEntityDeer extends MoCEntityTameableAnimal {
     }
     
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIFleeFromEntityMoC(this, new Predicate<Entity>() {
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(1, new EntityAIFleeFromEntityMoC(this, new Predicate<Entity>() {
             public boolean apply(Entity entity) {
-                return !(entity instanceof MoCEntityDeer) && (entity.height > 0.8F || entity.width > 0.8F);
+                return !(entity instanceof MoCEntityDeer) && (entity.getHeight() > 0.8F || entity.getWidth() > 0.8F);
             }
         }, 6.0F, this.getMyAISpeed(), this.getMyAISpeed() * 1.2D));
-        this.tasks.addTask(2, new EntityAIPanic(this, this.getMyAISpeed() * 1.2D));
-        this.tasks.addTask(4, new EntityAIFollowAdult(this, getMyAISpeed()));
-        this.tasks.addTask(5, new EntityAIWanderMoC2(this, getMyAISpeed()));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+        this.goalSelector.addGoal(2, new PanicGoal(this, this.getMyAISpeed() * 1.2D));
+        this.goalSelector.addGoal(4, new EntityAIFollowAdult(this, getMyAISpeed()));
+        this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, getMyAISpeed()));
+        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
     }
 
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             int i = this.rand.nextInt(100);
             if (i <= 20) {
                 setType(1);
@@ -72,22 +70,18 @@ public class MoCEntityDeer extends MoCEntityTameableAnimal {
     @Override
     public ResourceLocation getTexture() {
 
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
-                return MoCreatures.proxy.getTexture("deer.png");
+                return MoCreatures.getTexture("deer.png");
             case 2:
-                return MoCreatures.proxy.getTexture("deerf.png");
+                return MoCreatures.getTexture("deerf.png");
             case 3:
                 setAdult(false);
-                return MoCreatures.proxy.getTexture("deerb.png");
+                return MoCreatures.getTexture("deerb.png");
 
             default:
-                return MoCreatures.proxy.getTexture("deer.png");
+                return MoCreatures.getTexture("deer.png");
         }
-    }
-
-    @Override
-    public void fall(float f, float f1) {
     }
 
     @Override
@@ -95,10 +89,10 @@ public class MoCEntityDeer extends MoCEntityTameableAnimal {
         return !(entity instanceof MoCEntityDeer) && super.entitiesToInclude(entity);
     }
 
-    @Override
-    protected Item getDropItem() {
-        return MoCItems.fur;
-    }
+//    @Override
+//    protected Item getDropItem() {
+//        return MoCItems.fur;
+//    }
 
     @Override
     protected SoundEvent getDeathSound() {
@@ -148,12 +142,12 @@ public class MoCEntityDeer extends MoCEntityTameableAnimal {
 
     @Override
     public boolean getIsAdult() {
-        return this.getType() != 3 && super.getIsAdult();
+        return this.getSubType() != 3 && super.getIsAdult();
     }
 
     @Override
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
 
         if (!this.world.isRemote) {
 
@@ -161,9 +155,7 @@ public class MoCEntityDeer extends MoCEntityTameableAnimal {
                 if (MoCTools.getMyMovementSpeed(this) > 0.17F) {
                     float velX = (float) (0.5F * Math.cos((MoCTools.realAngle(this.rotationYaw - 90F)) / 57.29578F));
                     float velZ = (float) (0.5F * Math.sin((MoCTools.realAngle(this.rotationYaw - 90F)) / 57.29578F));
-                    this.motionX -= velX;
-                    this.motionZ -= velZ;
-                    this.motionY = 0.5D;
+                    this.setMotion(this.getMotion().x - velX, 0.5D, this.getMotion().z - velZ);
                     this.readyToJumpTimer = this.rand.nextInt(10) + 20;
                 }
             }
@@ -173,23 +165,23 @@ public class MoCEntityDeer extends MoCEntityTameableAnimal {
     @Override
     public float pitchRotationOffset() {
         if (!this.onGround && MoCTools.getMyMovementSpeed(this) > 0.08F) {
-            if (this.motionY > 0.5D) {
+            if (this.getMotion().y > 0.5D) {
                 return 25F;
             }
-            if (this.motionY < -0.5D) {
+            if (this.getMotion().y < -0.5D) {
                 return -25F;
             }
-            return (float) (this.motionY * 70D);
+            return (float) (this.getMotion().y * 70D);
         }
         return 0F;
     }
 
     @Override
     public float getSizeFactor() {
-        if (getType() == 1) {
+        if (getSubType() == 1) {
             return 1.6F;
         }
-        if (getType() == 2) {
+        if (getSubType() == 2) {
             return 1.3F;
         }
         return getEdad() * 0.01F;

@@ -2,6 +2,7 @@ package drzhark.mocreatures.entity;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.ai.EntityAIMoverHelperMoC;
 import drzhark.mocreatures.entity.ai.PathNavigateFlyerMoC;
 import drzhark.mocreatures.entity.item.MoCEntityEgg;
@@ -13,43 +14,27 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.passive.WolfEntity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.Path;
-import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.pathfinding.PathNavigateSwimmer;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
@@ -209,8 +194,8 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
     }
 
     @Override
-    protected boolean canDespawn() {
-        if (MoCreatures.proxy.forceDespawns) {
+    public boolean canDespawn(double d) {
+        if (MoCConfig.COMMON_CONFIG.GLOBAL.forceDespawns.get()) {
             return !getIsTamed();
         } else {
             return false;
@@ -293,9 +278,9 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
         return ((!(entity instanceof LivingEntity)) || (entity instanceof MobEntity) || (entity instanceof PlayerEntity)
                 || (entity instanceof MoCEntityKittyBed) || (entity instanceof MoCEntityLitterBox)
                 || (this.getIsTamed() && (entity instanceof IMoCEntity && ((IMoCEntity) entity).getIsTamed()))
-                || ((entity instanceof WolfEntity) && !(MoCreatures.proxy.attackWolves))
-                || ((entity instanceof MoCEntityHorse) && !(MoCreatures.proxy.attackHorses))
-                || (entity.getWidth() >= this.getWidth() || entity.getHeight() >= this.getHeight()) || (entity instanceof MoCEntityEgg) || ((entity instanceof IMoCEntity) && !MoCreatures.proxy.enableHunters));
+                || ((entity instanceof WolfEntity) && !(MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.attackWolves.get()))
+                || ((entity instanceof MoCEntityHorse) && !(MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.attackHorses.get()))
+                || (entity.getWidth() >= this.getWidth() || entity.getHeight() >= this.getHeight()) || (entity instanceof MoCEntityEgg) || ((entity instanceof IMoCEntity) && !MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.enableHunters.get()));
     }
 
     /**
@@ -344,7 +329,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
                 }
             }
 
-            if (MoCreatures.proxy.enableHunters && this.isReadyToHunt() && !this.getIsHunting() && this.rand.nextInt(500) == 0) {
+            if (MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.enableHunters.get() && this.isReadyToHunt() && !this.getIsHunting() && this.rand.nextInt(500) == 0) {
                 setIsHunting(true);
             }
 
@@ -411,9 +396,9 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
 
     @Override
     public boolean isInWater() {
-        if (isAmphibian()) {
-            return this.world.handleMaterialAcceleration(this.getBoundingBox().expand(0.0D, -0.2D, 0.0D), Material.WATER, this);
-        }
+//        if (isAmphibian()) {
+//            return this.world.handleMaterialAcceleration(this.getBoundingBox().expand(0.0D, -0.2D, 0.0D), Material.WATER, this);
+//        }
         return super.isInWater();
     }
 
@@ -562,7 +547,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
     }
 
     protected void getPathOrWalkableBlock(Entity entity, float f) {
-        Path pathentity = this.navigator.getPathToPos(entity.getPosition());
+        Path pathentity = this.navigator.getPathToPos(entity.getPosition(), 0); //TODO: I'm not sure what the int parameter here is for.
         if ((pathentity == null) && (f > 8F)) {
             int i = MathHelper.floor(entity.getPosX()) - 2;
             int j = MathHelper.floor(entity.getPosZ()) - 2;
@@ -595,13 +580,13 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
     }
 
     public boolean getCanSpawnHereLiving() {
-        return this.world.checkNoEntityCollision(this.getBoundingBox())
-                && this.world.getCollisionBoxes(this, this.getBoundingBox()).isEmpty()
+        return this.world.checkNoEntityCollision(this)
+                && this.world.getCollisionShapes(this, this.getBoundingBox()).count() == 0
                 && !this.world.containsAnyLiquid(this.getBoundingBox());
     }
 
     @Override
-    public boolean getCanSpawnHere() {
+    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
         if (MoCreatures.entityMap.get(this.getClass()).getFrequency() <= 0) {
             return false;
         }
@@ -618,12 +603,12 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
         if (s.equals("WyvernBiome")) {
             return getCanSpawnHereMoCBiome();
         }
-        return super.getCanSpawnHere();
+        return super.canSpawn(worldIn, reason);
     }
 
     private boolean getCanSpawnHereMoCBiome() {
-        if (this.world.checkNoEntityCollision(this.getBoundingBox())
-                && this.world.getCollisionBoxes(this, this.getBoundingBox()).isEmpty()
+        if (this.world.checkNoEntityCollision(this)
+                && this.world.getCollisionShapes(this, this.getBoundingBox()).count() == 0
                 && !this.world.containsAnyLiquid(this.getBoundingBox())) {
             BlockPos pos =
                     new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getBoundingBox().minY),
@@ -637,7 +622,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
             final Block block = blockstate.getBlock();
 
             if (block == MoCBlocks.WYVERN_DIRT || block == MoCBlocks.OGRE_DIRT || block == MoCBlocks.WYVERN_GRASS || block == MoCBlocks.OGRE_GRASS
-                    || (block != null && block.isLeaves(blockstate, this.world, pos.down()))) {
+                    || (block.isLeaves(blockstate, this.world, pos.down()))) {
                 return true;
             }
         }
@@ -646,7 +631,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
 
     public boolean getCanSpawnHereJungle() {
         if (this.world.checkNoEntityCollision(this) //Original: this.getBoundingBox() instead of this
-                && this.world.getCollisionShapes(this, this.getBoundingBox()).isEmpty()) {
+                && this.world.getCollisionShapes(this, this.getBoundingBox()).count() == 0) {
             return true;
         }
         return false;
@@ -659,7 +644,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
         nbttagcompound.putBoolean("Adult", getIsAdult());
         nbttagcompound.putInt("Edad", getEdad());
         nbttagcompound.putString("Name", getPetName());
-        nbttagcompound.putInt("TypeInt", getType());
+        nbttagcompound.putInt("TypeInt", getSubType());
     }
 
     @Override
@@ -1252,22 +1237,6 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
     public boolean getIsFlying() {
         return false;
     }
-
-    /**
-     * Returns true if the entity is of the @link{EnumCreatureType} provided
-     *
-     * @param type The EnumCreatureType type this entity is evaluating
-     * @param forSpawnCount If this is being invoked to check spawn count caps.
-     * @return If the creature is of the type provided
-     */
-    @Override
-    public boolean isCreatureType(EntityClassification type, boolean forSpawnCount) {
-        if (type == EntityClassification.CREATURE) {
-            return true;
-        } else {
-            return false;
-        }
-    }
     
     /**
      * For vehicles, the first passenger is generally considered the controller and "drives" the vehicle. For example,
@@ -1302,7 +1271,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
     public void setLeashHolder(Entity entityIn, boolean sendAttachNotification) {
         if (this.getIsTamed() && entityIn instanceof PlayerEntity) {
             PlayerEntity entityplayer = (PlayerEntity) entityIn;
-            if (MoCreatures.proxy.enableOwnership && this.getOwnerId() != null
+            if (MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get() && this.getOwnerId() != null
                     && !entityplayer.getUniqueID().equals(this.getOwnerId()) && !MoCTools.isThisPlayerAnOP((entityplayer))) {
                 return;
             }

@@ -6,6 +6,7 @@ import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAIFleeFromPlayer;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.passive.MoCEntityPetScorpion;
+import drzhark.mocreatures.init.MoCEntities;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
@@ -27,11 +28,11 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class MoCEntityScorpion extends MoCEntityMob {
 
@@ -82,14 +83,14 @@ public class MoCEntityScorpion extends MoCEntityMob {
     public void selectType() {
         checkSpawningBiome();
 
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             setType(1);
         }
     }
 
     @Override
     public ResourceLocation getTexture() {
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
                 return MoCreatures.getTexture("scorpiondirt.png");
             case 2:
@@ -132,8 +133,8 @@ public class MoCEntityScorpion extends MoCEntityMob {
 
     public void setPoisoning(boolean flag) {
         if (flag && !this.world.isRemote) {
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
-                    new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
+//                    new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
         this.isPoisoning = flag;
     }
@@ -221,7 +222,7 @@ public class MoCEntityScorpion extends MoCEntityMob {
         if (super.attackEntityFrom(damagesource, i)) {
             Entity entity = damagesource.getTrueSource();
 
-            if (entity != null && entity != this && entity instanceof LivingEntity) && this.shouldAttackPlayers() && getIsAdult()) {
+            if ((entity != this && entity instanceof LivingEntity) && this.shouldAttackPlayers() && getIsAdult()) {
                 setAttackTarget((LivingEntity) entity);
             }
             return true;
@@ -241,20 +242,20 @@ public class MoCEntityScorpion extends MoCEntityMob {
         boolean flag = (entityIn instanceof PlayerEntity);
         if (!getIsPoisoning() && this.rand.nextInt(5) == 0 && entityIn instanceof LivingEntity) {
             setPoisoning(true);
-            if (getType() <= 2)// regular scorpions
+            if (getSubType() <= 2)// regular scorpions
             {
                 if (flag) {
                     MoCreatures.poisonPlayer((PlayerEntity) entityIn);
                 }
                 ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 70, 0));
-            } else if (getType() == 4)// blue scorpions
+            } else if (getSubType() == 4)// blue scorpions
             {
                 if (flag) {
                     MoCreatures.freezePlayer((PlayerEntity) entityIn);
                 }
                 ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 70, 0));
 
-            } else if (getType() == 3)// red scorpions
+            } else if (getSubType() == 3)// red scorpions
             {
                 if (!this.world.isRemote && flag && !this.world.dimension.doesWaterVaporize()) {
                     MoCreatures.burnPlayer((PlayerEntity) entityIn);
@@ -268,10 +269,10 @@ public class MoCEntityScorpion extends MoCEntityMob {
     }
 
     public void swingArm() {
-        if (!this.world.isRemote) {
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
-                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-        }
+//        if (!this.world.isRemote) {
+//            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
+//                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//        }
     }
 
     @Override
@@ -289,12 +290,12 @@ public class MoCEntityScorpion extends MoCEntityMob {
         if (!this.world.isRemote && getIsAdult() && getHasBabies()) {
             int k = this.rand.nextInt(5);
             for (int i = 0; i < k; i++) {
-                MoCEntityPetScorpion entityscorpy = new MoCEntityPetScorpion(this.world);
+                MoCEntityPetScorpion entityscorpy = new MoCEntityPetScorpion(MoCEntities.PET_SCORPION, this.world);
                 entityscorpy.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
                 entityscorpy.setAdult(false);
                 entityscorpy.setEdad(20);
-                entityscorpy.setType(getType());
-                this.world.spawnEntity(entityscorpy);
+                entityscorpy.setType(getSubType());
+                this.world.addEntity(entityscorpy);
                 MoCTools.playCustomSound(entityscorpy, SoundEvents.ENTITY_CHICKEN_EGG);
             }
         }
@@ -312,64 +313,64 @@ public class MoCEntityScorpion extends MoCEntityMob {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        if (!this.world.isRemote) {
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
-                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-        }
+//        if (!this.world.isRemote) {
+//            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
+//                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//        }
         return MoCSoundEvents.ENTITY_SCORPION_AMBIENT;
     }
 
+//    @Override
+//    protected Item getDropItem() {
+//        if (!getIsAdult()) {
+//            return Items.STRING;
+//        }
+//
+//        boolean flag = (this.rand.nextInt(100) < MoCreatures.proxy.rareItemDropChance);
+//
+//        switch (getSubType()) {
+//            case 1:
+//                if (flag) {
+//                    return MoCItems.SCORPSTINGDIRT;
+//                }
+//                return MoCItems.CHITIN;
+//            case 2:
+//                if (flag) {
+//                    return MoCItems.SCORPSTINGCAVE;
+//                }
+//                return MoCItems.CHITINCAVE;
+//            case 3:
+//                if (flag) {
+//                    return MoCItems.SCORPSTINGNETHER;
+//                }
+//                return MoCItems.CHITINNETHER;
+//            case 4:
+//                if (flag) {
+//                    return MoCItems.SCORPSTINGFROST;
+//                }
+//                return MoCItems.CHITINFROST;
+//            default:
+//                return Items.STRING;
+//        }
+//    }
+//      TODO: Loot tables are done in json now.
+//    @Override
+//    protected void dropFewItems(boolean flag, int x) {
+//        if (!flag) {
+//            return;
+//        }
+//        Item item = this.getDropItem();
+//
+//        if (item != null) {
+//            if (this.rand.nextInt(3) == 0) {
+//                this.dropItem(item, 1);
+//            }
+//        }
+//
+//    }
+
     @Override
-    protected Item getDropItem() {
-        if (!getIsAdult()) {
-            return Items.STRING;
-        }
-
-        boolean flag = (this.rand.nextInt(100) < MoCreatures.proxy.rareItemDropChance);
-
-        switch (getType()) {
-            case 1:
-                if (flag) {
-                    return MoCItems.SCORPSTINGDIRT;
-                }
-                return MoCItems.CHITIN;
-            case 2:
-                if (flag) {
-                    return MoCItems.SCORPSTINGCAVE;
-                }
-                return MoCItems.CHITINCAVE;
-            case 3:
-                if (flag) {
-                    return MoCItems.SCORPSTINGNETHER;
-                }
-                return MoCItems.CHITINNETHER;
-            case 4:
-                if (flag) {
-                    return MoCItems.SCORPSTINGFROST;
-                }
-                return MoCItems.CHITINFROST;
-            default:
-                return Items.STRING;
-        }
-    }
-
-    @Override
-    protected void dropFewItems(boolean flag, int x) {
-        if (!flag) {
-            return;
-        }
-        Item item = this.getDropItem();
-
-        if (item != null) {
-            if (this.rand.nextInt(3) == 0) {
-                this.dropItem(item, 1);
-            }
-        }
-
-    }
-
-    @Override
-    public boolean getCanSpawnHere() {
+    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
         return (isValidLightLevel() && MoCreatures.entityMap.get(this.getClass()).getFrequency() > 0) && getCanSpawnHereLiving()
                 && getCanSpawnHereCreature();
     }

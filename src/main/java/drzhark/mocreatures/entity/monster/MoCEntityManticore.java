@@ -2,6 +2,7 @@ package drzhark.mocreatures.entity.monster;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.init.MoCItems;
@@ -111,10 +112,6 @@ public class MoCEntityManticore extends MoCEntityMob {
     @Override
     public float getMoveSpeed() {
         return 0.9F;
-    }
-
-    @Override
-    public void fall(float f, float f1) {
     }
 
     /*protected void updateFallState(double y, boolean onGroundIn, Block blockIn, BlockPos pos) {
@@ -276,10 +273,10 @@ public class MoCEntityManticore extends MoCEntityMob {
     public void wingFlap() {
         if (this.isFlyer() && this.wingFlapCounter == 0) {
             this.wingFlapCounter = 1;
-            if (!this.world.isRemote) {
-                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
-                        new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-            }
+//            if (!this.world.isRemote) {
+//                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
+//                        new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//            }
         }
     }
 
@@ -304,10 +301,10 @@ public class MoCEntityManticore extends MoCEntityMob {
     }
 
     public void setPoisoning(boolean flag) {
-        if (flag && !this.world.isRemote) {
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
-                    new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-        }
+//        if (flag && !this.world.isRemote) {
+//            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
+//                    new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//        }
         this.isPoisoning = flag;
     }
 
@@ -398,46 +395,46 @@ public class MoCEntityManticore extends MoCEntityMob {
         return 1.4F;
     }
 
-    @Override
-    protected Item getDropItem() {
-        boolean flag = (this.rand.nextInt(100) < MoCreatures.proxy.rareItemDropChance);
+//    @Override
+//    protected Item getDropItem() {
+//        boolean flag = (this.rand.nextInt(100) < MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.rareItemDropChance.get());
+//
+//        switch (getSubType()) {
+//            case 1:
+//                if (flag) {
+//                    return MoCItems.SCORPSTINGNETHER;
+//                }
+//                return MoCItems.CHITINNETHER;
+//            case 2:
+//                if (flag) {
+//                    return MoCItems.SCORPSTINGCAVE;
+//                }
+//                return MoCItems.CHITINCAVE;
+//
+//            case 3:
+//                if (flag) {
+//                    return MoCItems.SCORPSTINGFROST;
+//                }
+//                return MoCItems.CHITINFROST;
+//            case 4:
+//                if (flag) {
+//                    return MoCItems.SCORPSTINGDIRT;
+//                }
+//                return MoCItems.CHITIN;
+//
+//            default:
+//                return MoCItems.CHITIN;
+//        }
+//    }
 
-        switch (getSubType()) {
-            case 1:
-                if (flag) {
-                    return MoCItems.SCORPSTINGNETHER;
-                }
-                return MoCItems.CHITINNETHER;
-            case 2:
-                if (flag) {
-                    return MoCItems.SCORPSTINGCAVE;
-                }
-                return MoCItems.CHITINCAVE;
-
-            case 3:
-                if (flag) {
-                    return MoCItems.SCORPSTINGFROST;
-                }
-                return MoCItems.CHITINFROST;
-            case 4:
-                if (flag) {
-                    return MoCItems.SCORPSTINGDIRT;
-                }
-                return MoCItems.CHITIN;
-
-            default:
-                return MoCItems.CHITIN;
-        }
-    }
-
-    @Override
-    protected void dropFewItems(boolean flag, int x) {
-        BlockPos pos = new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(getBoundingBox().minY), this.getPosZ());
-        int chance = MoCreatures.proxy.rareItemDropChance;
-        if (this.rand.nextInt(100) < chance) {
-            entityDropItem(new ItemStack(MoCItems.MOCEGG, 1, getType() + 61), 0.0F);
-        } else {
-            super.dropFewItems(flag, x);
-        }
-    }
+//    @Override
+//    protected void dropFewItems(boolean flag, int x) {
+//        BlockPos pos = new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(getBoundingBox().minY), this.getPosZ());
+//        int chance = MoCreatures.proxy.rareItemDropChance;
+//        if (this.rand.nextInt(100) < chance) {
+//            entityDropItem(new ItemStack(MoCItems.MOCEGG, 1, getType() + 61), 0.0F);
+//        } else {
+//            super.dropFewItems(flag, x);
+//        }
+//    }
 }

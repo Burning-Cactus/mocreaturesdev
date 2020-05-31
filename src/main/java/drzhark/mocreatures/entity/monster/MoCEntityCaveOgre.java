@@ -3,11 +3,13 @@ package drzhark.mocreatures.entity.monster;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 public class MoCEntityCaveOgre extends MoCEntityOgre{
@@ -36,9 +38,9 @@ public class MoCEntityCaveOgre extends MoCEntityOgre{
     }
     
     @Override
-    public boolean getCanSpawnHere() {
+    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
         return (!this.world.canBlockSeeSky(new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosY()), MathHelper
-                .floor(this.getPosZ())))) && (this.getPosY() < 50D) && super.getCanSpawnHere();
+                .floor(this.getPosZ())))) && (this.getPosY() < 50D) && super.canSpawn(worldIn, reason);
     }
     
     @Override

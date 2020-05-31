@@ -18,7 +18,7 @@ public class MoCClientRegistry {
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.BUTTERFLY, m-> new MoCRenderButterfly<>(m, new MoCModelButterfly<>(), 0.5F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.CRAB, m-> new MoCRenderMoC<>(m, new MoCModelCrab<>(), 0.2F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.CRICKET, m-> new MoCRenderCricket<>(m, new MoCModelCricket<>()));
-        RenderingRegistry.registerEntityRenderingHandler(MoCEntities.DRAGONFLY, m-> new MoCRenderInsect<(m, new MoCModelDragonfly<>()));
+        RenderingRegistry.registerEntityRenderingHandler(MoCEntities.DRAGONFLY, m-> new MoCRenderInsect<>(m, new MoCModelDragonfly<>()));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.FIREFLY, m-> new MoCRenderFirefly<>(m, new MoCModelFirefly<>()));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.FLY, m-> new MoCRenderInsect<(m, new MoCModelFly<>()));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.MAGGOT, m-> new MoCRenderMoC<>(m, new MoCModelMaggot(), 0.0F));

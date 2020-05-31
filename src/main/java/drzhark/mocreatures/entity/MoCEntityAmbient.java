@@ -163,7 +163,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     @Override
-    protected boolean canDespawn() {
+    public boolean canDespawn(double d) {
         if (MoCConfig.COMMON_CONFIG.GLOBAL.forceDespawns.get()) {
             return !getIsTamed();
         } else {
@@ -207,7 +207,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
             if (isMovementCeased()) {
                 this.getNavigator().clearPath();
             }
-            this.getNavigator().onUpdateNavigation();
+            this.getNavigator().updatePath();
         }
         super.livingTick();
     }
@@ -346,7 +346,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     /**
      * Called to make ridden entities pass on collision to rider
      */
-    public void Riding() {
+    public void riding() {
         if ((this.isBeingRidden()) && (this.getRidingEntity() instanceof PlayerEntity)) {
             PlayerEntity entityplayer = (PlayerEntity) this.getRidingEntity();
             List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(1.0D, 0.0D, 1.0D));
@@ -453,9 +453,10 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
             BlockState blockstate = this.world.getBlockState(pos.down());
             final Block block = blockstate.getBlock();
 
-            if (block == Blocks.GRASS || block == Blocks.ACACIA_LEAVES || block == Blocks.BIRCH_LEAVES || block == Blocks.DARK_OAK_LEAVES || block == Blocks.JUNGLE_LEAVES || block == Blocks.OAK_LEAVES || block == Blocks.SPRUCE_LEAVES || block.isLeaves(blockstate, this.world, pos.down())) {
+            //TODO: Use tags instead
+//            if (block == Blocks.GRASS || block == Blocks.ACACIA_LEAVES || block == Blocks.BIRCH_LEAVES || block == Blocks.DARK_OAK_LEAVES || block == Blocks.JUNGLE_LEAVES || block == Blocks.OAK_LEAVES || block == Blocks.SPRUCE_LEAVES || block.isLeaves(blockstate, this.world, pos.down())) {
                 return true;
-            }
+//            }
         }
 
         return false;
@@ -757,22 +758,6 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
         return (this instanceof IMoCTameable) && getIsTamed();
     }
 
-    /**
-     * Returns true if the entity is of the @link{EnumCreatureType} provided
-     *
-     * @param type The EnumCreatureType type this entity is evaluating
-     * @param forSpawnCount If this is being invoked to check spawn count caps.
-     * @return If the creature is of the type provided
-     */
-    @Override
-    public boolean isCreatureType(EntityClassification type, boolean forSpawnCount) {
-        if (type == EntityClassification.AMBIENT) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     @Override
     public boolean canAttackTarget(LivingEntity entity) {
         return false;
@@ -831,10 +816,6 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     @Override
-    public void fall(float f, float f1) {
-    }
-
-    @Override
     public int minFlyingHeight() {
         return 2;
     }
@@ -851,7 +832,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     @Override
     public void travel(Vec3d movement) {
         if (!getIsFlying()) {
-            super.travel(movement));
+            super.travel(movement);
             return;
         }
         this.moveEntityWithHeadingFlying((float)movement.x, (float)movement.y, (float)movement.z);
@@ -871,11 +852,6 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     @Override
     public boolean getIsFlying() {
         return false;
-    }
-
-    @Override
-    public String getClazzString() {
-        return EntityList.getEntityString(this);
     }
 
     @Override

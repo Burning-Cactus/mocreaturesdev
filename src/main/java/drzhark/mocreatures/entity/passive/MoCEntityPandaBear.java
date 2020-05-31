@@ -74,12 +74,12 @@ public class MoCEntityPandaBear extends MoCEntityBear{
     
     @Override
     public boolean isMyFavoriteFood(ItemStack stack) {
-        return this.getSubType() == 3 && !stack.isEmpty() && stack.getItem() == Items.REEDS;
+        return this.getSubType() == 3 && !stack.isEmpty() && stack.getItem() == Items.SUGAR_CANE;
     }
 
     @Override
     public boolean isMyHealFood(ItemStack stack) {
-        return this.getSubType() == 3 && !stack.isEmpty() && stack.getItem() == Items.REEDS;
+        return this.getSubType() == 3 && !stack.isEmpty() && stack.getItem() == Items.SUGAR_CANE;
     }
     
     @Override

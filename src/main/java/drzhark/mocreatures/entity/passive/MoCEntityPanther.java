@@ -9,6 +9,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -47,7 +48,7 @@ public class MoCEntityPanther extends MoCEntityBigCat {
 
     @Override
     public boolean isFlyer() {
-        return this.getType() == 2;
+        return this.getSubType() == 2;
     }
 
     @Override
@@ -58,7 +59,7 @@ public class MoCEntityPanther extends MoCEntityBigCat {
         }
 
         final ItemStack stack = player.getHeldItem(hand);
-        if (!stack.isEmpty() && getIsTamed() && getType() == 1 && (stack.getItem() == MoCItems.ESSENCEDARKNESS)) {
+        if (!stack.isEmpty() && getIsTamed() && getSubType() == 1 && (stack.getItem() == MoCItems.ESSENCEDARKNESS)) {
             stack.shrink(1);
             if (stack.isEmpty()) {
                 player.setHeldItem(hand, new ItemStack(Items.GLASS_BOTTLE));

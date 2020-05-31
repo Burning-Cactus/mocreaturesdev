@@ -8,6 +8,7 @@ import drzhark.mocreatures.entity.ai.EntityAIFollowOwnerPlayer;
 import drzhark.mocreatures.entity.ai.EntityAIHunt;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.entity.item.MoCEntityEgg;
+import drzhark.mocreatures.init.MoCEntities;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
@@ -96,7 +97,7 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
             }
         }
 
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
                 if (!saddle) {
                     return MoCreatures.getTexture("scorpiondirt.png");
@@ -167,10 +168,10 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
     }
 
     public void setPoisoning(boolean flag) {
-        if (flag && !this.world.isRemote) {
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
-                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-        }
+//        if (flag && !this.world.isRemote) {
+//            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
+//                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//        }
         this.isPoisoning = flag;
     }
 
@@ -293,10 +294,10 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
     }
 
     public void swingArm() {
-        if (!this.world.isRemote) {
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
-                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-        }
+//        if (!this.world.isRemote) {
+//            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
+//                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//        }
     }
 
     public boolean swingingTail() {
@@ -315,50 +316,50 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        if (!this.world.isRemote) {
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
-                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-        }
+//        if (!this.world.isRemote) {
+//            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
+//                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//        }
 
         return MoCSoundEvents.ENTITY_SCORPION_AMBIENT;
     }
 
-    @Override
-    protected Item getDropItem() {
-        if (!getIsAdult()) {
-            return Items.STRING;
-        }
-
-        boolean flag = (this.rand.nextInt(100) < MoCreatures.proxy.rareItemDropChance);
-
-        switch (getSubType()) {
-            case 1:
-                if (flag) {
-                    return MoCItems.SCORPSTINGDIRT;
-                }
-                return MoCItems.CHITIN;
-            case 2:
-                if (flag) {
-                    return MoCItems.SCORPSTINGCAVE;
-                }
-                return MoCItems.CHITINCAVE;
-            case 3:
-                if (flag) {
-                    return MoCItems.SCORPSTINGNETHER;
-                }
-                return MoCItems.CHITINNETHER;
-            case 4:
-                if (flag) {
-                    return MoCItems.SCORPSTINGFROST;
-                }
-                return MoCItems.CHITINFROST;
-            case 5:
-                return Items.ROTTEN_FLESH;
-
-            default:
-                return Items.STRING;
-        }
-    }
+//    @Override
+//    protected Item getDropItem() {
+//        if (!getIsAdult()) {
+//            return Items.STRING;
+//        }
+//
+//        boolean flag = (this.rand.nextInt(100) < MoCreatures.proxy.rareItemDropChance);
+//
+//        switch (getSubType()) {
+//            case 1:
+//                if (flag) {
+//                    return MoCItems.SCORPSTINGDIRT;
+//                }
+//                return MoCItems.CHITIN;
+//            case 2:
+//                if (flag) {
+//                    return MoCItems.SCORPSTINGCAVE;
+//                }
+//                return MoCItems.CHITINCAVE;
+//            case 3:
+//                if (flag) {
+//                    return MoCItems.SCORPSTINGNETHER;
+//                }
+//                return MoCItems.CHITINNETHER;
+//            case 4:
+//                if (flag) {
+//                    return MoCItems.SCORPSTINGFROST;
+//                }
+//                return MoCItems.CHITINFROST;
+//            case 5:
+//                return Items.ROTTEN_FLESH;
+//
+//            default:
+//                return Items.STRING;
+//        }
+//    }
 
     @Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
@@ -404,7 +405,7 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
             this.setHealth(getMaxHealth());
             if (!this.world.isRemote) {
                 int i = getSubType() + 40;
-                MoCEntityEgg entityegg = new MoCEntityEgg(this.world, i);
+                MoCEntityEgg entityegg = new MoCEntityEgg(MoCEntities.EGG, this.world, i);
                 entityegg.setPosition(player.getPosX(), player.getPosY(), player.getPosZ());
                 player.world.addEntity(entityegg);
                 entityegg.getMotion().add((this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.3F, this.world.rand.nextFloat() * 0.05F, (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.3F);
@@ -472,16 +473,12 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
 
     @Override
     protected boolean isMyHealFood(ItemStack itemstack) {
-        return (itemstack.getItem() == MoCItems.RATRAW || itemstack.getItem() == MoCItems.RATCOOKED);
+        return (itemstack.getItem() == MoCItems.RAT_RAW || itemstack.getItem() == MoCItems.RAT_COOKED);
     }
 
     @Override
     public int getTalkInterval() {
         return 300;
-    }
-
-    @Override
-    public void fall(float f, float f1) {
     }
 
     @Override
@@ -554,10 +551,10 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
     }
 
     public void transform(int tType) {
-        if (!this.world.isRemote) {
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), tType),
-                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-        }
+//        if (!this.world.isRemote) {
+//            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), tType),
+//                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//        }
         this.transformCounter = 1;
     }
 

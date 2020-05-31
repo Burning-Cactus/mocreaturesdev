@@ -282,10 +282,10 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
     }
 
     public void transform(int tType) {
-        if (!this.world.isRemote) {
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), tType),
-                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-        }
+//        if (!this.world.isRemote) {
+//            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), tType),
+//                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//        }
         this.transformType = tType;
         this.transformCounter = 1;
     }
@@ -326,7 +326,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
                 setIsFlying(true);
             }
             if (!getIsTamed() && this.dimension.getId() == MoCreatures.WyvernLairDimensionID && (this.rand.nextInt(50) == 0) && this.getPosY() < 10D) {
-                this.setDead();
+                this.remove();
             }
 
             if (getIsFlying() && this.getNavigator().noPath() && !isMovementCeased() && this.getAttackTarget() == null && rand.nextInt(30) == 0) {
@@ -373,10 +373,10 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
     public void wingFlap() {
         if (this.wingFlapCounter == 0) {
             this.wingFlapCounter = 1;
-            if (!this.world.isRemote) {
-                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
-                        new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-            }
+//            if (!this.world.isRemote) {
+//                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 3),
+//                        new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//            }
         }
     }
 
@@ -495,7 +495,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
                 }
                 this.dropMyStuff();
                 MoCTools.dropAmulet(this, 3, player);
-                this.isDead = true;
+                this.dead = true;
             }
 
             return true;
@@ -513,7 +513,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
 
             if (!this.world.isRemote) {
                 int i = getSubType() + 49;
-                MoCEntityEgg entityegg = new MoCEntityEgg(this.world, i);
+                MoCEntityEgg entityegg = new MoCEntityEgg(MoCEntities.EGG, this.world, i);
                 entityegg.setPosition(player.getPosX(), player.getPosY(), player.getPosZ());
                 player.world.addEntity(entityegg);
                 entityegg.getMotion().add((this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.3F,
@@ -649,10 +649,6 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void fall(float f, float f1) {
-    }
-
-    @Override
     public double getMountedYOffset() {
         return this.getHeight() * 0.85 * getSizeFactor();
     }
@@ -723,7 +719,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
                 if (this.localstack != null && !this.localstack.isEmpty()) {
                     CompoundNBT nbttagcompound1 = new CompoundNBT();
                     nbttagcompound1.putByte("Slot", (byte) i);
-                    this.localstack.writeToNBT(nbttagcompound1);
+                    this.localstack.write(nbttagcompound1);
                     nbttaglist.add(nbttagcompound1);
                 }
             }
@@ -765,14 +761,14 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
 
     @Override
     public boolean isMyHealFood(ItemStack stack) {
-        return !stack.isEmpty() && (stack.getItem() == MoCItems.RATRAW || stack.getItem() == MoCItems.RAWTURKEY);
+        return !stack.isEmpty() && (stack.getItem() == MoCItems.RAT_RAW || stack.getItem() == MoCItems.TURKEY_RAW);
     }
 
     private void openMouth() {
         if (!this.world.isRemote) {
             this.mouthCounter = 1;
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
-                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
+//                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
 
     }
@@ -799,23 +795,23 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
 
     @Override
     public void makeEntityDive() {
-        if (!this.world.isRemote) {
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 2),
-                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
-        }
+//        if (!this.world.isRemote) {
+//            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 2),
+//                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//        }
         super.makeEntityDive();
     }
 
-    @Override
-    protected void dropFewItems(boolean flag, int x) {
-        int chance = MoCreatures.proxy.wyvernEggDropChance;
-        if (getSubType() == 5) { //mother wyverns drop eggs more frequently
-            chance = MoCreatures.proxy.motherWyvernEggDropChance;
-        }
-        if (this.rand.nextInt(100) < chance) {
-            entityDropItem(new ItemStack(MoCItems.MOCEGG, 1, getSubType() + 49), 0.0F);
-        }
-    }
+//    @Override
+//    protected void dropFewItems(boolean flag, int x) {
+//        int chance = MoCreatures.proxy.wyvernEggDropChance;
+//        if (getSubType() == 5) { //mother wyverns drop eggs more frequently
+//            chance = MoCreatures.proxy.motherWyvernEggDropChance;
+//        }
+//        if (this.rand.nextInt(100) < chance) {
+//            entityDropItem(new ItemStack(MoCItems.MOCEGG, 1, getSubType() + 49), 0.0F);
+//        }
+//    }
 
     @Override
     public boolean canBeCollidedWith() {

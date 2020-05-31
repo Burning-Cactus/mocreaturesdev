@@ -23,7 +23,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class MoCEntityWerewolf extends MoCEntityMob {
 
@@ -74,7 +77,7 @@ public class MoCEntityWerewolf extends MoCEntityMob {
 
     @Override
     public void selectType() {
-        if (getType() == 0) {
+        if (getSubType() == 0) {
             int k = this.rand.nextInt(100);
             if (k <= 28) {
                 setType(1);
@@ -146,7 +149,7 @@ public class MoCEntityWerewolf extends MoCEntityMob {
             setAttackTarget(null);
             return false;
         }
-        if (this.getType() == 4 && entityIn instanceof LivingEntity) {
+        if (this.getSubType() == 4 && entityIn instanceof LivingEntity) {
             ((LivingEntity) entityIn).setFire(10);
         }
         return super.attackEntityAsMob(entityIn);
@@ -188,61 +191,61 @@ public class MoCEntityWerewolf extends MoCEntityMob {
         return !getIsHumanForm() && super.shouldAttackPlayers();
     }
 
-    @Override
-    protected Item getDropItem() {
-        int i = this.rand.nextInt(12);
-        if (getIsHumanForm()) {
-            switch (i) {
-                case 0: // '\0'
-                    return Items.WOODEN_SHOVEL;
-
-                case 1: // '\001'
-                    return Items.WOODEN_AXE;
-
-                case 2: // '\002'
-                    return Items.WOODEN_SWORD;
-
-                case 3: // '\003'
-                    return Items.WOODEN_HOE;
-
-                case 4: // '\004'
-                    return Items.WOODEN_PICKAXE;
-            }
-            return Items.STICK;
-        }
-        switch (i) {
-            case 0: // '\0'
-                return Items.IRON_HOE;
-
-            case 1: // '\001'
-                return Items.IRON_SHOVEL;
-
-            case 2: // '\002'
-                return Items.IRON_AXE;
-
-            case 3: // '\003'
-                return Items.IRON_PICKAXE;
-
-            case 4: // '\004'
-                return Items.IRON_SWORD;
-
-            case 5: // '\005'
-                return Items.STONE_HOE;
-
-            case 6: // '\006'
-                return Items.STONE_SHOVEL;
-
-            case 7: // '\007'
-                return Items.STONE_AXE;
-
-            case 8: // '\b'
-                return Items.STONE_PICKAXE;
-
-            case 9: // '\t'
-                return Items.STONE_SWORD;
-        }
-        return Items.GOLDEN_APPLE;
-    }
+//    @Override
+//    protected Item getDropItem() {
+//        int i = this.rand.nextInt(12);
+//        if (getIsHumanForm()) {
+//            switch (i) {
+//                case 0: // '\0'
+//                    return Items.WOODEN_SHOVEL;
+//
+//                case 1: // '\001'
+//                    return Items.WOODEN_AXE;
+//
+//                case 2: // '\002'
+//                    return Items.WOODEN_SWORD;
+//
+//                case 3: // '\003'
+//                    return Items.WOODEN_HOE;
+//
+//                case 4: // '\004'
+//                    return Items.WOODEN_PICKAXE;
+//            }
+//            return Items.STICK;
+//        }
+//        switch (i) {
+//            case 0: // '\0'
+//                return Items.IRON_HOE;
+//
+//            case 1: // '\001'
+//                return Items.IRON_SHOVEL;
+//
+//            case 2: // '\002'
+//                return Items.IRON_AXE;
+//
+//            case 3: // '\003'
+//                return Items.IRON_PICKAXE;
+//
+//            case 4: // '\004'
+//                return Items.IRON_SWORD;
+//
+//            case 5: // '\005'
+//                return Items.STONE_HOE;
+//
+//            case 6: // '\006'
+//                return Items.STONE_SHOVEL;
+//
+//            case 7: // '\007'
+//                return Items.STONE_AXE;
+//
+//            case 8: // '\b'
+//                return Items.STONE_PICKAXE;
+//
+//            case 9: // '\t'
+//                return Items.STONE_SWORD;
+//        }
+//        return Items.GOLDEN_APPLE;
+//    }
 
     @Override
     protected SoundEvent getDeathSound() {
@@ -275,27 +278,6 @@ public class MoCEntityWerewolf extends MoCEntityMob {
 
     public boolean IsNight() {
         return !this.world.isDaytime();
-    }
-
-    @Override
-    public void onDeath(DamageSource damagesource) {
-        Entity entity = damagesource.getTrueSource();
-        if ((this.scoreValue > 0) && (entity != null)) {
-            entity.awardKillScore(this, this.scoreValue, damagesource);
-        }
-        if (entity != null) {
-            entity.onKillEntity(this);
-        }
-
-        if (!this.world.isRemote) {
-            for (int i = 0; i < 2; i++) {
-                Item item = getDropItem();
-                if (item != null) {
-                    dropItem(item, 1);
-                }
-            }
-
-        }
     }
 
     @Override
@@ -406,10 +388,10 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     }
 
     @Override
-    public ILivingEntityData onInitialSpawn(World worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData livingdata, CompoundNBT dataTag) {
-        if (getType() == 4) {
+    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        if (getSubType() == 4) {
             this.isImmuneToFire = true;
         }
-        return super.onInitialSpawn(worldIn, difficulty, reason, livingdata, dataTag);
+        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 }
