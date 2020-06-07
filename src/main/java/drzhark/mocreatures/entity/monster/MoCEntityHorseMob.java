@@ -2,6 +2,7 @@ package drzhark.mocreatures.entity.monster;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.init.MoCItems;
@@ -55,7 +56,7 @@ public class MoCEntityHorseMob extends MoCEntityMob {
     public void selectType() {
         if (this.world.getDimension().doesWaterVaporize()) {
             setType(38);
-            this.isImmuneToFire = true;
+//            this.isImmuneToFire = true; TODO: Fire immunity can't be set through the entity class, will probably need to use an event handler.
         } else {
             if (getSubType() == 0) {
                 int j = this.rand.nextInt(100);
@@ -85,10 +86,10 @@ public class MoCEntityHorseMob extends MoCEntityMob {
     @Override
     public ResourceLocation getTexture() {
 
-        switch (getType()) {
+        switch (getSubType()) {
             case 23://undead horse
 
-                if (!MoCreatures.proxy.getAnimateTextures()) {
+                if (!MoCConfig.CLIENT_CONFIG.animateTextures.get()) {
                     return MoCreatures.getTexture("horseundead.png");
                 }
                 String baseTex = "horseundead";
@@ -117,7 +118,7 @@ public class MoCEntityHorseMob extends MoCEntityMob {
                 return MoCreatures.getTexture("horsebat.png");
 
             case 38:
-                if (!MoCreatures.proxy.getAnimateTextures()) {
+                if (!MoCConfig.CLIENT_CONFIG.animateTextures.get()) {
                     return MoCreatures.getTexture("horsenightmare1.png");
                 }
                 this.textCounter++;
@@ -281,43 +282,43 @@ public class MoCEntityHorseMob extends MoCEntityMob {
         this.wingFlapCounter = 1;
     }
 
-    @Override
-    protected Item getDropItem() {
-        boolean flag = (this.rand.nextInt(100) < MoCreatures.proxy.rareItemDropChance);
-        if (this.getSubType() == 32 && MoCreatures.proxy.rareItemDropChance < 25) {
-            flag = (this.rand.nextInt(100) < 25);
-        }
-
-        if (flag && (this.getSubType() == 36 || (this.getSubType() >= 50 && this.getSubType() < 60))) //unicorn
-        {
-            return MoCItems.UNICORNHORN;
-        }
-
-        if (this.getSubType() == 38 && flag && this.world.getDimension().doesWaterVaporize()) //nightmare
-        {
-            return MoCItems.HEARTFIRE;
-        }
-        if (this.getSubType() == 32 && flag) //bat horse
-        {
-            return MoCItems.HEARTDARKNESS;
-        }
-        if (this.getSubType() == 26)//skely
-        {
-            return Items.BONE;
-        }
-        if ((this.getSubType() == 23 || this.getSubType() == 24 || this.getSubType() == 25)) {
-            if (flag) {
-                return MoCItems.HEARTUNDEAD;
-            }
-            return Items.ROTTEN_FLESH;
-        }
-
-        if (this.getSubType() == 21 || this.getSubType() == 22) {
-            return Items.GHAST_TEAR;
-        }
-
-        return Items.LEATHER;
-    }
+//    @Override
+//    protected Item getDropItem() {
+//        boolean flag = (this.rand.nextInt(100) < MoCreatures.proxy.rareItemDropChance);
+//        if (this.getSubType() == 32 && MoCreatures.proxy.rareItemDropChance < 25) {
+//            flag = (this.rand.nextInt(100) < 25);
+//        }
+//
+//        if (flag && (this.getSubType() == 36 || (this.getSubType() >= 50 && this.getSubType() < 60))) //unicorn
+//        {
+//            return MoCItems.UNICORNHORN;
+//        }
+//
+//        if (this.getSubType() == 38 && flag && this.world.getDimension().doesWaterVaporize()) //nightmare
+//        {
+//            return MoCItems.HEARTFIRE;
+//        }
+//        if (this.getSubType() == 32 && flag) //bat horse
+//        {
+//            return MoCItems.HEARTDARKNESS;
+//        }
+//        if (this.getSubType() == 26)//skely
+//        {
+//            return Items.BONE;
+//        }
+//        if ((this.getSubType() == 23 || this.getSubType() == 24 || this.getSubType() == 25)) {
+//            if (flag) {
+//                return MoCItems.HEARTUNDEAD;
+//            }
+//            return Items.ROTTEN_FLESH;
+//        }
+//
+//        if (this.getSubType() == 21 || this.getSubType() == 22) {
+//            return Items.GHAST_TEAR;
+//        }
+//
+//        return Items.LEATHER;
+//    }
 
     @Override
     public boolean attackEntityAsMob(Entity entityIn) {

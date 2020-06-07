@@ -6,21 +6,15 @@ import drzhark.mocreatures.configuration.MoCProperty;
 import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.monster.MoCEntityGolem;
 import drzhark.mocreatures.entity.passive.MoCEntityHorse;
-import drzhark.mocreatures.util.IProxy;
 import drzhark.mocreatures.util.MoCLog;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoCProxy implements IProxy {
+public class MoCProxy {
 
     //TODO: Proxies are no longer necessary in 1.14+
 
@@ -114,22 +108,6 @@ public class MoCProxy implements IProxy {
     public void resetAllData() {
         //registerEntities();
         this.readGlobalConfigValues();
-    }
-
-    //----------------CONFIG INITIALIZATION    TODO: Move all configuration to MoCConfig and MoCreatures
-    public void ConfigInit(FMLPreInitializationEvent event) {
-        this.mocSettingsConfig =
-                new MoCConfiguration(new File(event.getSuggestedConfigurationFile().getParent(), "MoCreatures" + File.separator + "MoCSettings.cfg"));
-        this.mocEntityConfig =
-                new MoCConfiguration(new File(event.getSuggestedConfigurationFile().getParent(), "MoCreatures" + File.separator + "MoCreatures.cfg"));
-        this.configFile = event.getSuggestedConfigurationFile();
-        this.mocSettingsConfig.load();
-        this.mocEntityConfig.load();
-        //registerEntities();
-        this.readGlobalConfigValues();
-        if (this.debug) {
-            MoCLog.logger.info("Initializing MoCreatures Config File at " + event.getSuggestedConfigurationFile().getParent() + "MoCSettings.cfg");
-        }
     }
 
     public int getFrequency(String entityName)//, EnumCreatureType type)

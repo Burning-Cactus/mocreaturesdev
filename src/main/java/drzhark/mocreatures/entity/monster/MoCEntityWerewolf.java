@@ -2,6 +2,7 @@ package drzhark.mocreatures.entity.monster;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.init.MoCItems;
@@ -87,7 +88,7 @@ public class MoCEntityWerewolf extends MoCEntityMob {
                 setType(3);
             } else {
                 setType(4);
-                this.isImmuneToFire = true;
+//                this.isImmuneToFire = true; TODO: Fire immunity
             }
         }
     }
@@ -98,7 +99,7 @@ public class MoCEntityWerewolf extends MoCEntityMob {
             return MoCreatures.getTexture("wereblank.png");
         }
 
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
                 return MoCreatures.getTexture("wolfblack.png");
             case 2:
@@ -106,7 +107,7 @@ public class MoCEntityWerewolf extends MoCEntityMob {
             case 3:
                 return MoCreatures.getTexture("wolftimber.png");
             case 4:
-                if (!MoCreatures.proxy.getAnimateTextures()) {
+                if (!MoCConfig.CLIENT_CONFIG.animateTextures.get()) {
                     return MoCreatures.getTexture("wolffire1.png");
                 }
                 this.textCounter++;
@@ -390,7 +391,7 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     @Override
     public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         if (getSubType() == 4) {
-            this.isImmuneToFire = true;
+//            this.isImmuneToFire = true; TODO: Fire immunity
         }
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }

@@ -77,7 +77,7 @@ public class ItemStaffTeleport extends MoCItem {
                             player.rotationPitch);
                     MoCTools.playCustomSound(player, MoCSoundEvents.ENTITY_GENERIC_MAGIC_APPEAR);
                 }
-                MoCreatures.proxy.teleportFX(player);
+//                MoCreatures.proxy.teleportFX(player);
                // player.setItemInUse(stack, 200);
                 stack.damageItem(1, player, d -> d.sendBreakAnimation(hand));
 

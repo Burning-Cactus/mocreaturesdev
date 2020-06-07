@@ -207,6 +207,7 @@ import drzhark.mocreatures.util.MoCLog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
@@ -1001,7 +1002,7 @@ public class MoCClientProxy extends MoCProxy {
             this.widgetAmbientSpawnSettingsColumns = new WidgetClassicTwocolumn(new Widget[0]);
             // create entity button for each ambient
             for (Map.Entry<String, MoCEntityData> entityEntry : MoCreatures.mocEntityMap.entrySet()) {
-                if (entityEntry.getValue().getType() == EnumCreatureType.AMBIENT) {
+                if (entityEntry.getValue().getType() == EntityClassification.AMBIENT) {
                     this.widgetAmbientSpawnSettingsColumns.add(GuiApiHelper.makeButton(entityEntry.getKey(), new ModAction(this,
                             "showEntitySettings", MoCEntityData.class).setDefaultArguments(entityEntry.getValue()), true));
                 }

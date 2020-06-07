@@ -29,6 +29,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.Path;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
@@ -295,7 +296,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
             }
         }
 
-        switch (getType()) {
+        switch (getSubType()) {
             case 1:
                 return MoCreatures.getTexture("ostrichc.png"); //chick
             case 2:
@@ -330,7 +331,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
             OstrichSpeed = 1.3D;
         } else if (getSubType() == 5) {
             OstrichSpeed = 1.4D;
-            this.isImmuneToFire = true;
+//            this.isImmuneToFire = true; TODO: Fire immunity
         }
         if (this.sprintCounter > 0 && this.sprintCounter < 200) {
             OstrichSpeed *= 1.5D;
@@ -634,7 +635,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
             MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_GENERIC_DRINKING);
             return true;
         }
-        if (getIsTamed() && getIsChested() && (getSubType() > 1) && !stack.isEmpty() && stack.getItem() == Item.getItemFromBlock(Blocks.WOOL)) {
+        if (getIsTamed() && getIsChested() && (getSubType() > 1) && !stack.isEmpty() && stack.getItem() == Item.getItemFromBlock(Blocks.WHITE_WOOL)) {
             int colorInt = (stack.getDamage());
             if (colorInt == 0) {
                 colorInt = 16;
@@ -734,7 +735,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
             if (color == 16) {
                 color = 0;
             }
-            ItemEntity entityitem = new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), new ItemStack(Blocks.WOOL, 1, color));
+            ItemEntity entityitem = new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), new ItemStack(Blocks.WHITE_WOOL, 1));
             entityitem.setPickupDelay(10);
             this.world.addEntity(entityitem);
             setFlagColor((byte) 0);
@@ -906,7 +907,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
 
     @Override
     public boolean isFlyer() {
-        return this.isBeingRidden() && (getType() == 5 || getType() == 6);
+        return this.isBeingRidden() && (getSubType() == 5 || getSubType() == 6);
     }
 
     @Override

@@ -2,13 +2,10 @@ package drzhark.mocreatures.client.renderer.entity;
 
 import drzhark.mocreatures.client.model.MoCModelBunny;
 import drzhark.mocreatures.entity.passive.MoCEntityBunny;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
@@ -25,7 +22,7 @@ public class MoCRenderBunny<T extends MoCEntityBunny, M extends MoCModelBunny<T>
 
     @Override
     public void render(T entity, double d, double d1, double d2, float f, float f1) {
-        super.render(entity,
+        super.render(entity,);
     }
 
     @Override

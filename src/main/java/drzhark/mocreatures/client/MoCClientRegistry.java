@@ -20,7 +20,7 @@ public class MoCClientRegistry {
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.CRICKET, m-> new MoCRenderCricket<>(m, new MoCModelCricket<>()));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.DRAGONFLY, m-> new MoCRenderInsect<>(m, new MoCModelDragonfly<>()));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.FIREFLY, m-> new MoCRenderFirefly<>(m, new MoCModelFirefly<>()));
-        RenderingRegistry.registerEntityRenderingHandler(MoCEntities.FLY, m-> new MoCRenderInsect<(m, new MoCModelFly<>()));
+        RenderingRegistry.registerEntityRenderingHandler(MoCEntities.FLY, m-> new MoCRenderInsect<>(m, new MoCModelFly<>()));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.MAGGOT, m-> new MoCRenderMoC<>(m, new MoCModelMaggot(), 0.0F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.SNAIL, m-> new MoCRenderMoC<>(m, new MoCModelSnail(), 0.0F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.ROACH, m-> new MoCRenderInsect<>(m, new MoCModelRoach()));
@@ -104,7 +104,7 @@ public class MoCClientRegistry {
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.EGG, m -> new MoCRenderEgg<>(m, new MoCModelEgg<>(),0.0F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.KITTY_BED, m -> new MoCRenderKittyBed(m, new MoCModelKittyBed(), new MoCModelKittyBed2(), 0.3F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.LITTERBOX, m -> new MoCRenderLitterBox(m, new MoCModelLitterBox(), 0.3F));
-        RenderingRegistry.registerEntityRenderingHandler(MoCEntities.TROCK, m -> new MoCRenderTRock(m);
+        RenderingRegistry.registerEntityRenderingHandler(MoCEntities.TROCK, m -> new MoCRenderTRock(m));
 
     }
 

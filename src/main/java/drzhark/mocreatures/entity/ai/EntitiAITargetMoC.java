@@ -85,7 +85,7 @@ public abstract class EntitiAITargetMoC extends Goal {
                 if (target == ((IEntityOwnable) attacker).getOwner()) {
                     return false;
                 }
-            } else if (target instanceof PlayerEntity && includeInvincibles && ((PlayerEntity) target).capabilities.disableDamage) {
+            } else if (target instanceof PlayerEntity && includeInvincibles && ((PlayerEntity) target).abilities.disableDamage) {
                 return false;
             }
 
@@ -125,7 +125,7 @@ public abstract class EntitiAITargetMoC extends Goal {
                         }
                     }
 
-                    return !(entitylivingbase instanceof PlayerEntity) || !((PlayerEntity) entitylivingbase).capabilities.disableDamage;
+                    return !(entitylivingbase instanceof PlayerEntity) || !((PlayerEntity) entitylivingbase).abilities.disableDamage;
                 }
             }
         }

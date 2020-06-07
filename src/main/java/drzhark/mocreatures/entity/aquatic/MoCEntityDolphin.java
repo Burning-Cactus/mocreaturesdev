@@ -234,7 +234,7 @@ public class MoCEntityDolphin extends MoCEntityTameableAquatic {
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
+    public SoundEvent getHurtSound(DamageSource source) {
         return MoCSoundEvents.ENTITY_DOLPHIN_HURT;
     }
 
@@ -243,10 +243,10 @@ public class MoCEntityDolphin extends MoCEntityTameableAquatic {
         return MoCSoundEvents.ENTITY_DOLPHIN_AMBIENT;
     }
 
-    @Override
-    protected SoundEvent getUpsetSound() {
-        return MoCSoundEvents.ENTITY_DOLPHIN_UPSET;
-    }
+//    @Override
+//    protected SoundEvent getUpsetSound() {
+//        return MoCSoundEvents.ENTITY_DOLPHIN_UPSET;
+//    }
 
 //    @Override TODO: Dolphin loot table
 //    protected Item getDropItem() {
@@ -417,11 +417,11 @@ public class MoCEntityDolphin extends MoCEntityTameableAquatic {
     }
 
     @Override
-    public void setDead() {
+    public void remove() {
         if (!this.world.isRemote && getIsTamed() && (getHealth() > 0)) {
             return;
         } else {
-            super.setDead();
+            super.remove();
             return;
         }
     }

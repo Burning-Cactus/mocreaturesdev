@@ -2,8 +2,11 @@ package drzhark.mocreatures;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
+import drzhark.mocreatures.client.MoCClientTickHandler;
+import drzhark.mocreatures.client.handlers.MoCKeyHandler;
 import drzhark.mocreatures.client.renderer.texture.MoCTextures;
 import drzhark.mocreatures.configuration.MoCConfig;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
@@ -12,7 +15,9 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -45,7 +50,7 @@ public class MoCreatures {
     public static int WyvernLairDimensionID; //17;
 
     public static Map<String, MoCEntityData> mocEntityMap = new TreeMap<String, MoCEntityData>(String.CASE_INSENSITIVE_ORDER);
-    public static Map<Class<? extends LivingEntity>, MoCEntityData> entityMap = new HashMap<Class<? extends LivingEntity>, MoCEntityData>();
+    public static Map<EntityType<?>, MoCEntityData> entityMap = new HashMap<EntityType<?>, MoCEntityData>();
     public static Map<Integer, Class<? extends LivingEntity>> instaSpawnerMap = new HashMap<Integer, Class<? extends LivingEntity>>();
     public static final String MOC_LOGO = TextFormatting.WHITE + "[" + TextFormatting.AQUA + "Mo'Creatures" + TextFormatting.WHITE + "]";
     public static final MoCTextures MOCTEXTURES = new MoCTextures();
@@ -72,7 +77,9 @@ public class MoCreatures {
     }
 
     private void setup(FMLCommonSetupEvent event) {
-
+        MinecraftForge.EVENT_BUS.register(new MoCEventHooks());
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(new MoCClientTickHandler()));
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(new MoCKeyHandler()));
     }
 
     //TODO: Register commands properly in 1.15
@@ -89,20 +96,6 @@ public class MoCreatures {
 //        }
     }
 
-//    @EventHandler
-//    public void preInit(FMLPreInitializationEvent event) {
-//        if (isServer()) {
-//            FMLCommonHandler.instance().getMinecraftServerInstance().getDataFixer().registerWalker(FixTypes.ENTITY, new EntityDataWalker());
-//        }
-//        MoCMessageHandler.init();
-//        MinecraftForge.EVENT_BUS.register(new MoCEventHooks());
-//        proxy.ConfigInit(event);
-//        proxy.initTextures();
-//        if (!isServer()) {
-//            MinecraftForge.EVENT_BUS.register(new MoCClientTickHandler());
-//            MinecraftForge.EVENT_BUS.register(new MoCKeyHandler());
-//        }
-//    }
 //
 //    //how to check for client: if(FMLCommonHandler.instance().getSide().isRemote())
 //

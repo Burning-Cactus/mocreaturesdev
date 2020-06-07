@@ -48,11 +48,11 @@ public class MoCRenderMoC<T extends LivingEntity, M extends EntityModel<T>> exte
                 s = (new StringBuilder()).append(s).append(entityMoC.getPetName()).toString();
                 float f7 = 0.1F;
                 FontRenderer fontrenderer = getFontRendererFromRenderManager();
-                RenderSystem.pushMatrix();
-                RenderSystem.translatef((float) d + 0.0F, (float) d1 + f7, (float) d2);
-                RenderSystem.normal3f(0.0F, 1.0F, 0.0F);
-                RenderSystem.rotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-                RenderSystem.scalef(-f3, -f3, f3);
+                matrixStackIn.pushMatrix();
+                matrixStackIn.translate((float) d + 0.0F, (float) d1 + f7, (float) d2);
+                matrixStackIn.normal3f(0.0F, 1.0F, 0.0F);
+                matrixStackIn.rotate(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+                matrixStackIn.scale(-f3, -f3, f3);
                 GL11.glDisable(2896 /* GL_LIGHTING */);
                 Tessellator tessellator1 = Tessellator.getInstance();
                 int yOff = entityMoC.nameYOffset();

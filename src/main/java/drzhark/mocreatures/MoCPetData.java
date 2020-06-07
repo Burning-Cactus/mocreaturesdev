@@ -6,6 +6,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.common.thread.SidedThreadGroup;
+import net.minecraftforge.fml.common.thread.SidedThreadGroups;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -20,9 +23,9 @@ public class MoCPetData {
     private final UUID ownerUniqueId;
     private ArrayList<Integer> usedPetIds = new ArrayList<Integer>();
 
-    public MoCPetData(IMoCTameable pet) {
+    public MoCPetData(IMoCTameable pet) { //TODO: the thread method isn't a very good way to set the owner ID. It would be best if we can find a way to make a world.isRemote check.
         this.ownerData.put("TamedList", this.tamedList);
-        this.ownerUniqueId = MoCreatures.isServer() ? pet.getOwnerId() : Minecraft.getInstance().player.getUniqueID();
+        this.ownerUniqueId = Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER ? pet.getOwnerId() : Minecraft.getInstance().player.getUniqueID();
     }
 
     public MoCPetData(CompoundNBT nbt, UUID owner) {

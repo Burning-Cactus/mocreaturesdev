@@ -1,24 +1,15 @@
 package drzhark.mocreatures.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerChest;
-import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.container.ChestContainer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.LockCode;
 
-public class MoCAnimalChest extends InventoryBasic implements ILockableContainer {
-
+public class MoCAnimalChest extends InventoryBasic {
     private LockCode lockCode = LockCode.EMPTY_CODE;
 
     public MoCAnimalChest(String name, int size) {

@@ -806,7 +806,7 @@ public class MoCModelWyvern<T extends MoCEntityWyvern> extends AgeableModel<T> {
 
     @Override
     protected Iterable<ModelRenderer> getHeadParts() {
-        return ImmutableList.of(this.MainHead)
+        return ImmutableList.of(this.MainHead);
     }
 
     @Override

@@ -8,14 +8,9 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class MoCItemTurtleSoup extends MoCItemFood {
-
-    public MoCItemTurtleSoup(int j, Item.Properties builder) {
-        super(j, builder.maxStackSize(1));
-    }
-
-    public MoCItemTurtleSoup(int j, float f, boolean flag, Item.Properties builder) {
-        super(j, f, flag, builder.maxStackSize(1));
+public class MoCItemTurtleSoup extends MoCItem {
+    public MoCItemTurtleSoup(Properties builder) {
+        super(builder);
     }
 
     @Override

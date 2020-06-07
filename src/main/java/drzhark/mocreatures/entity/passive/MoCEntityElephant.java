@@ -125,7 +125,7 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
 
     @Override
     protected void registerData() {
-        super.register.
+        super.registerData();
         this.dataManager.register(TUSK_TYPE, Integer.valueOf(0));// tusks: 0 nothing, 1 wood, 2 iron, 3 diamond
         this.dataManager.register(STORAGE_TYPE, Integer.valueOf(0));// storage: 0 nothing, 1 chest, 2 chests....
         this.dataManager.register(HARNESS_TYPE, Integer.valueOf(0));// harness: 0 nothing, 1 harness, 2 cabin
@@ -240,7 +240,7 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
                 }
             }
 
-            if (MoCreatures.proxy.elephantBulldozer && getIsTamed() && (this.isBeingRidden()) && (getTusks() > 0)) {
+            if (MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.elephantBulldozer.get() && getIsTamed() && (this.isBeingRidden()) && (getTusks() > 0)) {
                 int height = 2;
                 if (getSubType() == 3) {
                     height = 3;
@@ -358,7 +358,7 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
             return true;
         }
 
-        if (!stack.isEmpty() && getIsTamed() && getIsAdult() && getArmorType() == 0 && stack.getItem() == MoCItems.elephantHarness) {
+        if (!stack.isEmpty() && getIsTamed() && getIsAdult() && getArmorType() == 0 && stack.getItem() == MoCItems.ELEPHANTHARNESS) {
             stack.shrink(1);
             if (stack.isEmpty()) {
                 player.setHeldItem(hand, ItemStack.EMPTY);
@@ -924,7 +924,7 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
 
     @Override
     public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
-        return (MoCreatures.entityMap.get(this.getClass()).getFrequency() > 0) && getCanSpawnHereCreature() && getCanSpawnHereLiving();
+        return (MoCreatures.entityMap.get(this.getType()).getFrequency() > 0) && getCanSpawnHereCreature() && getCanSpawnHereLiving();
     }
 
     @Override

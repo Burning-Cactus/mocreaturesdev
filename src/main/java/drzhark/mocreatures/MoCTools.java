@@ -56,6 +56,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
@@ -202,27 +203,27 @@ public class MoCTools {
         }
     }
 
-    public static void spawnNearPlayerbyName(PlayerEntity player, String eName, int numberToSpawn) {
-        ServerWorld world = player.world.getServer().getWorld(player.world.dimension.getType());
-
-        for (int i = 0; i < numberToSpawn; i++) {
-            LivingEntity entityToSpawn = null;
-            try {
-                MoCEntityData entityData = MoCreatures.mocEntityMap.get(eName);
-                Class<? extends LivingEntity> myClass = entityData.getEntityClass();
-                entityToSpawn = (LivingEntity) myClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            if (entityToSpawn != null) {
-                ILivingEntityData entitylivingdata = null;
-                entityToSpawn.onInitialSpawn(player.world.getDifficultyForLocation(new BlockPos(entityToSpawn)), entitylivingdata); // onSpawnWithEgg
-                entityToSpawn.setLocationAndAngles(player.getPosX(), player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
-                world.addEntity(entityToSpawn);
-            }
-        }
-    }
+//    public static void spawnNearPlayerbyName(PlayerEntity player, String eName, int numberToSpawn) {
+//        ServerWorld world = player.world.getServer().getWorld(player.world.dimension.getType());
+//
+//        for (int i = 0; i < numberToSpawn; i++) {
+//            LivingEntity entityToSpawn = null;
+//            try {
+//                MoCEntityData entityData = MoCreatures.mocEntityMap.get(eName);
+//                Class<? extends LivingEntity> myClass = entityData.getEntityClass();
+//                entityToSpawn = (LivingEntity) myClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//            if (entityToSpawn != null) {
+//                ILivingEntityData entitylivingdata = null;
+//                entityToSpawn.onInitialSpawn(player.world.getDifficultyForLocation(new BlockPos(entityToSpawn)), entitylivingdata); // onSpawnWithEgg
+//                entityToSpawn.setLocationAndAngles(player.getPosX(), player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
+//                world.addEntity(entityToSpawn);
+//            }
+//        }
+//    }
 
     public static void playCustomSound(Entity entity, SoundEvent customSound) {
         playCustomSound(entity, customSound, 1.0F);
@@ -549,21 +550,21 @@ public class MoCTools {
         return 0;
     }
 
-    public boolean isInsideOfMaterial(Material material, Entity entity) {
-        double d = entity.getPosY() + entity.getEyeHeight();
-        int i = MathHelper.floor(entity.getPosX());
-        int j = MathHelper.floor(MathHelper.floor(d));
-        int k = MathHelper.floor(entity.getPosZ());
-        BlockPos pos = new BlockPos(i, j, k);
-        BlockState blockstate = entity.world.getBlockState(pos);
-        if (blockstate.getBlock() != Blocks.AIR && blockstate.getMaterial() == material) {
-            float f = Block.LiquidgetLiquidHeightPercent(blockstate.getBlock().getMetaFromState(blockstate)) - 0.1111111F; //TODO: Rework liquid functions
-            float f1 = j + 1 - f;
-            return d < f1;
-        } else {
-            return false;
-        }
-    }
+//    public boolean isInsideOfMaterial(Material material, Entity entity) {
+//        double d = entity.getPosY() + entity.getEyeHeight();
+//        int i = MathHelper.floor(entity.getPosX());
+//        int j = MathHelper.floor(MathHelper.floor(d));
+//        int k = MathHelper.floor(entity.getPosZ());
+//        BlockPos pos = new BlockPos(i, j, k);
+//        BlockState blockstate = entity.world.getBlockState(pos);
+//        if (blockstate.getBlock() != Blocks.AIR && blockstate.getMaterial() == material) {
+//            float f = Block.LiquidgetLiquidHeightPercent(blockstate.getBlock().getMetaFromState(blockstate)) - 0.1111111F; //TODO: Rework liquid functions
+//            float f1 = j + 1 - f;
+//            return d < f1;
+//        } else {
+//            return false;
+//        }
+//    }
 
     public static void disorientEntity(Entity entity) {
         double rotD = 0;
@@ -586,17 +587,17 @@ public class MoCTools {
         return ~i & 0xf;
     }
 
-    public int countEntities(Class<? extends LivingEntity> class1, World world) {
-        int i = 0;
-        for (int j = 0; j < world.loadedEntityList.size(); j++) {
-            Entity entity = world.loadedEntityList.get(j);
-            if (class1.isAssignableFrom(entity.getClass())) {
-                i++;
-            }
-        }
-
-        return i;
-    }
+//    public int countEntities(Class<? extends LivingEntity> class1, World world) {
+//        int i = 0;
+//        for (int j = 0; j < world.loadedEntityList.size(); j++) {
+//            Entity entity = world.loadedEntityList.get(j);
+//            if (class1.isAssignableFrom(entity.getClass())) {
+//                i++;
+//            }
+//        }
+//
+//        return i;
+//    }
 
     public static float distToPlayer(Entity entity) {
         //TODO
@@ -604,7 +605,7 @@ public class MoCTools {
     }
 
     public static String biomeName(World world, BlockPos pos) { //TODO: Rewrite this after doing world gen
-        BiomeProvider biomeProvider = world.get;
+        BiomeManager biomeProvider = world.getBiomeManager();
         if (biomeProvider == null) {
             return null;
         }
@@ -668,7 +669,7 @@ public class MoCTools {
             return;
         }
 
-        ItemEntity entityitem = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Blocks.LOG, 16));
+        ItemEntity entityitem = new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Blocks.OAK_LOG, 16));
         entityitem.setPickupDelay(10);
         world.addEntity(entityitem);
 
@@ -753,7 +754,7 @@ public class MoCTools {
         world.addEntity(entityitem22);
 
         ItemEntity entityitem23 =
-                new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Blocks.WHITE_WOOL, 6, 15));
+                new ItemEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Blocks.WHITE_WOOL, 6));
         entityitem23.setPickupDelay(10);
         world.addEntity(entityitem23);
 
@@ -1568,7 +1569,7 @@ public class MoCTools {
     public static boolean findNearPlayerAndPoison(Entity poisoner, boolean needsToBeInWater) {
         PlayerEntity entityplayertarget = poisoner.world.getClosestPlayer(poisoner, 2D);
         if (entityplayertarget != null && ((needsToBeInWater && entityplayertarget.isInWater()) || !needsToBeInWater)
-                && poisoner.getDistance(entityplayertarget) < 2.0F && !entityplayertarget.getCapabilities.disableDamage) {
+                && poisoner.getDistance(entityplayertarget) < 2.0F && !entityplayertarget.abilities.disableDamage) {
             if (entityplayertarget.getRidingEntity() != null && entityplayertarget.getRidingEntity() instanceof BoatEntity) {
                 //don't poison players on boats
             } else {

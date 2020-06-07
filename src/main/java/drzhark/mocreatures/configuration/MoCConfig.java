@@ -62,11 +62,7 @@ public class MoCConfig {
 
         public static class Global {
             public ForgeConfigSpec.BooleanValue allowInstaSpawn;
-            public ForgeConfigSpec.BooleanValue animateTextures;
             public ForgeConfigSpec.BooleanValue debug;
-            public ForgeConfigSpec.BooleanValue displayPetHealth;
-            public ForgeConfigSpec.BooleanValue displayPetIcons;
-            public ForgeConfigSpec.BooleanValue displayPetName;
             public ForgeConfigSpec.BooleanValue forceDespawns;
             public ForgeConfigSpec.IntValue particleFX;
         }
@@ -88,8 +84,11 @@ public class MoCConfig {
 
     public static class ClientConfig {
         public ClientConfig(ForgeConfigSpec.Builder builder) {
-
         }
+        public ForgeConfigSpec.BooleanValue animateTextures;
+        public ForgeConfigSpec.BooleanValue displayPetHealth;
+        public ForgeConfigSpec.BooleanValue displayPetIcons;
+        public ForgeConfigSpec.BooleanValue displayPetName;
 
     }
 }

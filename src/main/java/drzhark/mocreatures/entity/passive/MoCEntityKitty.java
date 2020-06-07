@@ -539,7 +539,7 @@ public class MoCEntityKitty extends MoCEntityTameableAnimal {
             }
             return true;
         }
-        if ((getKittyState() == 13) && !stack.isEmpty() && ((stack.getItem() == Items.FISH) || (stack.getItem() == Items.COOKED_FISH))) {
+        if ((getKittyState() == 13) && !stack.isEmpty() && ((stack.getItem().getTags().contains(ItemTags.FISHES)))) {
             stack.shrink(1);
             if (stack.isEmpty()) {
                 player.setHeldItem(hand, ItemStack.EMPTY);
@@ -641,7 +641,7 @@ public class MoCEntityKitty extends MoCEntityTameableAnimal {
                     if (!getIsHungry() || (this.rand.nextInt(10) != 0)) {
                         break;
                     }
-                    ItemEntity entityitem = getClosestItem(this, 10D, Items.COOKED_FISH, Items.COOKED_FISH);
+                    ItemEntity entityitem = getClosestItem(this, 10D, Items.COOKED_COD, Items.COOKED_COD);
                     if (entityitem == null) {
                         break;
                     }

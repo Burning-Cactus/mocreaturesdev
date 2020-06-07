@@ -1,35 +1,12 @@
 package drzhark.mocreatures.init;
 
 import drzhark.mocreatures.MoCConstants;
-import drzhark.mocreatures.MoCreatures;
-import drzhark.mocreatures.item.ItemBuilderHammer;
-import drzhark.mocreatures.item.ItemStaffPortal;
-import drzhark.mocreatures.item.ItemStaffTeleport;
-import drzhark.mocreatures.item.MoCItem;
-import drzhark.mocreatures.item.MoCItemArmor;
-import drzhark.mocreatures.item.MoCItemEgg;
-import drzhark.mocreatures.item.MoCItemFood;
-import drzhark.mocreatures.item.MoCItemHayStack;
-import drzhark.mocreatures.item.MoCItemHorseAmulet;
-import drzhark.mocreatures.item.MoCItemHorseSaddle;
-import drzhark.mocreatures.item.MoCItemKittyBed;
-import drzhark.mocreatures.item.MoCItemLitterBox;
-import drzhark.mocreatures.item.MoCItemPetAmulet;
-import drzhark.mocreatures.item.MoCItemRecord;
-import drzhark.mocreatures.item.MoCItemSugarLump;
-import drzhark.mocreatures.item.MoCItemSword;
-import drzhark.mocreatures.item.MoCItemTurtleSoup;
-import drzhark.mocreatures.item.MoCItemWeapon;
-import drzhark.mocreatures.item.MoCItemWhip;
+import drzhark.mocreatures.item.*;
 import drzhark.mocreatures.util.MoCArmorMaterial;
 import drzhark.mocreatures.util.MoCItemTier;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemTier;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -213,7 +190,7 @@ public class MoCItems {
                     new MoCItem(new Item.Properties()).setRegistryName("fur"),
                     new MoCItem(new Item.Properties().food(MoCFoods.OMELET)).setRegistryName("omelet"),
                     new MoCItem(new Item.Properties().food(MoCFoods.TURTLE_RAW)).setRegistryName("turtle_raw"),
-                    new MoCItem(new Item.Properties().food(MoCFoods.TURTLE_SOUP)).setRegistryName("turtle_soup"),
+                    new MoCItemTurtleSoup(new Item.Properties().food(MoCFoods.TURTLE_SOUP)).setRegistryName("turtle_soup"),
                     new ItemStaffPortal().setRegistryName("staffportal"),                       //STAFFPORTAL
                     new ItemStaffTeleport().setRegistryName("staffteleport"),                   //STAFFTELEPORT
                     new ItemBuilderHammer().setRegistryName("builderhammer"),                   //BUILDERHAMMER

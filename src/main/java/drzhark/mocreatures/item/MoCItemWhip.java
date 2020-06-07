@@ -60,7 +60,7 @@ public class MoCItemWhip extends MoCItem {
         Block block1 = worldIn.getBlockState(pos.up()).getBlock();
         if (side != Direction.DOWN && (block1 == Blocks.AIR) && (block != Blocks.AIR) && ((block != Blocks.SPRUCE_SIGN)||(block != Blocks.ACACIA_SIGN)||(block != Blocks.BIRCH_SIGN)||(block != Blocks.DARK_OAK_SIGN)||(block != Blocks.JUNGLE_SIGN)||(block != Blocks.OAK_SIGN))) {
             whipFX(worldIn, pos);
-            worldIn.playSound(player, pos, MoCSoundEvents.ENTITY_GENERIC_WHIP, SoundCategory.PLAYERS, 0.5F, 0.4F / ((itemRand.nextFloat() * 0.4F) + 0.8F)); //TODO: What range is the itemRand set to?
+            worldIn.playSound(player, pos, MoCSoundEvents.ENTITY_GENERIC_WHIP, SoundCategory.PLAYERS, 0.5F, 0.4F / ((random.nextFloat() * 0.4F) + 0.8F)); //TODO: What range is the itemRand set to?
             stack.damageItem(1, player, d -> d.sendBreakAnimation(hand));
             List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(player, player.getBoundingBox().expand(12D, 12D, 12D));
             for (int l1 = 0; l1 < list.size(); l1++) {

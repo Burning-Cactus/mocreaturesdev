@@ -2,6 +2,7 @@ package drzhark.mocreatures;
 
 import drzhark.guiapi.widget.WidgetSimplewindow;
 import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,7 +36,7 @@ public class MoCEntityData {
         this.maxGroup = spawnListEntry.maxGroupCount;
         this.maxSpawnInChunk = maxchunk;
         this.spawnListEntry = spawnListEntry;
-        MoCreatures.entityMap.put(spawnListEntry.entityClass, this);
+        MoCreatures.entityMap.put(spawnListEntry.entityType, this);
     }
 
     public MoCEntityData(String name, int id, int maxchunk, EntityClassification type, SpawnListEntry spawnListEntry, List<Type> biomeTypes) {
@@ -48,11 +49,11 @@ public class MoCEntityData {
         this.maxGroup = spawnListEntry.maxGroupCount;
         this.maxSpawnInChunk = maxchunk;
         this.spawnListEntry = spawnListEntry;
-        MoCreatures.entityMap.put(spawnListEntry.entityClass, this);
+        MoCreatures.entityMap.put(spawnListEntry.entityType, this);
     }
 
-    public Class<? extends LivingEntity> getEntityClass() {
-        return this.spawnListEntry.entityClass;
+    public EntityType<?> getEntityType() {
+        return this.spawnListEntry.entityType;
     }
 
     public EntityClassification getType() {

@@ -12,27 +12,24 @@ import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAnimation;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class MoCEntityKomodo extends MoCEntityTameableAnimal {
 
@@ -57,28 +54,28 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
     }
     
     @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(2, new EntityAIPanicMoC(this, 1.1D));
-        this.tasks.addTask(3, new EntityAIFleeFromPlayer(this, 1.1D, 4D));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));
-        this.tasks.addTask(7, new EntityAIWanderMoC2(this, 0.9D));
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAIHunt(this, EntityAnimal.class, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTargetMoC(this, EntityPlayer.class, true));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(2, new EntityAIPanicMoC(this, 1.1D));
+        this.goalSelector.addGoal(3, new EntityAIFleeFromPlayer(this, 1.1D, 4D));
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(7, new EntityAIWanderMoC2(this, 0.9D));
+        this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.targetSelector.addGoal(1, new EntityAIHunt(this, AnimalEntity.class, true));
+        this.targetSelector.addGoal(2, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.18D);
+    protected void registerAttributes() {
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.18D);
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(RIDEABLE, Boolean.valueOf(false));; // rideable: 0 nothing, 1 saddle
     }
 
@@ -93,7 +90,7 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public boolean getCanSpawnHere() {
+    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
         return getCanSpawnHereCreature() && getCanSpawnHereLiving();
     }
 
@@ -121,8 +118,8 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void livingTick() {
+        super.livingTick();
         if (this.sitCounter > 0 && (this.isBeingRidden() || ++this.sitCounter > 150)) {
             this.sitCounter = 0;
         }
@@ -163,7 +160,7 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
         this.sitCounter = 1;
         if (!this.world.isRemote) {
             MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
-                    new TargetPoint(this.world.provider.getDimensionType().getId(), this.posX, this.posY, this.posZ, 64));
+                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
         this.getNavigator().clearPath();
     }
@@ -177,20 +174,20 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
         }
     }
 
-    @Override
-    protected void dropFewItems(boolean flag, int x) {
-        boolean flag2 = (getEdad() > 90 && this.rand.nextInt(5) == 0);
-
-        if (flag2) {
-            int j = this.rand.nextInt(2) + 1;
-            for (int k = 0; k < j; k++) {
-                entityDropItem(new ItemStack(MoCItems.mocegg, 1, 33), 0.0F);
-            }
-        } else {
-
-            entityDropItem(new ItemStack(MoCItems.hideCroc, 1, 0), 0.0F);
-        }
-    }
+//    @Override
+//    protected void dropFewItems(boolean flag, int x) {
+//        boolean flag2 = (getEdad() > 90 && this.rand.nextInt(5) == 0);
+//
+//        if (flag2) {
+//            int j = this.rand.nextInt(2) + 1;
+//            for (int k = 0; k < j; k++) {
+//                entityDropItem(new ItemStack(MoCItems.MOCEGG, 1, 33), 0.0F);
+//            }
+//        } else {
+//
+//            entityDropItem(new ItemStack(MoCItems.HIDECROC, 1, 0), 0.0F);
+//        }
+//    }
 
     @Override
     public float getSizeFactor() {
@@ -201,7 +198,7 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
             return tameResult;
@@ -209,7 +206,7 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
 
         final ItemStack stack = player.getHeldItem(hand);
         if (!stack.isEmpty() && getIsTamed() && (getEdad() > 90 || getIsAdult()) && !getIsRideable()
-                && (stack.getItem() == Items.SADDLE || stack.getItem() == MoCItems.horsesaddle)) {
+                && (stack.getItem() == Items.SADDLE || stack.getItem() == MoCItems.HORSESADDLE)) {
             stack.shrink(1);
             if (stack.isEmpty()) {
                 player.setHeldItem(hand, ItemStack.EMPTY);
@@ -254,14 +251,14 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-        super.writeEntityToNBT(nbttagcompound);
-        nbttagcompound.setBoolean("Saddle", getIsRideable());
+    public void writeAdditional(CompoundNBT nbttagcompound) {
+        super.writeAdditional(nbttagcompound);
+        nbttagcompound.putBoolean("Saddle", getIsRideable());
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-        super.readEntityFromNBT(nbttagcompound);
+    public void readAdditional(CompoundNBT nbttagcompound) {
+        super.readAdditional(nbttagcompound);
         setRideable(nbttagcompound.getBoolean("Saddle"));
     }
 
@@ -273,9 +270,9 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
             //yOff = -0.5F;
         }
         if (getIsAdult()) {
-            return yOff + (this.height);
+            return yOff + (this.getHeight());
         }
-        return this.height * (120 / getEdad());
+        return this.getHeight() * (120 / getEdad());
     }
 
     @Override
@@ -283,7 +280,7 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
         if (super.attackEntityFrom(damagesource, i)) {
             Entity entity = damagesource.getTrueSource();
 
-            if ((entity != null && getIsTamed() && entity instanceof EntityPlayer) || !(entity instanceof EntityLivingBase)) {
+            if ((entity != null && getIsTamed() && entity instanceof PlayerEntity) || !(entity instanceof LivingEntity)) {
                 return false;
             }
 
@@ -292,7 +289,7 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
             }
 
             if ((entity != this) && (super.shouldAttackPlayers())) {
-                setAttackTarget((EntityLivingBase) entity);
+                setAttackTarget((LivingEntity) entity);
             }
             return true;
         }
@@ -301,7 +298,7 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
 
     @Override
     public boolean isMyHealFood(ItemStack stack) {
-        return !stack.isEmpty() && (stack.getItem() == MoCItems.ratRaw || stack.getItem() == MoCItems.rawTurkey);
+        return !stack.isEmpty() && (stack.getItem() == MoCItems.RAT_RAW || stack.getItem() == MoCItems.TURKEY_RAW);
     }
 
     @Override
@@ -323,7 +320,7 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public boolean canAttackTarget(EntityLivingBase entity) {
+    public boolean canAttackTarget(LivingEntity entity) {
         return !(entity instanceof MoCEntityKomodo) && super.canAttackTarget(entity);
     }
 
@@ -343,11 +340,11 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
     }
 
     @Override
-    protected void applyEnchantments(EntityLivingBase entityLivingBaseIn, Entity entityIn) {
-        if (entityIn instanceof EntityPlayer) {
-            MoCreatures.poisonPlayer((EntityPlayer) entityIn);
+    protected void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
+        if (entityIn instanceof PlayerEntity) {
+            MoCreatures.poisonPlayer((PlayerEntity) entityIn);
         }
-        ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 150, 0));
+        ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 150, 0));
         super.applyEnchantments(entityLivingBaseIn, entityIn);
     }
 

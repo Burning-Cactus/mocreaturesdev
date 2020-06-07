@@ -85,7 +85,7 @@ public class ItemBuilderHammer extends MoCItem {
                         player.world.playSound(player, (float) newPosX + 0.5F, (float) newPosY + 0.5F, (float) newPosZ + 0.5F,
                                 block.getDefaultState().getSoundType().getPlaceSound(), SoundCategory.BLOCKS, (block.getDefaultState().getSoundType().getVolume() + 1.0F) / 2.0F, block.getDefaultState().getSoundType().getPitch() * 0.8F);
                     }
-                    MoCreatures.proxy.hammerFX(player);
+//                    MoCreatures.proxy.hammerFX(player);
                     //entityplayer.setItemInUse(par1ItemStack, 200);
                 }
                 return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
