@@ -1,13 +1,15 @@
 package drzhark.mocreatures.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.ambient.MoCEntityRoach;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
-public class MoCModelRoach extends ModelBase {
+public class MoCModelRoach extends EntityModel<MoCEntityRoach> {
 
     ModelRenderer Head;
     ModelRenderer LAnthenna;
@@ -28,6 +30,7 @@ public class MoCModelRoach extends ModelBase {
     ModelRenderer LeftWing;
     ModelRenderer RightWing;
     private float radianF = 57.29578F;
+    private boolean isFlying = false;
 
     public MoCModelRoach() {
         this.textureWidth = 32;
@@ -144,40 +147,11 @@ public class MoCModelRoach extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        MoCEntityRoach entityroach = (MoCEntityRoach) entity;
-        boolean isFlying = (entityroach.getIsFlying() || entityroach.motionY < -0.1D);
+    public void setRotationAngles(MoCEntityRoach entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        MoCEntityRoach entityroach = entityIn;
+        this.isFlying = (entityroach.getIsFlying() || entityroach.getMotion().y < -0.1D);
 
-        setRotationAngles(f, f1, f2, f3, f4, f5, isFlying);
-        this.Head.render(f5);
-        //LAnthenna.render(f5);
-        //LAnthennaB.render(f5);
-        //RAnthenna.render(f5);
-        //RAnthennaB.render(f5);
-        this.Thorax.render(f5);
-        this.FrontLegs.render(f5);
-        this.MidLegs.render(f5);
-        this.RearLegs.render(f5);
-        this.Abdomen.render(f5);
-        this.TailL.render(f5);
-        this.TailR.render(f5);
-
-        if (!isFlying) {
-            this.LShellClosed.render(f5);
-            this.RShellClosed.render(f5);
-        } else {
-            this.LShellOpen.render(f5);
-            this.RShellOpen.render(f5);
-            GL11.glPushMatrix();
-            GL11.glEnable(3042 /* GL_BLEND */);
-            float transparency = 0.6F;
-            GL11.glBlendFunc(770, 771);
-            GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
-            this.LeftWing.render(f5);
-            this.RightWing.render(f5);
-            GL11.glDisable(3042/* GL_BLEND */);
-            GL11.glPopMatrix();
-        }
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, isFlying);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -186,7 +160,7 @@ public class MoCModelRoach extends ModelBase {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, boolean isFlying) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, boolean isFlying) {
         this.Head.rotateAngleX = -2.171231F + (f4 / 57.29578F);
         //Head.rotateAngleY = f3 / 57.29578F;
 
@@ -224,4 +198,40 @@ public class MoCModelRoach extends ModelBase {
 
     }
 
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        //LAnthenna.render(f5);
+        //LAnthennaB.render(f5);
+        //RAnthenna.render(f5);
+        //RAnthennaB.render(f5);
+        this.Thorax.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.FrontLegs.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.MidLegs.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RearLegs.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Abdomen.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.TailL.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.TailR.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+
+        if (!isFlying) {
+            this.LShellClosed.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RShellClosed.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        } else {
+            this.LShellOpen.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RShellOpen.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            matrixStackIn.push();
+            this.LeftWing.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RightWing.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            matrixStackIn.pop();
+//            GL11.glPushMatrix();
+//            GL11.glEnable(3042 /* GL_BLEND */);
+//            float transparency = 0.6F;
+//            GL11.glBlendFunc(770, 771);
+//            GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
+//            this.LeftWing.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+//            this.RightWing.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+//            GL11.glDisable(3042/* GL_BLEND */);
+//            GL11.glPopMatrix();
+        }
+    }
 }

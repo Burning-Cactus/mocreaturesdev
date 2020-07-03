@@ -1,5 +1,6 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import drzhark.mocreatures.entity.MoCEntityInsect;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.model.EntityModel;
@@ -16,20 +17,19 @@ public class MoCRenderInsect<T extends MoCEntityInsect, M extends EntityModel<T>
     }
 
     @Override
-    protected void preRenderCallback(T entityinsect, float par2) {
+    protected void preRenderCallback(T entityinsect, MatrixStack stack, float par2) {
         if (entityinsect.climbing()) {
             rotateAnimal(entityinsect);
         }
-
-        stretch(entityinsect);
+        stretch(entityinsect, stack);
     }
 
     protected void rotateAnimal(T entityinsect) {
         GL11.glRotatef(90F, -1F, 0.0F, 0.0F);
     }
 
-    protected void stretch(T entityinsect) {
+    protected void stretch(T entityinsect, MatrixStack stack) {
         float sizeFactor = entityinsect.getSizeFactor();
-        GL11.glScalef(sizeFactor, sizeFactor, sizeFactor);
+        stack.scale(sizeFactor, sizeFactor, sizeFactor);
     }
 }

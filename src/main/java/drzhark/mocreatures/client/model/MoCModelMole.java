@@ -1,13 +1,15 @@
 package drzhark.mocreatures.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.passive.MoCEntityMole;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
-public class MoCModelMole extends ModelBase {
+public class MoCModelMole extends EntityModel<MoCEntityMole> {
 
     ModelRenderer Nose;
     ModelRenderer Head;
@@ -20,6 +22,7 @@ public class MoCModelMole extends ModelBase {
     ModelRenderer RFingers;
     ModelRenderer LRearLeg;
     ModelRenderer RRearLeg;
+    float yOffset = 0F;
 
     public MoCModelMole() {
         this.textureWidth = 64;
@@ -79,24 +82,10 @@ public class MoCModelMole extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        MoCEntityMole mole = (MoCEntityMole) entity;
-        float yOffset = mole.getAdjustedYOffset();
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0F, yOffset, 0F);
-        this.Nose.render(f5);
-        this.Head.render(f5);
-        this.Body.render(f5);
-        this.Back.render(f5);
-        this.Tail.render(f5);
-        this.LLeg.render(f5);
-        this.LFingers.render(f5);
-        this.RLeg.render(f5);
-        this.RFingers.render(f5);
-        this.LRearLeg.render(f5);
-        this.RRearLeg.render(f5);
-        GL11.glPopMatrix();
+    public void setRotationAngles(MoCEntityMole entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        MoCEntityMole mole = entityIn;
+        this.yOffset = mole.getAdjustedYOffset();
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -105,7 +94,7 @@ public class MoCModelMole extends ModelBase {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         //super.setRotationAngles(f, f1, f2, f3, f4, f5);
 
         this.Head.rotateAngleY = f3 / 57.29578F;
@@ -126,4 +115,21 @@ public class MoCModelMole extends ModelBase {
         this.Tail.rotateAngleZ = this.LLeg.rotateAngleX * 0.625F;
     }
 
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        matrixStackIn.push();
+        matrixStackIn.translate(0F, this.yOffset, 0F);
+        this.Nose.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Back.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Tail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LLeg.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LFingers.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RLeg.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RFingers.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LRearLeg.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RRearLeg.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        matrixStackIn.pop();
+    }
 }

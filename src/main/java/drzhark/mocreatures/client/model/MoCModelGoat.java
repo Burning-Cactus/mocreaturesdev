@@ -1,15 +1,17 @@
 package drzhark.mocreatures.client.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import drzhark.mocreatures.entity.passive.MoCEntityGoat;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelGoat extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelGoat extends EntityModel<MoCEntityGoat> {
 
     ModelRenderer Leg1;
     ModelRenderer Leg2;
@@ -166,80 +168,11 @@ public class MoCModelGoat extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        this.Leg1.render(f5);
-        this.Leg2.render(f5);
-        this.Leg3.render(f5);
-        this.Leg4.render(f5);
-        this.Body.render(f5);
-        this.Tail.render(f5);
-        this.Neck.render(f5);
-        if (this.typeInt > 1 && this.typeInt < 5) {
-            this.Tits.render(f5);
-        }
-        GL11.glPushMatrix();
-
-        if (this.attacking != 0) {
-            // float yOff = f5*((2.0F*attacking)/45F)-1.33333F;
-            // float zOff = f5*(attacking/9F)-3.33333F;
-
-            // 0.3! yOff = (3F*attacking/450F) - (3F*3F/45F);
-            // float yOff = 0.3F;
-            // yOff = (3F*attacking/450F) - (3F*3F/45F);
-            float yOff = (this.attacking / 150F) - (1F / 5F);
-            // float zOff = 0.1F;
-            float zOff = (this.attacking / 450F) - (1F / 15F);
-            GL11.glTranslatef(0.0F, yOff, -zOff);
-        }
-        this.LEar.render(f5);
-        this.REar.render(f5);
-        this.Head.render(f5);
-        this.Nose.render(f5);
-
-        if (this.typeInt > 1) {
-            if (this.edad > 0.7) {
-                this.RHorn1.render(f5);
-                this.LHorn1.render(f5);
-            }
-            if (this.edad > 0.8) {
-                this.RHorn2.render(f5);
-                this.LHorn2.render(f5);
-            }
-        }
-        if (this.typeInt > 4) {
-            if (this.edad > 0.8) {
-                this.RHorn3.render(f5);
-                this.LHorn3.render(f5);
-            }
-            if (this.edad > 0.85) {
-                this.RHorn4.render(f5);
-                this.LHorn4.render(f5);
-            }
-            if (this.edad > 0.9) {
-                this.RHorn5.render(f5);
-                this.LHorn5.render(f5);
-
-                // Goatie.render(f5);
-            }
-        }
-        // mouth movement
-        // GL11.glTranslatef(eatMov, 0.0F, 0.0F);
-        if (this.eatMov != 0 && !this.bleat) {
-            GL11.glTranslatef(this.eatMov / 100F, 0.0F, 0.0F);
-        }
-        if (this.typeInt > 4 && this.edad > 0.9) {
-            this.Goatie.render(f5);
-        }
-        this.Tongue.render(f5);
-        this.Mouth.render(f5);
-
-        GL11.glPopMatrix();
-
+    public void setRotationAngles(MoCEntityGoat entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         //super.setRotationAngles(f, f1, f2, f3, f4, f5);
         this.Leg1.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
         this.Leg2.rotateAngleX = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.4F * f1;
@@ -319,6 +252,78 @@ public class MoCModelGoat extends ModelBase {
         this.LHorn4.rotateAngleY = this.Head.rotateAngleY;
         this.RHorn5.rotateAngleY = this.Head.rotateAngleY;
         this.LHorn5.rotateAngleY = this.Head.rotateAngleY;
+
+    }
+
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        this.Leg1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg4.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Tail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Neck.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        if (this.typeInt > 1 && this.typeInt < 5) {
+            this.Tits.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        }
+        matrixStackIn.push();
+
+        if (this.attacking != 0) {
+            // float yOff = f5*((2.0F*attacking)/45F)-1.33333F;
+            // float zOff = f5*(attacking/9F)-3.33333F;
+
+            // 0.3! yOff = (3F*attacking/450F) - (3F*3F/45F);
+            // float yOff = 0.3F;
+            // yOff = (3F*attacking/450F) - (3F*3F/45F);
+            float yOff = (this.attacking / 150F) - (1F / 5F);
+            // float zOff = 0.1F;
+            float zOff = (this.attacking / 450F) - (1F / 15F);
+            matrixStackIn.translate(0.0F, yOff, -zOff);
+        }
+        this.LEar.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.REar.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Nose.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+
+        if (this.typeInt > 1) {
+            if (this.edad > 0.7) {
+                this.RHorn1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.LHorn1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            }
+            if (this.edad > 0.8) {
+                this.RHorn2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.LHorn2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            }
+        }
+        if (this.typeInt > 4) {
+            if (this.edad > 0.8) {
+                this.RHorn3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.LHorn3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            }
+            if (this.edad > 0.85) {
+                this.RHorn4.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.LHorn4.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            }
+            if (this.edad > 0.9) {
+                this.RHorn5.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.LHorn5.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+
+                // Goatie.render(f5);
+            }
+        }
+        // mouth movement
+        // GL11.glTranslatef(eatMov, 0.0F, 0.0F);
+        if (this.eatMov != 0 && !this.bleat) {
+            matrixStackIn.translate(this.eatMov / 100F, 0.0F, 0.0F);
+        }
+        if (this.typeInt > 4 && this.edad > 0.9) {
+            this.Goatie.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        }
+        this.Tongue.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Mouth.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+
+        matrixStackIn.pop();
 
     }
 }

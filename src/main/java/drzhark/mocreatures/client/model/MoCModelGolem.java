@@ -1,16 +1,18 @@
 package drzhark.mocreatures.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.monster.MoCEntityGolem;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelGolem extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelGolem extends EntityModel<MoCEntityGolem> {
 
     ModelRenderer blocks[][];
     ModelRenderer head;
@@ -22,6 +24,9 @@ public class MoCModelGolem extends ModelBase {
     float radianF = 57.29578F;
     int w = 32;
     int h = 16;
+    float yOffset = 0F;
+    boolean angry = false;
+
 
     public MoCModelGolem() {
         this.blocks = new ModelRenderer[23][28];
@@ -194,37 +199,17 @@ public class MoCModelGolem extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        //super.render(entity, f, f1, f2, f3, f4, f5);
-        MoCEntityGolem entityG = (MoCEntityGolem) entity;
-        boolean openChest = entityG.openChest();
-        boolean isSummoning = entityG.isMissingCubes();
-        boolean angry = entityG.getGolemState() > 1;
-        boolean throwing = (entityG.tcounter > 25);
+    public void setRotationAngles(MoCEntityGolem entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        boolean openChest = entityIn.openChest();
+        boolean isSummoning = entityIn.isMissingCubes();
+        this.angry = entityIn.getGolemState() > 1;
+        boolean throwing = (entityIn.tcounter > 25);
 
         for (int i = 0; i < 23; i++) {
-            this.blocksText[i] = entityG.getBlockText(i);
+            this.blocksText[i] = entityIn.getBlockText(i);
         }
-        float yOffset = entityG.getAdjustedYOffset();
-        setRotationAngles(f, f1, f2, f3, f4, f5, openChest, isSummoning, throwing);
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0F, yOffset, 0F);
-        for (int i = 0; i < 23; i++) {
-            //blocksText[i] = entityG.getBlockText(i);
-            if (this.blocksText[i] != 30) {
-                this.blocks[i][this.blocksText[i]].render(f5);
-            }
-        }
-
-        if (angry) {
-            this.headb.render(f5);
-            this.chestb.render(f5);
-        } else {
-            this.head.render(f5);
-            this.chest.render(f5);
-        }
-        GL11.glPopMatrix();
-
+        this.yOffset = entityIn.getAdjustedYOffset();
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, openChest, isSummoning, throwing);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -239,8 +224,7 @@ public class MoCModelGolem extends ModelBase {
         model.rotateAngleZ = z / this.radianF;
     }
 
-    public void
-            setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, boolean openChest, boolean isSummoning, boolean throwing) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, boolean openChest, boolean isSummoning, boolean throwing) {
         float RLegXRot = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.2F * f1;
         float LLegXRot = MathHelper.cos(f * 0.6662F) * 1.2F * f1;
         float RArmZRot = -(MathHelper.cos(f2 * 0.09F) * 0.05F) + 0.05F;
@@ -354,4 +338,24 @@ public class MoCModelGolem extends ModelBase {
 
     }
 
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        matrixStackIn.push();
+        matrixStackIn.translate(0F, yOffset, 0F);
+        for (int i = 0; i < 23; i++) {
+            //blocksText[i] = entityG.getBlockText(i);
+            if (this.blocksText[i] != 30) {
+                this.blocks[i][this.blocksText[i]].render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            }
+        }
+
+        if (angry) {
+            this.headb.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.chestb.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        } else {
+            this.head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.chest.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        }
+        matrixStackIn.pop();
+    }
 }

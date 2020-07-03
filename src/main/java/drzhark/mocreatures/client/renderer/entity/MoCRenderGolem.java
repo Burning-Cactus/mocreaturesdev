@@ -1,28 +1,33 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import drzhark.mocreatures.client.model.MoCModelGolem;
 import drzhark.mocreatures.entity.monster.MoCEntityGolem;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderGolem extends MoCRenderMoC<MoCEntityGolem> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderGolem extends MoCRenderMoC<MoCEntityGolem, MoCModelGolem> {
 
-    public MoCRenderGolem(ModelBase modelbase, float f) {
-        super(modelbase, f);
+    public MoCRenderGolem(EntityRendererManager manager, MoCModelGolem modelbase, float f) {
+        super(manager, modelbase, f);
         this.addLayer(new LayerMoCGolem(this));
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(MoCEntityGolem par1Entity) {
+    public ResourceLocation getEntityTexture(MoCEntityGolem par1Entity) {
         return ((MoCEntityGolem) par1Entity).getTexture();
     }
 
-    private class LayerMoCGolem implements LayerRenderer<MoCEntityGolem> {
+    private class LayerMoCGolem extends LayerRenderer<MoCEntityGolem, MoCModelGolem> {
 
         private final MoCRenderGolem mocRenderer;
         private final MoCModelGolem mocModel = new MoCModelGolem();
@@ -67,6 +72,11 @@ public class MoCRenderGolem extends MoCRenderMoC<MoCEntityGolem> {
         @Override
         public boolean shouldCombineTextures() {
             return true;
+        }
+
+        @Override
+        public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, MoCEntityGolem entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+
         }
     }
 }

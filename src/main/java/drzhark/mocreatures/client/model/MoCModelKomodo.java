@@ -1,12 +1,14 @@
 package drzhark.mocreatures.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.passive.MoCEntityKomodo;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class MoCModelKomodo extends ModelBase {
+public class MoCModelKomodo extends EntityModel<MoCEntityKomodo> {
 
     //ModelRenderer TongueDown;
     ModelRenderer Tail;
@@ -43,6 +45,7 @@ public class MoCModelKomodo extends ModelBase {
     ModelRenderer SaddleC;
     ModelRenderer SaddleB;
     private float radianF = 57.29578F;
+    private boolean rideable;
 
     public MoCModelKomodo() {
         this.textureWidth = 64;
@@ -210,33 +213,17 @@ public class MoCModelKomodo extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        MoCEntityKomodo komodo = (MoCEntityKomodo) entity;
-        //int type = komodo.getType();
+    public void setRotationAngles(MoCEntityKomodo entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+                //int type = komodo.getType();
         //byte harness = komodo.getHarness();
         //byte storage = komodo.getStorage();
-        boolean mouth = (komodo.mouthCounter != 0);
-        boolean sitting = (komodo.getIsSitting());
-        boolean swimming = (komodo.isSwimming());
-        boolean moveTail = (komodo.tailCounter != 0);
-        boolean tongue = (komodo.tongueCounter != 0);
-        setRotationAngles(f, f1, f2, f3, f4, f5, sitting, moveTail, tongue, mouth, swimming);
-
-        this.Tail.render(f5);
-        this.Head.render(f5);
-        this.Chest.render(f5);
-        this.LegFrontLeft.render(f5);
-        this.LegBackLeft.render(f5);
-        this.LegFrontRight.render(f5);
-        this.LegBackRight.render(f5);
-        this.Abdomen.render(f5);
-
-        if (komodo.getIsRideable()) {
-            this.SaddleA.render(f5);
-            this.SaddleC.render(f5);
-            this.SaddleB.render(f5);
-        }
-
+        boolean mouth = (entityIn.mouthCounter != 0);
+        boolean sitting = (entityIn.getIsSitting());
+        boolean swimming = (entityIn.isSwimming());
+        boolean moveTail = (entityIn.tailCounter != 0);
+        boolean tongue = (entityIn.tongueCounter != 0);
+        this.rideable = entityIn.getIsRideable();
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, sitting, moveTail, tongue, mouth, swimming);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -264,7 +251,7 @@ public class MoCModelKomodo extends ModelBase {
 
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, boolean sitting, boolean movetail, boolean tongue,
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, boolean sitting, boolean movetail, boolean tongue,
             boolean mouth, boolean swimming) {
         float TailXRot = MathHelper.cos(f * 0.4F) * 0.2F * f1;
         float LLegXRot = MathHelper.cos(f * 1.2F) * 1.2F * f1;
@@ -395,4 +382,21 @@ public class MoCModelKomodo extends ModelBase {
 
     }
 
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        this.Tail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Chest.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LegFrontLeft.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LegBackLeft.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LegFrontRight.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LegBackRight.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Abdomen.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+
+        if (this.rideable) {
+            this.SaddleA.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.SaddleC.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.SaddleB.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        }
+    }
 }

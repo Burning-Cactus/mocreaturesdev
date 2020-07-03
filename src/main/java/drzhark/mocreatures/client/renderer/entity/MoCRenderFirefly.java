@@ -1,22 +1,25 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import drzhark.mocreatures.client.model.MoCModelFirefly;
 import drzhark.mocreatures.entity.ambient.MoCEntityFirefly;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.model.Model;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderFirefly extends MoCRenderInsect<MoCEntityFirefly> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderFirefly extends MoCRenderInsect<MoCEntityFirefly, MoCModelFirefly<MoCEntityFirefly>> {
 
-    public MoCRenderFirefly(ModelBase modelbase) {
-        super(modelbase);
+    public MoCRenderFirefly(EntityRendererManager manager, MoCModelFirefly model, float shadowSize) {
+        super(manager, model, shadowSize);
         //this.addLayer(new LayerMoCFirefly(this));
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityFirefly entityfirefly, float par2) {
+    protected void preRenderCallback(MoCEntityFirefly entityfirefly, MatrixStack stack, float par2) {
         if (entityfirefly.getIsFlying()) {
             rotateFirefly(entityfirefly);
         } else if (entityfirefly.climbing()) {
@@ -26,12 +29,12 @@ public class MoCRenderFirefly extends MoCRenderInsect<MoCEntityFirefly> {
     }
 
     protected void rotateFirefly(MoCEntityFirefly entityfirefly) {
-        GL11.glRotatef(40F, -1F, 0.0F, 0.0F);
+        GL11.glRotatef(40F, -1F, 0.0F, 0.0F); //TODO: GL call
 
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(MoCEntityFirefly entityfirefly) {
+    public ResourceLocation getEntityTexture(MoCEntityFirefly entityfirefly) {
         return ((MoCEntityFirefly) entityfirefly).getTexture();
     }
     /*

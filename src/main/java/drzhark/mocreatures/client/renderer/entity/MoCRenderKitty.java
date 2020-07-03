@@ -3,16 +3,16 @@ package drzhark.mocreatures.client.renderer.entity;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.client.model.MoCModelKitty;
 import drzhark.mocreatures.entity.passive.MoCEntityKitty;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderKitty extends MoCRenderMoC<MoCEntityKitty> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderKitty extends MoCRenderMoC<MoCEntityKitty, MoCModelKitty> {
 
     public MoCModelKitty pussy1;
 
@@ -21,9 +21,9 @@ public class MoCRenderKitty extends MoCRenderMoC<MoCEntityKitty> {
         return entitykitty.getTexture();
     }
 
-    public MoCRenderKitty(ModelBase modelkitty, float f) {
-        super(modelkitty, f);
-        this.pussy1 = (MoCModelKitty) modelkitty;
+    public MoCRenderKitty(EntityRendererManager manager, MoCModelKitty modelkitty, float f) {
+        super(manager, modelkitty, f);
+        this.pussy1 = modelkitty;
     }
 
     @Override

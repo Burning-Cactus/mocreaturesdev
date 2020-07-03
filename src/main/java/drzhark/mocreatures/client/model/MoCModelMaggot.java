@@ -1,12 +1,12 @@
 package drzhark.mocreatures.client.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import drzhark.mocreatures.entity.ambient.MoCEntityMaggot;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class MoCModelMaggot extends ModelBase {
+public class MoCModelMaggot extends EntityModel<MoCEntityMaggot> {
 
     ModelRenderer Head;
     ModelRenderer Body;
@@ -35,30 +35,7 @@ public class MoCModelMaggot extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        //super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-
-        //f1 = movement speed!
-        //f2 = timer!
-        //System.out.println("f2 = " + f2);
-
-        GL11.glPushMatrix();
-        GL11.glEnable(3042 /* GL_BLEND */);
-        //float transparency = 0.9F;
-        GL11.glBlendFunc(770, 771);
-        //GL11.glColor4f(1.2F, 1.2F, 1.2F, transparency);
-        float f9 = -(MathHelper.cos(f * 3F)) * f1 * 2F;
-        //GL11.glScalef(1.0F, 1.0F, 1.0F + (f1 * 3F));
-        GL11.glScalef(1.0F, 1.0F, 1.0F + (f9));
-
-        this.Head.render(f5);
-        this.Body.render(f5);
-        this.Tail.render(f5);
-        this.Tailtip.render(f5);
-        GL11.glDisable(3042/* GL_BLEND */);
-        GL11.glPopMatrix();
-
+    public void setRotationAngles(MoCEntityMaggot entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     }
 
     @SuppressWarnings("unused")
@@ -68,8 +45,31 @@ public class MoCModelMaggot extends ModelBase {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        //super.render(entity, f, f1, f2, f3, f4, f5);
 
+        //f1 = movement speed!
+        //f2 = timer!
+        //System.out.println("f2 = " + f2);
+
+//        GL11.glPushMatrix();
+//        GL11.glEnable(3042 /* GL_BLEND */);
+//        //float transparency = 0.9F;
+//        GL11.glBlendFunc(770, 771);
+//        //GL11.glColor4f(1.2F, 1.2F, 1.2F, transparency);
+//        float f9 = -(MathHelper.cos(f * 3F)) * f1 * 2F;
+//        //GL11.glScalef(1.0F, 1.0F, 1.0F + (f1 * 3F));
+//        GL11.glScalef(1.0F, 1.0F, 1.0F + (f9));
+//
+//        GL11.glDisable(3042/* GL_BLEND */);
+//        GL11.glPopMatrix();
+
+        matrixStackIn.push();
+        this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Tail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Tailtip.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        matrixStackIn.pop();
     }
-
 }

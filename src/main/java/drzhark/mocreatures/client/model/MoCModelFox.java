@@ -1,14 +1,19 @@
 package drzhark.mocreatures.client.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import drzhark.mocreatures.entity.passive.MoCEntityFox;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelFox extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelFox extends SegmentedModel<MoCEntityFox> {
 
     public ModelRenderer Body;
     public ModelRenderer Leg1;
@@ -53,20 +58,11 @@ public class MoCModelFox extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        this.Body.render(f5);
-        this.Leg1.render(f5);
-        this.Leg2.render(f5);
-        this.Leg3.render(f5);
-        this.Leg4.render(f5);
-        this.Head.render(f5);
-        this.Snout.render(f5);
-        this.Tail.render(f5);
-        this.Ears.render(f5);
+    public void setRotationAngles(MoCEntityFox entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         this.Head.rotateAngleY = f3 / 57.29578F;
         this.Head.rotateAngleX = f4 / 57.29578F;
         this.Snout.rotateAngleY = this.Head.rotateAngleY;//f3 / 57.29578F;
@@ -79,5 +75,15 @@ public class MoCModelFox extends ModelBase {
         this.Leg2.rotateAngleX = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.4F * f1;
         this.Leg3.rotateAngleX = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.4F * f1;
         this.Leg4.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
+    }
+
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(Body, Leg1, Leg2, Leg3, Leg4, Head, Snout, Tail, Ears);
     }
 }

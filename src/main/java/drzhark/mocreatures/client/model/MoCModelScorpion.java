@@ -1,15 +1,19 @@
 package drzhark.mocreatures.client.model;
 
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.monster.MoCEntityScorpion;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelScorpion extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelScorpion extends EntityModel<MoCEntityScorpion> {
 
     ModelRenderer Head;
     ModelRenderer MouthL;
@@ -311,67 +315,12 @@ public class MoCModelScorpion extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        MoCEntityScorpion scorpy = (MoCEntityScorpion) entity;
-        poisoning = scorpy.swingingTail();
-        isTalking = scorpy.mouthCounter != 0;
-        babies = scorpy.getHasBabies();
-        attacking = scorpy.armCounter;
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        renderParts(f5);
-    }
-
-    protected void renderParts(float f5) {
-        this.Head.render(f5);
-        this.MouthL.render(f5);
-        this.MouthR.render(f5);
-        this.Body.render(f5);
-        this.Tail1.render(f5);
-        this.Tail2.render(f5);
-        this.Tail3.render(f5);
-        this.Tail4.render(f5);
-        this.Tail5.render(f5);
-        this.Sting1.render(f5);
-        this.Sting2.render(f5);
-        this.LArm1.render(f5);
-        this.LArm2.render(f5);
-        this.LArm3.render(f5);
-        this.LArm4.render(f5);
-        this.RArm1.render(f5);
-        this.RArm2.render(f5);
-        this.RArm3.render(f5);
-        this.RArm4.render(f5);
-        this.Leg1A.render(f5);
-        this.Leg1B.render(f5);
-        this.Leg1C.render(f5);
-        this.Leg2A.render(f5);
-        this.Leg2B.render(f5);
-        this.Leg2C.render(f5);
-        this.Leg3A.render(f5);
-        this.Leg3B.render(f5);
-        this.Leg3C.render(f5);
-        this.Leg4A.render(f5);
-        this.Leg4B.render(f5);
-        this.Leg4C.render(f5);
-        this.Leg5A.render(f5);
-        this.Leg5B.render(f5);
-        this.Leg5C.render(f5);
-        this.Leg6A.render(f5);
-        this.Leg6B.render(f5);
-        this.Leg6C.render(f5);
-        this.Leg7A.render(f5);
-        this.Leg7B.render(f5);
-        this.Leg7C.render(f5);
-        this.Leg8A.render(f5);
-        this.Leg8B.render(f5);
-        this.Leg8C.render(f5);
-        if (babies) {
-            this.baby1.render(f5);
-            this.baby2.render(f5);
-            this.baby3.render(f5);
-            this.baby4.render(f5);
-            this.baby5.render(f5);
-        }
+    public void setRotationAngles(MoCEntityScorpion entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        poisoning = entityIn.swingingTail();
+        isTalking = entityIn.mouthCounter != 0;
+        babies = entityIn.getHasBabies();
+        attacking = entityIn.armCounter;
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -386,7 +335,7 @@ public class MoCModelScorpion extends ModelBase {
         model.rotateAngleZ = z / this.radianF;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         //float RLegXRot = MathHelper.cos((f * 0.6662F) + 3.141593F) * 0.4F * f1;
 
         if (!poisoning) {
@@ -783,4 +732,57 @@ public class MoCModelScorpion extends ModelBase {
 
     }
 
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.MouthL.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.MouthR.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Tail1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Tail2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Tail3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Tail4.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Tail5.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Sting1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Sting2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LArm1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LArm2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LArm3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LArm4.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RArm1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RArm2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RArm3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RArm4.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg1A.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg1B.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg1C.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg2A.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg2B.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg2C.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg3A.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg3B.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg3C.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg4A.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg4B.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg4C.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg5A.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg5B.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg5C.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg6A.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg6B.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg6C.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg7A.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg7B.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg7C.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg8A.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg8B.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Leg8C.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        if (babies) {
+            this.baby1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.baby2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.baby3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.baby4.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.baby5.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        }
+    }
 }

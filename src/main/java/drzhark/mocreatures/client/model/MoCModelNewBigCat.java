@@ -1,13 +1,15 @@
 package drzhark.mocreatures.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.passive.MoCEntityBigCat;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
-public class MoCModelNewBigCat extends ModelBase {
+public class MoCModelNewBigCat<T extends MoCEntityBigCat> extends EntityModel<T> {
 
     //fields
     ModelRenderer RightHindFoot;
@@ -543,6 +545,12 @@ public class MoCModelNewBigCat extends ModelBase {
 
     }
 
+    @Override
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        updateAnimationModifiers(entityIn);
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    }
+
     public void updateAnimationModifiers(Entity entity) {
         MoCEntityBigCat bigcat = (MoCEntityBigCat) entity;
         this.isFlyer = bigcat.isFlyer();
@@ -561,65 +569,12 @@ public class MoCModelNewBigCat extends ModelBase {
         this.hasChest = bigcat.getIsChested();
         this.hasStinger = bigcat.getHasStinger();
         this.isGhost = bigcat.getIsGhost();
-        this.isMovingVertically = bigcat.motionY != 0;
+        this.isMovingVertically = bigcat.getMotion().y != 0;
     }
 
     public float updateGhostTransparency(Entity entity) {
         MoCEntityBigCat bigcat = (MoCEntityBigCat) entity;
         return bigcat.tFloat();
-    }
-
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        updateAnimationModifiers(entity);
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        renderSaddle(this.isSaddled);
-        renderMane(this.hasMane);
-        renderCollar(this.isTamed);
-        renderTeeth(this.hasSaberTeeth);
-        renderChest(this.hasChest);
-
-        GL11.glPushMatrix();
-        //GL11.glTranslatef(0F, yOffset, 0F);
-
-        if (this.isGhost) {
-            GL11.glEnable(3042 /* GL_BLEND */);
-            GL11.glBlendFunc(770, 771);
-            GL11.glColor4f(0.8F, 0.8F, 0.8F, updateGhostTransparency(entity));
-            //GL11.glScalef(1.3F, 1.0F, 1.3F);
-        }
-
-        this.Chest.render(f5);
-
-        if (this.isFlyer) {
-            this.InnerWing.render(f5);
-            this.MidWing.render(f5);
-            this.OuterWing.render(f5);
-            this.InnerWingR.render(f5);
-            this.MidWingR.render(f5);
-            this.OuterWingR.render(f5);
-        }
-
-        if (this.hasStinger) {
-            this.STailRoot.render(f5);
-            this.STail2.render(f5);
-            this.STail3.render(f5);
-            this.STail4.render(f5);
-            this.STail5.render(f5);
-            this.StingerLump.render(f5);
-            this.Stinger.render(f5);
-        }
-
-        if (this.isSaddled && this.isRidden) {
-            this.LeftHarness.render(f5);
-            this.RightHarness.render(f5);
-        }
-
-        if (this.isGhost) {
-            GL11.glDisable(3042/* GL_BLEND */);
-        }
-        GL11.glPopMatrix();
-
     }
 
     private void renderTeeth(boolean flag) {
@@ -656,7 +611,7 @@ public class MoCModelNewBigCat extends ModelBase {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
 
         //f = time
         //f1 = movement speed!
@@ -1033,6 +988,57 @@ public class MoCModelNewBigCat extends ModelBase {
         }
     }
 
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+
+        renderSaddle(this.isSaddled);
+        renderMane(this.hasMane);
+        renderCollar(this.isTamed);
+        renderTeeth(this.hasSaberTeeth);
+        renderChest(this.hasChest);
+
+        GL11.glPushMatrix();
+        //GL11.glTranslatef(0F, yOffset, 0F);
+
+        if (this.isGhost) {
+            GL11.glEnable(3042 /* GL_BLEND */); //TODO: GL calls
+            GL11.glBlendFunc(770, 771);
+            GL11.glColor4f(0.8F, 0.8F, 0.8F, updateGhostTransparency(entity));
+            //GL11.glScalef(1.3F, 1.0F, 1.3F);
+        }
+
+        this.Chest.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+
+        if (this.isFlyer) {
+            this.InnerWing.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.MidWing.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.OuterWing.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.InnerWingR.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.MidWingR.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.OuterWingR.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        }
+
+        if (this.hasStinger) {
+            this.STailRoot.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.STail2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.STail3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.STail4.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.STail5.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.StingerLump.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Stinger.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        }
+
+        if (this.isSaddled && this.isRidden) {
+            this.LeftHarness.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RightHarness.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        }
+
+        if (this.isGhost) {
+            GL11.glDisable(3042/* GL_BLEND */);
+        }
+        GL11.glPopMatrix();
+
+    }
 }
 
 //TODO

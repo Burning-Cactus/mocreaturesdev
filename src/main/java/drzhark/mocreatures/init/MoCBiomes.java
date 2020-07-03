@@ -3,7 +3,6 @@ package drzhark.mocreatures.init;
 import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.dimension.WyvernLairBiome;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biome.BiomeProperties;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.common.BiomeManager;

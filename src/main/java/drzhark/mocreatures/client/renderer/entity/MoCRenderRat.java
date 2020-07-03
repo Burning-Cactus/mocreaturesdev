@@ -1,19 +1,26 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import drzhark.mocreatures.client.MoCClientProxy;
+import drzhark.mocreatures.client.model.MoCModelRat;
 import drzhark.mocreatures.entity.monster.MoCEntityRat;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderRat<T extends MoCEntityRat> extends RenderLiving<T> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderRat<T extends MoCEntityRat> extends LivingRenderer<T, MoCModelRat<T>> {
 
-    public MoCRenderRat(ModelBase modelbase, float f) {
-        super(MoCClientProxy.mc.getRenderManager(), modelbase, f);
+    public MoCRenderRat(EntityRendererManager manager, MoCModelRat modelbase, float f) {
+        super(manager, modelbase, f);
     }
 
     @Override
@@ -28,23 +35,23 @@ public class MoCRenderRat<T extends MoCEntityRat> extends RenderLiving<T> {
     }
 
     @Override
-    protected void preRenderCallback(T entityrat, float f) {
+    protected void preRenderCallback(T entityrat, MatrixStack stack, float f) {
         if (entityrat.climbing()) {
             rotateAnimal(entityrat);
         }
     }
 
     protected void rotateAnimal(T entityrat) {
-        GL11.glRotatef(90F, -1F, 0.0F, 0.0F);
+        GL11.glRotatef(90F, -1F, 0.0F, 0.0F); //TODO: GL calls
     }
 
-    protected void stretch(T entityrat) {
+    protected void stretch(T entityrat, MatrixStack stack) {
         float f = 0.8F;
-        GL11.glScalef(f, f, f);
+        stack.scale(f, f, f);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(T entityrat) {
+    public ResourceLocation getEntityTexture(T entityrat) {
         return entityrat.getTexture();
     }
 }

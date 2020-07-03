@@ -1,16 +1,18 @@
 package drzhark.mocreatures.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.passive.MoCEntityKitty;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelKitty extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelKitty extends EntityModel<MoCEntityKitty> {
 
     public boolean isSitting;
     public boolean isSwinging;
@@ -93,52 +95,15 @@ public class MoCModelKitty extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        MoCEntityKitty kitty = (MoCEntityKitty) entity;
-        this.isSitting = kitty.getIsSitting();
-        this.isSwinging = kitty.getIsSwinging();
-        this.swingProgress = kitty.swingProgress;
-        this.kittystate = kitty.getKittyState();
-
-        GL11.glPushMatrix();
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        if (this.isSitting) {
-            GL11.glTranslatef(0.0F, 0.25F, 0.0F);
-            this.tail.rotateAngleZ = 0.0F;
-            this.tail.rotateAngleX = -2.3F;
-        }
-        //this.bipedHead.render(f5);
-        for (int i = 0; i < 7; i++) {
-            this.headParts[i].render(f5);
-        }
-
-        if (this.kittystate > 2) {
-            this.headParts[7].render(f5);
-        }
-        if (this.kittystate == 12) {
-            this.headParts[8].render(f5);
-        }
-        this.headParts[9].render(f5);
-        this.body.render(f5);
-        this.tail.render(f5);
-        if (this.isSitting) {
-            GL11.glTranslatef(0.0F, 0.0625F, 0.0625F);
-            float f6 = -1.570796F;
-            this.rightArm.rotateAngleX = f6;
-            this.leftArm.rotateAngleX = f6;
-            this.rightLeg.rotateAngleX = f6;
-            this.leftLeg.rotateAngleX = f6;
-            this.rightLeg.rotateAngleY = 0.1F;
-            this.leftLeg.rotateAngleY = -0.1F;
-        }
-        this.rightArm.render(f5);
-        this.leftArm.render(f5);
-        this.rightLeg.render(f5);
-        this.leftLeg.render(f5);
-        GL11.glPopMatrix();
+    public void setRotationAngles(MoCEntityKitty entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.isSitting = entityIn.getIsSitting();
+        this.isSwinging = entityIn.getIsSwinging();
+        this.swingProgress = entityIn.swingProgress;
+        this.kittystate = entityIn.getKittyState();
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         this.headParts[9].rotateAngleY = f3 / 57.29578F;
         this.headParts[9].rotateAngleX = f4 / 57.29578F;
         for (int i = 0; i < 9; i++) {
@@ -163,5 +128,44 @@ public class MoCModelKitty extends ModelBase {
         this.leftArm.rotateAngleY = 0.0F;
         this.tail.rotateAngleX = -0.5F;
         this.tail.rotateAngleZ = this.leftLeg.rotateAngleX * 0.625F;
+    }
+
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        matrixStackIn.push();
+        if (this.isSitting) {
+            matrixStackIn.translate(0.0F, 0.25F, 0.0F);
+            this.tail.rotateAngleZ = 0.0F;
+            this.tail.rotateAngleX = -2.3F;
+        }
+        //this.bipedHead.render(f5);
+        for (int i = 0; i < 7; i++) {
+            this.headParts[i].render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        }
+
+        if (this.kittystate > 2) {
+            this.headParts[7].render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        }
+        if (this.kittystate == 12) {
+            this.headParts[8].render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        }
+        this.headParts[9].render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.tail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        if (this.isSitting) {
+            matrixStackIn.translate(0.0F, 0.0625F, 0.0625F);
+            float f6 = -1.570796F;
+            this.rightArm.rotateAngleX = f6;
+            this.leftArm.rotateAngleX = f6;
+            this.rightLeg.rotateAngleX = f6;
+            this.leftLeg.rotateAngleX = f6;
+            this.rightLeg.rotateAngleY = 0.1F;
+            this.leftLeg.rotateAngleY = -0.1F;
+        }
+        this.rightArm.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.leftArm.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.rightLeg.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.leftLeg.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        matrixStackIn.pop();
     }
 }

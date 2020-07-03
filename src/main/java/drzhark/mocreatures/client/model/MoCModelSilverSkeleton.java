@@ -1,8 +1,7 @@
 package drzhark.mocreatures.client.model;
 
 import drzhark.mocreatures.entity.monster.MoCEntitySilverSkeleton;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
@@ -152,8 +151,6 @@ public class MoCModelSilverSkeleton extends ModelBase {
             //renderParts(f5);
             //GL11.glPopMatrix();
         }
-        //renderParts(f5);
-
         renderParts(f5);
         GL11.glPopMatrix();
     }

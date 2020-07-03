@@ -15,6 +15,8 @@ import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAppear;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -84,7 +86,7 @@ public class MoCItemHorseAmulet extends MoCItem {
                 } else if (this.spawnClass.equalsIgnoreCase("WildHorse")) {
                     storedCreature = new MoCEntityHorse(MoCEntities.WYVERN, worldIn);
                 } else {
-                    storedCreature = (MoCEntityTameableAnimal) EntityList.createEntityByIDFromName(new ResourceLocation(MoCConstants.MOD_PREFIX + this.spawnClass.toLowerCase()), worldIn);
+                    storedCreature = (LivingEntity) EntityType.byKey(new ResourceLocation(MoCConstants.MOD_PREFIX + this.spawnClass.toLowerCase()).toString()).get();
                     if (storedCreature instanceof MoCEntityBigCat) {
                         this.isGhost = true;
                         ((MoCEntityBigCat) storedCreature).setIsGhost(true);
