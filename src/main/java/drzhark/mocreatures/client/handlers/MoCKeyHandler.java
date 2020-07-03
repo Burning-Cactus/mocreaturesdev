@@ -13,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = MoCConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
@@ -24,6 +25,11 @@ public class MoCKeyHandler {
     //static KeyBinding jumpBinding = new KeyBinding("MoCreatures Jump", MoCClientProxy.mc.gameSettings.keyBindJump.getKeyCode(), "key.categories.movement");
     static KeyBinding diveBinding = new KeyBinding("MoCreatures Dive", Keyboard.KEY_Z, "key.categories.movement");
     static KeyBinding guiBinding = new KeyBinding("MoCreatures GUI", Keyboard.KEY_F13, "key.categories.misc"); //TODO fix bug that crashes game when invoking GUI
+
+    public static void initKeys() {
+        ClientRegistry.registerKeyBinding(diveBinding);
+        ClientRegistry.registerKeyBinding(guiBinding);
+    }
 
     //static KeyBinding dismountBinding = new KeyBinding("MoCreatures Dismount", Keyboard.KEY_F);
 

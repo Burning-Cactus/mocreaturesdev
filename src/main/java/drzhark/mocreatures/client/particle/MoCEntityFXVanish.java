@@ -1,4 +1,4 @@
-package drzhark.mocreatures.client;
+package drzhark.mocreatures.client.particle;
 
 import net.minecraft.client.particle.*;
 import net.minecraft.particles.BasicParticleType;

@@ -1,17 +1,29 @@
 package drzhark.mocreatures.client;
 
+import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.client.model.*;
+import drzhark.mocreatures.client.particle.MoCEntityFXStar;
+import drzhark.mocreatures.client.particle.MoCEntityFXUndead;
+import drzhark.mocreatures.client.particle.MoCEntityFXVacuum;
+import drzhark.mocreatures.client.particle.MoCEntityFXVanish;
 import drzhark.mocreatures.client.renderer.entity.*;
 import drzhark.mocreatures.init.MoCEntities;
+import drzhark.mocreatures.init.MoCParticleTypes;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.ParticleManager;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.Mod;
 
+@Mod.EventBusSubscriber(modid = MoCConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class MoCClientRegistry {
 
     @SuppressWarnings("unchecked")
     @SubscribeEvent
-    public void registerRenderers(final ModelRegistryEvent event) {
+    public static void registerRenderers(final ModelRegistryEvent event) {
         //Ambients
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.ANT, m-> new MoCRenderInsect<>(m, new MoCModelAnt<>()));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.BEE, m-> new MoCRenderInsect<>(m, new MoCModelBee<>()));
@@ -108,4 +120,15 @@ public class MoCClientRegistry {
 
     }
 
+    /**
+     * Registers the particle factories on the client side.
+     */
+    @SubscribeEvent
+    public static void registerParticles(ParticleFactoryRegisterEvent event) {
+        ParticleManager manager = Minecraft.getInstance().particles;
+        manager.registerFactory(MoCParticleTypes.STAR_FX, MoCEntityFXStar.Factory::new);
+        manager.registerFactory(MoCParticleTypes.UNDEAD_FX, MoCEntityFXUndead.Factory::new);
+        manager.registerFactory(MoCParticleTypes.VACUUM_FX, MoCEntityFXVacuum.Factory::new);
+        manager.registerFactory(MoCParticleTypes.VANISH_FX, MoCEntityFXVanish.Factory::new);
+    }
 }

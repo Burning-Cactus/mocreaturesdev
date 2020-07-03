@@ -1,4 +1,4 @@
-package drzhark.mocreatures.client;
+package drzhark.mocreatures.client.particle;
 
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.particle.*;

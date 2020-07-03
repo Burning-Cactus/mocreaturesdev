@@ -25,7 +25,7 @@ public class MoCRenderCricket<T extends MoCEntityCricket, M extends MoCModelCric
     protected void rotateCricket(MoCEntityCricket entitycricket, MatrixStack matrixStackIn) {
         if (!entitycricket.onGround) {
             if (entitycricket.getMotion().y > 0.5D) {
-                GL11.glRotatef(35F, -1F, 0.0F, 0.0F);
+                GL11.glRotatef(35F, -1F, 0.0F, 0.0F); //TODO: Move away from GL calls
             } else if (entitycricket.getMotion().y < -0.5D) {
                 GL11.glRotatef(-35F, -1F, 0.0F, 0.0F);
             } else {
