@@ -1,25 +1,22 @@
 package drzhark.mocreatures.client.renderer.entity;
 
 import drzhark.mocreatures.MoCreatures;
-import drzhark.mocreatures.client.MoCClientProxy;
 import drzhark.mocreatures.client.model.MoCModelWere;
 import drzhark.mocreatures.client.model.MoCModelWereHuman;
 import drzhark.mocreatures.entity.monster.MoCEntityWerewolf;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.LivingRenderer;
-import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderWerewolf extends LivingRenderer<MoCEntityWerewolf> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderWerewolf extends LivingRenderer<MoCEntityWerewolf, MoCModelWere<MoCEntityWerewolf>> {
 
     private final MoCModelWere tempWerewolf;
 
-    public MoCRenderWerewolf(MoCModelWereHuman modelwerehuman, ModelBase modelbase, float f) {
-        super(MoCClientProxy.mc.getRenderManager(), modelbase, f);
+    public MoCRenderWerewolf(EntityRendererManager manager, MoCModelWereHuman modelwerehuman, MoCModelWere modelbase, float f) {
+        super(manager, modelbase, f);
         this.addLayer(new LayerMoCWereHuman(this));
         this.tempWerewolf = (MoCModelWere) modelbase;
     }
@@ -28,11 +25,10 @@ public class MoCRenderWerewolf extends LivingRenderer<MoCEntityWerewolf> {
     public void doRender(MoCEntityWerewolf entitywerewolf, double d, double d1, double d2, float f, float f1) {
         this.tempWerewolf.hunched = entitywerewolf.getIsHunched();
         super.doRender(entitywerewolf, d, d1, d2, f, f1);
-
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(MoCEntityWerewolf entitywerewolf) {
+    public ResourceLocation getEntityTexture(MoCEntityWerewolf entitywerewolf) {
         return entitywerewolf.getTexture();
     }
 
@@ -46,27 +42,27 @@ public class MoCRenderWerewolf extends LivingRenderer<MoCEntityWerewolf> {
         }
 
         public void doRenderLayer(MoCEntityWerewolf entity, float f, float f1, float f2, float f3, float f4, float f5, float f6) {
-            int myType = entity.getType();
+            int myType = entity.getSubType();
 
             if (!entity.getIsHumanForm()) {
-                bindTexture(MoCreatures.proxy.getTexture("wereblank.png"));
+                bindTexture(MoCreatures.getTexture("wereblank.png"));
             } else {
                 switch (myType) {
 
                     case 1:
-                        bindTexture(MoCreatures.proxy.getTexture("weredude.png"));
+                        bindTexture(MoCreatures.getTexture("weredude.png"));
                         break;
                     case 2:
-                        bindTexture(MoCreatures.proxy.getTexture("werehuman.png"));
+                        bindTexture(MoCreatures.getTexture("werehuman.png"));
                         break;
                     case 3:
-                        bindTexture(MoCreatures.proxy.getTexture("wereoldie.png"));
+                        bindTexture(MoCreatures.getTexture("wereoldie.png"));
                         break;
                     case 4:
-                        bindTexture(MoCreatures.proxy.getTexture("werewoman.png"));
+                        bindTexture(MoCreatures.getTexture("werewoman.png"));
                         break;
                     default:
-                        bindTexture(MoCreatures.proxy.getTexture("wereoldie.png"));
+                        bindTexture(MoCreatures.getTexture("wereoldie.png"));
                 }
 
             }

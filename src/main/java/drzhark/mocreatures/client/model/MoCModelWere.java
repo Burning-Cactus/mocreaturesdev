@@ -10,7 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class MoCModelWere<T extends MoCEntityWerewolf> extends SegmentedModel<T> {
+public class MoCModelWere extends SegmentedModel<MoCEntityWerewolf> {
 
     ModelRenderer Head;
     ModelRenderer Nose;
@@ -274,7 +274,7 @@ public class MoCModelWere<T extends MoCEntityWerewolf> extends SegmentedModel<T>
     }
 
     @Override
-    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setRotationAngles(MoCEntityWerewolf entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 

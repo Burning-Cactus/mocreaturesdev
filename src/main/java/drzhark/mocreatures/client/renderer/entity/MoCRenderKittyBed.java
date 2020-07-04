@@ -1,19 +1,23 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import drzhark.mocreatures.client.MoCClientProxy;
 import drzhark.mocreatures.client.model.MoCModelKittyBed;
 import drzhark.mocreatures.client.model.MoCModelKittyBed2;
 import drzhark.mocreatures.entity.item.MoCEntityKittyBed;
-import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
 @SuppressWarnings("unused")
-@SideOnly(Side.CLIENT)
-public class MoCRenderKittyBed extends RenderLiving<MoCEntityKittyBed> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderKittyBed extends LivingRenderer<MoCEntityKittyBed, MoCModelKittyBed> {
 
     public MoCModelKittyBed kittybed;
     private int mycolor;
@@ -21,14 +25,14 @@ public class MoCRenderKittyBed extends RenderLiving<MoCEntityKittyBed> {
             {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.7F, 0.8F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.6F, 0.7F},
             {0.7F, 0.4F, 0.9F}, {0.2F, 0.4F, 0.8F}, {0.5F, 0.4F, 0.3F}, {0.4F, 0.5F, 0.2F}, {0.8F, 0.3F, 0.3F}, {0.1F, 0.1F, 0.1F}};
 
-    public MoCRenderKittyBed(MoCModelKittyBed modelkittybed, MoCModelKittyBed2 modelkittybed2, float f) {
-        super(MoCClientProxy.mc.getRenderManager(), modelkittybed, f);
+    public MoCRenderKittyBed(EntityRendererManager manager, MoCModelKittyBed modelkittybed, MoCModelKittyBed2 modelkittybed2, float f) {
+        super(manager, modelkittybed, f);
         this.kittybed = modelkittybed;
         this.addLayer(new LayerMoCKittyBed(this));
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityKittyBed entitykittybed, float f) {
+    protected void preRenderCallback(MoCEntityKittyBed entitykittybed, MatrixStack stack, float f) {
         this.mycolor = entitykittybed.getSheetColor();
         this.kittybed.hasMilk = entitykittybed.getHasMilk();
         this.kittybed.hasFood = entitykittybed.getHasFood();
@@ -37,7 +41,7 @@ public class MoCRenderKittyBed extends RenderLiving<MoCEntityKittyBed> {
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(MoCEntityKittyBed entitykittybed) {
+    public ResourceLocation getEntityTexture(MoCEntityKittyBed entitykittybed) {
         return entitykittybed.getTexture();
     }
 
@@ -59,9 +63,10 @@ public class MoCRenderKittyBed extends RenderLiving<MoCEntityKittyBed> {
             this.mocModel.render(entitykittybed, f, f1, f3, f4, f5, f6);
         }
 
-        @Override
+//        @Override
         public boolean shouldCombineTextures() {
             return true;
         }
+
     }
 }

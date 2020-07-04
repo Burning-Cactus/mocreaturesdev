@@ -1,30 +1,31 @@
 package drzhark.mocreatures.client.renderer.entity;
 
-import drzhark.mocreatures.client.MoCClientProxy;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import drzhark.mocreatures.client.model.MoCModelLitterBox;
 import drzhark.mocreatures.entity.item.MoCEntityLitterBox;
-import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderLitterBox extends RenderLiving<MoCEntityLitterBox> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderLitterBox extends LivingRenderer<MoCEntityLitterBox, MoCModelLitterBox> {
 
     public MoCModelLitterBox litterbox;
 
-    public MoCRenderLitterBox(MoCModelLitterBox modellitterbox, float f) {
-        super(MoCClientProxy.mc.getRenderManager(), modellitterbox, f);
+    public MoCRenderLitterBox(EntityRendererManager manager, MoCModelLitterBox modellitterbox, float f) {
+        super(manager, modellitterbox, f);
         this.litterbox = modellitterbox;
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityLitterBox entitylitterbox, float f) {
+    protected void preRenderCallback(MoCEntityLitterBox entitylitterbox, MatrixStack stack, float f) {
         this.litterbox.usedlitter = entitylitterbox.getUsedLitter();
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(MoCEntityLitterBox entitylitterbox) {
+    public ResourceLocation getEntityTexture(MoCEntityLitterBox entitylitterbox) {
         return entitylitterbox.getTexture();
     }
 }

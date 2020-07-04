@@ -1,15 +1,17 @@
 package drzhark.mocreatures.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.aquatic.MoCEntityRay;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelRay extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelRay<T extends MoCEntityRay> extends EntityModel<T> {
 
     public MoCModelRay() {
         this.textureWidth = 64;
@@ -113,42 +115,11 @@ public class MoCModelRay extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        MoCEntityRay ray = (MoCEntityRay) entity;
-        this.attacking = ray.isPoisoning();
-        this.isMantaRay = ray.isMantaRay();
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.attacking = entityIn.isPoisoning();
+        this.isMantaRay = entityIn.isMantaRay();
 
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        this.Tail.render(f5);
-        this.Body.render(f5);
-        this.BodyU.render(f5);
-        this.BodyTail.render(f5);
-
-        this.RWingA.render(f5);
-        this.RWingB.render(f5);
-
-        this.LWingA.render(f5);
-        this.LWingB.render(f5);
-
-        if (this.isMantaRay) {
-            this.Right.render(f5);
-            this.Left.render(f5);
-            this.RWingC.render(f5);
-            this.LWingC.render(f5);
-
-            this.RWingD.render(f5);
-            this.RWingE.render(f5);
-            this.RWingF.render(f5);
-            this.RWingG.render(f5);
-            this.LWingD.render(f5);
-            this.LWingE.render(f5);
-            this.LWingF.render(f5);
-            this.LWingG.render(f5);
-        } else {
-            this.REye.render(f5);
-            this.LEye.render(f5);
-        }
+        setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -157,7 +128,7 @@ public class MoCModelRay extends ModelBase {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         //super.setRotationAngles(f, f1, f2, f3, f4, f5);
         float rotF = MathHelper.cos(f * 0.6662F) * 1.5F * f1;
         float f6 = 20F;
@@ -196,6 +167,39 @@ public class MoCModelRay extends ModelBase {
 
     }
 
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        this.Tail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.BodyU.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.BodyTail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+
+        this.RWingA.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RWingB.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+
+        this.LWingA.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LWingB.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+
+        if (this.isMantaRay) {
+            this.Right.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Left.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RWingC.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LWingC.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+
+            this.RWingD.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RWingE.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RWingF.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RWingG.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LWingD.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LWingE.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LWingF.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LWingG.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        } else {
+            this.REye.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LEye.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        }
+    }
+
     //public int typeInt;
     public boolean isMantaRay;
     public boolean attacking;
@@ -221,4 +225,6 @@ public class MoCModelRay extends ModelBase {
     ModelRenderer LWingG;
     ModelRenderer LEye;
     ModelRenderer REye;
+
+
 }

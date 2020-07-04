@@ -34,7 +34,6 @@ import java.util.Map.Entry;
 
 public class MoCClientProxy extends MoCProxy {
 
-    public static Minecraft mc = Minecraft.getInstance();
     public static MoCClientProxy instance;
     public static MoCTextures mocTextures = new MoCTextures();
 

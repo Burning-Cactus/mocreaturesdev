@@ -6,7 +6,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class MoCModelWereHuman<T extends MoCEntityWerewolf> extends BipedModel<T> {
+public class MoCModelWereHuman extends BipedModel<MoCEntityWerewolf> {
 
     public MoCModelWereHuman() {
         //TODO 4.1 FIX

@@ -1,33 +1,44 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import drzhark.mocreatures.client.MoCClientProxy;
 import drzhark.mocreatures.entity.item.MoCEntityThrowableRock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderTRock extends Render<Entity> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderTRock extends EntityRenderer<MoCEntityThrowableRock> {
 
-    public MoCRenderTRock() {
-        super(MoCClientProxy.mc.getRenderManager());
+    public MoCRenderTRock(EntityRendererManager manager) {
+        super(manager);
         this.shadowSize = 0.5F;
     }
 
-    public void renderMyRock(MoCEntityThrowableRock entitytrock, double par2, double par4, double par6, float par8, float partialTicks) {
+    @Override
+    public ResourceLocation getEntityTexture(MoCEntityThrowableRock entity) {
+        return null;//this.getMyTexture((MoCEntityThrowableRock) par1Entity);
+    }
+
+    public void renderMyRock(MoCEntityThrowableRock entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-        GlStateManager.pushMatrix();
+        matrixStackIn.push();
         //GlStateManager.translate(-0.5F, -0.55F, 0.5F);
-        GlStateManager.translate(-0.5F, 0F, 0.5F);
-        GlStateManager.translate((float) par2, (float) par4, (float) par6);
-        GlStateManager.rotate(((100 - entitytrock.acceleration) / 10F) * 36F, 0F, -1F, 0.0F);
+        matrixStackIn.translate(-0.5F, 0F, 0.5F);
+        matrixStackIn.translate((float) par2, (float) par4, (float) par6);
+        matrixStackIn.rotate(((100 - entitytrock.acceleration) / 10F) * 36F, 0F, -1F, 0.0F);
         int i = entitytrock.getBrightnessForRender();
         int j = i % 65536;
         int k = i / 65536;
@@ -36,20 +47,15 @@ public class MoCRenderTRock extends Render<Entity> {
         this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         float lightLevel = entitytrock.getBrightness();
         blockrendererdispatcher.renderBlockBrightness(entitytrock.getState(), lightLevel);
-        GlStateManager.popMatrix();
+        matrixStackIn.pop();
     }
 
     @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-        this.renderMyRock((MoCEntityThrowableRock) par1Entity, par2, par4, par6, par8, par9);
+    public void render(MoCEntityThrowableRock par1Entity, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        this.renderMyRock(par1Entity, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
     protected ResourceLocation getMyTexture(MoCEntityThrowableRock trock) {
         return TextureMap.LOCATION_BLOCKS_TEXTURE;
-    }
-
-    @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity) {
-        return null;//this.getMyTexture((MoCEntityThrowableRock) par1Entity);
     }
 }

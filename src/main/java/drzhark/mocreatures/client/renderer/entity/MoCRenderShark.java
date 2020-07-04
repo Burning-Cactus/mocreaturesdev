@@ -2,22 +2,23 @@ package drzhark.mocreatures.client.renderer.entity;
 
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.client.MoCClientProxy;
+import drzhark.mocreatures.client.model.MoCModelShark;
 import drzhark.mocreatures.entity.aquatic.MoCEntityShark;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderShark extends RenderLiving<MoCEntityShark> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderShark extends LivingRenderer<MoCEntityShark, MoCModelShark> {
 
-    public MoCRenderShark(ModelBase modelbase, float f) {
-        super(MoCClientProxy.mc.getRenderManager(), modelbase, f);
+    public MoCRenderShark(EntityRendererManager manager, MoCModelShark modelbase, float f) {
+        super(manager, modelbase, f);
     }
 
     @Override

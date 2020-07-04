@@ -1,13 +1,15 @@
 package drzhark.mocreatures.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.aquatic.MoCEntityMediumFish;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
-public class MoCModelMediumFish extends ModelBase {
+public class MoCModelMediumFish extends EntityModel<MoCEntityMediumFish> {
 
     //fields
     ModelRenderer Head;
@@ -26,6 +28,10 @@ public class MoCModelMediumFish extends ModelBase {
     ModelRenderer LowerFin;
     ModelRenderer RightLowerFin;
     ModelRenderer LeftLowerFin;
+
+    float xOffset = 0F;
+    float yOffset = 0F;
+    float zOffset = 0F;
 
     public MoCModelMediumFish() {
         this.textureWidth = 64;
@@ -110,32 +116,11 @@ public class MoCModelMediumFish extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        MoCEntityMediumFish mediumFish = (MoCEntityMediumFish)entity;
-        float yOffset = mediumFish.getAdjustedYOffset();
-        float xOffset = mediumFish.getAdjustedXOffset();
-        float zOffset = mediumFish.getAdjustedZOffset();
-        GL11.glPushMatrix();
-        GL11.glTranslatef(xOffset, yOffset, zOffset);
-        this.Head.render(f5);
-        this.LowerHead.render(f5);
-        this.Nose.render(f5);
-        this.MouthBottom.render(f5);
-        this.MouthBottomB.render(f5);
-        this.Body.render(f5);
-        this.BackUp.render(f5);
-        this.BackDown.render(f5);
-        this.Tail.render(f5);
-        this.TailFin.render(f5);
-        this.RightPectoralFin.render(f5);
-        this.LeftPectoralFin.render(f5);
-        this.UpperFin.render(f5);
-        this.LowerFin.render(f5);
-        this.RightLowerFin.render(f5);
-        this.LeftLowerFin.render(f5);
-        GL11.glPopMatrix();
+    public void setRotationAngles(MoCEntityMediumFish entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        this.yOffset = entityIn.getAdjustedYOffset();
+        this.xOffset = entityIn.getAdjustedXOffset();
+        this.zOffset = entityIn.getAdjustedZOffset();
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -144,7 +129,7 @@ public class MoCModelMediumFish extends ModelBase {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         /**
          * f = distance walked f1 = speed 0 - 1 f2 = timer
          */
@@ -164,4 +149,26 @@ public class MoCModelMediumFish extends ModelBase {
         //super.setRotationAngles(f, f1, f2, f3, f4, f5);
     }
 
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        matrixStackIn.push();
+        matrixStackIn.translate(xOffset, yOffset, zOffset);
+        this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LowerHead.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Nose.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.MouthBottom.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.MouthBottomB.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.BackUp.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.BackDown.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Tail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.TailFin.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RightPectoralFin.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LeftPectoralFin.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.UpperFin.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LowerFin.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RightLowerFin.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LeftLowerFin.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        matrixStackIn.pop();
+    }
 }

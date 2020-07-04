@@ -1,13 +1,15 @@
 package drzhark.mocreatures.client.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import drzhark.mocreatures.entity.item.MoCEntityLitterBox;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class MoCModelLitterBox extends ModelBase {
+@OnlyIn(Dist.CLIENT)
+public class MoCModelLitterBox extends EntityModel<MoCEntityLitterBox> {
 
     ModelRenderer Table1;
 
@@ -53,16 +55,21 @@ public class MoCModelLitterBox extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        this.Table1.render(f5);
-        this.Table3.render(f5);
-        this.Table2.render(f5);
-        this.Table4.render(f5);
-        this.Bottom.render(f5);
+    public void setRotationAngles(MoCEntityLitterBox entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
+    }
+
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        this.Table1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Table3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Table2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Table4.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Bottom.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         if (this.usedlitter) {
-            this.LitterUsed.render(f5);
+            this.LitterUsed.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         } else {
-            this.Litter.render(f5);
+            this.Litter.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         }
     }
 }
