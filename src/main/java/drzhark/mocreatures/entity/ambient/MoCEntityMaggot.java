@@ -27,13 +27,8 @@ public class MoCEntityMaggot extends MoCEntityAmbient {
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
     }
 
-    @Override
-    public void fall(float f, float f1) {
-    }
-
-//    @Override TODO: Maggot loot table
-//    protected Item getDropItem() {
-//        return Items.SLIME_BALL;
+//    @Override
+//    public void fall(float f, float f1) {
 //    }
 
     @Override

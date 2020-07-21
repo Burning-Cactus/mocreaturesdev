@@ -63,18 +63,18 @@ public class MoCEntityMediumFish extends MoCEntityTameableAquatic {
         }
     }
 
-    @Override //TODO: Mediumfish loot table
-    protected void dropFewItems(boolean flag, int x) {
-        int i = this.rand.nextInt(100);
-        if (i < 70) {
-            entityDropItem(new ItemStack(Items.COD, 1, 0), 0.0F);
-        } else {
-            int j = this.rand.nextInt(2);
-            for (int k = 0; k < j; k++) {
-                entityDropItem(new ItemStack(MoCItems.MOCEGG, 1, getEggNumber()), 0.0F);
-            }
-        }
-    }
+//    @Override //TODO: Mediumfish loot table
+//    protected void dropFewItems(boolean flag, int x) {
+//        int i = this.rand.nextInt(100);
+//        if (i < 70) {
+//            entityDropItem(new ItemStack(Items.COD, 1, 0), 0.0F);
+//        } else {
+//            int j = this.rand.nextInt(2);
+//            for (int k = 0; k < j; k++) {
+//                entityDropItem(new ItemStack(MoCItems.MOCEGG, 1, getEggNumber()), 0.0F);
+//            }
+//        }
+//    }
 
     protected int getEggNumber() {
         return 70;

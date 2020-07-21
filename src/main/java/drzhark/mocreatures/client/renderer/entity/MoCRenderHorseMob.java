@@ -1,20 +1,20 @@
 package drzhark.mocreatures.client.renderer.entity;
 
-import drzhark.mocreatures.client.MoCClientProxy;
 import drzhark.mocreatures.client.model.MoCModelNewHorseMob;
 import drzhark.mocreatures.entity.monster.MoCEntityHorseMob;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.LivingRenderer;
-import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderHorseMob<T extends MoCEntityHorseMob, M extends MoCModelNewHorseMob<T>> extends LivingRenderer<MoCEntityHorseMob> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderHorseMob<T extends MoCEntityHorseMob, M extends MoCModelNewHorseMob<T>> extends LivingRenderer<T, M> {
 
-    public MoCRenderHorseMob(MoCModelNewHorseMob modelbase) {
-        super(MoCClientProxy.mc.getRenderManager(), modelbase, 0.5F);
+    public MoCRenderHorseMob(EntityRendererManager manager, M modelbase) {
+        super(manager, modelbase, 0.5F);
 
     }
 
@@ -23,7 +23,7 @@ public class MoCRenderHorseMob<T extends MoCEntityHorseMob, M extends MoCModelNe
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(MoCEntityHorseMob entityhorsemob) {
+    public ResourceLocation getEntityTexture(T entityhorsemob) {
         return entityhorsemob.getTexture();
     }
 }

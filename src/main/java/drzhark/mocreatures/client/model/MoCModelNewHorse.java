@@ -34,14 +34,16 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.passive.MoCEntityHorse;
 import net.minecraft.client.renderer.entity.model.AgeableModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
-public class MoCModelNewHorse<T extends MoCEntityHorse> extends AgeableModel<T> {
+public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> {
 
     ModelRenderer Head;
     ModelRenderer UMouth;

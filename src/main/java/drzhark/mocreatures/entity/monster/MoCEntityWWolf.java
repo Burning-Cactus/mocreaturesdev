@@ -154,11 +154,6 @@ public class MoCEntityWWolf extends MoCEntityMob {
         return entityliving;
     }
 
-//    @Override TODO: WWolf Drops
-//    protected Item getDropItem() {
-//        return MoCItems.FUR;
-//    }
-
     @Override
     protected SoundEvent getDeathSound() {
         return MoCSoundEvents.ENTITY_WOLF_DEATH;

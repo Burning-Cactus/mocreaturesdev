@@ -14,6 +14,6 @@ public class MoCItemGroup extends ItemGroup {
     @Override
     @OnlyIn(Dist.CLIENT)
     public ItemStack createIcon() {
-        return new ItemStack(MoCItems.AMULETFAIRYFULL);
+        return new ItemStack(MoCItems.HORSESADDLE);
     }
 }

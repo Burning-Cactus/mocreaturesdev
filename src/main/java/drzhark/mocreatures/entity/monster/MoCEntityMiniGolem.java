@@ -6,7 +6,6 @@ import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.item.MoCEntityThrowableRock;
 import drzhark.mocreatures.init.MoCEntities;
 import drzhark.mocreatures.init.MoCSoundEvents;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -21,7 +20,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.extensions.IForgeBlockState;
 
 public class MoCEntityMiniGolem extends MoCEntityMob {
 
@@ -110,7 +108,7 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
         }
 
         //creates a dummy Trock on top of it
-        MoCEntityThrowableRock trock = new MoCEntityThrowableRock(MoCEntities.TROCK, this.world, this, this.getPosX(), this.getPosY() + 1.5D, this.getPosZ());
+        MoCEntityThrowableRock trock = new MoCEntityThrowableRock(this.world, this, this.getPosX(), this.getPosY() + 1.5D, this.getPosZ());
         this.world.addEntity(trock);
         trock.setState(tRockState);
         trock.setBehavior(1);
@@ -137,7 +135,7 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
         if (this.tcounter >= 50) {
             //throws a newly spawned Trock and destroys the held Trock
             if (this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 48F) {
-                MoCTools.ThrowStone(this, this.getAttackTarget(), this.tempRock.getState(), 10D, 0.25D);
+                MoCTools.throwStone(this, this.getAttackTarget(), this.tempRock.getState(), 10D, 0.25D);
             }
 
             this.tempRock.remove();

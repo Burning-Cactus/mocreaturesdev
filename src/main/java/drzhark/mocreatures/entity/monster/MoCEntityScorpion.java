@@ -371,7 +371,7 @@ public class MoCEntityScorpion extends MoCEntityMob {
 
     @Override
     public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
-        return (isValidLightLevel() && MoCreatures.entityMap.get(this.getClass()).getFrequency() > 0) && getCanSpawnHereLiving()
+        return (/*isValidLightLevel() &&*/ MoCreatures.entityMap.get(this.getType()).getFrequency() > 0) && getCanSpawnHereLiving()
                 && getCanSpawnHereCreature();
     }
 
@@ -379,7 +379,7 @@ public class MoCEntityScorpion extends MoCEntityMob {
     public boolean checkSpawningBiome() {
         if (this.world.dimension.doesWaterVaporize()) {
             setType(3);
-            this.isImmuneToFire = true;
+//            this.isImmuneToFire = true;
             return true;
         }
 

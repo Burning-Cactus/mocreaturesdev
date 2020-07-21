@@ -159,8 +159,8 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
     private void sit() {
         this.sitCounter = 1;
         if (!this.world.isRemote) {
-            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
-                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
+//                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
         this.getNavigator().clearPath();
     }
@@ -174,7 +174,7 @@ public class MoCEntityKomodo extends MoCEntityTameableAnimal {
         }
     }
 
-//    @Override
+//    @Override TODO
 //    protected void dropFewItems(boolean flag, int x) {
 //        boolean flag2 = (getEdad() > 90 && this.rand.nextInt(5) == 0);
 //

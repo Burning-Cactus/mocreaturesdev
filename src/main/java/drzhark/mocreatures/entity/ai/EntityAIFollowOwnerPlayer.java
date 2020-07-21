@@ -4,6 +4,7 @@ import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.IMoCTameable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -106,43 +107,42 @@ public class EntityAIFollowOwnerPlayer extends Goal {
         BlockState iblockstate = this.world.getBlockState(pos);
         return iblockstate.getMaterial() == Material.AIR || !iblockstate.isNormalCube(world, pos);
     }
-    
-    public void updateTask()
+
+    @Override
+    public void tick()
     {
-        this.thePet.getLookHelper().setLookPositionWithEntity(this.theOwner, 10.0F, (float)this.thePet.getVerticalFaceSpeed());
-
-        if (!((IMoCEntity) this.thePet).getIsSitting()) {
-            if (--this.delayCounter <= 0)
-            {
-                this.delayCounter = 10;
-
-                if (!this.petPathfinder.tryMoveToEntityLiving(this.theOwner, this.speed))
-                {
-                    if (!this.thePet.getLeashed())
-                    {
-                        if (this.thePet.getDistanceSq(this.theOwner) >= 144.0D)
-                        {
-                            int i = MathHelper.floor(this.theOwner.getPosX()) - 2;
-                            int j = MathHelper.floor(this.theOwner.getPosZ()) - 2;
-                            int k = MathHelper.floor(this.theOwner.getBoundingBox().minY);
-
-                            for (int l = 0; l <= 4; ++l)
-                            {
-                                for (int i1 = 0; i1 <= 4; ++i1)
-                                {
-                                    final BlockPos pos = new BlockPos(i + l, k - 1, j + i1);
-                                    if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.world.getBlockState(pos).isSolidSide(world, pos, Direction.DOWN) && this.isEmptyBlock(new BlockPos(i + l, k, j + i1)) && this.isEmptyBlock(new BlockPos(i + l, k + 1, j + i1)))
-                                    {
-                                        this.thePet.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.thePet.rotationYaw, this.thePet.rotationPitch);
-                                        this.petPathfinder.clearPath();
-                                        return;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+//        if (!((IMoCEntity) this.thePet).getIsSitting()) {
+//            if (--this.delayCounter <= 0)
+//            {
+//                this.delayCounter = 10;
+//
+//                if (!this.petPathfinder.tryMoveToEntityLiving(this.theOwner, this.speed))
+//                {
+//                    if (!this.thePet.isLeashed())
+//                    {
+//                        if (this.thePet.getDistanceSq(this.theOwner) >= 144.0D)
+//                        {
+//                            int i = MathHelper.floor(this.theOwner.getPosX()) - 2;
+//                            int j = MathHelper.floor(this.theOwner.getPosZ()) - 2;
+//                            int k = MathHelper.floor(this.theOwner.getBoundingBox().minY);
+//
+//                            for (int l = 0; l <= 4; ++l)
+//                            {
+//                                for (int i1 = 0; i1 <= 4; ++i1)
+//                                {
+//                                    final BlockPos pos = new BlockPos(i + l, k - 1, j + i1);
+//                                    if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.world.getBlockState(pos).isSolidSide(world, pos, Direction.DOWN) && this.isEmptyBlock(new BlockPos(i + l, k, j + i1)) && this.isEmptyBlock(new BlockPos(i + l, k + 1, j + i1)))
+//                                    {
+//                                        this.thePet.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.thePet.rotationYaw, this.thePet.rotationPitch);
+//                                        this.petPathfinder.clearPath();
+//                                        return;
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 }

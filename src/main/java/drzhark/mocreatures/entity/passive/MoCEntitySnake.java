@@ -145,7 +145,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    protected boolean canDespawn() {
+    public boolean canDespawn(double d) {
         if (MoCConfig.COMMON_CONFIG.GLOBAL.forceDespawns.get()) {
             return !getIsTamed();
         } else {
@@ -502,7 +502,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
         }
     }
 
-//    @Override
+//    @Override TODO
 //    protected void dropFewItems(boolean flag, int x) {
 //        if (getEdad() > 60) {
 //            int j = this.rand.nextInt(3);

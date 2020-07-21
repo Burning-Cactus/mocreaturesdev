@@ -578,31 +578,31 @@ public class MoCModelNewBigCat<T extends MoCEntityBigCat> extends EntityModel<T>
     }
 
     private void renderTeeth(boolean flag) {
-        this.LeftFang.isHidden = !flag;
-        this.RightFang.isHidden = !flag;
+        this.LeftFang.showModel = flag;
+        this.RightFang.showModel = flag;
     }
 
     private void renderCollar(boolean flag) {
-        this.Collar.isHidden = !flag;
+        this.Collar.showModel = flag;
     }
 
     private void renderSaddle(boolean flag) {
-        this.NeckHarness.isHidden = !flag;
-        this.HarnessStick.isHidden = !flag;
-        this.Saddle.isHidden = !flag;
+        this.NeckHarness.showModel = flag;
+        this.HarnessStick.showModel = flag;
+        this.Saddle.showModel = flag;
     }
 
     private void renderMane(boolean flag) {
-        this.Mane.isHidden = !flag;
-        this.LeftChinBeard.isHidden = !flag;
-        this.RightChinBeard.isHidden = !flag;
-        this.ForeheadHair.isHidden = !flag;
-        this.NeckHair.isHidden = !flag;
-        this.ChinHair.isHidden = !flag;
+        this.Mane.showModel = flag;
+        this.LeftChinBeard.showModel = flag;
+        this.RightChinBeard.showModel = flag;
+        this.ForeheadHair.showModel = flag;
+        this.NeckHair.showModel = flag;
+        this.ChinHair.showModel = flag;
     }
 
     private void renderChest(boolean flag) {
-        this.StorageChest.isHidden = !flag;
+        this.StorageChest.showModel = flag;
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -997,13 +997,13 @@ public class MoCModelNewBigCat<T extends MoCEntityBigCat> extends EntityModel<T>
         renderTeeth(this.hasSaberTeeth);
         renderChest(this.hasChest);
 
-        GL11.glPushMatrix();
-        //GL11.glTranslatef(0F, yOffset, 0F);
+        matrixStackIn.push();
+//        matrixStackIn.translate(0F, yOffset, 0F);
 
         if (this.isGhost) {
-            GL11.glEnable(3042 /* GL_BLEND */); //TODO: GL calls
-            GL11.glBlendFunc(770, 771);
-            GL11.glColor4f(0.8F, 0.8F, 0.8F, updateGhostTransparency(entity));
+//            GL11.glEnable(3042 /* GL_BLEND */); //TODO: GL calls
+//            GL11.glBlendFunc(770, 771);
+//            GL11.glColor4f(0.8F, 0.8F, 0.8F, updateGhostTransparency(entity));
             //GL11.glScalef(1.3F, 1.0F, 1.3F);
         }
 
@@ -1034,9 +1034,9 @@ public class MoCModelNewBigCat<T extends MoCEntityBigCat> extends EntityModel<T>
         }
 
         if (this.isGhost) {
-            GL11.glDisable(3042/* GL_BLEND */);
+//            GL11.glDisable(3042/* GL_BLEND */);
         }
-        GL11.glPopMatrix();
+        matrixStackIn.pop();
 
     }
 }

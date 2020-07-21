@@ -1,5 +1,6 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import drzhark.mocreatures.client.model.MoCModelButterfly;
 import drzhark.mocreatures.entity.ambient.MoCEntityButterfly;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -17,18 +18,18 @@ public class MoCRenderButterfly<T extends MoCEntityButterfly, M extends MoCModel
     }
 
     @Override
-    protected void preRenderCallback(T entitybutterfly, float par2) {
+    protected void preRenderCallback(T entitybutterfly, MatrixStack stack, float par2) {
         if (entitybutterfly.isOnAir() || !entitybutterfly.onGround) {
-            adjustHeight(entitybutterfly, entitybutterfly.tFloat());
+            adjustHeight(entitybutterfly, stack, entitybutterfly.tFloat());
         }
         if (entitybutterfly.climbing()) {
             rotateAnimal(entitybutterfly);
         }
-        stretch(entitybutterfly);
+        stretch(entitybutterfly, stack);
     }
 
-    protected void adjustHeight(MoCEntityButterfly entitybutterfly, float FHeight) {
-        GL11.glTranslatef(0.0F, FHeight, 0.0F);
+    protected void adjustHeight(MoCEntityButterfly entitybutterfly, MatrixStack stack, float FHeight) {
+        stack.translate(0.0F, FHeight, 0.0F);
     }
 
     @Override

@@ -87,13 +87,7 @@ public class MoCEntityEgg extends LivingEntity {
 
     @Override
     public boolean handleWaterMovement() {
-        if (this.world.handleMaterialAcceleration(this.getBoundingBox(), Material.WATER, this)) {
-            this.inWater = true;
-            return true;
-        } else {
-            this.inWater = false;
-            return false;
-        }
+        return this.isInWater();
     }
 
     @Override
@@ -102,7 +96,7 @@ public class MoCEntityEgg extends LivingEntity {
         if (i == 30) {
             i = 31;
         }
-        if ((this.lCounter > 10) && entityplayer.inventory.addItemStackToInventory(new ItemStack(MoCItems.MOCEGG, 1, i))) {
+        if ((this.lCounter > 10) && entityplayer.inventory.addItemStackToInventory(new ItemStack(MoCItems.MOCEGG, 1))) {
             this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, (((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F) + 1.0F) * 2.0F);
             if (!this.world.isRemote) {
                 entityplayer.onItemPickup(this, 1);
@@ -116,7 +110,7 @@ public class MoCEntityEgg extends LivingEntity {
     public void livingTick() {
         this.moveStrafing = 0.0F;
         this.moveForward = 0.0F;
-        this.randomYawVelocity = 0.0F;
+//        this.randomYawVelocity = 0.0F;
         travel(new Vec3d(this.moveStrafing, this.moveVertical, this.moveForward));
     }
 

@@ -1,9 +1,7 @@
 package drzhark.mocreatures;
 
-import drzhark.guiapi.widget.WidgetSimplewindow;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -19,8 +17,6 @@ public class MoCEntityData {
     private boolean canSpawn = true;
     private int entityId;
     private List<Type> biomeTypes;
-    @OnlyIn(Dist.CLIENT)
-    private WidgetSimplewindow entityWindow;
 
     private int frequency = 8;
     private int minGroup = 1;
@@ -147,13 +143,4 @@ public class MoCEntityData {
         return this.spawnListEntry;
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public WidgetSimplewindow getEntityWindow() {
-        return this.entityWindow;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void setEntityWindow(WidgetSimplewindow window) {
-        this.entityWindow = window;
-    }
 }

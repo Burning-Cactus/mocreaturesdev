@@ -10,16 +10,19 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
@@ -59,8 +62,6 @@ public class MoCEntityMouse extends MoCEntityAnimal {
     @Override
     public ResourceLocation getTexture() {
         switch (getSubType()) {
-            case 1:
-                return MoCreatures.getTexture("miceg.png");
             case 2:
                 return MoCreatures.getTexture("miceb.png");
             case 3:
@@ -94,22 +95,17 @@ public class MoCEntityMouse extends MoCEntityAnimal {
     }
 
     @Override
-    public boolean getCanSpawnHere() {
+    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
         int i = MathHelper.floor(this.getPosX());
         int j = MathHelper.floor(getBoundingBox().minY);
         int k = MathHelper.floor(this.getPosZ());
         BlockPos pos = new BlockPos(i, j, k);
         Block block = this.world.getBlockState(pos.down()).getBlock();
-        return ((MoCreatures.entityMap.get(this.getClass()).getFrequency() > 0) && this.world.checkNoEntityCollision(this)
+        return ((MoCreatures.entityMap.get(this.getType()).getFrequency() > 0) && this.world.checkNoEntityCollision(this)
                 && (this.world.getCollisionShapes(this, this.getBoundingBox()).count() == 0)
-                && !this.world.containsAnyLiquid(this.getBoundingBox()) && ((block == Blocks.COBBLESTONE) || (block == Blocks.PLANKS)
+                && !this.world.containsAnyLiquid(this.getBoundingBox()) && ((block == Blocks.COBBLESTONE) || (block.getTags().contains(BlockTags.PLANKS.getId()))
                 || (block == Blocks.DIRT) || (block == Blocks.STONE) || (block == Blocks.GRASS)));
     }
-
-//    @Override
-//    protected Item getDropItem() {
-//        return Items.WHEAT_SEEDS;
-//    }
 
     @Override
     protected SoundEvent getDeathSound() {
@@ -128,7 +124,7 @@ public class MoCEntityMouse extends MoCEntityAnimal {
 
     @Override
     public double getYOffset() {
-        if (this.getRidingEntity() instanceof PlayerEntity && this.getRidingEntity() == MoCreatures.proxy.getPlayer() && this.world.isRemote) {
+        if (this.getRidingEntity() instanceof PlayerEntity /*&& this.getRidingEntity() == MoCreatures.proxy.getPlayer()*/ && this.world.isRemote) {
             return (super.getYOffset() - 0.7F);
         }
 

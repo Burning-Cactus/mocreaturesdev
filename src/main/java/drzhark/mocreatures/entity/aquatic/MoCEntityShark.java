@@ -62,21 +62,21 @@ public class MoCEntityShark extends MoCEntityTameableAquatic {
         }
     }
 
-    @Override //TODO: Shark loot table
-    protected void dropFewItems(boolean flag, int x) {
-        int i = this.rand.nextInt(100);
-        if (i < 90) {
-            int j = this.rand.nextInt(3) + 1;
-            for (int l = 0; l < j; l++) {
-                entityDropItem(new ItemStack(MoCItems.SHARKTEETH, 1, 0), 0.0F);
-            }
-        } else if ((this.world.getDifficulty().getId() > 0) && (getEdad() > 150)) {
-            int k = this.rand.nextInt(3);
-            for (int i1 = 0; i1 < k; i1++) {
-                entityDropItem(new ItemStack(MoCItems.MOCEGG, 1, 11), 0.0F);
-            }
-        }
-    }
+//    @Override //TODO: Shark loot table
+//    protected void dropFewItems(boolean flag, int x) {
+//        int i = this.rand.nextInt(100);
+//        if (i < 90) {
+//            int j = this.rand.nextInt(3) + 1;
+//            for (int l = 0; l < j; l++) {
+//                entityDropItem(new ItemStack(MoCItems.SHARKTEETH, 1, 0), 0.0F);
+//            }
+//        } else if ((this.world.getDifficulty().getId() > 0) && (getEdad() > 150)) {
+//            int k = this.rand.nextInt(3);
+//            for (int i1 = 0; i1 < k; i1++) {
+//                entityDropItem(new ItemStack(MoCItems.MOCEGG, 1, 11), 0.0F);
+//            }
+//        }
+//    }
 
     /*protected Entity findPlayerToAttack() {
         if ((this.world.getDifficulty().getDifficultyId() > 0) && (getEdad() >= 100)) {
@@ -123,11 +123,11 @@ public class MoCEntityShark extends MoCEntityTameableAquatic {
     }
 
     @Override
-    public void setDead() {
+    public void remove() {
         if (!this.world.isRemote && getIsTamed() && (getHealth() > 0)) {
             return;
         } else {
-            super.setDead();
+            super.remove();
             return;
         }
     }

@@ -1,5 +1,6 @@
 package drzhark.mocreatures.entity.ai;
 
+import drzhark.mocreatures.entity.IMoCTameable;
 import drzhark.mocreatures.entity.MoCEntityAnimal;
 import drzhark.mocreatures.entity.monster.MoCEntityOgre;
 import net.minecraft.entity.CreatureEntity;
@@ -14,7 +15,7 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
-public abstract class EntitiAITargetMoC extends Goal {
+public abstract class EntityAITargetMoC extends Goal {
 
     /** The entity that this task belongs to */
     protected final CreatureEntity taskOwner;
@@ -32,13 +33,13 @@ public abstract class EntitiAITargetMoC extends Goal {
      */
     private int targetUnseenTicks;
 
-    public EntitiAITargetMoC(CreatureEntity creature, boolean checkSight, boolean onlyNearby) {
+    public EntityAITargetMoC(CreatureEntity creature, boolean checkSight, boolean onlyNearby) {
         this.taskOwner = creature;
         this.shouldCheckSight = checkSight;
         this.nearbyOnly = onlyNearby;
     }
 
-    public EntitiAITargetMoC(CreatureEntity creature, boolean checkSight) {
+    public EntityAITargetMoC(CreatureEntity creature, boolean checkSight) {
         this(creature, checkSight, false);
     }
 
@@ -77,19 +78,19 @@ public abstract class EntitiAITargetMoC extends Goal {
         if (team != null && team1 == team) {
             return false;
         } else {
-            if (attacker instanceof IEntityOwnable && ((IEntityOwnable) attacker).getOwnerId() != null) {
+            /*if (attacker instanceof IEntityOwnable && ((IEntityOwnable) attacker).getOwnerId() != null) {
                 if (target instanceof IEntityOwnable && ((IEntityOwnable) attacker).getOwnerId().equals(((IEntityOwnable) target).getOwnerId())) {
                     return false;
                 }
 
-                if (target == ((IEntityOwnable) attacker).getOwner()) {
+                if (target == ((IMoCTameable)attacker).getOwner()) {
                     return false;
                 }
-            } else if (target instanceof PlayerEntity && includeInvincibles && ((PlayerEntity) target).abilities.disableDamage) {
+            } else*/ if (target instanceof PlayerEntity && includeInvincibles && ((PlayerEntity) target).abilities.disableDamage) {
                 return false;
             }
 
-            return !checkSight || attacker.getEntitySense().canSee(target);
+            return !checkSight /*||attacker.getEntitySense().canSee(target)*/;
         }
 
     }//TODO: Either figure out a replacement for IEntityOwnable or rewrite this algorithm

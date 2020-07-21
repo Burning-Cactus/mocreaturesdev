@@ -9,8 +9,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.world.LockCode;
 
-public class MoCAnimalChest extends InventoryBasic {
-    private LockCode lockCode = LockCode.EMPTY_CODE;
+public class MoCAnimalChest /*extends InventoryBasic*/ {
+    /*private LockCode lockCode = LockCode.EMPTY_CODE;
 
     public MoCAnimalChest(String name, int size) {
         super(name, true, size);
@@ -73,5 +73,5 @@ public class MoCAnimalChest extends InventoryBasic {
     @Override
     public LockCode getLockCode() {
         return this.lockCode;
-    }
+    }*/
 }

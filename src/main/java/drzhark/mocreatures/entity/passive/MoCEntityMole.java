@@ -244,11 +244,6 @@ public class MoCEntityMole extends MoCEntityTameableAnimal {
         return super.isInvulnerableTo(source);
     }
 
-//    @Override
-//    protected Item getDropItem() {
-//        return MoCItems.FUR;
-//    }
-
     @Override
     protected SoundEvent getDeathSound() {
         return MoCSoundEvents.ENTITY_RABBIT_DEATH;

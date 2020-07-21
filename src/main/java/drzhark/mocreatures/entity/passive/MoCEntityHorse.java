@@ -2,24 +2,20 @@ package drzhark.mocreatures.entity.passive;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.client.particle.MoCEntityFXUndead;
 import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
 import drzhark.mocreatures.entity.ai.EntityAIFollowAdult;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.init.MoCEntities;
 import drzhark.mocreatures.init.MoCItems;
+import drzhark.mocreatures.init.MoCParticleTypes;
 import drzhark.mocreatures.init.MoCSoundEvents;
-import drzhark.mocreatures.inventory.MoCAnimalChest;
-import drzhark.mocreatures.network.MoCMessageHandler;
-import drzhark.mocreatures.network.message.MoCMessageAnimation;
-import drzhark.mocreatures.network.message.MoCMessageHeart;
-import drzhark.mocreatures.network.message.MoCMessageVanish;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -37,8 +33,8 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleType;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tileentity.JukeboxTileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -65,7 +61,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
     public int wingFlapCounter;
     private float transFloat = 0.2F;
 
-    public MoCAnimalChest localchest;
+//    public MoCAnimalChest localchest;
     public boolean eatenpumpkin;
     private boolean hasReproduced;
     private int nightmareInt;
@@ -120,29 +116,29 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(RIDEABLE, Boolean.valueOf(false)); // rideable: 0 nothing, 1 saddle
-        this.dataManager.register(SITTING, Boolean.valueOf(false)); // rideable: 0 nothing, 1 saddle
-        this.dataManager.register(CHESTED, Boolean.valueOf(false));
-        this.dataManager.register(BRED, Boolean.valueOf(false));
-        this.dataManager.register(ARMOR_TYPE, Integer.valueOf(0));
+        this.dataManager.register(RIDEABLE, false); // rideable: 0 nothing, 1 saddle
+        this.dataManager.register(SITTING, false); // rideable: 0 nothing, 1 saddle
+        this.dataManager.register(CHESTED, false);
+        this.dataManager.register(BRED, false);
+        this.dataManager.register(ARMOR_TYPE, 0);
     }
 
     @Override
     public int getArmorType() {
-        return ((Integer)this.dataManager.get(ARMOR_TYPE)).intValue();
+        return this.dataManager.get(ARMOR_TYPE);
     }
 
     public boolean getIsChested() {
-        return ((Boolean)this.dataManager.get(CHESTED)).booleanValue();
+        return this.dataManager.get(CHESTED);
     }
     
     @Override
     public boolean getIsSitting() {
-        return ((Boolean)this.dataManager.get(SITTING)).booleanValue();
+        return this.dataManager.get(SITTING);
     }
 
     public boolean getHasBred() {
-        return ((Boolean)this.dataManager.get(BRED)).booleanValue();
+        return this.dataManager.get(BRED);
     }
 
     public void setBred(boolean flag) {
@@ -974,7 +970,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
             }
 
             String iteratorTex = "1";
-            if (MoCreatures.proxy.getAnimateTextures()) {
+            if (MoCConfig.CLIENT_CONFIG.animateTextures.get()) {
                 if (this.rand.nextInt(3) == 0) {
                     this.textCounter++;
                 }
@@ -994,7 +990,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
         }
 
         // if animate textures is off, return plain textures
-        if (!MoCreatures.proxy.getAnimateTextures()) {
+        if (!MoCConfig.CLIENT_CONFIG.animateTextures.get()) {
             return MoCreatures.getTexture(tempTexture);
         }
 
@@ -1804,7 +1800,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
 
             return true;
         }
-        if (getIsChested() && player.isCrouching()) {
+        /*if (getIsChested() && player.isCrouching()) {
             // if first time opening horse chest, we must initialize it
             if (this.localchest == null) {
                 this.localchest = new MoCAnimalChest("HorseChest", getInventorySize());// , new
@@ -1815,7 +1811,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
             }
             return true;
 
-        }
+        }*/
 
         if (!stack.isEmpty()
                 && ((stack.getItem() == Item.getItemFromBlock(Blocks.PUMPKIN)) || (stack.getItem() == Items.MUSHROOM_STEW)
@@ -1998,11 +1994,16 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
     }
 
     public void LavaFX() {
-        MoCreatures.proxy.LavaFX(this);
+        double var2 = world.rand.nextGaussian() * 0.02D;
+        double var4 = world.rand.nextGaussian() * 0.02D;
+        double var6 = world.rand.nextGaussian() * 0.02D;
+        world.addParticle(ParticleTypes.LAVA, getPosX() + world.rand.nextFloat() * getWidth() - getWidth(), getPosY()
+                + 0.5D + world.rand.nextFloat() * getHeight(), getPosZ() + world.rand.nextFloat() * getWidth()
+                - getWidth(), var2, var4, var6);
     }
 
     public void MaterializeFX() {
-        MoCreatures.proxy.MaterializeFX(this);
+
     }
 
     private void moveTail() {
@@ -2056,7 +2057,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
 
         BlockEvent.BreakEvent event = null;
         if (!this.world.isRemote) {
-            try {
+            /*try {
                 event =
                         new BlockEvent.BreakEvent(this.world, pos, blockstate, FakePlayerFactory.get(
                                 DimensionManager.getWorld(this.world.dimension.getType()), MoCreatures.MOCFAKEPLAYER));
@@ -2069,7 +2070,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
             PlayerEntity entityplayer = (PlayerEntity) this.getRidingEntity();
             if ((entityplayer != null) && (entityplayer.isBurning())) {
                 entityplayer.extinguish();
-            }
+            }*/
             setNightmareInt(getNightmareInt() - 1);
         }
     }
@@ -2549,8 +2550,8 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
         }
     }
 
-    public void StarFX() {
-        MoCreatures.proxy.StarFX(this);
+    public void StarFX() { //TODO: StarFX
+//        MoCreatures.proxy.StarFX(this);
     }
 
     /**
@@ -2584,11 +2585,11 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
     }
 
     public void UndeadFX() {
-        MoCreatures.proxy.UndeadFX(this);
+        ParticleType particle = MoCParticleTypes.UNDEAD_FX;
     }
 
     public void VanishFX() {
-        MoCreatures.proxy.VanishFX(this);
+//        MoCreatures.proxy.VanishFX(this);
     }
 
     /**
@@ -2600,7 +2601,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
         this.setMotion(0D, this.getMotion().y, 0D);
 
         if (this.isBagger()) {
-            MoCTools.dropInventory(this, this.localchest);
+//            MoCTools.dropInventory(this, this.localchest);
             dropBags();
         }
         if (!this.world.isRemote) {
@@ -2616,7 +2617,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
         dropArmor();
         MoCTools.dropSaddle(this, this.world);
         if (this.isBagger()) {
-            MoCTools.dropInventory(this, this.localchest);
+//            MoCTools.dropInventory(this, this.localchest);
             dropBags();
         }
     }
@@ -2641,7 +2642,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
         nbttagcompound.putBoolean("Bred", getHasBred());
         nbttagcompound.putInt("ArmorType", getArmorType());
 
-        if (getIsChested() && this.localchest != null) {
+        /*if (getIsChested() && this.localchest != null) {
             ListNBT nbttaglist = new ListNBT();
             for (int i = 0; i < this.localchest.getSizeInventory(); i++) {
                 // grab the current item stack
@@ -2654,7 +2655,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
                 }
             }
             nbttagcompound.put("Items", nbttaglist);
-        }
+        }*/
     }
 
     @Override
@@ -2666,7 +2667,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
         setIsChested(nbttagcompound.getBoolean("ChestedHorse"));
         setReproduced(nbttagcompound.getBoolean("HasReproduced"));
         setArmorType((byte) nbttagcompound.getInt("ArmorType"));
-        if (getIsChested()) {
+        /*if (getIsChested()) {
             ListNBT nbttaglist = nbttagcompound.getList("Items", 10);
             this.localchest = new MoCAnimalChest("HorseChest", getInventorySize());
             for (int i = 0; i < nbttaglist.size(); i++) {
@@ -2676,7 +2677,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
                     this.localchest.setInventorySlotContents(j, new ItemStack(nbttagcompound1));
                 }
             }
-        }
+        }*/
     }
 
     @Override

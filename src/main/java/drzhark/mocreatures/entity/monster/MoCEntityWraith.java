@@ -45,11 +45,6 @@ public class MoCEntityWraith extends MoCEntityMob//MoCEntityFlyerMob
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
     }
 
-//    @Override TODO: Wraith Loot Table
-//    protected Item getDropItem() {
-//        return Items.GUNPOWDER;
-//    }
-
     @Override
     protected SoundEvent getDeathSound() {
         return MoCSoundEvents.ENTITY_WRAITH_DEATH;

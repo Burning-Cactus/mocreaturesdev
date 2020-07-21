@@ -357,11 +357,11 @@ public class MoCEntityHorseMob extends MoCEntityMob {
     }
 
     public void UndeadFX() {
-        MoCreatures.proxy.UndeadFX(this);
+//        MoCreatures.proxy.UndeadFX(this);
     }
 
     public void LavaFX() {
-        MoCreatures.proxy.LavaFX(this);
+//        MoCreatures.proxy.LavaFX(this);
     }
 
     /**

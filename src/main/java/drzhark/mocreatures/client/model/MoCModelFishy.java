@@ -1,27 +1,22 @@
 package drzhark.mocreatures.client.model;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.aquatic.MoCEntityFishy;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
 public class MoCModelFishy<T extends MoCEntityFishy> extends EntityModel<T> {
 
     public ModelRenderer Body;
     public ModelRenderer Tail;
+    private float yOffset;
+    private float xOffset;
+    private float zOffset;
 
     public MoCModelFishy() {
         this.Body = new ModelRenderer(this, 0, 0);
@@ -36,8 +31,9 @@ public class MoCModelFishy<T extends MoCEntityFishy> extends EntityModel<T> {
 
     @Override
     public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        MoCEntityFishy smallFish = (MoCEntityFishy)entityIn;
-
+        this.yOffset = entityIn.getAdjustedYOffset();
+        this.xOffset = entityIn.getAdjustedXOffset();
+        this.zOffset = entityIn.getAdjustedZOffset();
         setRotationAngles(limbSwing, limbSwingAmount);
     }
 
@@ -48,9 +44,6 @@ public class MoCModelFishy<T extends MoCEntityFishy> extends EntityModel<T> {
 
     @Override
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        float yOffset = smallFish.getAdjustedYOffset();
-        float xOffset = smallFish.getAdjustedXOffset();
-        float zOffset = smallFish.getAdjustedZOffset();
         matrixStackIn.push();
         matrixStackIn.translate(xOffset, yOffset, zOffset);
         this.Body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);

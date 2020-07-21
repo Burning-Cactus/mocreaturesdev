@@ -5,6 +5,7 @@ import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 
 import java.util.Random;
 
@@ -75,9 +76,9 @@ public class RandomPositionGeneratorMoCFlyer
         float f = -99999.0F;
         boolean flag1;
 
-        if (entitycreatureIn.hasHome())
+        if (false/*entitycreatureIn.hasHome()*/)
         {
-            double d0 = entitycreatureIn.getHomePosition().distanceSq((double)MathHelper.floor(entitycreatureIn.getPosX()), (double)MathHelper.floor(entitycreatureIn.getPosY()), (double)MathHelper.floor(entitycreatureIn.getPosZ())) + 4.0D;
+            double d0 = entitycreatureIn.getHomePosition().distanceSq(new Vec3i(MathHelper.floor(entitycreatureIn.getPosX()), MathHelper.floor(entitycreatureIn.getPosY()), MathHelper.floor(entitycreatureIn.getPosZ()))) + 4.0D;
             double d1 = (double)(entitycreatureIn.getMaximumHomeDistance() + (float)xz);
             flag1 = d0 < d1 * d1;
         }
@@ -94,7 +95,7 @@ public class RandomPositionGeneratorMoCFlyer
 
             if (targetVec3 == null || (double)l * targetVec3.x + (double)i1 * targetVec3.z >= 0.0D)
             {
-                if (entitycreatureIn.hasHome() && xz > 1)
+                if (false/*entitycreatureIn.hasHome() && xz > 1*/) //TODO: Fix entity AI
                 {
                     BlockPos blockpos = entitycreatureIn.getHomePosition();
 

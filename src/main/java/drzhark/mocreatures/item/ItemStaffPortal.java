@@ -2,8 +2,6 @@ package drzhark.mocreatures.item;
 
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
-import drzhark.mocreatures.dimension.MoCDirectTeleporter;
-import drzhark.mocreatures.init.MoCDimensions;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.Enchantment;
@@ -31,15 +29,14 @@ public class ItemStaffPortal extends MoCItem {
     public ItemStaffPortal() {
         super(new Item.Properties().maxStackSize(1).maxDamage(3));
     }
-
-    private int portalPosX;
+/*    private int portalPosX;
     private int portalPosY;
     private int portalPosZ;
     private DimensionType portalDimension;
 
     @Override
     public ActionResultType
-            onItemUse(ItemUseContext context /*PlayerEntity player, World worldIn, BlockPos pos, Hand hand, Direction side, float hitX, float hitY, float hitZ*/) {
+            onItemUse(ItemUseContext context PlayerEntity player, World worldIn, BlockPos pos, Hand hand, Direction side, float hitX, float hitY, float hitZ) {
         PlayerEntity player = context.getPlayer();
         World worldIn = context.getWorld();
         BlockPos pos = context.getPos();
@@ -144,18 +141,18 @@ public class ItemStaffPortal extends MoCItem {
         }
     }
 
-    /**
+    *
      * Returns True is the item is renderer in full 3D when hold.
-     */
+
 //    @Override
 //    public boolean isFull3D() {
 //        return true;
 //    }
 
-    /**
+    *
      * returns the action that specifies what animation to play when the items
      * is being used
-     */
+
 //    @Override
 //    public EnumAction getItemUseAction(ItemStack par1ItemStack) {
 //        return EnumAction.BLOCK;
@@ -178,5 +175,5 @@ public class ItemStaffPortal extends MoCItem {
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return false;
-    }
+    }*/
 }

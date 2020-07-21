@@ -2,32 +2,24 @@ package drzhark.mocreatures.entity.item;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.monster.MoCEntityOgre;
 import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.*;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -99,14 +91,14 @@ public class MoCEntityLitterBox extends LivingEntity {
         return true;
     }
 
-    @Override
-    protected boolean canDespawn() {
-        return false;
-    }
+//    @Override
+//    protected boolean canDespawn() {
+//        return false;
+//    }
 
-    @Override
-    public void fall(float f, float f1) {
-    }
+//    @Override
+//    public void fall(float f, float f1) {
+//    }
 
     @Override
     protected float getSoundVolume() {
@@ -143,7 +135,7 @@ public class MoCEntityLitterBox extends LivingEntity {
     }
 
     @Override
-    public boolean processInteract(PlayerEntity player, Hand hand) {
+    public boolean processInitialInteract(PlayerEntity player, Hand hand) {
         final ItemStack stack = player.getHeldItem(hand);
         if (!stack.isEmpty() && ((stack.getItem() == Items.STONE_PICKAXE) || (stack.getItem() == Items.WOODEN_PICKAXE)
                         || (stack.getItem() == Items.IRON_PICKAXE) || (stack.getItem() == Items.GOLDEN_PICKAXE) || (stack.getItem() == Items.DIAMOND_PICKAXE))) {
@@ -176,10 +168,10 @@ public class MoCEntityLitterBox extends LivingEntity {
     }
 
     @Override
-    public void move(MoverType type, double d, double d1, double d2) {
-        if ((this.getRidingEntity() != null) || !this.onGround || !MoCreatures.proxy.staticLitter) {
+    public void move(MoverType type, Vec3d motion) {
+        if ((this.getRidingEntity() != null) || !this.onGround || !MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.staticLitter.get()) {
             if (!this.world.isRemote) {
-                super.move(type, d, d1, d2);
+                super.move(type, motion);
             }
         }
     }

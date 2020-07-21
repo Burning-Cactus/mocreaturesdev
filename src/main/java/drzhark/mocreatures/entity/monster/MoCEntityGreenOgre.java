@@ -27,9 +27,5 @@ public class MoCEntityGreenOgre extends MoCEntityOgre{
     public float getDestroyForce() {
             return MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.ogreStrength.get().floatValue();
     }
-    
-//    @Override //TODO: Drops are moved to json loot tables
-//    protected Item getDropItem() {
-//        return Item.getItemFromBlock(Blocks.OBSIDIAN);
-//    }
+
 }

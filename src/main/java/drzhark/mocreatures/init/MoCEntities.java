@@ -78,20 +78,19 @@ public class MoCEntities {
     public static List<EntityType<?>> ENTITIES = new ArrayList<>();
     public static List<EntityType<?>> SPAWN_ENTITIES = new ArrayList<>();
 
-    private static<T extends Entity> EntityType.Builder makeBuilder(EntityType.IFactory<T> factory, EntityClassification classification, float size1, float size2) {
-        EntityType.Builder builder = EntityType.Builder.create(factory, classification).size(size1, size2);
-        return builder;
+    private static<T extends Entity> EntityType.Builder<T> makeBuilder(EntityType.IFactory<T> factory, EntityClassification classification, float size1, float size2) {
+        return EntityType.Builder.create(factory, classification).size(size1, size2);
     }
 
-    private static<T extends Entity> EntityType<?> buildType(String id, EntityType.IFactory<T> factory, EntityClassification classification, float size1, float size2) {
+    private static<T extends Entity> EntityType<T> buildType(String id, EntityType.IFactory<T> factory, EntityClassification classification, float size1, float size2) {
         return buildType(id, factory, classification, size1, size2, false);
     }
 
-    private static<T extends Entity> EntityType<?> buildType(String id, EntityType.IFactory<T> factory, EntityClassification classification, float size1, float size2, boolean fireImmune) {
-        EntityType.Builder builder = makeBuilder(factory, classification, size1, size2);
-        if(fireImmune==true)
+    private static<T extends Entity> EntityType<T> buildType(String id, EntityType.IFactory<T> factory, EntityClassification classification, float size1, float size2, boolean fireImmune) {
+        EntityType.Builder<T> builder = makeBuilder(factory, classification, size1, size2);
+        if(fireImmune)
             builder.immuneToFire();
-        EntityType type = builder.build(MOD_PREFIX + id);
+        EntityType<T> type = builder.build(MOD_PREFIX + id);
         type.setRegistryName(id);
         ENTITIES.add(type);
         return type;
@@ -101,110 +100,109 @@ public class MoCEntities {
     /**
      * Creature
      */
-    public static EntityType BIRD = buildType("bird", MoCEntityBird::new, EntityClassification.CREATURE, 0.4F, 0.3F);
-    public static EntityType BEAR = buildType("bear", MoCEntityBlackBear::new, EntityClassification.CREATURE, 1.2F, 1.5F);
-    public static EntityType BOAR = buildType("boar", MoCEntityBoar::new, EntityClassification.CREATURE, 0.9F, 0.8F);
-    public static EntityType BUNNY = buildType("bunny", MoCEntityBunny::new, EntityClassification.CREATURE, 0.5F, 0.5F);
-    public static EntityType CROCODILE = buildType("crocodile", MoCEntityCrocodile::new, EntityClassification.CREATURE, 1.4F, 0.6F);
-    public static EntityType DUCK = buildType("duck", MoCEntityDuck::new, EntityClassification.CREATURE, 0.4F, 0.7F);
-    public static EntityType DEER = buildType("deer", MoCEntityDeer::new, EntityClassification.CREATURE, 0.9F, 1.3F);
-    public static EntityType ELEPHANT = buildType("elephant", MoCEntityElephant::new, EntityClassification.CREATURE, 1.1F, 3F);
-    public static EntityType ENT = buildType("ent", MoCEntityEnt::new, EntityClassification.CREATURE,1.4F, 7F);
-    public static EntityType FOX = buildType("fox", MoCEntityFox::new, EntityClassification.CREATURE, 0.6F, 0.7F);
-    public static EntityType GOAT = buildType("goat", MoCEntityGoat::new, EntityClassification.CREATURE, 0.8F, 1F);
-    public static EntityType GRIZZLY_BEAR = buildType("grizzlybear", MoCEntityGrizzlyBear::new, EntityClassification.CREATURE, 1.2F, 1.5F);
-    public static EntityType KITTY = buildType("kitty", MoCEntityKitty::new, EntityClassification.CREATURE, 0.7F, 0.5F);
-    public static EntityType KOMODO_DRAGON = buildType("komododragon", MoCEntityKomodo::new, EntityClassification.CREATURE, 1.6F, 0.5F);
-    public static EntityType LEOGER = buildType("leoger", MoCEntityLeoger::new, EntityClassification.CREATURE, 1.4F, 1.3F);
-    public static EntityType LEOPARD = buildType("leopard", MoCEntityLeopard::new, EntityClassification.CREATURE, 1.4F, 1.3F);
-    public static EntityType LIARD = buildType("liard", MoCEntityLiard::new, EntityClassification.CREATURE, 1.4F, 1.3F);
-    public static EntityType LION = buildType("lion", MoCEntityLion::new, EntityClassification.CREATURE, 1.4F, 1.3F);
-    public static EntityType LIGER = buildType("liger", MoCEntityLiger::new, EntityClassification.CREATURE, 1.4F, 1.3F);
-    public static EntityType LITHER = buildType("lither", MoCEntityLither::new, EntityClassification.CREATURE, 1.4F, 1.3F);
-    public static EntityType MANTICORE_PET = buildType("manticorepet", MoCEntityManticorePet::new, EntityClassification.CREATURE, 1.4F, 1.3F);
-    public static EntityType MOLE = buildType("mole", MoCEntityMole::new, EntityClassification.CREATURE, 1F, 0.5F);
-    public static EntityType MOUSE = buildType("mouse", MoCEntityMouse::new, EntityClassification.CREATURE, 0.3F, 0.3F);
-    public static EntityType OSTRICH = buildType("ostrich", MoCEntityOstrich::new, EntityClassification.CREATURE, 1.0F, 1.6F);
-    public static EntityType PANDA_BEAR = buildType("pandabear", MoCEntityPandaBear::new, EntityClassification.CREATURE, 1.2F, 1.5F);
-    public static EntityType PANTHARD = buildType("panthard", MoCEntityPanthard::new, EntityClassification.CREATURE, 1.4F, 1.3F);
-    public static EntityType PANTHER = buildType("panther", MoCEntityPanther::new, EntityClassification.CREATURE, 1.4F, 1.3F);
-    public static EntityType PANTHGER = buildType("panthger", MoCEntityPanthger::new, EntityClassification.CREATURE, 1.4F, 1.3F);
-    public static EntityType PET_SCORPION = buildType("petscorpion", MoCEntityPetScorpion::new, EntityClassification.CREATURE, 1.4F, 0.9F);
-    public static EntityType POLAR_BEAR = buildType("wildpolarbear", MoCEntityPolarBear::new, EntityClassification.CREATURE, 1.2F, 1.5F);
-    public static EntityType RACCOON = buildType("raccoon", MoCEntityRaccoon::new, EntityClassification.CREATURE, 0.5F, 0.6F);
-    public static EntityType SNAKE = buildType("snake", MoCEntitySnake::new, EntityClassification.CREATURE, 1.4F, 0.5F);
-    public static EntityType TIGER = buildType("tiger", MoCEntityTiger::new, EntityClassification.CREATURE, 1.4F, 1.3F);
-    public static EntityType TURTLE = buildType("turtle", MoCEntityTurtle::new, EntityClassification.CREATURE, 0.6F, 0.4F);
-    public static EntityType TURKEY = buildType("turkey", MoCEntityTurkey::new, EntityClassification.CREATURE, 0.8F, 1.0F);
-    public static EntityType WILDHORSE = buildType("wildhorse", MoCEntityHorse::new, EntityClassification.CREATURE, 1.4F, 1.6F);
-    public static EntityType WYVERN = buildType("wyvern", MoCEntityWyvern::new, EntityClassification.CREATURE, 1.9F, 1.7F);
+    public static final EntityType<MoCEntityBird> BIRD = buildType("bird", MoCEntityBird::new, EntityClassification.CREATURE, 0.4F, 0.3F);
+    public static final EntityType<MoCEntityBlackBear> BEAR = buildType("bear", MoCEntityBlackBear::new, EntityClassification.CREATURE, 1.2F, 1.5F);
+    public static final EntityType<MoCEntityBoar> BOAR = buildType("boar", MoCEntityBoar::new, EntityClassification.CREATURE, 0.9F, 0.8F);
+    public static final EntityType<MoCEntityBunny> BUNNY = buildType("bunny", MoCEntityBunny::new, EntityClassification.CREATURE, 0.5F, 0.5F);
+    public static final EntityType<MoCEntityCrocodile> CROCODILE = buildType("crocodile", MoCEntityCrocodile::new, EntityClassification.CREATURE, 1.4F, 0.6F);
+    public static final EntityType<MoCEntityDuck> DUCK = buildType("duck", MoCEntityDuck::new, EntityClassification.CREATURE, 0.4F, 0.7F);
+    public static final EntityType<MoCEntityDeer> DEER = buildType("deer", MoCEntityDeer::new, EntityClassification.CREATURE, 0.9F, 1.3F);
+    public static final EntityType<MoCEntityElephant> ELEPHANT = buildType("elephant", MoCEntityElephant::new, EntityClassification.CREATURE, 1.1F, 3F);
+    public static final EntityType<MoCEntityEnt> ENT = buildType("ent", MoCEntityEnt::new, EntityClassification.CREATURE,1.4F, 7F);
+    public static final EntityType<MoCEntityFox> FOX = buildType("fox", MoCEntityFox::new, EntityClassification.CREATURE, 0.6F, 0.7F);
+    public static final EntityType<MoCEntityGoat> GOAT = buildType("goat", MoCEntityGoat::new, EntityClassification.CREATURE, 0.8F, 1F);
+    public static final EntityType<MoCEntityGrizzlyBear> GRIZZLY_BEAR = buildType("grizzlybear", MoCEntityGrizzlyBear::new, EntityClassification.CREATURE, 1.2F, 1.5F);
+    public static final EntityType<MoCEntityKitty> KITTY = buildType("kitty", MoCEntityKitty::new, EntityClassification.CREATURE, 0.7F, 0.5F);
+    public static final EntityType<MoCEntityKomodo> KOMODO_DRAGON = buildType("komododragon", MoCEntityKomodo::new, EntityClassification.CREATURE, 1.6F, 0.5F);
+    public static final EntityType<MoCEntityLeoger> LEOGER = buildType("leoger", MoCEntityLeoger::new, EntityClassification.CREATURE, 1.4F, 1.3F);
+    public static final EntityType<MoCEntityLeopard> LEOPARD = buildType("leopard", MoCEntityLeopard::new, EntityClassification.CREATURE, 1.4F, 1.3F);
+    public static final EntityType<MoCEntityLiard> LIARD = buildType("liard", MoCEntityLiard::new, EntityClassification.CREATURE, 1.4F, 1.3F);
+    public static final EntityType<MoCEntityLion> LION = buildType("lion", MoCEntityLion::new, EntityClassification.CREATURE, 1.4F, 1.3F);
+    public static final EntityType<MoCEntityLiger> LIGER = buildType("liger", MoCEntityLiger::new, EntityClassification.CREATURE, 1.4F, 1.3F);
+    public static final EntityType<MoCEntityLither> LITHER = buildType("lither", MoCEntityLither::new, EntityClassification.CREATURE, 1.4F, 1.3F);
+    public static final EntityType<MoCEntityManticorePet> MANTICORE_PET = buildType("manticorepet", MoCEntityManticorePet::new, EntityClassification.CREATURE, 1.4F, 1.3F);
+    public static final EntityType<MoCEntityMole> MOLE = buildType("mole", MoCEntityMole::new, EntityClassification.CREATURE, 1F, 0.5F);
+    public static final EntityType<MoCEntityMouse> MOUSE = buildType("mouse", MoCEntityMouse::new, EntityClassification.CREATURE, 0.3F, 0.3F);
+    public static final EntityType<MoCEntityOstrich> OSTRICH = buildType("ostrich", MoCEntityOstrich::new, EntityClassification.CREATURE, 1.0F, 1.6F);
+    public static final EntityType<MoCEntityPandaBear> PANDA_BEAR = buildType("pandabear", MoCEntityPandaBear::new, EntityClassification.CREATURE, 1.2F, 1.5F);
+    public static final EntityType<MoCEntityPanthard> PANTHARD = buildType("panthard", MoCEntityPanthard::new, EntityClassification.CREATURE, 1.4F, 1.3F);
+    public static final EntityType<MoCEntityPanther> PANTHER = buildType("panther", MoCEntityPanther::new, EntityClassification.CREATURE, 1.4F, 1.3F);
+    public static final EntityType<MoCEntityPanthger> PANTHGER = buildType("panthger", MoCEntityPanthger::new, EntityClassification.CREATURE, 1.4F, 1.3F);
+    public static final EntityType<MoCEntityPetScorpion> PET_SCORPION = buildType("petscorpion", MoCEntityPetScorpion::new, EntityClassification.CREATURE, 1.4F, 0.9F);
+    public static final EntityType<MoCEntityPolarBear> POLAR_BEAR = buildType("wildpolarbear", MoCEntityPolarBear::new, EntityClassification.CREATURE, 1.2F, 1.5F);
+    public static final EntityType<MoCEntityRaccoon> RACCOON = buildType("raccoon", MoCEntityRaccoon::new, EntityClassification.CREATURE, 0.5F, 0.6F);
+    public static final EntityType<MoCEntitySnake> SNAKE = buildType("snake", MoCEntitySnake::new, EntityClassification.CREATURE, 1.4F, 0.5F);
+    public static final EntityType<MoCEntityTiger> TIGER = buildType("tiger", MoCEntityTiger::new, EntityClassification.CREATURE, 1.4F, 1.3F);
+    public static final EntityType<MoCEntityTurtle> TURTLE = buildType("turtle", MoCEntityTurtle::new, EntityClassification.CREATURE, 0.6F, 0.4F);
+    public static final EntityType<MoCEntityTurkey> TURKEY = buildType("turkey", MoCEntityTurkey::new, EntityClassification.CREATURE, 0.8F, 1.0F);
+    public static final EntityType<MoCEntityHorse> WILDHORSE = buildType("wildhorse", MoCEntityHorse::new, EntityClassification.CREATURE, 1.4F, 1.6F);
+    public static final EntityType<MoCEntityWyvern> WYVERN = buildType("wyvern", MoCEntityWyvern::new, EntityClassification.CREATURE, 1.9F, 1.7F);
     
     /**
      * Mobs
      */
-    public static EntityType CAVE_OGRE = buildType("caveogre", MoCEntityCaveOgre::new, EntityClassification.MONSTER, 1.9F, 3F);
-    public static EntityType FLAME_WRAITH = buildType("flamewraith", MoCEntityFlameWraith::new, EntityClassification.MONSTER, 1.5F, 1.5F, true);
-    public static EntityType FIRE_OGRE = buildType("fireogre", MoCEntityFireOgre::new, EntityClassification.MONSTER, 1.9F, 3F, true);
-    public static EntityType GREEN_OGRE = buildType("greenogre", MoCEntityGreenOgre::new, EntityClassification.MONSTER, 1.9F, 3F);
-    public static EntityType BIG_GOLEM = buildType("biggolem", MoCEntityGolem::new, EntityClassification.MONSTER,1.5F, 4F);
-    public static EntityType HORSEMOB = buildType("horsemob", MoCEntityHorseMob::new, EntityClassification.MONSTER, 1.4F, 1.6F);
-    public static EntityType HELLRAT = buildType("hellrat", MoCEntityHellRat::new, EntityClassification.MONSTER, 0.7F, 0.7F, true);
-    public static EntityType MANTICORE = buildType("manticore", MoCEntityManticore::new, EntityClassification.MONSTER, 1.4F, 1.6F, true);
-    public static EntityType MINI_GOLEM = buildType("minigolem", MoCEntityMiniGolem::new, EntityClassification.MONSTER, 1.0F, 1.0F);
-    public static EntityType RAT = buildType("rat", MoCEntityRat::new, EntityClassification.MONSTER, 0.5F, 0.5F);
-    public static EntityType SILVER_SKELETON = buildType("silverskeleton", MoCEntitySilverSkeleton::new, EntityClassification.MONSTER, 0.9F, 1.4F);
-    public static EntityType SCORPION = buildType("scorpion", MoCEntityScorpion::new, EntityClassification.MONSTER, 1.4F, 0.9F);
-    public static EntityType WEREWOLF = buildType("werewolf", MoCEntityWerewolf::new, EntityClassification.MONSTER, 0.9F, 1.6F);
-    public static EntityType WRAITH = buildType("wraith", MoCEntityWraith::new, EntityClassification.MONSTER, 1.5F, 1.5F);
-    public static EntityType WWOLF = buildType("wwolf", MoCEntityWWolf::new, EntityClassification.MONSTER, 0.9F, 1.3F);
+    public static final EntityType<MoCEntityCaveOgre> CAVE_OGRE = buildType("caveogre", MoCEntityCaveOgre::new, EntityClassification.MONSTER, 1.9F, 3F);
+    public static final EntityType<MoCEntityFlameWraith> FLAME_WRAITH = buildType("flamewraith", MoCEntityFlameWraith::new, EntityClassification.MONSTER, 1.5F, 1.5F, true);
+    public static final EntityType<MoCEntityFireOgre> FIRE_OGRE = buildType("fireogre", MoCEntityFireOgre::new, EntityClassification.MONSTER, 1.9F, 3F, true);
+    public static final EntityType<MoCEntityGreenOgre> GREEN_OGRE = buildType("greenogre", MoCEntityGreenOgre::new, EntityClassification.MONSTER, 1.9F, 3F);
+    public static final EntityType<MoCEntityGolem> BIG_GOLEM = buildType("biggolem", MoCEntityGolem::new, EntityClassification.MONSTER,1.5F, 4F);
+    public static final EntityType<MoCEntityHorseMob> HORSEMOB = buildType("horsemob", MoCEntityHorseMob::new, EntityClassification.MONSTER, 1.4F, 1.6F);
+    public static final EntityType<MoCEntityHellRat> HELLRAT = buildType("hellrat", MoCEntityHellRat::new, EntityClassification.MONSTER, 0.7F, 0.7F, true);
+    public static final EntityType<MoCEntityManticore> MANTICORE = buildType("manticore", MoCEntityManticore::new, EntityClassification.MONSTER, 1.4F, 1.6F, true);
+    public static final EntityType<MoCEntityMiniGolem> MINI_GOLEM = buildType("minigolem", MoCEntityMiniGolem::new, EntityClassification.MONSTER, 1.0F, 1.0F);
+    public static final EntityType<MoCEntityRat> RAT = buildType("rat", MoCEntityRat::new, EntityClassification.MONSTER, 0.5F, 0.5F);
+    public static final EntityType<MoCEntitySilverSkeleton> SILVER_SKELETON = buildType("silverskeleton", MoCEntitySilverSkeleton::new, EntityClassification.MONSTER, 0.9F, 1.4F);
+    public static final EntityType<MoCEntityScorpion> SCORPION = buildType("scorpion", MoCEntityScorpion::new, EntityClassification.MONSTER, 1.4F, 0.9F);
+    public static final EntityType<MoCEntityWerewolf> WEREWOLF = buildType("werewolf", MoCEntityWerewolf::new, EntityClassification.MONSTER, 0.9F, 1.6F);
+    public static final EntityType<MoCEntityWraith> WRAITH = buildType("wraith", MoCEntityWraith::new, EntityClassification.MONSTER, 1.5F, 1.5F);
+    public static final EntityType<MoCEntityWWolf> WWOLF = buildType("wwolf", MoCEntityWWolf::new, EntityClassification.MONSTER, 0.9F, 1.3F);
     
     /**
      * Aquatic
      */
-    public static EntityType ANCHOVY = buildType("anchovy", MoCEntityAnchovy::new, EntityClassification.WATER_CREATURE,0.3F, 0.3F);
-    public static EntityType ANGELFISH = buildType("angelfish", MoCEntityAngelFish::new, EntityClassification.WATER_CREATURE, 0.3F, 0.3F);
-    public static EntityType ANGLER = buildType("angler", MoCEntityAngler::new, EntityClassification.WATER_CREATURE, 0.3F, 0.3F);
-    public static EntityType BASS = buildType("bass", MoCEntityBass::new, EntityClassification.WATER_CREATURE, 0.6F, 0.3F);
-    public static EntityType CLOWNFISH = buildType("clownfish", MoCEntityClownFish::new, EntityClassification.WATER_CREATURE, 0.3F, 0.3F);
-    public static EntityType COD = buildType("cod", MoCEntityCod::new, EntityClassification.WATER_CREATURE, 0.6F, 0.3F);
-    public static EntityType DOLPHIN = buildType("dolphin", MoCEntityDolphin::new, EntityClassification.WATER_CREATURE, 1.5F, 0.8F);
-    public static EntityType FISHY = buildType("fishy", MoCEntityFishy::new, EntityClassification.WATER_CREATURE, 0.3F, 0.3F);
-    public static EntityType GOLDFISH = buildType("goldfish", MoCEntityGoldFish::new, EntityClassification.WATER_CREATURE, 0.3F, 0.3F);
-    public static EntityType HIPPOTANG = buildType("hippotang", MoCEntityHippoTang::new, EntityClassification.WATER_CREATURE, 0.3F, 0.3F);
-    public static EntityType JELLYFISH = buildType("jellyfish", MoCEntityJellyFish::new, EntityClassification.WATER_CREATURE, 0.3F, 0.5F);
-    public static EntityType MANDERIN = buildType("manderin", MoCEntityManderin::new, EntityClassification.WATER_CREATURE, 0.3F, 0.3F);
-    public static EntityType PIRANHA = buildType("piranha", MoCEntityPiranha::new, EntityClassification.WATER_CREATURE, 0.3F, 0.3F);
-    public static EntityType SALMON = buildType("salmon", MoCEntitySalmon::new, EntityClassification.WATER_CREATURE, 0.6F, 0.3F);
-    public static EntityType MANTARAY = buildType("mantaray", MoCEntityMantaRay::new, EntityClassification.WATER_CREATURE, 1.8F, 1F);
-    public static EntityType SHARK = buildType("shark", MoCEntityShark::new, EntityClassification.WATER_CREATURE, 1.7F, 0.8F);
-    public static EntityType STINGRAY = buildType("stingray", MoCEntityStingRay::new, EntityClassification.WATER_CREATURE, 1.2F, 0.5F);
+    public static final EntityType<MoCEntityAnchovy> ANCHOVY = buildType("anchovy", MoCEntityAnchovy::new, EntityClassification.WATER_CREATURE,0.3F, 0.3F);
+    public static final EntityType<MoCEntityAngelFish> ANGELFISH = buildType("angelfish", MoCEntityAngelFish::new, EntityClassification.WATER_CREATURE, 0.3F, 0.3F);
+    public static final EntityType<MoCEntityAngler> ANGLER = buildType("angler", MoCEntityAngler::new, EntityClassification.WATER_CREATURE, 0.3F, 0.3F);
+    public static final EntityType<MoCEntityBass> BASS = buildType("bass", MoCEntityBass::new, EntityClassification.WATER_CREATURE, 0.6F, 0.3F);
+    public static final EntityType<MoCEntityClownFish> CLOWNFISH = buildType("clownfish", MoCEntityClownFish::new, EntityClassification.WATER_CREATURE, 0.3F, 0.3F);
+    public static final EntityType<MoCEntityCod> COD = buildType("cod", MoCEntityCod::new, EntityClassification.WATER_CREATURE, 0.6F, 0.3F);
+    public static final EntityType<MoCEntityDolphin> DOLPHIN = buildType("dolphin", MoCEntityDolphin::new, EntityClassification.WATER_CREATURE, 1.5F, 0.8F);
+    public static final EntityType<MoCEntityFishy> FISHY = buildType("fishy", MoCEntityFishy::new, EntityClassification.WATER_CREATURE, 0.3F, 0.3F);
+    public static final EntityType<MoCEntityGoldFish> GOLDFISH = buildType("goldfish", MoCEntityGoldFish::new, EntityClassification.WATER_CREATURE, 0.3F, 0.3F);
+    public static final EntityType<MoCEntityHippoTang> HIPPOTANG = buildType("hippotang", MoCEntityHippoTang::new, EntityClassification.WATER_CREATURE, 0.3F, 0.3F);
+    public static final EntityType<MoCEntityJellyFish> JELLYFISH = buildType("jellyfish", MoCEntityJellyFish::new, EntityClassification.WATER_CREATURE, 0.3F, 0.5F);
+    public static final EntityType<MoCEntityManderin> MANDERIN = buildType("manderin", MoCEntityManderin::new, EntityClassification.WATER_CREATURE, 0.3F, 0.3F);
+    public static final EntityType<MoCEntityPiranha> PIRANHA = buildType("piranha", MoCEntityPiranha::new, EntityClassification.WATER_CREATURE, 0.3F, 0.3F);
+    public static final EntityType<MoCEntitySalmon> SALMON = buildType("salmon", MoCEntitySalmon::new, EntityClassification.WATER_CREATURE, 0.6F, 0.3F);
+    public static final EntityType<MoCEntityMantaRay> MANTARAY = buildType("mantaray", MoCEntityMantaRay::new, EntityClassification.WATER_CREATURE, 1.8F, 1F);
+    public static final EntityType<MoCEntityShark> SHARK = buildType("shark", MoCEntityShark::new, EntityClassification.WATER_CREATURE, 1.7F, 0.8F);
+    public static final EntityType<MoCEntityStingRay> STINGRAY = buildType("stingray", MoCEntityStingRay::new, EntityClassification.WATER_CREATURE, 1.2F, 0.5F);
     
     /**
      * Ambients
      */
-    public static EntityType ANT = buildType("ant", MoCEntityAnt::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static EntityType BEE = buildType("bee", MoCEntityBee::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static EntityType BUTTERFLY = buildType("butterfly", MoCEntityButterfly::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static EntityType CRAB = buildType("crab", MoCEntityCrab::new, EntityClassification.AMBIENT, 0.3F, 0.3F);
-    public static EntityType CRICKET = buildType("cricket", MoCEntityCricket::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static EntityType DRAGONFLY = buildType("dragonfly", MoCEntityDragonfly::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static EntityType FIREFLY = buildType("firefly", MoCEntityFirefly::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static EntityType FLY = buildType("fly", MoCEntityFly::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static EntityType MAGGOT = buildType("maggot", MoCEntityMaggot::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static EntityType SNAIL = buildType("snail", MoCEntitySnail::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static EntityType ROACH = buildType("roach", MoCEntityRoach::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<MoCEntityAnt> ANT = buildType("ant", MoCEntityAnt::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<MoCEntityBee> BEE = buildType("bee", MoCEntityBee::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<MoCEntityButterfly> BUTTERFLY = buildType("butterfly", MoCEntityButterfly::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<MoCEntityCrab> CRAB = buildType("crab", MoCEntityCrab::new, EntityClassification.AMBIENT, 0.3F, 0.3F);
+    public static final EntityType<MoCEntityCricket> CRICKET = buildType("cricket", MoCEntityCricket::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<MoCEntityDragonfly> DRAGONFLY = buildType("dragonfly", MoCEntityDragonfly::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<MoCEntityFirefly> FIREFLY = buildType("firefly", MoCEntityFirefly::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<MoCEntityFly> FLY = buildType("fly", MoCEntityFly::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<MoCEntityMaggot> MAGGOT = buildType("maggot", MoCEntityMaggot::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<MoCEntitySnail> SNAIL = buildType("snail", MoCEntitySnail::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<MoCEntityRoach> ROACH = buildType("roach", MoCEntityRoach::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
     
     /**
      * Others
      */
-    public static EntityType EGG = buildType("egg", MoCEntityEgg::new, EntityClassification.MISC, 0.25F, 0.25F);
-    public static EntityType KITTY_BED = buildType("kittybed", MoCEntityKittyBed::new, EntityClassification.MISC, 1.0F, 0.3F);
-    public static EntityType LITTERBOX = buildType("litterbox", MoCEntityLitterBox::new, EntityClassification.MISC, 1.0F, 0.3F);
-    public static EntityType TROCK = buildType("trock", MoCEntityThrowableRock::new, EntityClassification.MISC, 1F, 1F);
+    public static final EntityType<MoCEntityEgg> EGG = buildType("egg", MoCEntityEgg::new, EntityClassification.MISC, 0.25F, 0.25F);
+    public static final EntityType<MoCEntityKittyBed> KITTY_BED = buildType("kittybed", MoCEntityKittyBed::new, EntityClassification.MISC, 1.0F, 0.3F);
+    public static final EntityType<MoCEntityLitterBox> LITTERBOX = buildType("litterbox", MoCEntityLitterBox::new, EntityClassification.MISC, 1.0F, 0.3F);
+    public static final EntityType<MoCEntityThrowableRock> TROCK = buildType("trock", MoCEntityThrowableRock::new, EntityClassification.MISC, 1F, 1F);
 
     @Mod.EventBusSubscriber(modid = MOD_ID)
     public static class RegistrationHandler {
-
         @SubscribeEvent
         public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
             MoCreatures.LOGGER.info("Registering entities...");
@@ -422,7 +420,6 @@ public class MoCEntities {
                 }
             }
             MoCreatures.LOGGER.info("Entity registration complete.");
-            MoCreatures.proxy.readMocConfigValues();
         }
     }
 }

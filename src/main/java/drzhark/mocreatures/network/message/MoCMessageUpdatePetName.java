@@ -43,11 +43,11 @@ public class MoCMessageUpdatePetName implements IMoCMessage {
     public static MoCMessageUpdatePetName decode(PacketBuffer buffer) {
 //        this.name = ByteBufUtils.readUTF8String(buffer);
 //        this.entityId = ByteBufUtils.readVarInt(buffer, 5);
-        new MoCMessageUpdatePetName(buffer.readString(), buffer.readVarInt());
+        return new MoCMessageUpdatePetName(buffer.readString(), buffer.readVarInt());
     }
 
     public static boolean onMessage(MoCMessageUpdatePetName message, Supplier<NetworkEvent.Context> ctx) {
-        Entity pet = null;
+        /*Entity pet = null;
         List<Entity> entList = ctx.getServerHandler().player.world.loadedEntityList;
         UUID ownerUniqueId = null;
 
@@ -71,7 +71,7 @@ public class MoCMessageUpdatePetName implements IMoCMessage {
                     ((IMoCTameable) pet).setPetName(message.name);
                 }
             }
-        }
+        }*/
         return true;
     }
 

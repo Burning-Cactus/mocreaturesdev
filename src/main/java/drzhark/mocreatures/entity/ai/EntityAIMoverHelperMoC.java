@@ -188,7 +188,7 @@ public class EntityAIMoverHelperMoC extends MovementController {
     }
 
     @Override
-    public void onUpdateMoveHelper() {
+    public void tick() {
         boolean isFlyer = ((IMoCEntity) theCreature).isFlyer();
         boolean isSwimmer = this.theCreature.isInWater(); 
         float fLimitAngle = 90F;

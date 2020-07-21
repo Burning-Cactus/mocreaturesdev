@@ -229,7 +229,7 @@ public class MoCEntityKitty extends MoCEntityTameableAnimal {
     }
 
     @Override
-    protected boolean canDespawn() {
+    public boolean canDespawn(double d) {
         if (MoCConfig.COMMON_CONFIG.GLOBAL.forceDespawns.get()) {
             return getKittyState() < 3;
         } else {
@@ -300,11 +300,6 @@ public class MoCEntityKitty extends MoCEntityTameableAnimal {
 
         return entityliving;
     }
-
-//    @Override
-//    protected Item getDropItem() {
-//        return null;
-//    }
 
     public ResourceLocation getEmoteIcon() {
         switch (getKittyState()) {

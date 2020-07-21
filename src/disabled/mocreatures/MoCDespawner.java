@@ -1,6 +1,5 @@
 package drzhark.mocreatures;
 
-import drzhark.customspawner.utils.CMSUtils;
 import drzhark.mocreatures.util.MoCLog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
@@ -55,7 +54,7 @@ public class MoCDespawner {
     }
 
     //New DesPawner stuff
-    protected final static int
+    protected static int
             entityDespawnCheck(ServerWorld world, LivingEntity entityliving, int minDespawnLightLevel, int maxDespawnLightLevel) {
         if (entityliving instanceof WolfEntity && ((WolfEntity) entityliving).isTamed()) {
             return 0;
@@ -90,33 +89,33 @@ public class MoCDespawner {
         return 0;
     }
 
-    public final static int despawnVanillaAnimals(ServerWorld world, int minDespawnLightLevel, int maxDespawnLightLevel) {
-        int count = 0;
-        for (int j = 0; j < world.getEntities().count(); j++) {
-            Entity entity = (Entity) world.loadedEntityList.get(j);
-            if (!(entity instanceof LivingEntity)) {
-                continue;
-            }
-            if ((entity instanceof HorseEntity || entity instanceof CowEntity || entity instanceof SheepEntity || entity instanceof PigEntity
-                    || entity instanceof OcelotEntity || entity instanceof ChickenEntity || entity instanceof SquidEntity
-                    || entity instanceof WolfEntity || entity instanceof MooshroomEntity)) {
-                count += entityDespawnCheck(world, (LivingEntity) entity, minDespawnLightLevel, maxDespawnLightLevel);
-            }
-        }
-        return count;
-    }
+//    public static int despawnVanillaAnimals(ServerWorld world, int minDespawnLightLevel, int maxDespawnLightLevel) {
+//        int count = 0;
+//        for (int j = 0; j < world.getEntities().count(); j++) {
+//            Entity entity = (Entity) world.loadedEntityList.get(j);
+//            if (!(entity instanceof LivingEntity)) {
+//                continue;
+//            }
+//            if ((entity instanceof HorseEntity || entity instanceof CowEntity || entity instanceof SheepEntity || entity instanceof PigEntity
+//                    || entity instanceof OcelotEntity || entity instanceof ChickenEntity || entity instanceof SquidEntity
+//                    || entity instanceof WolfEntity || entity instanceof MooshroomEntity)) {
+//                count += entityDespawnCheck(world, (LivingEntity) entity, minDespawnLightLevel, maxDespawnLightLevel);
+//            }
+//        }
+//        return count;
+//    }
 
-    public final int countEntities(Class<? extends LivingEntity> class1, World world) {
-        int i = 0;
-        for (int j = 0; j < world.loadedEntityList.size(); j++) {
-            Entity entity = world.loadedEntityList.get(j);
-            if (class1.isAssignableFrom(entity.getClass())) {
-                i++;
-            }
-        }
-
-        return i;
-    }
+//    public final int countEntities(Class<? extends LivingEntity> class1, World world) {
+//        int i = 0;
+//        for (int j = 0; j < world.loadedEntityList.size(); j++) {
+//            Entity entity = world.loadedEntityList.get(j);
+//            if (class1.isAssignableFrom(entity.getClass())) {
+//                i++;
+//            }
+//        }
+//
+//        return i;
+//    }
 
     public static boolean isValidLightLevel(Entity entity, ServerWorld world, int lightLevel, boolean checkAmbientLightLevel) {
         if (entity.getClassification(false).equals(EntityClassification.MONSTER)) {

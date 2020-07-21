@@ -100,10 +100,4 @@ public class MoCEntityDuck extends MoCEntityAnimal//EntityChicken
     public boolean renderName() {
         return false;
     }
-
-
-//    @Override
-//    protected Item getDropItem() {
-//        return Items.FEATHER;
-//    }
 }

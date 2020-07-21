@@ -154,7 +154,7 @@ public class MoCRenderMoC<T extends LivingEntity, M extends EntityModel<T>> exte
      *
      */
     protected void adjustOffsets(MatrixStack stack, float xOffset, float yOffset, float zOffset) {
-//        GL11.glTranslatef(xOffset, yOffset, zOffset);
+        stack.translate(xOffset, yOffset, zOffset);
     }
 
     @Override

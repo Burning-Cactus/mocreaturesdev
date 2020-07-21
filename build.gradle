@@ -83,7 +83,9 @@ minecraft {
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/')
+            args '--mod', 'mocreatures', '--all',
+                    '--output', file('src/generated/resources/'),
+                    '--existing', file('src/main/resources')
 
             mods {
                 examplemod {

@@ -44,7 +44,7 @@ public class MoCEntityHellRat extends MoCEntityRat {
         return MoCreatures.getTexture("hellrat" + textNumber + ".png");
     }
 
-//    @Override
+//    @Override //TODO
 //    protected Item getDropItem() {
 //        boolean flag = (this.rand.nextInt(100) < MoCreatures.proxy.rareItemDropChance);
 //        if (flag) {

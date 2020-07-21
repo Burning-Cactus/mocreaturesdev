@@ -3,6 +3,7 @@ package drzhark.mocreatures.client.renderer.entity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import drzhark.mocreatures.client.model.MoCModelFirefly;
 import drzhark.mocreatures.entity.ambient.MoCEntityFirefly;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.util.ResourceLocation;
@@ -21,16 +22,15 @@ public class MoCRenderFirefly extends MoCRenderInsect<MoCEntityFirefly, MoCModel
     @Override
     protected void preRenderCallback(MoCEntityFirefly entityfirefly, MatrixStack stack, float par2) {
         if (entityfirefly.getIsFlying()) {
-            rotateFirefly(entityfirefly);
+            rotateFirefly(entityfirefly, stack);
         } else if (entityfirefly.climbing()) {
             rotateAnimal(entityfirefly);
         }
 
     }
 
-    protected void rotateFirefly(MoCEntityFirefly entityfirefly) {
-        GL11.glRotatef(40F, -1F, 0.0F, 0.0F); //TODO: GL call
-
+    protected void rotateFirefly(MoCEntityFirefly entityfirefly, MatrixStack stack) {
+        stack.rotate(Vector3f.XN.rotationDegrees(40F));
     }
 
     @Override

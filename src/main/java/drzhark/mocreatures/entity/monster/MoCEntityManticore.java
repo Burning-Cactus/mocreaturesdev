@@ -395,7 +395,7 @@ public class MoCEntityManticore extends MoCEntityMob {
         return 1.4F;
     }
 
-//    @Override
+//    @Override TODO:
 //    protected Item getDropItem() {
 //        boolean flag = (this.rand.nextInt(100) < MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.rareItemDropChance.get());
 //

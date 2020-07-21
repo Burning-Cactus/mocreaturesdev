@@ -58,7 +58,7 @@ public class MoCItemPetAmulet extends MoCItem {
         this.amuletType = type;
     }
 
-    @Override
+    /*@Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         final ItemStack stack = player.getHeldItem(hand);
         double dist = 1D;
@@ -94,7 +94,7 @@ public class MoCItemPetAmulet extends MoCItem {
                             break;
                     }
                 }
-                LivingEntity tempLiving = (LivingEntity) EntityList.createEntityByIDFromName(new ResourceLocation(MoCConstants.MOD_PREFIX + this.spawnClass.toLowerCase()), world);
+//                LivingEntity tempLiving = (LivingEntity) EntityList.createEntityByIDFromName(new ResourceLocation(MoCConstants.MOD_PREFIX + this.spawnClass.toLowerCase()), world);
                 if (tempLiving != null && tempLiving instanceof IMoCEntity) {
                     IMoCTameable storedCreature = (IMoCTameable) tempLiving;
                     ((LivingEntity) storedCreature).setPosition(newPosX, newPosY, newPosZ);
@@ -185,7 +185,7 @@ public class MoCItemPetAmulet extends MoCItem {
 
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
     }
-
+*/
     public void readFromNBT(CompoundNBT nbt) {
         this.PetId = nbt.getInt("PetId");
         this.creatureType = nbt.getInt("CreatureType");

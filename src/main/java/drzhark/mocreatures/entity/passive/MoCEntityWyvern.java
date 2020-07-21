@@ -12,8 +12,6 @@ import drzhark.mocreatures.init.MoCEntities;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.inventory.MoCAnimalChest;
-import drzhark.mocreatures.network.MoCMessageHandler;
-import drzhark.mocreatures.network.message.MoCMessageAnimation;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.LookAtGoal;
@@ -475,7 +473,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
             return true;
         }
 
-        if (getIsChested() && player.isCrouching()) {
+        /*if (getIsChested() && player.isCrouching()) {
             if (this.localchest == null) {
                 this.localchest = new MoCAnimalChest("WyvernChest", 9);
             }
@@ -483,7 +481,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
                 player.displayGUIChest(this.localchest);
             }
             return true;
-        }
+        }*/
 
         if (!stack.isEmpty() && this.getIsGhost() && this.getIsTamed() && stack.getItem() == MoCItems.AMULETGHOST) {
 
@@ -712,7 +710,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
         nbttagcompound.putInt("ArmorType", getArmorType());
         nbttagcompound.putBoolean("isSitting", getIsSitting());
         nbttagcompound.putBoolean("isGhost", getIsGhost());
-        if (getIsChested() && this.localchest != null) {
+        /*if (getIsChested() && this.localchest != null) {
             ListNBT nbttaglist = new ListNBT();
             for (int i = 0; i < this.localchest.getSizeInventory(); i++) {
                 this.localstack = this.localchest.getStackInSlot(i);
@@ -724,7 +722,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
                 }
             }
             nbttagcompound.put("Items", nbttaglist);
-        }
+        }*/
     }
 
     @Override
@@ -735,7 +733,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
         setArmorType(nbttagcompound.getInt("ArmorType"));
         setSitting(nbttagcompound.getBoolean("isSitting"));
         setIsGhost(nbttagcompound.getBoolean("isGhost"));
-        if (getIsChested()) {
+        /*if (getIsChested()) {
             ListNBT nbttaglist = nbttagcompound.getList("Items", 10);
             this.localchest = new MoCAnimalChest("WyvernChest", 14);
             for (int i = 0; i < nbttaglist.size(); i++) {
@@ -745,7 +743,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
                     this.localchest.setInventorySlotContents(j, new ItemStack(nbttagcompound1));
                 }
             }
-        }
+        }*/
     }
 
     @Override
@@ -825,7 +823,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
             MoCTools.dropSaddle(this, this.world);
 
             if (getIsChested()) {
-                MoCTools.dropInventory(this, this.localchest);
+//                MoCTools.dropInventory(this, this.localchest);
                 MoCTools.dropCustomItem(this, this.world, new ItemStack(Blocks.CHEST, 1));
                 setIsChested(false);
             }

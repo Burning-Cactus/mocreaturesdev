@@ -1,37 +1,39 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import drzhark.mocreatures.client.model.MoCModelTurtle;
 import drzhark.mocreatures.entity.passive.MoCEntityTurtle;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderTurtle extends MoCRenderMoC<MoCEntityTurtle> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderTurtle extends MoCRenderMoC<MoCEntityTurtle, MoCModelTurtle<MoCEntityTurtle>> {
 
     public MoCModelTurtle turtly;
 
-    public MoCRenderTurtle(MoCModelTurtle modelbase, float f) {
-        super(modelbase, f);
+    public MoCRenderTurtle(EntityRendererManager manager, MoCModelTurtle modelbase, float f) {
+        super(manager, modelbase, f);
         this.turtly = modelbase;
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityTurtle entityturtle, float f) {
+    protected void preRenderCallback(MoCEntityTurtle entityturtle, MatrixStack stack, float f) {
         this.turtly.upsidedown = entityturtle.getIsUpsideDown();
         this.turtly.swingProgress = entityturtle.swingProgress;
         this.turtly.isHiding = entityturtle.getIsHiding();
 
         if (!entityturtle.world.isRemote && (entityturtle.getRidingEntity() != null)) {
 
-            GL11.glTranslatef(0.0F, 1.3F, 0.0F);
+            stack.translate(0.0F, 1.3F, 0.0F);
 
         }
         if (entityturtle.getIsHiding()) {
             adjustHeight(entityturtle, 0.15F * entityturtle.getEdad() * 0.01F);
-        } else if (!entityturtle.getIsHiding() && !entityturtle.getIsUpsideDown() && !entityturtle.isInsideOfMaterial(Material.WATER)) {
+        } else if (!entityturtle.getIsHiding() && !entityturtle.getIsUpsideDown() && !entityturtle.isInWater()) {
             adjustHeight(entityturtle, 0.05F * entityturtle.getEdad() * 0.01F);
         }
         if (entityturtle.getIsUpsideDown()) {
@@ -62,7 +64,7 @@ public class MoCRenderTurtle extends MoCRenderMoC<MoCEntityTurtle> {
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(MoCEntityTurtle entityturtle) {
+    public ResourceLocation getEntityTexture(MoCEntityTurtle entityturtle) {
         return entityturtle.getTexture();
     }
 }

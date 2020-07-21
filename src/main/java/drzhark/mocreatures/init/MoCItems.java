@@ -22,10 +22,6 @@ import java.util.Set;
 
 @ObjectHolder(MoCConstants.MOD_ID)
 public class MoCItems {
-
-    public static final Set<Item> ITEMS = new HashSet<>();
-
-
     public static final Item RECORDSHUFFLE = null;
     public static final Item HORSESADDLE = null;
 

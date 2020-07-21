@@ -162,11 +162,6 @@ public class MoCEntityFox extends MoCEntityTameableAnimal {
         return true;
     }
 
-//    @Override
-//    protected Item getDropItem() {
-//        return MoCItems.fur;
-//    }
-
     @Override
     protected SoundEvent getDeathSound() {
         return MoCSoundEvents.ENTITY_FOX_DEATH;

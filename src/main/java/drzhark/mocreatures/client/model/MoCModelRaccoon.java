@@ -1,11 +1,14 @@
 package drzhark.mocreatures.client.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import drzhark.mocreatures.entity.passive.MoCEntityRaccoon;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class MoCModelRaccoon extends ModelBase {
+public class MoCModelRaccoon extends EntityModel<MoCEntityRaccoon> {
 
     ModelRenderer Head;
     ModelRenderer Snout;
@@ -152,31 +155,8 @@ public class MoCModelRaccoon extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        this.Head.render(f5);
-        this.Snout.render(f5);
-        this.RightEar.render(f5);
-        this.LeftEar.render(f5);
-        //LeftSideburn.render(f5);
-        //RightSideburn.renderWithRotation(f5);
-        this.RightRearFoot.render(f5);
-        this.Neck.render(f5);
-        this.Body.render(f5);
-        this.TailA.render(f5);
-        this.TailB.render(f5);
-        this.RightFrontLegA.render(f5);
-        this.RightFrontLegB.render(f5);
-        this.RightFrontFoot.render(f5);
-        this.LeftFrontLegA.render(f5);
-        this.LeftFrontLegB.render(f5);
-        this.LeftFrontFoot.render(f5);
-        this.RightRearLegA.render(f5);
-        this.RightRearLegB.render(f5);
-        this.LeftRearLegB.render(f5);
-        this.LeftRearLegA.render(f5);
-        this.LeftRearFoot.render(f5);
+    public void setRotationAngles(MoCEntityRaccoon entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -185,7 +165,7 @@ public class MoCModelRaccoon extends ModelBase {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         this.Head.rotateAngleY = f3 / 57.29578F;
         this.Head.rotateAngleX = f4 / 57.29578F;
         this.Snout.rotateAngleY = this.Head.rotateAngleY;
@@ -219,5 +199,31 @@ public class MoCModelRaccoon extends ModelBase {
 
         this.TailA.rotateAngleY = MathHelper.cos(f * 0.6662F) * 0.7F * f1;
         this.TailB.rotateAngleY = this.TailA.rotateAngleY;
+    }
+
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Snout.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RightEar.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LeftEar.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        //LeftSideburn.render(f5);
+        //RightSideburn.renderWithRotation(f5);
+        this.RightRearFoot.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Neck.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.TailA.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.TailB.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RightFrontLegA.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RightFrontLegB.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RightFrontFoot.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LeftFrontLegA.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LeftFrontLegB.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LeftFrontFoot.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RightRearLegA.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RightRearLegB.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LeftRearLegB.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LeftRearLegA.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LeftRearFoot.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
     }
 }

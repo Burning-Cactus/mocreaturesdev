@@ -41,8 +41,8 @@ import javax.annotation.Nullable;
 public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTameable {
 
     protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(MoCEntityTameableAmbient.class, DataSerializers.OPTIONAL_UNIQUE_ID);
-    protected static final DataParameter<Integer> PET_ID = EntityDataManager.<Integer>createKey(MoCEntityTameableAmbient.class, DataSerializers.VARINT);
-    protected static final DataParameter<Boolean> TAMED = EntityDataManager.<Boolean>createKey(MoCEntityTameableAmbient.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Integer> PET_ID = EntityDataManager.createKey(MoCEntityTameableAmbient.class, DataSerializers.VARINT);
+    protected static final DataParameter<Boolean> TAMED = EntityDataManager.createKey(MoCEntityTameableAmbient.class, DataSerializers.BOOLEAN);
     private boolean hasEaten;
     private int gestationtime;
 
@@ -53,7 +53,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(OWNER_UNIQUE_ID, Optional.<UUID>absent());
+        this.dataManager.register(OWNER_UNIQUE_ID, Optional.empty());
         this.dataManager.register(PET_ID, -1);
         this.dataManager.register(TAMED, false);
     }
@@ -70,12 +70,12 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
 
     @Nullable
     public UUID getOwnerId() {
-        return this.dataManager.get(OWNER_UNIQUE_ID).orNull();
+        return this.dataManager.get(OWNER_UNIQUE_ID).isPresent() ? this.dataManager.get(OWNER_UNIQUE_ID).get() : null;
     }
 
     public void setOwnerId(@Nullable UUID uniqueId)
     {
-        this.dataManager.set(OWNER_UNIQUE_ID, Optional.fromNullable(uniqueId));
+        this.dataManager.set(OWNER_UNIQUE_ID, Optional.ofNullable(uniqueId));
     }
 
     @Override
@@ -477,22 +477,22 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
 
                 String offspringName = this.getOffspringClazz((IMoCTameable) mate);
 
-                LivingEntity offspring = (LivingEntity) EntityList.createEntityByIDFromName(new ResourceLocation(MoCConstants.MOD_PREFIX + offspringName.toLowerCase()), this.world);//MoCTools.spawnListByNameClass(offspringClass, this.world);
-                if (offspring != null && offspring instanceof IMoCTameable) {
-                    IMoCTameable baby = (IMoCTameable) offspring;
-                    ((LivingEntity) baby).setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
-                    this.world.addEntity((LivingEntity) baby);
-                    baby.setAdult(false);
-                    baby.setEdad(35);
-                    baby.setTamed(true);
-                    baby.setOwnerId(this.getOwnerId());
-                    baby.setType(getOffspringTypeInt((IMoCTameable) mate));
-
-                    PlayerEntity entityplayer = this.world.getPlayerByUuid(this.getOwnerId());
-                    if (entityplayer != null) {
-                        MoCTools.tameWithName(entityplayer, baby);
-                    }
-                }
+//                LivingEntity offspring = (LivingEntity) EntityList.createEntityByIDFromName(new ResourceLocation(MoCConstants.MOD_PREFIX + offspringName.toLowerCase()), this.world);//MoCTools.spawnListByNameClass(offspringClass, this.world);
+//                if (offspring != null && offspring instanceof IMoCTameable) {
+//                    IMoCTameable baby = (IMoCTameable) offspring;
+//                    ((LivingEntity) baby).setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
+//                    this.world.addEntity((LivingEntity) baby);
+//                    baby.setAdult(false);
+//                    baby.setEdad(35);
+//                    baby.setTamed(true);
+//                    baby.setOwnerId(this.getOwnerId());
+//                    baby.setType(getOffspringTypeInt((IMoCTameable) mate));
+//
+//                    PlayerEntity entityplayer = this.world.getPlayerByUuid(this.getOwnerId());
+//                    if (entityplayer != null) {
+//                        MoCTools.tameWithName(entityplayer, baby);
+//                    }
+//                }
                 MoCTools.playCustomSound(this, SoundEvents.ENTITY_CHICKEN_EGG);
 
             } catch (Exception e) {

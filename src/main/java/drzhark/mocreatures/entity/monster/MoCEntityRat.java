@@ -119,11 +119,6 @@ public class MoCEntityRat extends MoCEntityMob {
         }
     }
 
-//    @Override
-//    protected Item getDropItem() {
-//        return MoCItems.RATRAW;
-//    }
-
     @Override
     protected SoundEvent getDeathSound() {
         return MoCSoundEvents.ENTITY_RAT_DEATH;

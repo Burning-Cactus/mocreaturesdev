@@ -324,20 +324,14 @@ public class MoCEntityCrocodile extends MoCEntityTameableAnimal {
         return MoCSoundEvents.ENTITY_CROCODILE_AMBIENT;
     }
 
-//    @Override
-//    protected Item getDropItem() {
-//        return MoCItems.hideCroc;
-//    }
-
     public boolean isSpinning() {
         return getHasCaughtPrey() && (this.isBeingRidden()) && (this.isSwimming());
     }
 
     @Override
     public void onDeath(DamageSource damagesource) {
-
         unMount();
-        MoCTools.checkForTwistedEntities(this.world);
+//        MoCTools.checkForTwistedEntities(this.world);
         super.onDeath(damagesource);
     }
 

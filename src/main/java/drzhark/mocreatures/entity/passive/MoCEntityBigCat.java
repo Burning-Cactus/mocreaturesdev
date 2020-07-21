@@ -1,6 +1,5 @@
 package drzhark.mocreatures.entity.passive;
 
-import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.MoCPetData;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
@@ -205,11 +204,6 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
             return MoCSoundEvents.ENTITY_LION_DEATH_BABY;
         }
     }
-//
-//    @Override
-//    protected Item getDropItem() {
-//        return MoCItems.BIGCATCLAW;
-//    }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
@@ -247,7 +241,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
     }
 
     public void spawnGhost() {
-        try {
+        /*try {
             LivingEntity templiving = (LivingEntity) EntityList.createEntityByIDFromName(new ResourceLocation(this.getClazzString().toLowerCase()), this.world);
             if (templiving != null && templiving instanceof MoCEntityBigCat) {
                 MoCEntityBigCat ghost = (MoCEntityBigCat) templiving;
@@ -269,7 +263,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
 
             }
         } catch (Exception e) {
-        }
+        }*/
 
     }
 
@@ -403,7 +397,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
         nbttagcompound.putBoolean("Chested", getIsChested());
         nbttagcompound.putBoolean("Ghost", getIsGhost());
         nbttagcompound.putBoolean("Amulet", getHasAmulet());
-        if (getIsChested() && this.localchest != null) {
+        /*if (getIsChested() && this.localchest != null) {
             ListNBT nbttaglist = new ListNBT();
             for (int i = 0; i < this.localchest.getSizeInventory(); i++) {
                 // grab the current item stack
@@ -416,7 +410,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
                 }
             }
             nbttagcompound.put("Items", nbttaglist);
-        }
+        }*/
 
     }
 
@@ -428,7 +422,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
         setIsChested(nbttagcompound.getBoolean("Chested"));
         setIsGhost(nbttagcompound.getBoolean("Ghost"));
         setHasAmulet(nbttagcompound.getBoolean("Amulet"));
-        if (getIsChested()) {
+        /*if (getIsChested()) {
             ListNBT nbttaglist = nbttagcompound.getList("Items", 10);
             this.localchest = new MoCAnimalChest("BigCatChest", 18);
             for (int i = 0; i < nbttaglist.size(); i++) {
@@ -438,7 +432,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
                     this.localchest.setInventorySlotContents(j, new ItemStack(nbttagcompound1));
                 }
             }
-        }
+        }*/
 
     }
 
@@ -527,7 +521,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
             return true;
         }
 
-        if (getIsChested() && player.isCrouching()) {
+        /*if (getIsChested() && player.isCrouching()) {
             if (this.localchest == null) {
                 this.localchest = new MoCAnimalChest(this.chestName, 18);
             }
@@ -535,7 +529,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
                 player.displayGUIChest(this.localchest);
             }
             return true;
-        }
+        }*/
 
         return super.processInteract(player, hand);
     }
@@ -620,7 +614,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
             MoCTools.dropSaddle(this, this.world);
 
             if (getIsChested()) {
-                MoCTools.dropInventory(this, this.localchest);
+//                MoCTools.dropInventory(this, this.localchest); TODO: Make chests work
                 MoCTools.dropCustomItem(this, this.world, new ItemStack(Blocks.CHEST, 1));
                 setIsChested(false);
             }

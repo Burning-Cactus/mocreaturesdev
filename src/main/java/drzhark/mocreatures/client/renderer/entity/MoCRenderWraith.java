@@ -26,18 +26,18 @@ public class MoCRenderWraith extends LivingRenderer<MoCEntityWraith, MoCModelWra
         //boolean flag = wraith.isGlowing();
         boolean flag = false;
 
-        GL11.glPushMatrix();
-        GL11.glEnable(3042 /* GL_BLEND */);
-        if (!flag) {
-            float transparency = 0.6F;
-            GL11.glBlendFunc(770, 771);
-            GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
-        } else {
-            GL11.glBlendFunc(770, 1);
-        }
+        matrixStackIn.push();
+//        GL11.glEnable(3042 /* GL_BLEND */);
+//        if (!flag) {
+//            float transparency = 0.6F;
+//            GL11.glBlendFunc(770, 771);
+//            GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
+//        } else {
+//            GL11.glBlendFunc(770, 1);
+//        }
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-        GL11.glDisable(3042/* GL_BLEND */);
-        GL11.glPopMatrix();
+//        GL11.glDisable(3042/* GL_BLEND */);
+        matrixStackIn.pop();
     }
 
     @Override

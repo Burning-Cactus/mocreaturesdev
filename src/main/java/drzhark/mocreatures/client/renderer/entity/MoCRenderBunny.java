@@ -1,7 +1,10 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import drzhark.mocreatures.client.model.MoCModelBunny;
 import drzhark.mocreatures.entity.passive.MoCEntityBunny;
+import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -21,38 +24,33 @@ public class MoCRenderBunny<T extends MoCEntityBunny, M extends MoCModelBunny<T>
     }
 
     @Override
-    public void render(T entity, double d, double d1, double d2, float f, float f1) {
-        super.render(entity,);
-    }
-
-    @Override
     protected float handleRotationFloat(MoCEntityBunny entitybunny, float f) {
-        if (!entitybunny.getIsAdult()) {
-            stretch(entitybunny);
-        }
         return entitybunny.ticksExisted + f;
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityBunny entitybunny, float f) {
-        rotBunny(entitybunny);
-        adjustOffsets(entitybunny.getAdjustedXOffset(), entitybunny.getAdjustedYOffset(),entitybunny.getAdjustedZOffset());
+    protected void preRenderCallback(MoCEntityBunny entitybunny, MatrixStack matrixStack, float f) {
+        if (!entitybunny.getIsAdult()) {
+            stretch(entitybunny, matrixStack);
+        }
+        rotBunny(entitybunny, matrixStack);
+        adjustOffsets(matrixStack, entitybunny.getAdjustedXOffset(), entitybunny.getAdjustedYOffset(),entitybunny.getAdjustedZOffset());
     }
 
-    protected void rotBunny(MoCEntityBunny entitybunny) {
+    protected void rotBunny(MoCEntityBunny entitybunny, MatrixStack stack) {
         if (!entitybunny.onGround && (entitybunny.getRidingEntity() == null)) {
             if (entitybunny.getMotion().y > 0.5D) {
-                GL11.glRotatef(35F, -1F, 0.0F, 0.0F);
+                stack.rotate(Vector3f.XN.rotationDegrees(35F));
             } else if (entitybunny.getMotion().y < -0.5D) {
-                GL11.glRotatef(-35F, -1F, 0.0F, 0.0F);
+                stack.rotate(Vector3f.XN.rotationDegrees(-35F));
             } else {
-                GL11.glRotatef((float) (entitybunny.getMotion().y * 70D), -1F, 0.0F, 0.0F);
+                stack.rotate(Vector3f.XN.rotationDegrees((float) (entitybunny.getMotion().y * 70D)));
             }
         }
     }
 
-    protected void stretch(MoCEntityBunny entitybunny) {
+    protected void stretch(MoCEntityBunny entitybunny, MatrixStack stack) {
         float f = entitybunny.getEdad() * 0.01F;
-        GL11.glScalef(f, f, f);
+        stack.scale(f, f, f);
     }
 }

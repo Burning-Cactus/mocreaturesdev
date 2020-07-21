@@ -4,8 +4,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.World;
 
 public class PathNavigateFlyerMoC extends PathNavigator {
@@ -57,20 +60,14 @@ public class PathNavigateFlyerMoC extends PathNavigator {
     }
 
     /**
-     * Trims path data from the end to the first sun covered block
-     */
-    protected void removeSunnyPath() {
-        super.removeSunnyPath();
-    }
-
-    /**
      * Returns true when an entity of specified size could safely walk in a straight line between the two points. Args:
      * pos1, pos2, entityXSize, entityYSize, entityZSize
      */
     @Override
     protected boolean isDirectPathBetweenPoints(Vec3d posVec31, Vec3d posVec32, int sizeX, int sizeY, int sizeZ)
     {
-        RayTraceResult raytraceresult = this.world.rayTraceBlocks(posVec31, new Vec3d(posVec32.x, posVec32.y + (double)this.entity.getHeight() * 0.5D, posVec32.z), false, true, false);
-        return raytraceresult == null || raytraceresult.getType() == RayTraceResult.Type.MISS;
+        Vec3d vec2 = new Vec3d(posVec32.x, posVec32.y + (double)this.entity.getHeight() * 0.5D, posVec32.z);
+        RayTraceResult rayTrace = this.world.rayTraceBlocks(new RayTraceContext(posVec31, vec2, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.ANY, entity));
+        return rayTrace.getType() == RayTraceResult.Type.MISS;
     }
 }

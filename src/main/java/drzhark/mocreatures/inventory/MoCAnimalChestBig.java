@@ -1,16 +1,12 @@
 package drzhark.mocreatures.inventory;
 
-import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.ILockableContainer;
 
-public class MoCAnimalChestBig extends InventoryLargeChest {
+public class MoCAnimalChestBig /*extends InventoryLargeChest*/ {
 
-    private final int mySize; //either 27 or 56
+   /* private final int mySize; //either 27 or 56
 
     public MoCAnimalChestBig(String name, ILockableContainer p_i45905_2_, ILockableContainer p_i45905_3_, int size) {
         super(name, p_i45905_2_, p_i45905_3_);
@@ -54,5 +50,5 @@ public class MoCAnimalChestBig extends InventoryLargeChest {
         }
 
         return var1;
-    }
+    }*/
 }

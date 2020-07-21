@@ -1,6 +1,5 @@
 package drzhark.mocreatures.entity;
 
-import com.google.common.base.Optional;
 import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.MoCPetData;
 import drzhark.mocreatures.MoCTools;
@@ -35,13 +34,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
 
 public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTameable {
 
-    protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.<Optional<UUID>>createKey(MoCEntityTameableAquatic.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+    protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(MoCEntityTameableAquatic.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     protected static final DataParameter<Integer> PET_ID = EntityDataManager.<Integer>createKey(MoCEntityTameableAquatic.class, DataSerializers.VARINT);
     protected static final DataParameter<Boolean> TAMED = EntityDataManager.<Boolean>createKey(MoCEntityTameableAquatic.class, DataSerializers.BOOLEAN);
 
@@ -55,7 +55,7 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(OWNER_UNIQUE_ID, Optional.<UUID>absent());
+        this.dataManager.register(OWNER_UNIQUE_ID, Optional.empty());
         this.dataManager.register(PET_ID, -1);
         this.dataManager.register(TAMED, false);
     }
@@ -72,11 +72,11 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
 
     @Nullable
     public UUID getOwnerId() {
-        return this.dataManager.get(OWNER_UNIQUE_ID).orNull();
+        return this.dataManager.get(OWNER_UNIQUE_ID).isPresent() ? this.dataManager.get(OWNER_UNIQUE_ID).get() : null;
     }
 
     public void setOwnerId(@Nullable UUID uniqueId) {
-        this.dataManager.set(OWNER_UNIQUE_ID, Optional.fromNullable(uniqueId));
+        this.dataManager.set(OWNER_UNIQUE_ID, Optional.ofNullable(uniqueId));
     }
 
     @Override
@@ -87,6 +87,11 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
     @Override
     public boolean getIsTamed() {
         return this.dataManager.get(TAMED);
+    }
+
+    @Override
+    public boolean renderName() {
+        return false;
     }
 
     @Override
@@ -448,7 +453,7 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
     /**
      * Breeding code
      */
-    protected void doBreeding() {
+    protected void doBreeding() { //TODO: Make breeding code work in both aquatic and ambients
         int i = 0;
 
         List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(8D, 3D, 8D));
@@ -492,22 +497,22 @@ public class MoCEntityTameableAquatic extends MoCEntityAquatic implements IMoCTa
 
                 String offspringName = this.getOffspringClazz((IMoCTameable) mate);
 
-                LivingEntity offspring = (LivingEntity) EntityList.createEntityByIDFromName(new ResourceLocation(MoCConstants.MOD_PREFIX + offspringName.toLowerCase()), this.world);
-                if (offspring != null && offspring instanceof IMoCTameable) {
-                    IMoCTameable baby = (IMoCTameable) offspring;
-                    ((LivingEntity) baby).setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
-                    this.world.addEntity((LivingEntity) baby);
-                    baby.setAdult(false);
-                    baby.setEdad(35);
-                    baby.setTamed(true);
-                    baby.setOwnerId(this.getOwnerId());
-                    baby.setType(getOffspringTypeInt((IMoCTameable) mate));
-
-                    PlayerEntity entityplayer = this.world.getPlayerByUuid(this.getOwnerId());
-                    if (entityplayer != null) {
-                        MoCTools.tameWithName(entityplayer, baby);
-                    }
-                }
+//                LivingEntity offspring = (LivingEntity) EntityList.createEntityByIDFromName(new ResourceLocation(MoCConstants.MOD_PREFIX + offspringName.toLowerCase()), this.world);
+//                if (offspring != null && offspring instanceof IMoCTameable) {
+//                    IMoCTameable baby = (IMoCTameable) offspring;
+//                    ((LivingEntity) baby).setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
+//                    this.world.addEntity((LivingEntity) baby);
+//                    baby.setAdult(false);
+//                    baby.setEdad(35);
+//                    baby.setTamed(true);
+//                    baby.setOwnerId(this.getOwnerId());
+//                    baby.setType(getOffspringTypeInt((IMoCTameable) mate));
+//
+//                    PlayerEntity entityplayer = this.world.getPlayerByUuid(this.getOwnerId());
+//                    if (entityplayer != null) {
+//                        MoCTools.tameWithName(entityplayer, baby);
+//                    }
+//                }
                 MoCTools.playCustomSound(this, SoundEvents.ENTITY_CHICKEN_EGG);
 
             } catch (Exception e) {

@@ -1,21 +1,23 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import drzhark.mocreatures.client.model.MoCModelOstrich;
 import drzhark.mocreatures.entity.passive.MoCEntityOstrich;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderOstrich extends MoCRenderMoC<MoCEntityOstrich> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderOstrich extends MoCRenderMoC<MoCEntityOstrich, MoCModelOstrich<MoCEntityOstrich>> {
 
-    public MoCRenderOstrich(ModelBase modelbase, float f) {
-        super(modelbase, 0.5F);
+    public MoCRenderOstrich(EntityRendererManager manager, MoCModelOstrich modelbase, float f) {
+        super(manager, modelbase, 0.5F);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(MoCEntityOstrich entityostrich) {
+    public ResourceLocation getEntityTexture(MoCEntityOstrich entityostrich) {
         return entityostrich.getTexture();
     }
 
@@ -24,20 +26,20 @@ public class MoCRenderOstrich extends MoCRenderMoC<MoCEntityOstrich> {
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityOstrich entityliving, float f) {
+    protected void preRenderCallback(MoCEntityOstrich entityliving, MatrixStack stack, float f) {
         MoCEntityOstrich entityostrich = (MoCEntityOstrich) entityliving;
-        if (entityostrich.getType() == 1) {
-            stretch(entityostrich);
+        if (entityostrich.getSubType() == 1) {
+            stretch(entityostrich, stack);
         }
 
-        super.preRenderCallback(entityliving, f);
+        super.preRenderCallback(entityliving, stack, f);
 
     }
 
-    protected void stretch(MoCEntityOstrich entityostrich) {
+    protected void stretch(MoCEntityOstrich entityostrich, MatrixStack stack) {
 
         float f = entityostrich.getEdad() * 0.01F;
-        GL11.glScalef(f, f, f);
+        stack.scale(f, f, f);
     }
 
 }

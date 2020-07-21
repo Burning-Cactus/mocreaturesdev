@@ -1,20 +1,18 @@
 package drzhark.mocreatures.client.model;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.passive.MoCEntityBear;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.model.AgeableModel;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @OnlyIn(Dist.CLIENT)
-public class MoCModelBear<T extends MoCEntityBear> extends AgeableModel<T> {
+public class MoCModelBear<T extends MoCEntityBear> extends EntityModel<T> {
 
     public ModelRenderer Saddle;
     public ModelRenderer SaddleBack;
@@ -99,6 +97,9 @@ public class MoCModelBear<T extends MoCEntityBear> extends AgeableModel<T> {
 
     private int bearstate;
     private float attackSwing;
+    boolean openMouth;
+    boolean chested;
+    boolean saddled;
 
     public MoCModelBear() {
         this.textureWidth = 128;
@@ -469,133 +470,122 @@ public class MoCModelBear<T extends MoCEntityBear> extends AgeableModel<T> {
     }
 
     @Override
-    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
-
-    }
-
-    @Override
-    protected Iterable<ModelRenderer> getHeadParts() {
-        return ImmutableList.of(
-                Head
-        );
-    }
-
-    @Override
-    protected Iterable<ModelRenderer> getBodyParts() {
-        return null;
-    }
-
-    @Override
-    public void render(T entity, float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(T entity, float v, float v1, float v2, float v3, float v4) {
         MoCEntityBear entitybear = (MoCEntityBear) entity;
         this.bearstate = entitybear.getBearState();
-        boolean openMouth = (entitybear.mouthCounter != 0);
+        this.openMouth = (entitybear.mouthCounter != 0);
         this.attackSwing = entitybear.getAttackSwing();
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        boolean chested = entitybear.getIsChested();
-        boolean saddled = entitybear.getIsRideable();
-        
+        setRotationAngles(v, v1, v2, v3, v4);
+        this.chested = entitybear.getIsChested();
+        this.saddled = entitybear.getIsRideable();
+
+    }
+
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+
         if (bearstate == 0) { //in fours
             if (openMouth) {
-                this.MouthOpen.render(f5);
+                this.MouthOpen.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             } else {
-                this.Mouth.render(f5);
+                this.Mouth.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             }
             if (saddled)
             {
-                Saddle.render(f5);
-                SaddleBack.render(f5);
-                SaddleFront.render(f5);
+                Saddle.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                SaddleBack.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                SaddleFront.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             }
             if (chested)
             {
-                Bag.render(f5);
+                Bag.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             }
-            this.LegFR1.render(f5);
-            this.Neck.render(f5);
-            this.LEar.render(f5);
-            this.Snout.render(f5);
-            this.Head.render(f5);
-            this.REar.render(f5);
-            this.Abdomen.render(f5);
-            this.Torso.render(f5);
-            this.LegRR3.render(f5);
-            this.LegRR1.render(f5);
-            this.LegRR2.render(f5);
-            this.LegFR2.render(f5);
-            this.LegFR3.render(f5);
-            this.LegFL1.render(f5);
-            this.LegFL3.render(f5);
-            this.LegFL2.render(f5);
-            this.LegRL1.render(f5);
-            this.LegRL2.render(f5);
-            this.LegRL3.render(f5);
-            this.Tail.render(f5);
+            this.LegFR1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Neck.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LEar.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Snout.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.REar.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Abdomen.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Torso.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LegRR3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LegRR1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LegRR2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LegFR2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LegFR3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LegFL1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LegFL3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LegFL2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LegRL1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LegRL2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LegRL3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Tail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         } else if (bearstate == 1) {
-            this.BHead.render(f5);
-            this.BSnout.render(f5);
+            this.BHead.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BSnout.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             if (openMouth) {
-                this.BMouthOpen.render(f5);
+                this.BMouthOpen.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             } else {
-                this.BMouth.render(f5);
+                this.BMouth.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             }
 
-            this.BNeck.render(f5);
-            this.BLEar.render(f5);
-            this.BREar.render(f5);
-            this.BTorso.render(f5);
-            this.BAbdomen.render(f5);
-            this.BTail.render(f5);
-            this.BLegFL1.render(f5);
-            this.BLegFL2.render(f5);
-            this.BLegFL3.render(f5);
-            this.BLegFR1.render(f5);
-            this.BLegFR2.render(f5);
-            this.BLegFR3.render(f5);
-            this.BLegRL1.render(f5);
-            this.BLegRL2.render(f5);
-            this.BLegRL3.render(f5);
-            this.BLegRR1.render(f5);
-            this.BLegRR2.render(f5);
-            this.BLegRR3.render(f5);
+            this.BNeck.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BLEar.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BREar.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BTorso.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BAbdomen.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BTail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BLegFL1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BLegFL2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BLegFL3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BLegFR1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BLegFR2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BLegFR3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BLegRL1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BLegRL2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BLegRL3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BLegRR1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BLegRR2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.BLegRR3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         } else if (bearstate == 2) { //sited
             if (openMouth) {
-                this.CMouthOpen.render(f5);
+                this.CMouthOpen.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             } else {
-                this.CMouth.render(f5);
+                this.CMouth.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             }
             if (saddled)
             {
-                SaddleSitted.render(f5);
-                SaddleBackSitted.render(f5);
-                SaddleFrontSitted.render(f5);
+                SaddleSitted.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                SaddleBackSitted.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                SaddleFrontSitted.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             }
             if (chested)
             {
-                BagSitted.render(f5);
+                BagSitted.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             }
-            this.CHead.render(f5);
-            this.CSnout.render(f5);
-            this.CLEar.render(f5);
-            this.CREar.render(f5);
-            this.CNeck.render(f5);
-            this.CTorso.render(f5);
-            this.CAbdomen.render(f5);
-            this.CTail.render(f5);
-            this.CLegFL1.render(f5);
-            this.CLegFL2.render(f5);
-            this.CLegFL3.render(f5);
-            this.CLegFR1.render(f5);
-            this.CLegFR2.render(f5);
-            this.CLegFR3.render(f5);
-            this.CLegRL1.render(f5);
-            this.CLegRL2.render(f5);
-            this.CLegRL3.render(f5);
-            this.CLegRR1.render(f5);
-            this.CLegRR2.render(f5);
-            this.CLegRR3.render(f5);
+            this.CHead.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CSnout.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CLEar.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CREar.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CNeck.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CTorso.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CAbdomen.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CTail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CLegFL1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CLegFL2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CLegFL3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CLegFR1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CLegFR2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CLegFR3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CLegRL1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CLegRL2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CLegRL3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CLegRR1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CLegRR2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.CLegRR3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         }
 
+//        this.Tail.rotateAngleZ = LLegRotX * 0.2F;
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -604,7 +594,7 @@ public class MoCModelBear<T extends MoCEntityBear> extends AgeableModel<T> {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         float LLegRotX = MathHelper.cos(f * 0.6662F) * 0.8F * f1;
         float RLegRotX = MathHelper.cos((f * 0.6662F) + 3.141593F) * 0.8F * f1;
         float XAngle = (f4 / 57.29578F);
@@ -709,7 +699,5 @@ public class MoCModelBear<T extends MoCEntityBear> extends AgeableModel<T> {
             this.CREar.rotateAngleX = 0.1502636F + XAngle;
             this.CREar.rotateAngleY = 0.3490659F + YAngle;
         }
-
-        this.Tail.rotateAngleZ = LLegRotX * 0.2F;
     }
 }

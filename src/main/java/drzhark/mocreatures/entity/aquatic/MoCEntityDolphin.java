@@ -248,11 +248,6 @@ public class MoCEntityDolphin extends MoCEntityTameableAquatic {
 //        return MoCSoundEvents.ENTITY_DOLPHIN_UPSET;
 //    }
 
-//    @Override TODO: Dolphin loot table
-//    protected Item getDropItem() {
-//        return Items.COD;
-//    }
-
     @Override
     protected float getSoundVolume() {
         return 0.4F;
@@ -380,8 +375,8 @@ public class MoCEntityDolphin extends MoCEntityTameableAquatic {
                     this.gestationtime++;
                 }
                 if (this.gestationtime % 3 == 0) {
-                    MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
-                            new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
+//                    MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
+//                            new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
                 }
                 if (this.gestationtime <= 50) {
                     continue;

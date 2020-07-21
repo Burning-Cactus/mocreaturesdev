@@ -53,7 +53,7 @@ public class MoCPetMapData extends WorldSavedData {
     public void updateOwnerPet(IMoCTameable pet) {
         this.markDirty();
         if (pet.getOwnerPetId() == -1 || this.petMap.get(pet.getOwnerId()) == null) {
-            UUID owner = MoCreatures.isServer() ? pet.getOwnerId() : Minecraft.getInstance().player.getUniqueID();
+            UUID owner = pet.getOwnerId();
             MoCPetData petData = null;
             int id = -1;
             if (this.petMap.containsKey(owner)) {
@@ -97,7 +97,7 @@ public class MoCPetMapData extends WorldSavedData {
 
         for (int j = 0; j < i; ++j) {
             double d1 = adouble[j];
-            nbttaglist.add(new DoubleNBT(d1));
+//            nbttaglist.add(new DoubleNBT(d1));
         }
 
         return nbttaglist;
@@ -118,28 +118,28 @@ public class MoCPetMapData extends WorldSavedData {
         return false;
     }
 
-    public void forceSave() {
-        if (DimensionManager.getWorld(0) != null) {
-            SaveHandler saveHandler = DimensionManager.getWorld(0).getSaveHandler();
-            if (saveHandler != null) {
-                try {
-                    File file1 = saveHandler.getMapFileFromName("mocreatures");
-
-                    if (file1 != null) {
-                        CompoundNBT nbttagcompound = new CompoundNBT();
-                        this.write(nbttagcompound);
-                        CompoundNBT nbttagcompound1 = new CompoundNBT();
-                        nbttagcompound1.put("data", nbttagcompound);
-                        FileOutputStream fileoutputstream = new FileOutputStream(file1);
-                        CompressedStreamTools.writeCompressed(nbttagcompound1, fileoutputstream);
-                        fileoutputstream.close();
-                    }
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
-            }
-        }
-    }
+//    public void forceSave() {
+//        if (DimensionManager.getWorld(0) != null) {
+//            SaveHandler saveHandler = DimensionManager.getWorld(0).getSaveHandler();
+//            if (saveHandler != null) {
+//                try {
+//                    File file1 = saveHandler.getMapFileFromName("mocreatures");
+//
+//                    if (file1 != null) {
+//                        CompoundNBT nbttagcompound = new CompoundNBT();
+//                        this.write(nbttagcompound);
+//                        CompoundNBT nbttagcompound1 = new CompoundNBT();
+//                        nbttagcompound1.put("data", nbttagcompound);
+//                        FileOutputStream fileoutputstream = new FileOutputStream(file1);
+//                        CompressedStreamTools.writeCompressed(nbttagcompound1, fileoutputstream);
+//                        fileoutputstream.close();
+//                    }
+//                } catch (Exception exception) {
+//                    exception.printStackTrace();
+//                }
+//            }
+//        }
+//    }
 
     /**
      * reads in data from the NBTTagCompound into this MapDataBase
@@ -167,7 +167,7 @@ public class MoCPetMapData extends WorldSavedData {
     public CompoundNBT write(CompoundNBT par1NBTTagCompound) {
         for (Map.Entry<UUID, MoCPetData> ownerEntry : this.petMap.entrySet()) {
             try {
-            if (this.petMap.entrySet() != null && ownerEntry.getKey()!= null) 
+            if (ownerEntry.getKey()!= null)
             {
             par1NBTTagCompound.put(ownerEntry.getKey().toString(), ownerEntry.getValue().getOwnerRootNBT());
         }

@@ -1,12 +1,15 @@
 package drzhark.mocreatures.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.monster.MoCEntitySilverSkeleton;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
-public class MoCModelSilverSkeleton extends ModelBase {
+public class MoCModelSilverSkeleton extends EntityModel<MoCEntitySilverSkeleton> {
 
     ModelRenderer Head;
     ModelRenderer Body;
@@ -130,49 +133,32 @@ public class MoCModelSilverSkeleton extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        MoCEntitySilverSkeleton samurai = (MoCEntitySilverSkeleton) entity;
-        boolean sprinting = samurai.isSprinting();
-        this.leftAttack = samurai.attackCounterLeft;
-        this.rightAttack = samurai.attackCounterRight;
-        this.riding = samurai.getRidingEntity() != null;
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        GL11.glPushMatrix();
-        if (sprinting && f1 > 0.3F) {
-            //GL11.glPushMatrix();
-            GL11.glRotatef((float) (f1 * -20D), -1F, 0.0F, 0.0F);
-            //renderParts(f5);
-            //GL11.glPopMatrix();
-        }
-        if (riding) {
-
-            GL11.glTranslatef(0.0F, 0.5F, 0.0F);
-            //renderParts(f5);
-            //GL11.glPopMatrix();
-        }
-        renderParts(f5);
-        GL11.glPopMatrix();
+    public void setRotationAngles(MoCEntitySilverSkeleton entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        boolean sprinting = entityIn.isSprinting();
+        this.leftAttack = entityIn.attackCounterLeft;
+        this.rightAttack = entityIn.attackCounterRight;
+        this.riding = entityIn.getRidingEntity() != null;
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
-    private void renderParts(float f5) {
-        this.Head.render(f5);
-        this.Body.render(f5);
-        this.Back.render(f5);
-        this.RightArm.render(f5);
-        this.RightHand.render(f5);
-        this.RightSwordA.render(f5);
-        this.RightSwordB.render(f5);
-        this.RightSwordC.render(f5);
-        this.LeftArm.render(f5);
-        this.LeftHand.render(f5);
-        this.LeftSwordA.render(f5);
-        this.LeftSwordB.render(f5);
-        this.LeftSwordC.render(f5);
-        this.RightThigh.render(f5);
-        this.RightKnee.render(f5);
-        this.LeftThigh.render(f5);
-        this.LeftKnee.render(f5);
+    private void renderParts(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn) {
+        this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Back.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RightArm.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RightHand.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RightSwordA.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RightSwordB.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RightSwordC.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LeftArm.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LeftHand.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LeftSwordA.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LeftSwordB.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LeftSwordC.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RightThigh.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RightKnee.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LeftThigh.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LeftKnee.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -181,7 +167,7 @@ public class MoCModelSilverSkeleton extends ModelBase {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         float hRotY = f3 / 57.29578F;
         float hRotX = f4 / 57.29578F;
 
@@ -266,4 +252,21 @@ public class MoCModelSilverSkeleton extends ModelBase {
         }
     }
 
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        matrixStackIn.push();
+//        if (sprinting && f1 > 0.3F) {
+//            //GL11.glPushMatrix();
+//            GL11.glRotatef((float) (f1 * -20D), -1F, 0.0F, 0.0F);
+//            //renderParts(f5);
+//            //GL11.glPopMatrix();
+//        }
+        if (riding) {
+            matrixStackIn.translate(0.0F, 0.5F, 0.0F);
+            //renderParts(f5);
+            //GL11.glPopMatrix();
+        }
+        renderParts(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        matrixStackIn.pop();
+    }
 }

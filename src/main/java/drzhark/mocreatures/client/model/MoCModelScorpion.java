@@ -7,13 +7,14 @@ import drzhark.mocreatures.entity.monster.MoCEntityScorpion;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class MoCModelScorpion extends EntityModel<MoCEntityScorpion> {
+public class MoCModelScorpion<T extends CreatureEntity> extends EntityModel<T> {
 
     ModelRenderer Head;
     ModelRenderer MouthL;
@@ -315,11 +316,13 @@ public class MoCModelScorpion extends EntityModel<MoCEntityScorpion> {
     }
 
     @Override
-    public void setRotationAngles(MoCEntityScorpion entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        poisoning = entityIn.swingingTail();
-        isTalking = entityIn.mouthCounter != 0;
-        babies = entityIn.getHasBabies();
-        attacking = entityIn.armCounter;
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        if(entityIn instanceof MoCEntityScorpion) {
+            poisoning = ((MoCEntityScorpion)entityIn).swingingTail();
+            isTalking = ((MoCEntityScorpion)entityIn).mouthCounter != 0;
+            babies = ((MoCEntityScorpion)entityIn).getHasBabies();
+            attacking = ((MoCEntityScorpion)entityIn).armCounter;
+        }
         setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
@@ -732,8 +735,7 @@ public class MoCModelScorpion extends EntityModel<MoCEntityScorpion> {
 
     }
 
-    @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    protected void renderParts(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn) {
         this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         this.MouthL.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         this.MouthR.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
@@ -784,5 +786,10 @@ public class MoCModelScorpion extends EntityModel<MoCEntityScorpion> {
             this.baby4.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             this.baby5.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         }
+    }
+
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        renderParts(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
     }
 }

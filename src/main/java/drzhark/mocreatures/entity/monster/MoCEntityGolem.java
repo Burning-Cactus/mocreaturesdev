@@ -7,48 +7,33 @@ import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.item.MoCEntityThrowableRock;
 import drzhark.mocreatures.init.MoCSoundEvents;
-import drzhark.mocreatures.network.MoCMessageHandler;
-import drzhark.mocreatures.network.message.MoCMessageAnimation;
-import drzhark.mocreatures.network.message.MoCMessageTwoBytes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import java.util.ArrayList;
@@ -198,7 +183,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
 
         }
 
-        if (MoCreatures.proxy.getParticleFX() > 0 && getGolemState() == 4 && this.sCounter > 0) {
+        if (/*MoCreatures.proxy.getParticleFX() > 0 &&*/ getGolemState() == 4 && this.sCounter > 0) {
             for (int i = 0; i < 10; i++) {
                 this.world.addParticle(ParticleTypes.EXPLOSION, this.getPosX(), this.getPosY(), this.getPosZ(), this.rand.nextGaussian(),
                         this.rand.nextGaussian(), this.rand.nextGaussian());
@@ -362,7 +347,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
             }
         }
         MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_GOLEM_SHOOT, 3F);
-        MoCTools.ThrowStone(this, entity, Block.getStateById(generateBlock(this.golemCubes[x])), 10D, 0.4D);
+        MoCTools.throwStone(this, entity, Block.getStateById(generateBlock(this.golemCubes[x])), 10D, 0.4D);
         saveGolemCube((byte) x, (byte) 30);
         this.tcounter = 0;
     }
@@ -735,15 +720,15 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
         if (isMissingCubes()) {
             List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(2D, 2D, 2D));
 
-            for (int i = 0; i < list.size(); i++) {
-                Entity entity1 = list.get(i);
-                if (entity1 instanceof MoCEntityThrowableRock) {
-                    if (MoCreatures.proxy.getParticleFX() > 0) {
-                        MoCreatures.proxy.VacuumFX(this);
-                    }
-                    return true;
-                }
-            }
+//            for (int i = 0; i < list.size(); i++) {
+//                Entity entity1 = list.get(i);
+//                if (entity1 instanceof MoCEntityThrowableRock) {
+//                    if (MoCreatures.proxy.getParticleFX() > 0) {
+//                        MoCreatures.proxy.VacuumFX(this);
+//                    }
+//                    return true;
+//                }
+//            }
         }
         return false;
     }

@@ -27,6 +27,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -132,8 +133,9 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
 
     @Override
     public boolean renderName() {
-        return MoCreatures.proxy.getDisplayPetName()
-                && (getPetName() != null && !getPetName().equals("") && (!this.isBeingRidden()) && (this.getRidingEntity() == null));
+//        return MoCreatures.proxy.getDisplayPetName()
+//                && (getPetName() != null && !getPetName().equals("") && (!this.isBeingRidden()) && (this.getRidingEntity() == null));
+        return false;
     }
 
     @Override
@@ -555,9 +557,9 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
             for (int l = 0; l <= 4; l++) {
                 for (int i1 = 0; i1 <= 4; i1++) {
                     BlockPos pos = new BlockPos(i, k, j);
-                    if (((l < 1) || (i1 < 1) || (l > 3) || (i1 > 3)) && this.world.getBlockState(pos.add(l, -1, i1)).isNormalCube()
-                            && !this.world.getBlockState(pos.add(l, 0, i1)).isNormalCube()
-                            && !this.world.getBlockState(pos.add(l, 1, i1)).isNormalCube()) {
+                    if (((l < 1) || (i1 < 1) || (l > 3) || (i1 > 3)) && this.world.getBlockState(pos.add(l, -1, i1)).isNormalCube(world, pos)
+                            && !this.world.getBlockState(pos.add(l, 0, i1)).isNormalCube(world, pos)
+                            && !this.world.getBlockState(pos.add(l, 1, i1)).isNormalCube(world, pos)) {
                         setLocationAndAngles((i + l) + 0.5F, k, (j + i1) + 0.5F, this.rotationYaw, this.rotationPitch);
                         return;
                     }
@@ -587,7 +589,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
 
     @Override
     public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
-        if (MoCreatures.entityMap.get(this.getClass()).getFrequency() <= 0) {
+        if (MoCreatures.entityMap.get(this.getType()).getFrequency() <= 0) {
             return false;
         }
         if (this.world.dimension.getType().getId() != 0) {
@@ -622,7 +624,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
             final Block block = blockstate.getBlock();
 
             if (block == MoCBlocks.WYVERN_DIRT || block == MoCBlocks.OGRE_DIRT || block == MoCBlocks.WYVERN_GRASS || block == MoCBlocks.OGRE_GRASS
-                    || (block.isLeaves(blockstate, this.world, pos.down()))) {
+                    || (block.getTags().contains(BlockTags.LEAVES.getId()))) {
                 return true;
             }
         }

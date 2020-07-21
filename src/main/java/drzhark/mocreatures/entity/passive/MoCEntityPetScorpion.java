@@ -526,7 +526,7 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
 
     @Override
     public double getYOffset() {
-        if (this.getRidingEntity() instanceof PlayerEntity && this.getRidingEntity() == MoCreatures.proxy.getPlayer() && this.world.isRemote) {
+        if (this.getRidingEntity() instanceof PlayerEntity /*&& this.getRidingEntity() == MoCreatures.proxy.getPlayer()*/ && this.world.isRemote) {
             return 0.1F;
         }
 

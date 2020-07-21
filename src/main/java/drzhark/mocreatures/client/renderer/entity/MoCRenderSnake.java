@@ -1,23 +1,24 @@
 package drzhark.mocreatures.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import drzhark.mocreatures.client.model.MoCModelSnake;
 import drzhark.mocreatures.entity.passive.MoCEntitySnake;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class MoCRenderSnake extends MoCRenderMoC<MoCEntitySnake> {
+@OnlyIn(Dist.CLIENT)
+public class MoCRenderSnake extends MoCRenderMoC<MoCEntitySnake, MoCModelSnake<MoCEntitySnake>> {
 
-    public MoCRenderSnake(ModelBase modelbase, float f) {
-        super(modelbase, 0.0F);
+    public MoCRenderSnake(EntityRendererManager manager, MoCModelSnake modelbase, float f) {
+        super(manager, modelbase, 0.0F);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(MoCEntitySnake par1Entity) {
-        return ((MoCEntitySnake) par1Entity).getTexture();
+    public ResourceLocation getEntityTexture(MoCEntitySnake par1Entity) {
+        return par1Entity.getTexture();
     }
 
     protected void adjustHeight(MoCEntitySnake entitysnake, float FHeight) {
@@ -25,8 +26,8 @@ public class MoCRenderSnake extends MoCRenderMoC<MoCEntitySnake> {
     }
 
     @Override
-    protected void preRenderCallback(MoCEntitySnake entitysnake, float f) {
-        stretch(entitysnake);
+    protected void preRenderCallback(MoCEntitySnake entitysnake, MatrixStack stack, float f) {
+        stretch(entitysnake, stack);
 
         /*
          * if(mod_mocreatures.mc.isMultiplayerWorld() &&
@@ -40,9 +41,9 @@ public class MoCRenderSnake extends MoCRenderMoC<MoCEntitySnake> {
                 xOff = 0.0F;
             }
             if (entitysnake.world.isRemote) {
-                GL11.glTranslatef(xOff, 0.0F, 0F);
+                stack.translate(xOff, 0.0F, 0F);
             } else {
-                GL11.glTranslatef(xOff, 0F, 0.0F);
+                stack.translate(xOff, 0F, 0.0F);
                 //-0.5 puts it in the right shoulder
             }
             /*
@@ -53,16 +54,16 @@ public class MoCRenderSnake extends MoCRenderMoC<MoCEntitySnake> {
              */
         }
 
-        if (entitysnake.isInsideOfMaterial(Material.WATER)) {
+        if (entitysnake.isInWater()) {
             adjustHeight(entitysnake, -0.25F);
         }
 
-        super.preRenderCallback(entitysnake, f);
+        super.preRenderCallback(entitysnake, stack, f);
     }
 
-    protected void stretch(MoCEntitySnake entitysnake) {
+    protected void stretch(MoCEntitySnake entitysnake, MatrixStack stack) {
         float f = entitysnake.getSizeF();
-        GL11.glScalef(f, f, f);
+        stack.scale(f, f, f);
     }
 
     /*

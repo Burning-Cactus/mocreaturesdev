@@ -1,19 +1,17 @@
 package drzhark.mocreatures.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.monster.MoCEntityOgre;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @OnlyIn(Dist.CLIENT)
-public class MoCModelOgre<T extends MoCEntityOgre> extends SegmentedModel<T> {
+public class MoCModelOgre<T extends MoCEntityOgre> extends EntityModel<T> {
 
     ModelRenderer Head;
     ModelRenderer Brow;
@@ -591,95 +589,15 @@ public class MoCModelOgre<T extends MoCEntityOgre> extends SegmentedModel<T> {
     }
 
     @Override
-    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
-
-    }
-
-    @Override
-    public Iterable<ModelRenderer> getParts() {
-        return null;
-    }
-
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        //super.render(entity, f, f1, f2, f3, f4, f5);
-        MoCEntityOgre entityogre = (MoCEntityOgre) entity;
-        this.type = entityogre.getSubType();
+    public void setRotationAngles(T entity, float v, float v1, float v2, float v3, float v4) {
+        this.type = ((MoCEntityOgre) entity).getSubType();
         //int leftAttack = entityogre.attackCounterLeft;
         //int rightAttack = entityogre.attackCounterRight;
-        this.attackCounter = entityogre.attackCounter;
-        this.headMoving = entityogre.getMovingHead();
-        this.armToAnimate = entityogre.armToAnimate;
+        this.attackCounter = ((MoCEntityOgre) entity).attackCounter;
+        this.headMoving = ((MoCEntityOgre) entity).getMovingHead();
+        this.armToAnimate = ((MoCEntityOgre) entity).armToAnimate;
 
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-
-        if (type == 1) {
-            this.Head.render(f5);
-            this.Brow.render(f5);
-            this.NoseBridge.render(f5);
-            this.Nose.render(f5);
-            this.RgtTusk.render(f5);
-            this.RgtTooth.render(f5);
-            this.LftTooth.render(f5);
-            this.LftTusk.render(f5);
-            this.Lip.render(f5);
-            this.RgtEar.render(f5);
-            this.RgtRing.render(f5);
-            this.RgtRingHole.render(f5);
-            this.LftEar.render(f5);
-            this.LftRing.render(f5);
-            this.LftRingHole.render(f5);
-            this.HairRope.render(f5);
-            this.Hair1.render(f5);
-            this.Hair2.render(f5);
-            this.Hair3.render(f5);
-            this.DiamondHorn.render(f5);
-            this.RgtHorn.render(f5);
-            this.RgtHornTip.render(f5);
-            this.LftHorn.render(f5);
-            this.LftHornTip.render(f5);
-
-            this.LftWeaponRoot.isHidden = true;
-        } else {
-            this.Head3RgtEar.render(f5);
-            this.Head3LftEar.render(f5);
-            this.Head3Eyelid.render(f5);
-            this.Head3Nose.render(f5);
-            this.Head3.render(f5);
-            this.Head3Brow.render(f5);
-            this.Head3Hair.render(f5);
-            this.Head3Lip.render(f5);
-            this.Head3RgtTusk.render(f5);
-            this.Head3RgtTooth.render(f5);
-            this.Head3LftTooth.render(f5);
-            this.Head3LftTusk.render(f5);
-            this.Head3RingHole.render(f5);
-            this.Head3Ring.render(f5);
-
-            this.Head2Chin.render(f5);
-            this.Head2.render(f5);
-            this.Head2Lip.render(f5);
-            this.Head2LftTusk.render(f5);
-            this.Head2RgtTusk.render(f5);
-            this.Head2Nose.render(f5);
-            this.Head2NoseBridge.render(f5);
-            this.Head2Brow.render(f5);
-            this.Head2RgtHorn.render(f5);
-            this.Head2LftHorn.render(f5);
-            this.Head2DiamondHorn.render(f5);
-
-            this.LftWeaponRoot.isHidden = false;
-        }
-
-        this.NeckRest.render(f5);
-        this.Chest.render(f5);
-        this.Stomach.render(f5);
-        this.ButtCover.render(f5);
-        this.LoinCloth.render(f5);
-        this.RgtThigh.render(f5);
-        this.LftThigh.render(f5);
-        this.RgtShoulder.render(f5);
-        this.LftShoulder.render(f5);
+        setRotationAngles(v, v1, v2, v3, v4);
 
     }
 
@@ -689,7 +607,7 @@ public class MoCModelOgre<T extends MoCEntityOgre> extends SegmentedModel<T> {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         float hRotY = f3 / 57.29578F;
         float hRotX = f4 / 57.29578F;
 
@@ -872,4 +790,74 @@ public class MoCModelOgre<T extends MoCEntityOgre> extends SegmentedModel<T> {
 
     }
 
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (type == 1) {
+            this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Brow.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.NoseBridge.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Nose.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RgtTusk.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RgtTooth.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LftTooth.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LftTusk.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Lip.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RgtEar.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RgtRing.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RgtRingHole.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LftEar.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LftRing.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LftRingHole.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.HairRope.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Hair1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Hair2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Hair3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.DiamondHorn.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RgtHorn.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RgtHornTip.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LftHorn.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LftHornTip.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+
+            this.LftWeaponRoot.showModel = false;
+        } else {
+            this.Head3RgtEar.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head3LftEar.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head3Eyelid.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head3Nose.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head3Brow.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head3Hair.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head3Lip.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head3RgtTusk.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head3RgtTooth.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head3LftTooth.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head3LftTusk.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head3RingHole.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head3Ring.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+
+            this.Head2Chin.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head2Lip.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head2LftTusk.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head2RgtTusk.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head2Nose.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head2NoseBridge.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head2Brow.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head2RgtHorn.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head2LftHorn.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Head2DiamondHorn.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+
+            this.LftWeaponRoot.showModel = true;
+        }
+
+        this.NeckRest.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Chest.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Stomach.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.ButtCover.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LoinCloth.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RgtThigh.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LftThigh.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RgtShoulder.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LftShoulder.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+    }
 }

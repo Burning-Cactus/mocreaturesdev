@@ -581,11 +581,6 @@ public class MoCEntityGoat extends MoCEntityTameableAnimal {
         return MoCSoundEvents.ENTITY_GOAT_DEATH;
     }
 
-//    @Override
-//    protected Item getDropItem() {
-//        return Items.LEATHER;
-//    }
-
     @Override
     public int getMaxEdad() {
         return 50; //so the update is not handled on MoCEntityAnimal

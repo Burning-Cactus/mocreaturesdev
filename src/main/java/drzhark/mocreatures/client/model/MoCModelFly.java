@@ -1,20 +1,18 @@
 package drzhark.mocreatures.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.ambient.MoCEntityFly;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
-public class MoCModelFly<T extends MoCEntityFly> extends SegmentedModel<T> {
+public class MoCModelFly<T extends MoCEntityFly> extends EntityModel<T> {
 
     ModelRenderer FrontLegs;
     ModelRenderer RearLegs;
@@ -26,6 +24,7 @@ public class MoCModelFly<T extends MoCEntityFly> extends SegmentedModel<T> {
     ModelRenderer RightWing;
     ModelRenderer Thorax;
     ModelRenderer LeftWing;
+    private boolean isFlying;
 
     public MoCModelFly() {
         this.textureWidth = 32;
@@ -91,39 +90,31 @@ public class MoCModelFly<T extends MoCEntityFly> extends SegmentedModel<T> {
     }
 
     @Override
-    public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
-
+    public void setRotationAngles(T entity, float v, float v1, float v2, float v3, float v4) {
+        this.isFlying = ((entity.getIsFlying() || entity.getMotion().y < -0.1D));
+        setRotationAngles(v, v1, v2, v3, v4, !isFlying);
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
-        return null;
-    }
-
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        MoCEntityFly fly = (MoCEntityFly) entity;
-        boolean isFlying = (fly.getIsFlying() || fly.motionY < -0.1D);
-        setRotationAngles(f, f1, f2, f3, f4, f5, !isFlying);
-        this.FrontLegs.render(f5);
-        this.RearLegs.render(f5);
-        this.MidLegs.render(f5);
-        this.Head.render(f5);
-        this.Tail.render(f5);
-        this.Abdomen.render(f5);
-        this.Thorax.render(f5);
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        this.FrontLegs.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RearLegs.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.MidLegs.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Tail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Abdomen.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Thorax.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
 
         if (!isFlying) {
-            this.FoldedWings.render(f5);
+            this.FoldedWings.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         } else {
             GL11.glPushMatrix();
             GL11.glEnable(3042 /* GL_BLEND */);
             float transparency = 0.6F;
             GL11.glBlendFunc(770, 771);
             GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
-            this.LeftWing.render(f5);
-            this.RightWing.render(f5);
+            this.LeftWing.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RightWing.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             GL11.glDisable(3042/* GL_BLEND */);
             GL11.glPopMatrix();
         }
@@ -145,7 +136,7 @@ public class MoCModelFly<T extends MoCEntityFly> extends SegmentedModel<T> {
      * 1.070744F + legMov; }
      */
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, boolean onGround) {
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, boolean onGround) {
         //super.setRotationAngles(f, f1, f2, f3, f4, f5);
         float WingRot = MathHelper.cos((f2 * 3.0F)) * 0.7F;
         this.RightWing.rotateAngleZ = WingRot;

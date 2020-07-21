@@ -59,7 +59,7 @@ public class MoCItemHorseAmulet extends MoCItem {
         this.ageCounter = 0;
     }
 
-    @Override
+    /*@Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand) {
         final ItemStack stack = player.getHeldItem(hand);
         if (++this.ageCounter < 2) {
@@ -186,7 +186,7 @@ public class MoCItemHorseAmulet extends MoCItem {
         this.ageCounter = 0;
 
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
-    }
+    }*/
 
     public void readFromNBT(CompoundNBT nbt) {
         this.PetId = nbt.getInt("PetId");

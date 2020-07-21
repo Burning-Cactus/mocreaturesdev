@@ -17,7 +17,7 @@ version="${file.jarVersion}" #mandatory
  # A display name for the mod
 displayName="DrZhark's Mo' Creatures Mod" #mandatory
 # A text field displayed in the mod UI
-credits="The Forge and FML guys, for making this example" #optional
+credits="Thanks to Mojang and the Forge team for making this mod possible!" #optional
 displayURL="http://www.mocreatures.org"
 # A text field displayed in the mod UI
 authors="DrZhark, BloodShot, BlockDaddy" #optional

@@ -75,13 +75,8 @@ public class MoCEntityCrab extends MoCEntityTameableAmbient
         }
     }
 
-    @Override
-    public void fall(float f, float f1) {
-    }
-
-//    @Override TODO: Crab loot table
-//    protected Item getDropItem() {
-//        return MoCItems.CRABRAW;
+//    @Override
+//    public void fall(float f, float f1) {
 //    }
 
     @Override

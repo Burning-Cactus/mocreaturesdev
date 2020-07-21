@@ -29,7 +29,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.Path;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
@@ -662,7 +661,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
             return true;
         }
 
-        if (player.isSneaking() && getIsChested()) {
+        /*if (player.isSneaking() && getIsChested()) {
             // if first time opening a chest, we must initialize it
             if (this.localchest == null) {
                 this.localchest = new MoCAnimalChest("OstrichChest", 9);
@@ -671,7 +670,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
                 player.displayGUIChest(this.localchest);
             }
             return true;
-        }
+        }*/
 
         if (getIsTamed() && (getSubType() > 1) && !stack.isEmpty()) {
 
@@ -804,7 +803,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
         setHelmet(nbttagcompound.getInt("Helmet"));
         setFlagColor(nbttagcompound.getInt("FlagColor"));
         setIsChested(nbttagcompound.getBoolean("Bagged"));
-        if (getIsChested()) {
+        /*if (getIsChested()) {
             ListNBT nbttaglist = nbttagcompound.getList("Items", 10);
             this.localchest = new MoCAnimalChest("OstrichChest", 18);
             for (int i = 0; i < nbttaglist.size(); i++) {
@@ -814,7 +813,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
                     this.localchest.setInventorySlotContents(j, new ItemStack(nbttagcompound1));
                 }
             }
-        }
+        }*/
     }
 
     @Override
@@ -827,7 +826,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
         nbttagcompound.putInt("FlagColor", getFlagColor());
         nbttagcompound.putBoolean("Bagged", getIsChested());
 
-        if (getIsChested() && this.localchest != null) {
+        /*if (getIsChested() && this.localchest != null) {
             ListNBT nbttaglist = new ListNBT();
             for (int i = 0; i < this.localchest.getSizeInventory(); i++) {
                 this.localstack = this.localchest.getStackInSlot(i);
@@ -839,7 +838,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
                 }
             }
             nbttagcompound.put("Items", nbttaglist);
-        }
+        }*/
     }
 
     @Override
@@ -879,7 +878,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
             MoCTools.dropSaddle(this, this.world);
 
             if (getIsChested()) {
-                MoCTools.dropInventory(this, this.localchest);
+//                MoCTools.dropInventory(this, this.localchest);
                 MoCTools.dropCustomItem(this, this.world, new ItemStack(Blocks.CHEST, 1));
                 setIsChested(false);
             }
@@ -896,11 +895,9 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
             final ItemStack itemStack = this.getItemStackFromSlot(EquipmentSlotType.HEAD);
             if (!itemStack.isEmpty() && itemStack.getItem() instanceof ArmorItem) {
                 final ItemEntity entityitem = new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), itemStack.copy());
-                if (entityitem != null) {
-                    entityitem.setPickupDelay(10);
-                    this.world.addEntity(entityitem);
+                entityitem.setPickupDelay(10);
+                this.world.addEntity(entityitem);
                 }
-            }
             setHelmet((byte) 0);
         }
     }

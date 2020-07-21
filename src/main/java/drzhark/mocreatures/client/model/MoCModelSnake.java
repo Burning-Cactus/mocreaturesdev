@@ -144,12 +144,18 @@ public class MoCModelSnake<T extends MoCEntitySnake> extends EntityModel<T> {
 
     @Override
     public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
-    }
-
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        //super.render(entity, f, f1, f2, f3, f4, f5);
+        typeI = entityIn.getSubType();
+        tongueOff = entityIn.getfTongue();
+        mouthOff = entityIn.getfMouth();
+        rattleOff = entityIn.getfRattle();
+        climbing = entityIn.isClimbing();
+        isresting = entityIn.isResting();
+        movInt = entityIn.getMovInt();
+        f6 = entityIn.bodyswing;
+        nearplayer = entityIn.getNearPlayer();
+        picked = entityIn.pickedUp();
+        swing = limbSwing;
+        setRotationAngles(netHeadYaw, headPitch, tongueOff, mouthOff, rattleOff, nearplayer, typeI);
 
     }
 
@@ -259,23 +265,21 @@ public class MoCModelSnake<T extends MoCEntitySnake> extends EntityModel<T> {
     //public ModelRenderer WingR[];
     private final int bodyparts = 40;
 
+    boolean climbing = false;
+    boolean isresting = false;
+    int movInt = 0;
+    float f6 = 0F;
+    boolean nearplayer = false;
+    boolean picked = false;
+    int typeI = 0;
+    float tongueOff = 0F;
+    float mouthOff = 0F;
+    float rattleOff = 0F;
+    float swing = 0F;
+
     @Override
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        MoCEntitySnake entitysnake = (MoCEntitySnake) entity;
-        int typeI = entitysnake.getSubType();
-        float tongueOff = entitysnake.getfTongue();
-        float mouthOff = entitysnake.getfMouth();
-        float rattleOff = entitysnake.getfRattle();
-        boolean climbing = entitysnake.isClimbing();
-        boolean isresting = entitysnake.isResting();
-        int movInt = entitysnake.getMovInt();
-        float f6 = entitysnake.bodyswing;
-        boolean nearplayer = entitysnake.getNearPlayer();
-        boolean picked = entitysnake.pickedUp();
-        setRotationAngles(f3, f4, tongueOff, mouthOff, rattleOff, nearplayer, typeI);
-
         float sidef = 0.0F;
-
         // y = A * sin(w * t - k *x)
         // w1 = speed of wave propagation +/- as needed
         // t = time
@@ -286,14 +290,13 @@ public class MoCModelSnake<T extends MoCEntitySnake> extends EntityModel<T> {
         @SuppressWarnings("unused")
         float A = 0.4F;//0.8F;
         float w = 1.5F;
-        float t = f / 2;
-
+        float t = swing / 2;
         for (int i = 0; i < this.bodyparts; i++) {
             float sideperf = 1F;
             float yOff = 0F;
             //sideperf = 1F;
 
-            GL11.glPushMatrix();
+            matrixStackIn.push();
             if (isresting) {
                 //this part doesn't work at all
                 /* if (i > (bodyparts/3) && (i <2*bodyparts/3)) {
@@ -320,7 +323,7 @@ public class MoCModelSnake<T extends MoCEntitySnake> extends EntityModel<T> {
                             yOff = (i - (this.bodyparts / 3)) * 0.09F;
                             float zOff = (i - (this.bodyparts / 3)) * 0.065F;
                             // if (picked) { yOff = yOff*-1F; //zOff = zOff*-1F; }
-                            GL11.glTranslatef(0.0F, yOff / 1.5F, -zOff * f6);
+                            matrixStackIn.translate(0.0F, yOff / 1.5F, -zOff * f6);
                         }
 
                         if (i < this.bodyparts / 6) {
@@ -338,7 +341,7 @@ public class MoCModelSnake<T extends MoCEntitySnake> extends EntityModel<T> {
             if (typeI == 7 && nearplayer && i > (5 * this.bodyparts / 6) && !picked)//&& not picked
             {
                 yOff = 0.55F + ((i - this.bodyparts)) * 0.08F;
-                GL11.glTranslatef(0.0F, -yOff / 1.5F, 0.0F);
+                matrixStackIn.translate(0.0F, -yOff / 1.5F, 0.0F);
             }
 
             //TODO reactivate once strangling is working
@@ -346,7 +349,7 @@ public class MoCModelSnake<T extends MoCEntitySnake> extends EntityModel<T> {
             if (picked && i > this.bodyparts / 2)//&& big to bring down the tail
             {
                 yOff = ((i - (this.bodyparts / 2))) * 0.08F;
-                GL11.glTranslatef(0.0F, yOff / 1.5F, -yOff);
+                matrixStackIn.translate(0.0F, yOff / 1.5F, -yOff);
 
             }
 
@@ -383,7 +386,7 @@ public class MoCModelSnake<T extends MoCEntitySnake> extends EntityModel<T> {
                 sidef = sidef * sideperf;
                 //GL11.glTranslatef(0.0F, 0.0F, -0.05F*i);
 
-                GL11.glTranslatef(sidef, 0.0F, 0.0F);
+                matrixStackIn.translate(sidef, 0.0F, 0.0F);
             }
 
             //this one works as well
@@ -394,25 +397,25 @@ public class MoCModelSnake<T extends MoCEntitySnake> extends EntityModel<T> {
             //sidef = (0.4F * MathHelper.sin(-3.7F * t - 0.2F * (float)i)) + (0.3F * MathHelper.sin(-2F * t - 0.2F * (float)i));
             //sidef = 1.1F * MathHelper.sin(-2F * t - 0.2F * (float)i);
 
-            this.bodySnake[i].render(f5);
+            this.bodySnake[i].render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
 
             if (i == 0) {
-                this.Head.render(f5);
-                this.Nose.render(f5);
+                this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.Nose.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
 
-                this.LNose.render(f5);
-                this.TeethUR.render(f5);
-                this.TeethUL.render(f5);
+                this.LNose.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.TeethUR.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.TeethUL.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
 
                 if (tongueOff != 0.0F) {
                     if (mouthOff != 0.0F || tongueOff < 2.0F || tongueOff > 7.0F) {
-                        this.Tongue1.render(f5);
+                        this.Tongue1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
                     } else {
-                        this.Tongue.render(f5);
+                        this.Tongue.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
                     }
 
                 } else {
-                    this.Tongue0.render(f5);
+                    this.Tongue0.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
                 }
 
             }
@@ -422,32 +425,32 @@ public class MoCModelSnake<T extends MoCEntitySnake> extends EntityModel<T> {
             if (typeI == 6 && nearplayer)//cobra
             {
                 if (i == 1) {
-                    this.Wing1L.render(f5);
-                    this.Wing1R.render(f5);
+                    this.Wing1L.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    this.Wing1R.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
                 }
                 if (i == 2) {
-                    this.Wing2L.render(f5);
-                    this.Wing2R.render(f5);
+                    this.Wing2L.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    this.Wing2R.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
                 }
                 if (i == 3) {
-                    this.Wing3L.render(f5);
-                    this.Wing3R.render(f5);
+                    this.Wing3L.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    this.Wing3R.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
                 }
                 if (i == 4) {
-                    this.Wing4L.render(f5);
-                    this.Wing4R.render(f5);
+                    this.Wing4L.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    this.Wing4R.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
                 }
                 if (i == 5) {
-                    this.Wing5L.render(f5);
-                    this.Wing5R.render(f5);
+                    this.Wing5L.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    this.Wing5R.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
                 }
             }
 
             if (i == this.bodyparts - 1 && typeI == 7) {
-                this.Tail.render(f5);
+                this.Tail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             }
 
-            GL11.glPopMatrix();
+            matrixStackIn.pop();
         }
     }
 }

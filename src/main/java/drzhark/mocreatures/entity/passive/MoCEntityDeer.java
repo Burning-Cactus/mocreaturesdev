@@ -89,11 +89,6 @@ public class MoCEntityDeer extends MoCEntityTameableAnimal {
         return !(entity instanceof MoCEntityDeer) && super.entitiesToInclude(entity);
     }
 
-//    @Override
-//    protected Item getDropItem() {
-//        return MoCItems.fur;
-//    }
-
     @Override
     protected SoundEvent getDeathSound() {
         return MoCSoundEvents.ENTITY_DEER_DEATH;

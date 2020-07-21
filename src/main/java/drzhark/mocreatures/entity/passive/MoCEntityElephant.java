@@ -9,41 +9,26 @@ import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.init.MoCItems;
 import drzhark.mocreatures.init.MoCSoundEvents;
 import drzhark.mocreatures.inventory.MoCAnimalChest;
-import drzhark.mocreatures.network.MoCMessageHandler;
-import drzhark.mocreatures.network.message.MoCMessageAnimation;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -54,13 +39,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import net.minecraftforge.event.world.NoteBlockEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 import java.util.List;
 
 public class MoCEntityElephant extends MoCEntityTameableAnimal {
-
+        //TODO: Literally fix this entire class, a lot of it is commented out for the sake of compiling the mod and testing it.
     public int sprintCounter;
     public int sitCounter;
     public MoCAnimalChest localelephantchest;
@@ -321,7 +304,7 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
         }
     }
 
-    @Override
+    /*@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
@@ -558,7 +541,7 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
         if (getStorage() > 3 && this.localelephantchest4 == null) {
             this.localelephantchest4 = new MoCAnimalChest("ElephantChest", 9);
         }
-    }
+    }*/
 
     /**
      * Drops tusks, makes sound
@@ -656,7 +639,7 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
         return sizeF;
     }
 
-    @Override
+    /*@Override
     public void readAdditional(CompoundNBT nbttagcompound) {
         super.readAdditional(nbttagcompound);
         setTusks(nbttagcompound.getInt("Tusks"));
@@ -708,9 +691,9 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
                 }
             }
         }
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void writeAdditional(CompoundNBT nbttagcompound) {
         super.writeAdditional(nbttagcompound);
         nbttagcompound.putInt("Tusks", getTusks());
@@ -773,7 +756,7 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
             }
             nbttagcompound.put("Items4", nbttaglist);
         }
-    }
+    }*/
 
     @Override
     public boolean isMyHealFood(ItemStack stack) {
@@ -917,17 +900,12 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
         return MoCSoundEvents.ENTITY_ELEPHANT_AMBIENT;
     }
 
-//    @Override
-//    protected Item getDropItem() {
-//        return MoCItems.ANIMALHIDE;
-//    }
-
     @Override
     public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
         return (MoCreatures.entityMap.get(this.getType()).getFrequency() > 0) && getCanSpawnHereCreature() && getCanSpawnHereLiving();
     }
 
-    @Override
+    /*@Override
     public void dropMyStuff() {
         if (!this.world.isRemote) {
             dropTusks();
@@ -962,7 +940,7 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
             }
             dropArmor();
         }
-    }
+    }*/
 
     @Override
     public void dropArmor() {

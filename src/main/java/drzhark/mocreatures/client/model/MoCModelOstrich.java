@@ -10,20 +10,18 @@
 
 package drzhark.mocreatures.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import drzhark.mocreatures.entity.passive.MoCEntityOstrich;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.entity.model.AgeableModel;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @OnlyIn(Dist.CLIENT)
-public class MoCModelOstrich<T extends MoCEntityOstrich> extends AgeableModel<T> {
+public class MoCModelOstrich<T extends MoCEntityOstrich> extends EntityModel<T> {
 
     public MoCModelOstrich() {
         this.textureWidth = 128;
@@ -474,6 +472,34 @@ public class MoCModelOstrich<T extends MoCEntityOstrich> extends AgeableModel<T>
     }
 
     /**
+     * Sets this entity's model rotation angles
+     *
+     * @param entityIn
+     * @param limbSwing
+     * @param limbSwingAmount
+     * @param ageInTicks
+     * @param netHeadYaw
+     * @param headPitch
+     */
+    @Override
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.typeI = (byte) ((MoCEntityOstrich) entityIn).getSubType();
+        openMouth = (((MoCEntityOstrich) entityIn).mouthCounter != 0);
+        isSaddled = ((MoCEntityOstrich) entityIn).getIsRideable();
+        boolean isHiding = ((MoCEntityOstrich) entityIn).getHiding();
+        boolean wingFlap = (((MoCEntityOstrich) entityIn).wingCounter != 0);
+        bagged = ((MoCEntityOstrich) entityIn).getIsChested();
+        rider = (((MoCEntityOstrich) entityIn).isBeingRidden());
+        int jumpCounter = ((MoCEntityOstrich) entityIn).jumpCounter;
+        boolean floating = (((MoCEntityOstrich) entityIn).isFlyer() && ((MoCEntityOstrich) entityIn).isOnAir());
+
+        this.helmet = ((MoCEntityOstrich) entityIn).getHelmet();
+        this.flagColor = ((MoCEntityOstrich) entityIn).getFlagColor();
+        //super.render(entity, f, f1, f2, f3, f4, f5);
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, isHiding, wingFlap, rider, jumpCounter, floating);
+    }
+
+    /**
      * Used for easily adding entity-dependent animations. The second and third
      * float params here are the same second and third as in the
      * setRotationAngles method.
@@ -486,218 +512,13 @@ public class MoCModelOstrich<T extends MoCEntityOstrich> extends AgeableModel<T>
      * = ((EntitySheep)entityliving).func_44002_d(par4); }
      */
 
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-
-        MoCEntityOstrich entityostrich = (MoCEntityOstrich) entity;
-        this.typeI = (byte) entityostrich.getType();
-        boolean openMouth = (entityostrich.mouthCounter != 0);
-        boolean isSaddled = entityostrich.getIsRideable();
-        boolean isHiding = entityostrich.getHiding();
-        boolean wingFlap = (entityostrich.wingCounter != 0);
-        boolean bagged = entityostrich.getIsChested();
-        boolean rider = (entityostrich.isBeingRidden());
-        int jumpCounter = entityostrich.jumpCounter;
-        boolean floating = (entityostrich.isFlyer() && entityostrich.isOnAir());
-
-        this.helmet = entityostrich.getHelmet();
-        this.flagColor = entityostrich.getFlagColor();
-        //super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, isHiding, wingFlap, rider, jumpCounter, floating);
-
-        this.Head.render(f5);
-
-        this.NeckU.render(f5);
-        this.NeckD.render(f5);
-        this.NeckL.render(f5);
-        this.Body.render(f5);
-        this.Tail.render(f5);
-        this.LLegA.render(f5);
-        this.LLegB.render(f5);
-        this.LLegC.render(f5);
-        this.LFoot.render(f5);
-        this.RLegA.render(f5);
-        this.RLegB.render(f5);
-        this.RLegC.render(f5);
-        this.RFoot.render(f5);
-
-        if (this.typeI == 8) {
-            this.UniHorn.render(f5);
-        }
-
-        if (this.typeI == 5 || this.typeI == 6) //demon and darkness ostriches
-        {
-            this.LWingD.render(f5);
-            this.LWingE.render(f5);
-            this.RWingD.render(f5);
-            this.RWingE.render(f5);
-            this.NeckUFeather.render(f5);
-            this.NeckLFeather.render(f5);
-        } else {
-            this.LWingB.render(f5);
-            this.LWingC.render(f5);
-            this.RWingB.render(f5);
-            this.RWingC.render(f5);
-        }
-
-        if (this.typeI == 6) //darkness ostrich
-        {
-
-            this.Tailpart1.render(f5);
-            this.Tailpart2.render(f5);
-            this.Tailpart3.render(f5);
-            this.Tailpart4.render(f5);
-            this.Tailpart5.render(f5);
-        } else {
-            this.Tail1.render(f5);
-            this.Tail2.render(f5);
-            this.Tail3.render(f5);
-        }
-
-        if (openMouth) {
-            this.UBeakb.render(f5);
-            this.UBeak2b.render(f5);
-            this.LBeakb.render(f5);
-            this.LBeak2b.render(f5);
-        } else {
-            this.UBeak.render(f5);
-            this.UBeak2.render(f5);
-            this.LBeak.render(f5);
-            this.LBeak2.render(f5);
-        }
-
-        if (isSaddled) {
-            this.SaddleA.render(f5);
-            this.SaddleB.render(f5);
-            this.SaddleC.render(f5);
-            this.SaddleL.render(f5);
-            this.SaddleR.render(f5);
-            this.SaddleL2.render(f5);
-            this.SaddleR2.render(f5);
-            this.NeckHarness.render(f5);
-            this.NeckHarness2.render(f5);
-            if (rider) {
-                this.NeckHarnessLeft.render(f5);
-                this.NeckHarnessRight.render(f5);
-            }
-
-        }
-
-        if (bagged) {
-            this.Saddlebag.render(f5);
-            this.Flagpole.render(f5);
-            switch (this.flagColor) {
-            //case 0:
-            //    FlagWhite.render(f5);
-            //   break;
-                case 1:
-                    this.FlagOrange.render(f5);
-                    break;
-                case 2:
-                    this.FlagPurple.render(f5);
-                    break;
-                case 3:
-                    this.FlagLightBlue.render(f5);
-                    break;
-                case 4:
-                    this.FlagYellow.render(f5);
-                    break;
-                case 5:
-                    this.FlagGreen.render(f5);
-                    break;
-                case 6:
-                    this.FlagLightRed.render(f5);
-                    break;
-                case 7:
-                    this.FlagDarkGrey.render(f5);
-                    break;
-                case 8:
-                    this.FlagGrey.render(f5);
-                    break;
-                case 9:
-                    this.FlagCyan.render(f5);
-                    break;
-                case 10:
-                    this.FlagDarkPurple.render(f5);
-                    break;
-                case 11:
-                    this.FlagDarkBlue.render(f5);
-                    break;
-                case 12:
-                    this.FlagBrown.render(f5);
-                    break;
-                case 13:
-                    this.FlagDarkGreen.render(f5);
-                    break;
-                case 14:
-                    this.FlagRed.render(f5);
-                    break;
-                case 15:
-                    this.FlagBlack.render(f5);
-                    break;
-                case 16:
-                    this.FlagWhite.render(f5);
-                    break;
-            }
-        }
-
-        switch (this.helmet) {
-            case 1:
-                this.HelmetLeather.render(f5);
-                break;
-            case 2:
-                this.HelmetIron.render(f5);
-                break;
-            case 3:
-                this.HelmetGold.render(f5);
-                break;
-            case 4:
-                this.HelmetDiamond.render(f5);
-                break;
-            case 5:
-                this.HelmetHide.render(f5);
-                this.HelmetNeckHide.render(f5);
-                this.HelmetHideEar1.render(f5);
-                this.HelmetHideEar2.render(f5);
-                break;
-            case 6:
-                this.HelmetFur.render(f5);
-                this.HelmetNeckFur.render(f5);
-                this.HelmetFurEar1.render(f5);
-                this.HelmetFurEar2.render(f5);
-                break;
-            case 7:
-                this.HelmetReptile.render(f5);
-                this.HelmetReptileEar1.render(f5);
-                this.HelmetReptileEar2.render(f5);
-                break;
-            case 8:
-                this.HelmetGreenChitin.render(f5);
-                break;
-            case 9:
-                this.HelmetYellowChitin.render(f5);
-                break;
-            case 10:
-                this.HelmetBlueChitin.render(f5);
-                break;
-            case 11:
-                this.HelmetBlackChitin.render(f5);
-                break;
-            case 12:
-                this.HelmetRedChitin.render(f5);
-                break;
-
-        }
-
-    }
-
     private void setRotation(ModelRenderer model, float x, float y, float z) {
         model.rotateAngleX = x;
         model.rotateAngleY = y;
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, boolean hiding, boolean wing, boolean rider,
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, boolean hiding, boolean wing, boolean rider,
             int jumpCounter, boolean floating) {
         float LLegXRot = MathHelper.cos(f * 0.4F) * 1.1F * f1;
         float RLegXRot = MathHelper.cos((f * 0.4F) + 3.141593F) * 1.1F * f1;
@@ -1151,4 +972,196 @@ public class MoCModelOstrich<T extends MoCEntityOstrich> extends AgeableModel<T>
     private byte typeI;
     private int flagColor;
     private float radianF = 57.29578F;
+
+    private boolean isSaddled = false;
+    private boolean rider = false;
+    private boolean openMouth = false;
+    private boolean bagged = false;
+
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+
+        this.NeckU.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.NeckD.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.NeckL.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.Tail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LLegA.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LLegB.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LLegC.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.LFoot.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RLegA.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RLegB.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RLegC.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        this.RFoot.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+
+        if (this.typeI == 8) {
+            this.UniHorn.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        }
+
+        if (this.typeI == 5 || this.typeI == 6) //demon and darkness ostriches
+        {
+            this.LWingD.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LWingE.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RWingD.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RWingE.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.NeckUFeather.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.NeckLFeather.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        } else {
+            this.LWingB.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LWingC.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RWingB.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.RWingC.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        }
+
+        if (this.typeI == 6) //darkness ostrich
+        {
+
+            this.Tailpart1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Tailpart2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Tailpart3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Tailpart4.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Tailpart5.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        } else {
+            this.Tail1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Tail2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Tail3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        }
+
+        if (openMouth) {
+            this.UBeakb.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.UBeak2b.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LBeakb.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LBeak2b.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        } else {
+            this.UBeak.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.UBeak2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LBeak.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.LBeak2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        }
+
+        if (isSaddled) {
+            this.SaddleA.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.SaddleB.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.SaddleC.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.SaddleL.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.SaddleR.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.SaddleL2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.SaddleR2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.NeckHarness.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.NeckHarness2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            if (rider) {
+                this.NeckHarnessLeft.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.NeckHarnessRight.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            }
+
+        }
+
+        if (bagged) {
+            this.Saddlebag.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            this.Flagpole.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            switch (this.flagColor) {
+                //case 0:
+                //    FlagWhite.render(f5);
+                //   break;
+                case 1:
+                    this.FlagOrange.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    break;
+                case 2:
+                    this.FlagPurple.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    break;
+                case 3:
+                    this.FlagLightBlue.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    break;
+                case 4:
+                    this.FlagYellow.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    break;
+                case 5:
+                    this.FlagGreen.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    break;
+                case 6:
+                    this.FlagLightRed.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    break;
+                case 7:
+                    this.FlagDarkGrey.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    break;
+                case 8:
+                    this.FlagGrey.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    break;
+                case 9:
+                    this.FlagCyan.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    break;
+                case 10:
+                    this.FlagDarkPurple.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    break;
+                case 11:
+                    this.FlagDarkBlue.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    break;
+                case 12:
+                    this.FlagBrown.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    break;
+                case 13:
+                    this.FlagDarkGreen.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    break;
+                case 14:
+                    this.FlagRed.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    break;
+                case 15:
+                    this.FlagBlack.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    break;
+                case 16:
+                    this.FlagWhite.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                    break;
+            }
+        }
+
+        switch (this.helmet) {
+            case 1:
+                this.HelmetLeather.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                break;
+            case 2:
+                this.HelmetIron.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                break;
+            case 3:
+                this.HelmetGold.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                break;
+            case 4:
+                this.HelmetDiamond.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                break;
+            case 5:
+                this.HelmetHide.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.HelmetNeckHide.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.HelmetHideEar1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.HelmetHideEar2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                break;
+            case 6:
+                this.HelmetFur.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.HelmetNeckFur.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.HelmetFurEar1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.HelmetFurEar2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                break;
+            case 7:
+                this.HelmetReptile.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.HelmetReptileEar1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                this.HelmetReptileEar2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                break;
+            case 8:
+                this.HelmetGreenChitin.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                break;
+            case 9:
+                this.HelmetYellowChitin.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                break;
+            case 10:
+                this.HelmetBlueChitin.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                break;
+            case 11:
+                this.HelmetBlackChitin.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                break;
+            case 12:
+                this.HelmetRedChitin.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+                break;
+
+        }
+    }
 }

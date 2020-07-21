@@ -109,8 +109,9 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
 
     @Override
     public boolean renderName() {
-        return MoCreatures.proxy.getDisplayPetName()
-                && (getPetName() != null && !getPetName().equals("") && (!this.isBeingRidden()) && (this.getRidingEntity() == null));
+//        return MoCreatures.proxy.getDisplayPetName()
+//                && (getPetName() != null && !getPetName().equals("") && (!this.isBeingRidden()) && (this.getRidingEntity() == null));
+        return false;
     }
 
     @Override
@@ -383,9 +384,9 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
             for (int l = 0; l <= 4; l++) {
                 for (int i1 = 0; i1 <= 4; i1++) {
                     BlockPos pos = new BlockPos(i, j, k);
-                    if (((l < 1) || (i1 < 1) || (l > 3) || (i1 > 3)) && this.world.getBlockState(pos.add(l, -1, i1)).isNormalCube()
-                            && !this.world.getBlockState(pos.add(l, 0, i1)).isNormalCube()
-                            && !this.world.getBlockState(pos.add(l, 1, i1)).isNormalCube()) {
+                    if (((l < 1) || (i1 < 1) || (l > 3) || (i1 > 3)) && this.world.getBlockState(pos.add(l, -1, i1)).isNormalCube(world, pos)
+                            && !this.world.getBlockState(pos.add(l, 0, i1)).isNormalCube(world, pos)
+                            && !this.world.getBlockState(pos.add(l, 1, i1)).isNormalCube(world, pos)) {
                         setLocationAndAngles((i + l) + 0.5F, k, (j + i1) + 0.5F, this.rotationYaw, this.rotationPitch);
                         return;
                     }
@@ -422,8 +423,8 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     @Override
-    public boolean getCanSpawnHere() {
-        if (MoCreatures.entityMap.get(this.getClass()).getFrequency() <= 0) {
+    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
+        if (MoCreatures.entityMap.get(this.getType()).getFrequency() <= 0) {
             return false;
         }
         BlockPos pos = new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(getBoundingBox().minY), this.getPosZ());
@@ -434,7 +435,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
             return getCanSpawnHereJungle();
         }
 
-        return super.getCanSpawnHere();
+        return super.canSpawn(worldIn, reason);
     }
 
     public boolean getCanSpawnHereJungle() {
@@ -660,7 +661,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
         }
 
         ItemStack itemstack1 = entityplayer1.inventory.getCurrentItem();
-        if (itemstack1 != null && isMyFavoriteFood(itemstack1)) {
+        if (isMyFavoriteFood(itemstack1)) {
             this.getNavigator().tryMoveToEntityLiving(entityplayer1, 1D); 
             }
     }

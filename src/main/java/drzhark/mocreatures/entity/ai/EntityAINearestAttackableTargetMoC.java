@@ -14,7 +14,7 @@ import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 
-public class EntityAINearestAttackableTargetMoC extends EntitiAITargetMoC {
+public class EntityAINearestAttackableTargetMoC extends EntityAITargetMoC {
 
     protected final Class<? extends LivingEntity> targetClass;
     private final int targetChance;
@@ -61,7 +61,7 @@ public class EntityAINearestAttackableTargetMoC extends EntitiAITargetMoC {
                         }
 
                         if (entitylivingbaseIn.isInvisible()) {
-                            float f = ((PlayerEntity) entitylivingbaseIn).getArmorVisibility();
+                            float f = ((PlayerEntity) entitylivingbaseIn).getArmorCoverPercentage();
 
                             if (f < 0.1F) {
                                 f = 0.1F;

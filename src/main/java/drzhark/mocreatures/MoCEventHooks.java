@@ -1,24 +1,5 @@
 package drzhark.mocreatures;
 
-import drzhark.customspawner.utils.CMSUtils;
-import drzhark.mocreatures.configuration.MoCConfig;
-import drzhark.mocreatures.entity.IMoCTameable;
-import drzhark.mocreatures.util.MoCLog;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 //TODO: update to 1.15, disabling these for now
 public class MoCEventHooks {

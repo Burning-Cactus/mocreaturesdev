@@ -109,11 +109,6 @@ public class MoCEntityRaccoon extends MoCEntityTameableAnimal {
         return super.processInteract(player, hand);
     }
 
-//    @Override
-//    protected Item getDropItem() {
-//        return MoCItems.FUR;
-//    }
-
     @Override
     protected SoundEvent getDeathSound() {
         return MoCSoundEvents.ENTITY_RACCOON_DEATH;

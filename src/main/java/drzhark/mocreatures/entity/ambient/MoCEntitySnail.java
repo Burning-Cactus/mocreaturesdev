@@ -103,9 +103,9 @@ public class MoCEntitySnail extends MoCEntityAmbient {
         }
     }
 
-    @Override
-    public void fall(float f, float f1) {
-    }
+//    @Override
+//    public void fall(float f, float f1) {
+//    }
 
     @Override
     public void tick() {
@@ -115,11 +115,6 @@ public class MoCEntitySnail extends MoCEntityAmbient {
             this.prevRenderYawOffset = this.renderYawOffset = this.rotationYaw = this.prevRotationYaw;
         }
     }
-
-//    @Override TODO: Snail loot table
-//    protected Item getDropItem() {
-//        return Items.SLIME_BALL;
-//    }
 
     @Override
     public boolean isOnLadder() {

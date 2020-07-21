@@ -11,6 +11,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -126,7 +127,7 @@ public class MoCEntityInsect extends MoCEntityAmbient {
     }
 
     @Override
-    public boolean getCanSpawnHere() {
+    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
         return super.getCanSpawnHereAnimal() && super.getCanSpawnHereCreature();
     }
 

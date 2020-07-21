@@ -820,10 +820,10 @@ public class MoCModelWyvern<T extends MoCEntityWyvern> extends AgeableModel<T> {
         matrixStack.translate(0F, yOffset, 0F);
 
         if (isGhost) {
-            GL11.glEnable(3042 /* GL_BLEND */);
-            GL11.glBlendFunc(770, 771);
-            GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
-            //GL11.glScalef(1.3F, 1.0F, 1.3F);
+//            GL11.glEnable(3042 /* GL_BLEND */);
+//            GL11.glBlendFunc(770, 771);
+//            GL11.glColor4f(0.8F, 0.8F, 0.8F, transparency);
+            matrixStack.scale(1.3F, 1.0F, 1.3F);
         }
         this.back1.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         this.Tail.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
@@ -846,88 +846,88 @@ public class MoCModelWyvern<T extends MoCEntityWyvern> extends AgeableModel<T> {
 
         if (isSaddled) { //TODO: Figure out replacement for isHidden
             this.saddle.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-            this.mouthrod.isHidden = false; //render(f5);
-            this.helmetstrap1.isHidden = false; //render(f5);
-            this.helmetstrap2.isHidden = false; //render(f5);
+            this.mouthrod.showModel = true; //render(f5);
+            this.helmetstrap1.showModel = true; //render(f5);
+            this.helmetstrap2.showModel = true; //render(f5);
             this.chestbelt.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
             this.stomachbelt.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
             if (isRidden) {
-                this.controlrope1.isHidden = false;
-                this.controlrope2.isHidden = false;
+                this.controlrope1.showModel = true;
+                this.controlrope2.showModel = true;
             } else {
-                this.controlrope1.isHidden = true;
-                this.controlrope2.isHidden = true;
+                this.controlrope1.showModel = false;
+                this.controlrope2.showModel = false;
             }
         } else {
-            this.mouthrod.isHidden = true;
-            this.helmetstrap1.isHidden = true;
-            this.helmetstrap2.isHidden = true;
+            this.mouthrod.showModel = false;
+            this.helmetstrap1.showModel = false;
+            this.helmetstrap2.showModel = false;
         }
 
-        this.ironhelmethorn1.isHidden = true;
-        this.ironhelmethorn2.isHidden = true;
-        this.ironhelmet.isHidden = true;
-        this.ironhelmetsnout.isHidden = true;
-        this.ironrightlegarmor.isHidden = true;
-        this.ironleftlegarmor.isHidden = true;
-        this.ironchestarmor.isHidden = true;
-        this.ironrightshoulderpad.isHidden = true;
-        this.ironleftshoulderpad.isHidden = true;
+        this.ironhelmethorn1.showModel = false;
+        this.ironhelmethorn2.showModel = false;
+        this.ironhelmet.showModel = false;
+        this.ironhelmetsnout.showModel = false;
+        this.ironrightlegarmor.showModel = false;
+        this.ironleftlegarmor.showModel = false;
+        this.ironchestarmor.showModel = false;
+        this.ironrightshoulderpad.showModel = false;
+        this.ironleftshoulderpad.showModel = false;
 
-        this.goldleftshoulder.isHidden = true;
-        this.goldchestarmor.isHidden = true;
-        this.goldrightshoulder.isHidden = true;
-        this.goldleftlegarmor.isHidden = true;
-        this.goldrightlegarmor.isHidden = true;
-        this.goldhelmethorn1.isHidden = true;
-        this.goldhelmethorn2.isHidden = true;
-        this.goldhelmet.isHidden = true;
-        this.goldhelmetsnout.isHidden = true;
+        this.goldleftshoulder.showModel = false;
+        this.goldchestarmor.showModel = false;
+        this.goldrightshoulder.showModel = false;
+        this.goldleftlegarmor.showModel = false;
+        this.goldrightlegarmor.showModel = false;
+        this.goldhelmethorn1.showModel = false;
+        this.goldhelmethorn2.showModel = false;
+        this.goldhelmet.showModel = false;
+        this.goldhelmetsnout.showModel = false;
 
-        this.diamondleftshoulder.isHidden = true;
-        this.diamondrightshoulder.isHidden = true;
-        this.diamondchestarmor.isHidden = true;
-        this.diamondleftlegarmor.isHidden = true;
-        this.diamondrightlegarmor.isHidden = true;
-        this.diamondhelmet.isHidden = true;
-        this.diamondhelmethorn2.isHidden = true;
-        this.diamondhelmethorn1.isHidden = true;
-        this.diamondhelmetsnout.isHidden = true;
+        this.diamondleftshoulder.showModel = false;
+        this.diamondrightshoulder.showModel = false;
+        this.diamondchestarmor.showModel = false;
+        this.diamondleftlegarmor.showModel = false;
+        this.diamondrightlegarmor.showModel = false;
+        this.diamondhelmet.showModel = false;
+        this.diamondhelmethorn2.showModel = false;
+        this.diamondhelmethorn1.showModel = false;
+        this.diamondhelmetsnout.showModel = false;
 
         switch (armor) {
             case 1:
-                this.ironhelmethorn1.isHidden = false;
-                this.ironhelmethorn2.isHidden = false;
-                this.ironhelmet.isHidden = false;
-                this.ironhelmetsnout.isHidden = false;
-                this.ironrightlegarmor.isHidden = false;
-                this.ironleftlegarmor.isHidden = false;
-                this.ironchestarmor.isHidden = false;
-                this.ironrightshoulderpad.isHidden = false;
-                this.ironleftshoulderpad.isHidden = false;
+                this.ironhelmethorn1.showModel = true;
+                this.ironhelmethorn2.showModel = true;
+                this.ironhelmet.showModel = true;
+                this.ironhelmetsnout.showModel = true;
+                this.ironrightlegarmor.showModel = true;
+                this.ironleftlegarmor.showModel = true;
+                this.ironchestarmor.showModel = true;
+                this.ironrightshoulderpad.showModel = true;
+                this.ironleftshoulderpad.showModel = true;
                 break;
             case 2:
-                this.goldleftshoulder.isHidden = false;
-                this.goldchestarmor.isHidden = false;
-                this.goldrightshoulder.isHidden = false;
-                this.goldleftlegarmor.isHidden = false;
-                this.goldrightlegarmor.isHidden = false;
-                this.goldhelmethorn1.isHidden = false;
-                this.goldhelmethorn2.isHidden = false;
-                this.goldhelmet.isHidden = false;
-                this.goldhelmetsnout.isHidden = false;
+                this.goldleftshoulder.showModel = true;
+                this.goldchestarmor.showModel = true;
+                this.goldrightshoulder.showModel = true;
+                this.goldleftlegarmor.showModel = true;
+                this.goldrightlegarmor.showModel = true;
+                this.goldhelmethorn1.showModel = true;
+                this.goldhelmethorn2.showModel = true;
+                this.goldhelmet.showModel = true;
+                this.goldhelmetsnout.showModel = true;
                 break;
             case 3:
-                this.diamondleftshoulder.isHidden = false;
-                this.diamondrightshoulder.isHidden = false;
-                this.diamondchestarmor.isHidden = false;
-                this.diamondleftlegarmor.isHidden = false;
-                this.diamondrightlegarmor.isHidden = false;
-                this.diamondhelmet.isHidden = false;
-                this.diamondhelmethorn2.isHidden = false;
-                this.diamondhelmethorn1.isHidden = false;
-                this.diamondhelmetsnout.isHidden = false;
+                this.diamondleftshoulder.showModel = true;
+                this.diamondrightshoulder.showModel = true;
+                this.diamondchestarmor.showModel = true;
+                this.diamondleftlegarmor.showModel = true;
+                this.diamondrightlegarmor.showModel = true;
+                this.diamondhelmet.showModel = true;
+                this.diamondhelmethorn2.showModel = true;
+                this.diamondhelmethorn1.showModel = true;
+                this.diamondhelmetsnout.showModel = true;
                 break;
 
         }
@@ -946,9 +946,9 @@ public class MoCModelWyvern<T extends MoCEntityWyvern> extends AgeableModel<T> {
         this.diamondrightshoulder.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         this.diamondchestarmor.render(matrixStack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         if (isGhost) {
-            GL11.glDisable(3042/* GL_BLEND */);
+//            GL11.glDisable(3042/* GL_BLEND */);
         }
-        GL11.glPopMatrix();
+        matrixStack.pop();
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {

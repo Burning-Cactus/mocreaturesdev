@@ -2,30 +2,27 @@ package drzhark.mocreatures.entity.item;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.monster.MoCEntityGolem;
+import drzhark.mocreatures.init.MoCEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.common.extensions.IForgeBlockState;
 
 import java.util.List;
 
@@ -46,9 +43,9 @@ public class MoCEntityThrowableRock extends Entity {
         //this.yOffset = this.height / 2.0F;
     }
 
-    public MoCEntityThrowableRock(EntityType<? extends MoCEntityThrowableRock> type, World par1World, Entity entitythrower, double x, double y, double z)//, int behavior)//, int bMetadata)
+    public MoCEntityThrowableRock(World par1World, Entity entitythrower, double x, double y, double z)//, int behavior)//, int bMetadata)
     {
-        this(type, par1World);
+        this(MoCEntities.TROCK, par1World);
         this.setPosition(x, y, z);
         this.rockTimer = 250;
         this.prevPosX = this.oPosX = x;
@@ -122,7 +119,7 @@ public class MoCEntityThrowableRock extends Entity {
      * Called to update the entity's position/logic.
      */
     @Override
-    public void onEntityUpdate() {
+    public void tick() {
         Entity master = getMaster();
         if (this.rockTimer-- <= -50 && getBehavior() == 0) {
             transformToItem();
@@ -186,7 +183,7 @@ public class MoCEntityThrowableRock extends Entity {
             if (distXZToMaster < 1.5F && master instanceof MoCEntityGolem) {
                 ((MoCEntityGolem) master).receiveRock(this.getState());
                 this.setBehavior(0);
-                this.setDead();
+                this.remove();
             }
 
             double summonedSpeed = this.acceleration;//20D;
@@ -252,16 +249,15 @@ public class MoCEntityThrowableRock extends Entity {
     }
 
     private void transformToItem() {
-        if (!this.world.isRemote && MoCTools.mobGriefing(this.world) && MoCreatures.proxy.golemDestroyBlocks) // don't drop rocks if mobgriefing is set to false, prevents duping
+        if (!this.world.isRemote && MoCTools.mobGriefing(this.world) && MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.golemDestroyBlocks.get()) // don't drop rocks if mobgriefing is set to false, prevents duping
         {
             ItemEntity entityitem =
-                    new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), new ItemStack(this.getState().getBlock(), 1, this.getState()
-                            .getBlock().getMetaFromState(this.getState())));
+                    new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), new ItemStack(this.getState().getBlock(), 1));
             entityitem.setPickupDelay(10);
-            entityitem.setAgeToCreativeDespawnTime();
+//            entityitem.setAgeToCreativeDespawnTime();
             this.world.addEntity(entityitem);
         }
-        this.setDead();
+        this.remove();
     }
 
     public Block getMyBlock() {
@@ -272,7 +268,9 @@ public class MoCEntityThrowableRock extends Entity {
     }
 
     private Entity getMaster() {
-        List<Entity> entityList = this.world.loadedEntityList;
+        List<Entity> entityList = this.world.getLoadedEntitiesWithinAABB(this.getClass(),
+                new AxisAlignedBB(this.getPosX(), this.getPosY(), this.getPosZ(),
+                        this.getPosX() + 16.0D, this.getPosY() + 16.0D, this.getPosZ() + 16.0D));
         for (Entity ent : entityList) {
             if (ent.getEntityId() == getMasterID()) {
                 return ent;

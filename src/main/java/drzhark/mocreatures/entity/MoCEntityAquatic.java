@@ -602,8 +602,8 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
      * entity.
      */
     @Override
-    public boolean getCanSpawnHere() {
-        return MoCreatures.entityMap.get(this.getClass()).getFrequency() > 0 && this.world.checkNoEntityCollision(this);
+    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
+        return MoCreatures.entityMap.get(this.getType()).getFrequency() > 0 && this.world.checkNoEntityCollision(this);
     }
 
     
