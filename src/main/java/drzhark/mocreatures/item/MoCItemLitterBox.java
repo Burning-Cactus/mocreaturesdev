@@ -12,8 +12,8 @@ import net.minecraft.world.World;
 
 public class MoCItemLitterBox extends MoCItem {
 
-    public MoCItemLitterBox() {
-        super(new Item.Properties().maxStackSize(16));
+    public MoCItemLitterBox(Item.Properties builder) {
+        super(builder);
     }
 
     @Override

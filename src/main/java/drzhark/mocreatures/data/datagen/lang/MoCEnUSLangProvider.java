@@ -1,6 +1,8 @@
 package drzhark.mocreatures.data.datagen.lang;
 
+import drzhark.mocreatures.MoCItemGroup;
 import drzhark.mocreatures.init.MoCBlocks;
+import drzhark.mocreatures.init.MoCEntities;
 import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.data.DataGenerator;
 
@@ -16,7 +18,7 @@ public class MoCEnUSLangProvider extends MoCLangProvider {
         add(MoCBlocks.WYVERN_GRASS, "Wyvern Grass");
         add(MoCBlocks.WYVERN_LOG, "Wyvern Log");
         add(MoCBlocks.WYVERN_STONE, "Wyvern Stone");
-        add(MoCBlocks.WYVERN_WOODPLANK, "Wyvern Wooden Planks");
+        add(MoCBlocks.WYVERN_PLANKS, "Wyvern Wooden Planks");
         add(MoCBlocks.WYVERN_TALLGRASS, "Wyvern Tallgrass");
         add(MoCBlocks.WYVERN_LEAVES, "Wyvern Leaves");
         add(MoCBlocks.OGRE_DIRT, "Ogre Dirt");
@@ -24,7 +26,7 @@ public class MoCEnUSLangProvider extends MoCLangProvider {
         add(MoCBlocks.OGRE_LEAVES, "Ogre Leaves");
         add(MoCBlocks.OGRE_LOG, "Ogre Log");
         add(MoCBlocks.OGRE_STONE, "Ogre Stone");
-        add(MoCBlocks.OGRE_WOODPLANK, "Ogre Wooden Planks");
+        add(MoCBlocks.OGRE_PLANKS, "Ogre Wooden Planks");
         add(MoCBlocks.OGRE_TALLGRASS, "Ogre Tallgrass");
 
         //Items
@@ -136,6 +138,8 @@ public class MoCEnUSLangProvider extends MoCLangProvider {
         add(MoCItems.HEARTDARKNESS, "Heart of Darkness");
         add(MoCItems.HEARTFIRE, "Heart of Fire");
         add(MoCItems.HEARTUNDEAD, "Heart of Undead");
+
+        add(MoCItemGroup.TABMOC.getTranslationKey(), "Mo' Creatures");
         //TODO: Finish English translations
     }
 }

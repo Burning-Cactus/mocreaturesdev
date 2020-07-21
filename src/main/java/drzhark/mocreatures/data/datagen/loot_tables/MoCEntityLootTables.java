@@ -2,6 +2,7 @@ package drzhark.mocreatures.data.datagen.loot_tables;
 
 import drzhark.mocreatures.init.MoCEntities;
 import drzhark.mocreatures.init.MoCItems;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.loot.EntityLootTables;
 import net.minecraft.entity.EntityType;
@@ -10,7 +11,25 @@ import net.minecraft.util.IItemProvider;
 import net.minecraft.world.storage.loot.*;
 import net.minecraft.world.storage.loot.functions.SetCount;
 
+import javax.annotation.Nonnull;
+import java.util.HashSet;
+import java.util.Set;
+
 public class MoCEntityLootTables extends EntityLootTables { //TODO: Complex loot tables
+    private final Set<EntityType<?>> lootTables = new HashSet<>();
+
+    @Override
+    @MethodsReturnNonnullByDefault
+    protected Iterable<EntityType<?>> getKnownEntities() {
+        return lootTables;
+    }
+
+    @Override
+    protected void registerLootTable(@Nonnull EntityType<?> type, @Nonnull LootTable.Builder table) {
+        super.registerLootTable(type, table);
+        lootTables.add(type);
+    }
+
     @Override
     protected void addTables() {
         //Creatures

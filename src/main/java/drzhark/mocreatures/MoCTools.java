@@ -176,24 +176,24 @@ public class MoCTools {
         }
     }
 
-    public static void spawnNearPlayer(PlayerEntity player, int entityId, int numberToSpawn)//, World world)
-    {
-        ServerWorld world = player.world.getServer().getWorld(player.world.dimension.getType());
-        for (int i = 0; i < numberToSpawn; i++) {
-            LivingEntity entityliving = null;
-            try {
-                Class<? extends LivingEntity> entityClass = MoCreatures.instaSpawnerMap.get(entityId);
-                entityliving = (LivingEntity) entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            if (entityliving != null) {
-                entityliving.setLocationAndAngles(player.getPosX() - 1, player.getPosY(), player.getPosZ() - 1, player.rotationYaw, player.rotationPitch);
-                world.addEntity(entityliving);
-            }
-        }
-    }
+//    public static void spawnNearPlayer(PlayerEntity player, int entityId, int numberToSpawn)//, World world)
+//    {
+//        ServerWorld world = player.world.getServer().getWorld(player.world.dimension.getType());
+//        for (int i = 0; i < numberToSpawn; i++) {
+//            LivingEntity entityliving = null;
+//            try {
+//                Class<? extends LivingEntity> entityClass = MoCreatures.instaSpawnerMap.get(entityId);
+//                entityliving = (LivingEntity) entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//            if (entityliving != null) {
+//                entityliving.setLocationAndAngles(player.getPosX() - 1, player.getPosY(), player.getPosZ() - 1, player.rotationYaw, player.rotationPitch);
+//                world.addEntity(entityliving);
+//            }
+//        }
+//    }
 
 //    public static void spawnNearPlayerbyName(PlayerEntity player, String eName, int numberToSpawn) {
 //        ServerWorld world = player.world.getServer().getWorld(player.world.dimension.getType());

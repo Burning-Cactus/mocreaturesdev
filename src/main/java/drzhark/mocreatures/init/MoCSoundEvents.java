@@ -193,7 +193,7 @@ public class MoCSoundEvents {
         return new SoundEvent(soundID).setRegistryName(soundID);
     }
 
-    @Mod.EventBusSubscriber(modid = MoCConstants.MOD_ID)
+    @Mod.EventBusSubscriber(modid = MoCConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistrationHandler {
         @SubscribeEvent
         public static void registerSoundEvents(final RegistryEvent.Register<SoundEvent> event) {

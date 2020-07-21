@@ -20,8 +20,8 @@ import net.minecraft.world.World;
 
 public class ItemBuilderHammer extends MoCItem {
 
-    public ItemBuilderHammer() {
-        super(new Item.Properties().maxStackSize(1).maxDamage(2048));
+    public ItemBuilderHammer(Item.Properties builder) {
+        super(builder);
     }
 
     /**

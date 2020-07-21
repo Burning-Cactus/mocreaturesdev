@@ -1,5 +1,6 @@
 package drzhark.mocreatures.data.datagen.recipes;
 
+import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.data.CookingRecipeBuilder;
 import net.minecraft.data.DataGenerator;
@@ -41,5 +42,13 @@ public final class MoCSmeltingRecipeProvider extends RecipeProvider {
         CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(Items.EGG), MoCItems.OMELET, 0.35F, 200).addCriterion("has_egg", this.hasItem(Items.EGG)).build(consumer);
         CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(Items.EGG), MoCItems.OMELET, 0.35F, 100, IRecipeSerializer.SMOKING).addCriterion("has_egg", this.hasItem(Items.EGG)).build(consumer);
         CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(Items.EGG), MoCItems.OMELET, 0.35F, 400, IRecipeSerializer.CAMPFIRE_COOKING).addCriterion("has_egg", this.hasItem(Items.EGG)).build(consumer);
+    }
+
+    /**
+     * Gets a name for this provider, to use in logging.
+     */
+    @Override
+    public String getName() {
+        return MoCConstants.MOD_ID + ": Smelting recipes";
     }
 }

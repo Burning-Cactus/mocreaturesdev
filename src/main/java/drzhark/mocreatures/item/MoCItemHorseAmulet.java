@@ -1,9 +1,6 @@
 package drzhark.mocreatures.item;
 
-import drzhark.mocreatures.MoCConstants;
-import drzhark.mocreatures.MoCPetData;
-import drzhark.mocreatures.MoCTools;
-import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.*;
 import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
 import drzhark.mocreatures.entity.passive.MoCEntityBigCat;
@@ -53,8 +50,8 @@ public class MoCItemHorseAmulet extends MoCItem {
     private String ownerName;
     private int PetId;
 
-    public MoCItemHorseAmulet() {
-        super(new Item.Properties().maxStackSize(1));
+    public MoCItemHorseAmulet(Item.Properties builder) {
+        super(builder);
 //        setHasSubtypes(true);
         this.ageCounter = 0;
     }

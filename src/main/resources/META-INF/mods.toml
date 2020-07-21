@@ -21,7 +21,7 @@ credits="Thanks to Mojang and the Forge team for making this mod possible!" #opt
 displayURL="http://www.mocreatures.org"
 # A text field displayed in the mod UI
 authors="DrZhark, BloodShot, BlockDaddy" #optional
-logoFile="assets/moclogo.png"
+logoFile="moclogo.png"
 # The description text for the mod (multi line!) (#mandatory)
 description="This mod adds many more creatures to Minecraft.  Authored by DrZhark, coding, AI, animations: DrZhark.  Models, textures: BlockDaddy, DrZhark.  SMP coding: Bloodshot, DrZhark"
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.

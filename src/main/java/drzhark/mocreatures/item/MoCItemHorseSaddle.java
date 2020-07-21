@@ -9,8 +9,8 @@ import net.minecraft.util.Hand;
 
 public class MoCItemHorseSaddle extends MoCItem {
 
-    public MoCItemHorseSaddle() {
-        super(new Item.Properties().maxStackSize(32));
+    public MoCItemHorseSaddle(Item.Properties builder) {
+        super(builder);
     }
 
     @Override

@@ -26,7 +26,7 @@ public class MoCItemWeapon extends MoCItem {
     private boolean breakable = false;
 
     public MoCItemWeapon(IItemTier materialIn, Item.Properties builder) {
-        super(builder.maxDamage(materialIn.getMaxUses()).maxStackSize(1));
+        super(builder.maxDamage(materialIn.getMaxUses()));
         this.material = materialIn;
         this.attackDamage = 4F + materialIn.getAttackDamage();
     }

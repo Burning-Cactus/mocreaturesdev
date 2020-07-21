@@ -37,11 +37,9 @@ import java.util.UUID;
 @Mod(MoCConstants.MOD_ID)
 public class MoCreatures {
 
-//    @Instance(MoCConstants.MOD_ID)
     public static MoCreatures instance;
 
     public static final Logger LOGGER = LogManager.getLogger(MoCConstants.MOD_ID);
-    public static final ItemGroup tabMoC = new MoCItemGroup("MoCreaturesTab");
     public MoCPetMapData mapData;
     public static boolean isCustomSpawnerLoaded = false;
     public static GameProfile MOCFAKEPLAYER = new GameProfile(UUID.fromString("6E379B45-1111-2222-3333-2FE1A88BCD66"), "[MoCreatures]");
@@ -51,7 +49,7 @@ public class MoCreatures {
 
     public static Map<String, MoCEntityData> mocEntityMap = new TreeMap<String, MoCEntityData>(String.CASE_INSENSITIVE_ORDER);
     public static Map<EntityType<?>, MoCEntityData> entityMap = new HashMap<EntityType<?>, MoCEntityData>();
-    public static Map<Integer, Class<? extends LivingEntity>> instaSpawnerMap = new HashMap<Integer, Class<? extends LivingEntity>>();
+//    public static Map<Integer, Class<? extends LivingEntity>> instaSpawnerMap = new HashMap<Integer, Class<? extends LivingEntity>>();
     public static final String MOC_LOGO = TextFormatting.WHITE + "[" + TextFormatting.AQUA + "Mo'Creatures" + TextFormatting.WHITE + "]";
     public static final MoCTextures MOCTEXTURES = new MoCTextures();
 

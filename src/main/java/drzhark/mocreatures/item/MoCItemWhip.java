@@ -32,8 +32,8 @@ import java.util.List;
 
 public class MoCItemWhip extends MoCItem {
 
-    public MoCItemWhip() {
-        super(new Item.Properties().maxStackSize(1).maxDamage(24));
+    public MoCItemWhip(Item.Properties builder) {
+        super(builder);
     }
 
 //    @Override

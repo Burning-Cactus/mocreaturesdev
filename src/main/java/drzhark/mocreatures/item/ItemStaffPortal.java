@@ -1,5 +1,6 @@
 package drzhark.mocreatures.item;
 
+import drzhark.mocreatures.MoCItemGroup;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
 import net.minecraft.block.BlockState;
@@ -26,8 +27,8 @@ import net.minecraft.world.dimension.DimensionType;
 
 public class ItemStaffPortal extends MoCItem {
 
-    public ItemStaffPortal() {
-        super(new Item.Properties().maxStackSize(1).maxDamage(3));
+    public ItemStaffPortal(Item.Properties builder) {
+        super(builder);
     }
 /*    private int portalPosX;
     private int portalPosY;

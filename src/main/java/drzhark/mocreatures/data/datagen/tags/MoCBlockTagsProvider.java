@@ -12,7 +12,7 @@ public class MoCBlockTagsProvider extends BlockTagsProvider {
 
     @Override
     protected void registerTags() {
-        this.getBuilder(BlockTags.PLANKS).add(MoCBlocks.WYVERN_WOODPLANK).add(MoCBlocks.OGRE_WOODPLANK);
+        this.getBuilder(BlockTags.PLANKS).add(MoCBlocks.WYVERN_PLANKS).add(MoCBlocks.OGRE_PLANKS);
         this.getBuilder(BlockTags.LOGS).add(MoCBlocks.WYVERN_LOG).add(MoCBlocks.OGRE_LOG);
         this.getBuilder(BlockTags.LEAVES).add(MoCBlocks.WYVERN_LEAVES).add(MoCBlocks.OGRE_LEAVES);
     }

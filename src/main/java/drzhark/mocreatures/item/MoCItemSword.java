@@ -20,9 +20,6 @@ public class MoCItemSword extends SwordItem {
 
     public MoCItemSword(IItemTier material, int strength, float speed, Item.Properties builder) {
         super(material, strength, speed, builder);
-//        this.setCreativeTab(MoCreatures.tabMoC);
-//        this.setRegistryName(MoCConstants.MOD_ID, name);
-//        this.setUnlocalizedName(name);
     }
 
     public MoCItemSword(IItemTier material, int strength, float speed, int damageType, boolean fragile, Item.Properties builder) {

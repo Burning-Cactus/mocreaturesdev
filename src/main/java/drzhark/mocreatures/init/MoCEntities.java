@@ -72,9 +72,6 @@ import static drzhark.mocreatures.MoCConstants.MOD_PREFIX;
 
 @ObjectHolder(MOD_ID)
 public class MoCEntities {
-
-    //All IDs are now namespaced
-
     public static List<EntityType<?>> ENTITIES = new ArrayList<>();
     public static List<EntityType<?>> SPAWN_ENTITIES = new ArrayList<>();
 
@@ -201,13 +198,13 @@ public class MoCEntities {
     public static final EntityType<MoCEntityLitterBox> LITTERBOX = buildType("litterbox", MoCEntityLitterBox::new, EntityClassification.MISC, 1.0F, 0.3F);
     public static final EntityType<MoCEntityThrowableRock> TROCK = buildType("trock", MoCEntityThrowableRock::new, EntityClassification.MISC, 1F, 1F);
 
-    @Mod.EventBusSubscriber(modid = MOD_ID)
+    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistrationHandler {
         @SubscribeEvent
         public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
             MoCreatures.LOGGER.info("Registering entities...");
             final IForgeRegistry<EntityType<?>> registry = event.getRegistry();
-            for(EntityType type : ENTITIES) {
+            for(EntityType<?> type : ENTITIES) {
                 registry.register(type);
             }
 

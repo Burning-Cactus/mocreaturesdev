@@ -17,8 +17,8 @@ import net.minecraft.world.World;
 
 public class ItemStaffTeleport extends MoCItem {
 
-    public ItemStaffTeleport() {
-        super(new Item.Properties().maxStackSize(1).maxDamage(128));
+    public ItemStaffTeleport(Item.Properties builder) {
+        super(builder);
     }
 
     /**
