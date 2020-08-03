@@ -109,11 +109,6 @@ public class MoCEntityManticore extends MoCEntityMob {
         return true;
     }
 
-    @Override
-    public float getMoveSpeed() {
-        return 0.9F;
-    }
-
     /*protected void updateFallState(double y, boolean onGroundIn, Block blockIn, BlockPos pos) {
     }*/
 

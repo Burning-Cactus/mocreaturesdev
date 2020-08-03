@@ -155,11 +155,6 @@ public class MoCEntityScorpion extends MoCEntityMob {
     }
 
     @Override
-    public float getMoveSpeed() {
-        return 0.8F;
-    }
-
-    @Override
     public boolean isOnLadder() {
         return this.collidedHorizontally;
     }

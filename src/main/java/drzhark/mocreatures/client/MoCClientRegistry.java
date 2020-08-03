@@ -17,13 +17,13 @@ import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-@Mod.EventBusSubscriber(modid = MoCConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = MoCConstants.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MoCClientRegistry {
 
-    @SuppressWarnings("unchecked")
     @SubscribeEvent
-    public static void registerRenderers(final ModelRegistryEvent event) {
+    public static void registerRenderers(ModelRegistryEvent event) {
         //Ambients
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.ANT, m-> new MoCRenderInsect<>(m, new MoCModelAnt<>(), 0.1F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.BEE, m-> new MoCRenderInsect<>(m, new MoCModelBee<>(), 0.1F));
@@ -51,7 +51,7 @@ public class MoCClientRegistry {
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.ELEPHANT, m -> new MoCRenderMoC<>(m, new MoCModelElephant<>(), 0.5F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.ENT, m -> new MoCRenderMoC<>(m, new MoCModelEnt<>(), 0.5F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.FOX, m -> new MoCRenderMoC<>(m, new MoCModelFox(), 0.5F));
-        RenderingRegistry.registerEntityRenderingHandler(MoCEntities.GOAT, m -> new MoCRenderMoC<>(m, new MoCModelGoat(), 0.3F));
+        RenderingRegistry.registerEntityRenderingHandler(MoCEntities.GOAT, m -> new MoCRenderGoat(m, new MoCModelGoat(), 0.3F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.KITTY, m -> new MoCRenderKitty(m, new MoCModelKitty(), 0.4F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.KOMODO_DRAGON, m -> new MoCRenderMoC<>(m, new MoCModelKomodo(), 0.3F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.LEOGER, m -> new MoCRenderMoC<>(m, new MoCModelNewBigCat<>(), 0.5F));

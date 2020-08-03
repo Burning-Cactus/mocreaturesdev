@@ -18,6 +18,7 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -28,6 +29,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class MoCEntityGoat extends MoCEntityTameableAnimal {
 
@@ -76,6 +78,11 @@ public class MoCEntityGoat extends MoCEntityTameableAnimal {
         super.registerData();
         this.dataManager.register(IS_CHARGING, Boolean.valueOf(false));
         this.dataManager.register(IS_UPSET, Boolean.valueOf(false));
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     public boolean getUpset() {

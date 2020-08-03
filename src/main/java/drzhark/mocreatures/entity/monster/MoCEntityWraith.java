@@ -11,11 +11,14 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class MoCEntityWraith extends MoCEntityMob//MoCEntityFlyerMob
 {
@@ -33,16 +36,20 @@ public class MoCEntityWraith extends MoCEntityMob//MoCEntityFlyerMob
     protected void registerGoals() {
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
     }
 
     @Override
     protected void registerAttributes() {
         super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE)
-                .setBaseValue(this.world.getDifficulty().getId() == 1 ? 2.0D : 3.0D); // setAttackStrength
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(this.world.getDifficulty().getId() == 1 ? 2.0D : 3.0D); // setAttackStrength
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
@@ -102,7 +109,7 @@ public class MoCEntityWraith extends MoCEntityMob//MoCEntityFlyerMob
         }
     }
 
-    @Override
+    /*@Override
     public void livingTick() {
         if (this.attackCounter > 0) {
             this.attackCounter += 2;
@@ -110,7 +117,7 @@ public class MoCEntityWraith extends MoCEntityMob//MoCEntityFlyerMob
                 this.attackCounter = 0;
         }
         super.livingTick();
-    }
+    }*/
 
     @Override
     public void performAnimation(int animationType) {

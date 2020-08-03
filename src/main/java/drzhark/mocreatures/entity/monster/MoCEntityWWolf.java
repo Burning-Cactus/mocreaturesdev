@@ -20,6 +20,7 @@ import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -30,6 +31,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.List;
 
@@ -59,6 +61,11 @@ public class MoCEntityWWolf extends MoCEntityMob {
     }
 
     @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+    @Override
     public void selectType() {
         if (getSubType() == 0) {
             setType(this.rand.nextInt(4) + 1);
@@ -69,18 +76,18 @@ public class MoCEntityWWolf extends MoCEntityMob {
     public ResourceLocation getTexture() {
         switch (getSubType()) {
             case 1:
-                return MoCreatures.getTexture("wolfblack.png");
+                return MoCreatures.getTexture("wwolf/wolfblack.png");
             case 2:
-                return MoCreatures.getTexture("wolfwild.png");
+                return MoCreatures.getTexture("wwolf/wolfwild.png");
             case 3:
-                return MoCreatures.getTexture("wolftimber.png"); //snow wolf
+                return MoCreatures.getTexture("wwolf/wolftimber.png"); //snow wolf
             case 4:
-                return MoCreatures.getTexture("wolfdark.png");
+                return MoCreatures.getTexture("wwolf/wolfdark.png");
             case 5:
-                return MoCreatures.getTexture("wolfbright.png");
+                return MoCreatures.getTexture("wwolf/wolfbright.png");
 
             default:
-                return MoCreatures.getTexture("wolfwild.png");
+                return MoCreatures.getTexture("wwolf/wolfwild.png");
         }
     }
 

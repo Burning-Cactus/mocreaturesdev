@@ -1,7 +1,7 @@
 package drzhark.mocreatures.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import drzhark.mocreatures.client.MoCClientProxy;
+import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.client.model.MoCModelWraith;
 import drzhark.mocreatures.entity.monster.MoCEntityWraith;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -10,12 +10,12 @@ import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
 public class MoCRenderWraith extends LivingRenderer<MoCEntityWraith, MoCModelWraith<MoCEntityWraith>> {
+    private static final ResourceLocation TEXTURE = new ResourceLocation(MoCConstants.MOD_ID, "textures/entity/wraith.png");
 
-    public MoCRenderWraith(EntityRendererManager manager, MoCModelWraith model, float f) {
+    public MoCRenderWraith(EntityRendererManager manager, MoCModelWraith<MoCEntityWraith> model, float f) {
         //super(modelbiped, f, 1.0F);
         super(manager, model, f);
         //modelBipedMain = modelbiped;
@@ -42,6 +42,6 @@ public class MoCRenderWraith extends LivingRenderer<MoCEntityWraith, MoCModelWra
 
     @Override
     public ResourceLocation getEntityTexture(MoCEntityWraith entitywraith) {
-        return entitywraith.getTexture();
+        return TEXTURE;
     }
 }

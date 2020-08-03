@@ -13,9 +13,11 @@ import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageHealth;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -27,6 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.*;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.List;
@@ -34,7 +37,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity//, IEntityAdditionalSpawnData
+public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//, IEntityAdditionalSpawnData
 {
 
     protected boolean divePending;
@@ -56,14 +59,14 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
         this.moveController = new EntityAIMoverHelperMoC(this);
         this.navigatorWater = new SwimmerPathNavigator(this, world);
         this.navigatorFlyer = new PathNavigateFlyerMoC(this, world);
-        this.goalSelector.addGoal(4, this.wander = new EntityAIWanderMoC2(this, 1.0D, 80));
+//        this.goalSelector.addGoal(4, this.wander = new EntityAIWanderMoC2(this, 1.0D, 80));
     }
 
     @Override
     protected void registerAttributes() {
         super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(getMoveSpeed());
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(getAttackStrenght());
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.7F);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2D);
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
     }
 
@@ -78,10 +81,6 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
         return MoCreatures.getTexture(this.texture);
     }
 
-    protected double getAttackStrenght() {
-        return 2D;
-    }
-
     /**
      * Put your code to choose a texture / the mob type in here. Will be called
      * by default MocEntity constructors.
@@ -94,15 +93,15 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(ADULT, Boolean.valueOf(false));
-        this.dataManager.register(TYPE, Integer.valueOf(0));
-        this.dataManager.register(AGE, Integer.valueOf(45));
+        this.dataManager.register(ADULT, false);
+        this.dataManager.register(TYPE, 0);
+        this.dataManager.register(AGE, 45);
         this.dataManager.register(NAME_STR, "");
     }
 
     @Override
     public void setType(int i) {
-        this.dataManager.set(TYPE, Integer.valueOf(i));
+        this.dataManager.set(TYPE, i);
     }
 
     @Override
@@ -111,19 +110,19 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
     }
 
     @Override
-    public EntityType getType() {
+    public EntityType<?> getType() {
         //return ((Integer)this.dataManager.get(TYPE)).intValue();
         return super.getType();
     }
 
     @Override
     public boolean getIsAdult() {
-        return ((Boolean)this.dataManager.get(ADULT)).booleanValue();
+        return this.dataManager.get(ADULT);
     }
 
     @Override
     public void setAdult(boolean flag) {
-        this.dataManager.set(ADULT, Boolean.valueOf(flag));
+        this.dataManager.set(ADULT, flag);
     }
     
     @Override
@@ -138,7 +137,7 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
 
     @Override
     public int getEdad() {
-        return ((Integer)this.dataManager.get(AGE)).intValue();
+        return this.dataManager.get(AGE);
     }
 
     @Nullable
@@ -272,7 +271,7 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
             }
 
             if (getIsFlying() && this.getNavigator().noPath() && !isMovementCeased() && this.getAttackTarget() == null && this.rand.nextInt(20) == 0) {
-                this.wander.makeUpdate();
+//                this.wander.makeUpdate(); TODO: Make wandering code work
             }
         }
 
@@ -373,10 +372,6 @@ public abstract class MoCEntityMob extends CreatureEntity implements IMoCEntity/
      */
     @Override
     public void performAnimation(int attackType) {
-    }
-
-    public float getMoveSpeed() {
-        return 0.7F;
     }
 
     @Override

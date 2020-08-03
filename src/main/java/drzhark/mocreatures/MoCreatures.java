@@ -47,11 +47,12 @@ public class MoCreatures {
     public static final DimensionType WYVERN_LAIR = null;
     public static int WyvernLairDimensionID; //17;
 
-    public static Map<String, MoCEntityData> mocEntityMap = new TreeMap<String, MoCEntityData>(String.CASE_INSENSITIVE_ORDER);
-    public static Map<EntityType<?>, MoCEntityData> entityMap = new HashMap<EntityType<?>, MoCEntityData>();
+//    public static Map<String, MoCEntityData> mocEntityMap = new TreeMap<String, MoCEntityData>(String.CASE_INSENSITIVE_ORDER);
+    public static Map<EntityType<?>, MoCEntityData> entityMap = new HashMap<>();
 //    public static Map<Integer, Class<? extends LivingEntity>> instaSpawnerMap = new HashMap<Integer, Class<? extends LivingEntity>>();
     public static final String MOC_LOGO = TextFormatting.WHITE + "[" + TextFormatting.AQUA + "Mo'Creatures" + TextFormatting.WHITE + "]";
     public static final MoCTextures MOCTEXTURES = new MoCTextures();
+    public static final String ENTITY_TEXTURES = "textures/entity/";
 
 
     public MoCreatures() {
@@ -157,7 +158,7 @@ public class MoCreatures {
 //    }
 
     public static ResourceLocation getTexture(String texture) {
-        return MOCTEXTURES.getTexture(texture);
+        return new ResourceLocation(MoCConstants.MOD_ID, ENTITY_TEXTURES + texture);
     }
 
 }
