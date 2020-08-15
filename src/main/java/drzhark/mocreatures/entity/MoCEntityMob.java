@@ -44,7 +44,7 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     protected int maxHealth;
     protected float moveSpeed;
     protected String texture;
-    protected PathNavigator navigatorWater;
+//    protected PathNavigator navigatorWater;
     protected PathNavigator navigatorFlyer;
     protected EntityAIWanderMoC2 wander;
 
@@ -57,7 +57,7 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
         super(type, world);
         this.texture = "blank.jpg";
         this.moveController = new EntityAIMoverHelperMoC(this);
-        this.navigatorWater = new SwimmerPathNavigator(this, world);
+//        this.navigatorWater = new SwimmerPathNavigator(this, world);
         this.navigatorFlyer = new PathNavigateFlyerMoC(this, world);
 //        this.goalSelector.addGoal(4, this.wander = new EntityAIWanderMoC2(this, 1.0D, 80));
     }
@@ -557,17 +557,13 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
 
     @Override
     public PathNavigator getNavigator() {
-        if (this.isInWater() && this.isAmphibian()) {
-            return this.navigatorWater;
-        }
+//        if (this.isInWater() && this.isAmphibian()) {
+//            return this.navigatorWater;
+//        }
         if (this.isFlyer()) {
             return this.navigatorFlyer;
         }
         return this.navigator;
-    }
-
-    public boolean isAmphibian() {
-        return false;
     }
 
     @Override

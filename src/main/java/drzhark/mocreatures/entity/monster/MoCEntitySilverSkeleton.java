@@ -12,6 +12,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -29,7 +30,6 @@ public class MoCEntitySilverSkeleton extends MoCEntityMob {
 
     public MoCEntitySilverSkeleton(EntityType<? extends MoCEntitySilverSkeleton> type, World world) {
         super(type, world);
-        this.texture = "silverskeleton.png";
     }
 
     @Override
@@ -37,7 +37,7 @@ public class MoCEntitySilverSkeleton extends MoCEntityMob {
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
     }
 
     @Override
@@ -51,11 +51,7 @@ public class MoCEntitySilverSkeleton extends MoCEntityMob {
     @Override
     public void livingTick() {
         if (!this.world.isRemote) {
-            if (this.getAttackTarget() == null) {
-                setSprinting(false);
-            } else {
-                setSprinting(true);
-            }
+            setSprinting(this.getAttackTarget() != null);
         }
 
         if (this.attackCounterLeft > 0 && ++this.attackCounterLeft > 10) {
@@ -69,7 +65,7 @@ public class MoCEntitySilverSkeleton extends MoCEntityMob {
         super.livingTick();
     }
 //
-//    @Override
+//    @Override TODO loot tables
 //    protected Item getDropItem() {
 //        if (this.rand.nextInt(10) == 0) {
 //            return MoCItems.SILVERSWORD;

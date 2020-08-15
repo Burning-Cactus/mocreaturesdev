@@ -23,7 +23,6 @@ import org.lwjgl.opengl.GL11;
 /**
  * Base class for rendering most of the MoC entities. This is how tamed mobs will show their names and health.
  */
-@OnlyIn(Dist.CLIENT)
 public class MoCRenderMoC<T extends LivingEntity, M extends EntityModel<T>> extends LivingRenderer<T, M> {
 
     public MoCRenderMoC(EntityRendererManager manager, M modelBase, float f) {
@@ -34,8 +33,8 @@ public class MoCRenderMoC<T extends LivingEntity, M extends EntityModel<T>> exte
     public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
         IMoCEntity entityMoC = (IMoCEntity) entityIn;
-        boolean flag = MoCConfig.CLIENT_CONFIG.displayPetName.get() && !(entityMoC.getPetName().isEmpty());
-        boolean flag1 = MoCConfig.CLIENT_CONFIG.displayPetHealth.get();
+        boolean flag = false; // MoCConfig.CLIENT_CONFIG.displayPetName.get() && !(entityMoC.getPetName().isEmpty());
+        boolean flag1 = false; //MoCConfig.CLIENT_CONFIG.displayPetHealth.get();
         if (entityMoC.renderName()) {
             float f2 = 1.6F;
             float f3 = 0.01666667F * f2;
@@ -50,11 +49,11 @@ public class MoCRenderMoC<T extends LivingEntity, M extends EntityModel<T>> exte
 //                matrixStackIn.normal3f(0.0F, 1.0F, 0.0F);
                 matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-this.renderManager.pointedEntity.getEyeHeight()));
                 matrixStackIn.scale(-f3, -f3, f3);
-                GL11.glDisable(2896 /* GL_LIGHTING */);
+//                GL11.glDisable(2896 /* GL_LIGHTING */);
                 Tessellator tessellator1 = Tessellator.getInstance();
                 int yOff = entityMoC.nameYOffset();
                 if (flag1) {
-                    GL11.glDisable(3553 /* GL_TEXTURE_2D */);
+//                    GL11.glDisable(3553 /* GL_TEXTURE_2D */);
                     if (!flag) {
                         yOff += 8;
                     }
@@ -88,15 +87,15 @@ public class MoCRenderMoC<T extends LivingEntity, M extends EntityModel<T>> exte
                     tessellator1.getBuffer().pos(i + 1, 8 + yOff, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
                     tessellator1.getBuffer().pos(i + 1, -1 + yOff, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
                     tessellator1.draw();
-                    GL11.glEnable(3553 /* GL_TEXTURE_2D */);
+//                    GL11.glEnable(3553 /* GL_TEXTURE_2D */);
                     fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, yOff, 0x20ffffff);
-                    GL11.glEnable(2929 /* GL_DEPTH_TEST */);
-                    GL11.glDepthMask(true);
+//                    GL11.glEnable(2929 /* GL_DEPTH_TEST */);
+//                    GL11.glDepthMask(true);
                     fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, yOff, -1);
-                    GL11.glDisable(3042 /* GL_BLEND */);
-                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//                    GL11.glDisable(3042 /* GL_BLEND */);
+//                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 }
-                GL11.glEnable(2896 /* GL_LIGHTING */);
+//                GL11.glEnable(2896 /* GL_LIGHTING */);
                 matrixStackIn.pop();
             }
         }

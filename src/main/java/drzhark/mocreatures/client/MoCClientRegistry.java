@@ -88,7 +88,7 @@ public class MoCClientRegistry {
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.RAT, m -> new MoCRenderRat<>(m, new MoCModelRat<>(), 0.2F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.MANTICORE, m -> new MoCRenderMoC<>(m, new MoCModelManticore(), 0.7F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.MINI_GOLEM, m -> new MoCRenderMoC<>(m, new MoCModelMiniGolem(), 0.5F));
-        RenderingRegistry.registerEntityRenderingHandler(MoCEntities.SILVER_SKELETON, m -> new MoCRenderMoC<>(m, new MoCModelSilverSkeleton(), 0.6F));
+        RenderingRegistry.registerEntityRenderingHandler(MoCEntities.SILVER_SKELETON, m -> new MoCSilverSkeletonRenderer(m, new MoCModelSilverSkeleton(), 0.6F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.SCORPION, m -> new MoCRenderScorpion(m, new MoCModelScorpion<>(), 0.4F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.WEREWOLF, m -> new MoCRenderWerewolf(m, new MoCModelWereHuman(), new MoCModelWere(), 0.7F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.WWOLF, m -> new MoCRenderWWolf(m, new MoCModelWolf<>(), 0.7F));
