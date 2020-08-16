@@ -29,7 +29,7 @@ public class MoCEntityLiard extends MoCEntityBigCat {
         return MoCreatures.getTexture("bcliard.png");
     }
 
-    @Override
+    /*@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
@@ -47,7 +47,7 @@ public class MoCEntityLiard extends MoCEntityBigCat {
         }
 
         return super.processInteract(player, hand);
-    }
+    }*/
     
     @Override
     public String getOffspringClazz(IMoCTameable mate) {

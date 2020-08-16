@@ -3,10 +3,9 @@ package drzhark.mocreatures.entity.monster;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -22,10 +21,8 @@ public class MoCEntityFlameWraith extends MoCEntityWraith implements IMob {
         this.burningTime = 30;
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityWraith.registerAttributes().func_233815_a_(Attributes.MAX_HEALTH, 15.0D);
     }
 
     @Override
@@ -50,10 +47,10 @@ public class MoCEntityFlameWraith extends MoCEntityWraith implements IMob {
     }*/
 
     @Override
-    protected void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
-        if (!this.world.isRemote && !this.world.getDimension().doesWaterVaporize()) {
+    public void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
+        /*if (!this.world.isRemote && !this.world.getDimension().doesWaterVaporize()) {
             entityLivingBaseIn.setFire(this.burningTime);
-        }
+        }*/
         super.applyEnchantments(entityLivingBaseIn, entityIn);
     }
 

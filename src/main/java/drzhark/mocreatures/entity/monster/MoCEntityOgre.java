@@ -4,14 +4,12 @@ import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
-import drzhark.mocreatures.init.MoCSoundEvents;
-import drzhark.mocreatures.network.MoCMessageHandler;
-import drzhark.mocreatures.network.message.MoCMessageAnimation;
-import drzhark.mocreatures.network.message.MoCMessageExplode;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -41,12 +39,11 @@ public class MoCEntityOgre extends MoCEntityMob {
         this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(calculateMaxHealth());
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityMob.registerAttributes()
+//                .func_233815_a_(Attributes.MAX_HEALTH, calculateMaxHealth())
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     @Override
@@ -178,13 +175,12 @@ public class MoCEntityOgre extends MoCEntityMob {
 
             boolean leftArmW = (getSubType() == 2 || getSubType() == 4 || getSubType() == 6) && this.rand.nextInt(2) == 0;
 
+            this.attackCounter = 1;
             if (leftArmW) {
-                this.attackCounter = 1;
                 this.armToAnimate = 1;
 //                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
 //                        new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             } else {
-                this.attackCounter = 1;
                 this.armToAnimate = 2;
 //                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 2),
 //                        new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));

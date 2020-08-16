@@ -1,12 +1,11 @@
 package drzhark.mocreatures.entity.ai;
 
-import drzhark.mocreatures.entity.IMoCTameable;
 import drzhark.mocreatures.entity.MoCEntityAnimal;
 import drzhark.mocreatures.entity.monster.MoCEntityOgre;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.Path;
@@ -136,7 +135,7 @@ public abstract class EntityAITargetMoC extends Goal {
         if (this.taskOwner instanceof MoCEntityOgre) {
             return ((MoCEntityOgre) this.taskOwner).getAttackRange();
         }
-        IAttributeInstance iattributeinstance = this.taskOwner.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
+        ModifiableAttributeInstance iattributeinstance = this.taskOwner.getAttribute(Attributes.FOLLOW_RANGE);
         return iattributeinstance == null ? 16.0D : iattributeinstance.getValue();
     }
 
@@ -166,7 +165,7 @@ public abstract class EntityAITargetMoC extends Goal {
         if (!isSuitableTarget(this.taskOwner, target, includeInvincibles, this.shouldCheckSight)) {
             //System.out.println("not suitable target");
             return false;
-        } else if (!this.taskOwner.isWithinHomeDistanceFromPosition(new BlockPos(target))) {
+        } else if (!this.taskOwner.isWithinHomeDistanceFromPosition(new BlockPos(target.getPositionVec()))) {
             //System.out.println("attacker away from homeposition");
             return false;
         } else {

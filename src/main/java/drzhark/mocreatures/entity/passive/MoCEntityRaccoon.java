@@ -1,6 +1,5 @@
 package drzhark.mocreatures.entity.passive;
 
-import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
 import drzhark.mocreatures.entity.ai.EntityAIFleeFromPlayer;
 import drzhark.mocreatures.entity.ai.EntityAIFollowAdult;
@@ -8,21 +7,18 @@ import drzhark.mocreatures.entity.ai.EntityAIFollowOwnerPlayer;
 import drzhark.mocreatures.entity.ai.EntityAIHunt;
 import drzhark.mocreatures.entity.ai.EntityAIPanicMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
@@ -54,13 +50,11 @@ public class MoCEntityRaccoon extends MoCEntityTameableAnimal {
         this.targetSelector.addGoal(1, new EntityAIHunt(this, AnimalEntity.class, true));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityTameableAnimal.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 8.0D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 1.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.3D);
     }
 
     @Override
@@ -79,7 +73,7 @@ public class MoCEntityRaccoon extends MoCEntityTameableAnimal {
         return false;
     }
 
-    @Override
+    /*@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
@@ -107,7 +101,7 @@ public class MoCEntityRaccoon extends MoCEntityTameableAnimal {
         }
 
         return super.processInteract(player, hand);
-    }
+    }*/
 
     @Override
     protected SoundEvent getDeathSound() {

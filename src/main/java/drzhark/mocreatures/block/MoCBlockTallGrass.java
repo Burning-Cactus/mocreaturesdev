@@ -1,6 +1,6 @@
 package drzhark.mocreatures.block;
 
-import drzhark.mocreatures.init.MoCBlocks;
+import drzhark.mocreatures.registry.MoCBlocks;
 import net.minecraft.block.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -10,11 +10,11 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.IShearable;
+import net.minecraftforge.common.IForgeShearable;
 
 import java.util.Random;
 
-public class MoCBlockTallGrass extends BushBlock implements IShearable, IGrowable {
+public class MoCBlockTallGrass extends BushBlock implements IForgeShearable, IGrowable {
 
     protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.8D, 0.9D);
     protected static final VoxelShape SHAPE = VoxelShapes.create(AABB);

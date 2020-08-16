@@ -8,32 +8,28 @@ import drzhark.mocreatures.entity.ai.EntityAIHunt;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.ai.EntityAIPanicMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import drzhark.mocreatures.inventory.MoCAnimalChest;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 
 public class MoCEntityBear extends MoCEntityTameableAnimal {
@@ -71,14 +67,13 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
         this.targetSelector.addGoal(1, new EntityAIHunt(this, AnimalEntity.class, true));
         this.targetSelector.addGoal(2, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
-    
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(calculateMaxHealth());
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(getAttackStrength());
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityTameableAnimal.registerAttributes()
+//                .func_233815_a_(Attributes.MAX_HEALTH, calculateMaxHealth())
+//        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+//                .func_233815_a_(Attributes.ATTACK_DAMAGE, getAttackStrength())
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     /**
@@ -88,10 +83,10 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(BEAR_STATE, Integer.valueOf(0));
-        this.dataManager.register(RIDEABLE, Boolean.valueOf(false)); 
-        this.dataManager.register(CHESTED, Boolean.valueOf(false)); 
-        this.dataManager.register(GHOST, Boolean.valueOf(false));
+        this.dataManager.register(BEAR_STATE, 0);
+        this.dataManager.register(RIDEABLE, Boolean.FALSE);
+        this.dataManager.register(CHESTED, Boolean.FALSE);
+        this.dataManager.register(GHOST, Boolean.FALSE);
     }
 
     /**
@@ -100,44 +95,44 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
      * @return
      */
     public int getBearState() {
-        return this.dataManager.get(BEAR_STATE).intValue();
+        return this.dataManager.get(BEAR_STATE);
     }
 
     public void setBearState(int i) {
-        this.dataManager.set(BEAR_STATE, Integer.valueOf(i));
+        this.dataManager.set(BEAR_STATE, i);
     }
 
     @Override
     public boolean getIsRideable() {
-        return this.dataManager.get(RIDEABLE).booleanValue();
+        return this.dataManager.get(RIDEABLE);
     }
 
     public boolean getIsChested() {
-        return this.dataManager.get(CHESTED).booleanValue();
+        return this.dataManager.get(CHESTED);
     }
 
     public boolean getIsGhost() {
-        return this.dataManager.get(GHOST).booleanValue();
+        return this.dataManager.get(GHOST);
     }
 
     public void setIsChested(boolean flag) {
-        this.dataManager.set(CHESTED, Boolean.valueOf(flag));
+        this.dataManager.set(CHESTED, flag);
     }
 
     public void setRideable(boolean flag) {
-        this.dataManager.set(RIDEABLE, Boolean.valueOf(flag));
+        this.dataManager.set(RIDEABLE, flag);
     }
 
     public void setIsGhost(boolean flag) {
-        this.dataManager.set(GHOST, Boolean.valueOf(flag));
+        this.dataManager.set(GHOST, flag);
     }
     
     @Override
     public void selectType() {
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(calculateMaxHealth());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(calculateMaxHealth());
         this.setHealth(getMaxHealth());
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(getAttackStrength());
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(getAttackRange());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(getAttackStrength());
+        this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(getAttackRange());
         if (getIsAdult()) {
             setEdad(getMaxEdad());
         }
@@ -336,55 +331,55 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
         this.standingCounter = 1;
     }
     
-    @Override
-    public boolean processInteract(PlayerEntity player, Hand hand) {
-        final Boolean tameResult = this.processTameInteract(player, hand);
-        if (tameResult != null) {
-            return tameResult;
-        }
-
-        final ItemStack stack = player.getHeldItem(hand);
-        if (!stack.isEmpty() && getIsTamed() && !getIsRideable() && (getEdad() > 80)
-                && (stack.getItem() == Items.SADDLE || stack.getItem() == MoCItems.HORSESADDLE)) {
-            stack.shrink(1);
-            if (stack.isEmpty()) {
-                player.setHeldItem(hand, ItemStack.EMPTY);
-            }
-            setRideable(true);
-            return true;
-        }
-        if (!stack.isEmpty() && getIsTamed() && (MoCTools.isItemEdibleforCarnivores(stack.getItem()))) {
-            stack.shrink(1);
-            if (stack.isEmpty()) {
-                player.setHeldItem(hand, ItemStack.EMPTY);
-            }
-            this.setHealth(getMaxHealth());
-            MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_GENERIC_EATING);
-            setIsHunting(false);
-            setHasEaten(true);
-            return true;
-        }
-        if (!stack.isEmpty() && getIsTamed() && getIsAdult() && !getIsChested() && (stack.getItem() == Item.getItemFromBlock(Blocks.CHEST))) {
-            stack.shrink(1);
-            if (stack.isEmpty()) {
-                player.setHeldItem(hand, ItemStack.EMPTY);
-            }
-            setIsChested(true);
-            MoCTools.playCustomSound(this, SoundEvents.ENTITY_CHICKEN_EGG);
-            return true;
-        }
-        /*if (getIsChested() && player.isCrouching()) {
-            if (this.localchest == null) {
-                this.localchest = new MoCAnimalChest("BigBearChest", 18);
-            }
-            if (!this.world.isRemote) {
-               player.displayGUIChest(this.localchest);
-            }
-            return true;
-        }*/
-
-        return super.processInteract(player, hand);
-    }
+//    @Override
+//    public boolean processInteract(PlayerEntity player, Hand hand) {
+//        final Boolean tameResult = this.processTameInteract(player, hand);
+//        if (tameResult != null) {
+//            return tameResult;
+//        }
+//
+//        final ItemStack stack = player.getHeldItem(hand);
+//        if (!stack.isEmpty() && getIsTamed() && !getIsRideable() && (getEdad() > 80)
+//                && (stack.getItem() == Items.SADDLE || stack.getItem() == MoCItems.HORSESADDLE)) {
+//            stack.shrink(1);
+//            if (stack.isEmpty()) {
+//                player.setHeldItem(hand, ItemStack.EMPTY);
+//            }
+//            setRideable(true);
+//            return true;
+//        }
+//        if (!stack.isEmpty() && getIsTamed() && (MoCTools.isItemEdibleforCarnivores(stack.getItem()))) {
+//            stack.shrink(1);
+//            if (stack.isEmpty()) {
+//                player.setHeldItem(hand, ItemStack.EMPTY);
+//            }
+//            this.setHealth(getMaxHealth());
+//            MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_GENERIC_EATING);
+//            setIsHunting(false);
+//            setHasEaten(true);
+//            return true;
+//        }
+//        if (!stack.isEmpty() && getIsTamed() && getIsAdult() && !getIsChested() && (stack.getItem() == Item.getItemFromBlock(Blocks.CHEST))) {
+//            stack.shrink(1);
+//            if (stack.isEmpty()) {
+//                player.setHeldItem(hand, ItemStack.EMPTY);
+//            }
+//            setIsChested(true);
+//            MoCTools.playCustomSound(this, SoundEvents.ENTITY_CHICKEN_EGG);
+//            return true;
+//        }
+//        /*if (getIsChested() && player.isCrouching()) {
+//            if (this.localchest == null) {
+//                this.localchest = new MoCAnimalChest("BigBearChest", 18);
+//            }
+//            if (!this.world.isRemote) {
+//               player.displayGUIChest(this.localchest);
+//            }
+//            return true;
+//        }*/
+//
+//        return super.processInteract(player, hand);
+//    }
 
     @Override
     public double getMountedYOffset() {

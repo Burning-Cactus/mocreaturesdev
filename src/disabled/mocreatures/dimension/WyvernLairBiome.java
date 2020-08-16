@@ -1,8 +1,8 @@
 package drzhark.mocreatures.dimension;
 
 import drzhark.mocreatures.dimension.feature.MoCBigTreeFeature;
-import drzhark.mocreatures.init.MoCFeatures;
-import drzhark.mocreatures.init.MoCEntities;
+import drzhark.mocreatures.registry.MoCFeatures;
+import drzhark.mocreatures.registry.MoCEntities;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;

@@ -2,22 +2,17 @@ package drzhark.mocreatures.entity.monster;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
-import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
-import drzhark.mocreatures.network.MoCMessageHandler;
-import drzhark.mocreatures.network.message.MoCMessageAnimation;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
@@ -27,8 +22,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 
 public class MoCEntityManticore extends MoCEntityMob {
 
@@ -49,12 +42,11 @@ public class MoCEntityManticore extends MoCEntityMob {
         this.goalSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityMob.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 40.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.4D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 6.0D);
     }
 
     @Override
@@ -68,7 +60,7 @@ public class MoCEntityManticore extends MoCEntityMob {
 
     @Override
     public boolean checkSpawningBiome() {
-        if (this.world.dimension.doesWaterVaporize()) {
+        if (/*this.world.dimension.doesWaterVaporize()*/false) {
             setType(1);
 //            this.isImmuneToFire = true;
             return true;
@@ -81,9 +73,9 @@ public class MoCEntityManticore extends MoCEntityMob {
 
         Biome currentbiome = MoCTools.Biomekind(this.world, pos);
 
-        if (BiomeDictionary.hasType(currentbiome, Type.SNOWY)) {
+        /*if (BiomeDictionary.hasType(currentbiome, Type.SNOWY)) {
             setType(3);
-        }
+        }*/
 
         return true;
     }
@@ -308,7 +300,7 @@ public class MoCEntityManticore extends MoCEntityMob {
         if (super.attackEntityFrom(damagesource, i)) {
             Entity entity = damagesource.getTrueSource();
 
-            if (entity != null && entity != this && entity instanceof LivingEntity && this.shouldAttackPlayers() && getIsAdult()) {
+            if (entity != this && entity instanceof LivingEntity && this.shouldAttackPlayers() && getIsAdult()) {
                 setAttackTarget((LivingEntity) entity);
             }
             return true;
@@ -318,7 +310,7 @@ public class MoCEntityManticore extends MoCEntityMob {
     }
 
     @Override
-    protected void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
+    public void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
         boolean flag = (entityIn instanceof PlayerEntity);
         if (!getIsPoisoning() && this.rand.nextInt(5) == 0 && entityIn instanceof LivingEntity) {
             setPoisoning(true);
@@ -337,9 +329,9 @@ public class MoCEntityManticore extends MoCEntityMob {
 
             } else if (getSubType() == 1)// red
             {
-                if (flag && !this.world.isRemote && !this.world.dimension.doesWaterVaporize()) {
+                if (flag && !this.world.isRemote /*&& !this.world.dimension.doesWaterVaporize()*/) {
                     MoCreatures.burnPlayer((PlayerEntity) entityIn);
-                    ((LivingEntity) entityIn).setFire(15);
+                    entityIn.setFire(15);
                 }
             }
         } else {

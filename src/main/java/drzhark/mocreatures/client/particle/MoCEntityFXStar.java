@@ -1,6 +1,7 @@
 package drzhark.mocreatures.client.particle;
 
 import net.minecraft.client.particle.*;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -11,7 +12,7 @@ import javax.annotation.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class MoCEntityFXStar extends SpriteTexturedParticle {
 
-    public MoCEntityFXStar(World world, double posX, double posY, double posZ) {
+    public MoCEntityFXStar(ClientWorld world, double posX, double posY, double posZ) {
         super(world, posX, posY, posZ, 0.0D, 0.0D, 0.0D);
         this.motionX *= 0.8D;
         this.motionY *= 0.8D;
@@ -97,7 +98,7 @@ public class MoCEntityFXStar extends SpriteTexturedParticle {
 
         @Nullable
         @Override
-        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             MoCEntityFXStar starParticle = new MoCEntityFXStar(worldIn, x, y, z);
             starParticle.selectSpriteRandomly(spriteSet);
             return starParticle;

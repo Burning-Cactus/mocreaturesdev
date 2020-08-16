@@ -1,7 +1,4 @@
 {
   "replace": false,
-  "values": [
-    "mocreatures:wyvern_leaves",
-    "mocreatures:ogre_leaves"
-  ]
+  "values": []
 }

@@ -9,11 +9,12 @@ import drzhark.mocreatures.entity.item.MoCEntityEgg;
 import drzhark.mocreatures.entity.item.MoCEntityKittyBed;
 import drzhark.mocreatures.entity.item.MoCEntityLitterBox;
 import drzhark.mocreatures.entity.passive.MoCEntityHorse;
-import drzhark.mocreatures.init.MoCBlocks;
+import drzhark.mocreatures.registry.MoCBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.WolfEntity;
@@ -33,11 +34,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.*;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.List;
 import java.util.UUID;
@@ -77,11 +76,10 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
         this.navigatorFlyer = new PathNavigateFlyerMoC(this, world);
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return AnimalEntity.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 20.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
@@ -90,9 +88,15 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
     }
 
     @Override
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData par1EntityLivingData, CompoundNBT dataTag) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData par1EntityLivingData, CompoundNBT dataTag) {
         selectType();
         return super.onInitialSpawn(worldIn, difficulty, reason, par1EntityLivingData, dataTag);
+    }
+
+    @Nullable
+    @Override
+    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+        return null;
     }
 
     /**
@@ -104,10 +108,10 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
         setType(1);
     }
 
-    @Override
+    /*@Override
     public AgeableEntity createChild(AgeableEntity var1) {
         return null;
-    }
+    }*/
 
     @Override
     protected void registerData() {
@@ -538,7 +542,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
                     float f = getDistance(entity);
                     if ((f < 2.0F) && entity instanceof MobEntity && (this.rand.nextInt(10) == 0)) {
                         attackEntityFrom(DamageSource.causeMobDamage((LivingEntity) entity),
-                                (float) ((MobEntity) entity).getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getBaseValue());
+                                (float) ((MobEntity) entity).getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                     }
                 }
             }
@@ -549,7 +553,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
     }
 
     protected void getPathOrWalkableBlock(Entity entity, float f) {
-        Path pathentity = this.navigator.getPathToPos(entity.getPosition(), 0); //TODO: I'm not sure what the int parameter here is for.
+        Path pathentity = this.navigator.getPathToPos(new BlockPos(entity.getPositionVec()), 0); //TODO: I'm not sure what the int parameter here is for.
         if ((pathentity == null) && (f > 8F)) {
             int i = MathHelper.floor(entity.getPosX()) - 2;
             int j = MathHelper.floor(entity.getPosZ()) - 2;
@@ -589,22 +593,22 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
 
     @Override
     public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
-        if (MoCreatures.entityMap.get(this.getType()).getFrequency() <= 0) {
+        /*if (MoCreatures.entityMap.get(this.getType()).getFrequency() <= 0) {
             return false;
-        }
-        if (this.world.dimension.getType().getId() != 0) {
+        }*/
+        /*if (this.world.dimension.getType().getId() != 0) {
             return getCanSpawnHereCreature() && getCanSpawnHereLiving();
-        }
+        }*/
         BlockPos pos = new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(getBoundingBox().minY), this.getPosZ());
 
-        String s = MoCTools.biomeName(this.world, pos);
+        /*String s = MoCTools.biomeName(this.world, pos); TODO: Biomes have changed, rewrite this.
 
         if (s.toLowerCase().contains("jungle")) {
             return getCanSpawnHereJungle();
         }
         if (s.equals("WyvernBiome")) {
             return getCanSpawnHereMoCBiome();
-        }
+        }*/
         return super.canSpawn(worldIn, reason);
     }
 
@@ -624,7 +628,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
             final Block block = blockstate.getBlock();
 
             if (block == MoCBlocks.WYVERN_DIRT || block == MoCBlocks.OGRE_DIRT || block == MoCBlocks.WYVERN_GRASS || block == MoCBlocks.OGRE_GRASS
-                    || (block.getTags().contains(BlockTags.LEAVES.getId()))) {
+                    || (block.getTags().contains(BlockTags.LEAVES))) {
                 return true;
             }
         }
@@ -663,7 +667,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
      * Moves the entity based on the specified heading.  Args: strafe, forward
      */
     @Override
-    public void travel(Vec3d movement) {
+    public void travel(Vector3d movement) {
 
             if (this.isBeingRidden()) {
                 LivingEntity passenger = (LivingEntity)this.getControllingPassenger();
@@ -734,12 +738,12 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
         }
             if (flyingMount) {
                 this.move(MoverType.SELF, this.getMotion());
-                this.moveRelative(this.flyerFriction() / 10F, new Vec3d(strafe, vertical, forward));
+                this.moveRelative(this.flyerFriction() / 10F, new Vector3d(strafe, vertical, forward));
                 this.getMotion().mul(this.flyerFriction(), this.myFallSpeed(), this.flyerFriction());
                 this.getMotion().subtract(0, 0.055D, 0);
             } else {
-                this.setAIMoveSpeed((float) this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getBaseValue());
-                super.travel(new Vec3d(strafe, vertical, forward));
+                this.setAIMoveSpeed((float) this.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue());
+                super.travel(new Vector3d(strafe, vertical, forward));
 
         }
         if (this.onGround) {
@@ -1109,7 +1113,7 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
     @Override
     public boolean attackEntityAsMob(Entity entityIn) {
         boolean flag =
-                entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), ((int) this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE)
+                entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), ((int) this.getAttribute(Attributes.ATTACK_DAMAGE)
                         .getValue()));
         if (flag) {
             this.applyEnchantments(this, entityIn);
@@ -1157,12 +1161,12 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
         return !getIsTamed() && this.world.getDifficulty() != Difficulty.PEACEFUL;
     }
 
-    @Override
+    /*@Override
     public void onKillEntity(LivingEntity entityLivingIn) {
         if (!(entityLivingIn instanceof PlayerEntity)) {
             MoCTools.destroyDrops(this, 3D);
         }
-    }
+    }*/
 
     @Override
     public PathNavigator getNavigator() {

@@ -1,30 +1,28 @@
 package drzhark.mocreatures.entity.passive;
 
-import drzhark.mocreatures.MoCPetData;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
 import drzhark.mocreatures.entity.ai.EntityAIHunt;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
-import drzhark.mocreatures.entity.item.MoCEntityEgg;
-import drzhark.mocreatures.init.MoCEntities;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCEntities;
+import drzhark.mocreatures.registry.MoCItems;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import drzhark.mocreatures.inventory.MoCAnimalChest;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -48,12 +46,12 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
     private int transformCounter;
     private int tCounter;
     private float fTransparency;
-    private static final DataParameter<Boolean> RIDEABLE = EntityDataManager.<Boolean>createKey(MoCEntityWyvern.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> CHESTED = EntityDataManager.<Boolean>createKey(MoCEntityWyvern.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SITTING = EntityDataManager.<Boolean>createKey(MoCEntityWyvern.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> GHOST = EntityDataManager.<Boolean>createKey(MoCEntityWyvern.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> FLYING = EntityDataManager.<Boolean>createKey(MoCEntityWyvern.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> ARMOR_TYPE = EntityDataManager.<Integer>createKey(MoCEntityWyvern.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> RIDEABLE = EntityDataManager.createKey(MoCEntityWyvern.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> CHESTED = EntityDataManager.createKey(MoCEntityWyvern.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(MoCEntityWyvern.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> GHOST = EntityDataManager.createKey(MoCEntityWyvern.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> FLYING = EntityDataManager.createKey(MoCEntityWyvern.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> ARMOR_TYPE = EntityDataManager.createKey(MoCEntityWyvern.class, DataSerializers.VARINT);
 
 
     public MoCEntityWyvern(EntityType<? extends MoCEntityWyvern> type, World world) {
@@ -79,77 +77,75 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
         this.targetSelector.addGoal(2, new EntityAIHunt(this, AnimalEntity.class, true));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityTameableAnimal.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 40D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.3D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 5.0D);
     }
 
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(RIDEABLE, Boolean.valueOf(false)); // rideable: 0 nothing, 1 saddle
-        this.dataManager.register(SITTING, Boolean.valueOf(false)); // rideable: 0 nothing, 1 saddle
-        this.dataManager.register(CHESTED, Boolean.valueOf(false));
-        this.dataManager.register(FLYING, Boolean.valueOf(false));
-        this.dataManager.register(GHOST, Boolean.valueOf(false));
-        this.dataManager.register(ARMOR_TYPE, Integer.valueOf(0));// armor 0 by default, 1 metal, 2 gold, 3 diamond, 4 crystaline
+        this.dataManager.register(RIDEABLE, Boolean.FALSE); // rideable: 0 nothing, 1 saddle
+        this.dataManager.register(SITTING, Boolean.FALSE); // rideable: 0 nothing, 1 saddle
+        this.dataManager.register(CHESTED, Boolean.FALSE);
+        this.dataManager.register(FLYING, Boolean.FALSE);
+        this.dataManager.register(GHOST, Boolean.FALSE);
+        this.dataManager.register(ARMOR_TYPE, 0);// armor 0 by default, 1 metal, 2 gold, 3 diamond, 4 crystaline
     }
 
     public boolean getIsFlying() {
-        return ((Boolean)this.dataManager.get(FLYING)).booleanValue();
+        return this.dataManager.get(FLYING);
     }
 
     public void setIsFlying(boolean flag) {
-        this.dataManager.set(FLYING, Boolean.valueOf(flag));
+        this.dataManager.set(FLYING, flag);
     }
 
     @Override
     public int getArmorType() {
-        return ((Integer)this.dataManager.get(ARMOR_TYPE)).intValue();
+        return this.dataManager.get(ARMOR_TYPE);
     }
 
     @Override
     public void setArmorType(int i) {
-        this.dataManager.set(ARMOR_TYPE, Integer.valueOf(i));
+        this.dataManager.set(ARMOR_TYPE, i);
     }
 
     @Override
     public boolean getIsRideable() {
-        return ((Boolean)this.dataManager.get(RIDEABLE)).booleanValue();
+        return this.dataManager.get(RIDEABLE);
     }
 
     @Override
     public void setRideable(boolean flag) {
-        this.dataManager.set(RIDEABLE, Boolean.valueOf(flag));
+        this.dataManager.set(RIDEABLE, flag);
     }
 
     public boolean getIsChested() {
-        return ((Boolean)this.dataManager.get(CHESTED)).booleanValue();
+        return this.dataManager.get(CHESTED);
     }
 
     public void setIsChested(boolean flag) {
-        this.dataManager.set(CHESTED, Boolean.valueOf(flag));
+        this.dataManager.set(CHESTED, flag);
     }
 
     @Override
     public boolean getIsSitting() {
-        return ((Boolean)this.dataManager.get(SITTING)).booleanValue();
+        return this.dataManager.get(SITTING);
     }
 
     public void setSitting(boolean flag) {
-        this.dataManager.set(SITTING, Boolean.valueOf(flag));
+        this.dataManager.set(SITTING, flag);
     }
 
     public boolean getIsGhost() {
-        return ((Boolean)this.dataManager.get(GHOST)).booleanValue();
+        return this.dataManager.get(GHOST);
     }
 
     public void setIsGhost(boolean flag) {
-        this.dataManager.set(GHOST, Boolean.valueOf(flag));
+        this.dataManager.set(GHOST, flag);
     }
 
     @Override
@@ -180,9 +176,9 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
                 }
             }
         }
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(calculateMaxHealth());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(calculateMaxHealth());
         this.setHealth(getMaxHealth());
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(calculateAttackDmg());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(calculateAttackDmg());
     }
 
     @Override
@@ -323,9 +319,9 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
             if (getAttackTarget() != null && (!this.getIsTamed() || this.getRidingEntity() != null) && !isMovementCeased() && this.rand.nextInt(20) == 0) {
                 setIsFlying(true);
             }
-            if (!getIsTamed() && this.dimension.getId() == MoCreatures.WyvernLairDimensionID && (this.rand.nextInt(50) == 0) && this.getPosY() < 10D) {
+            /*if (!getIsTamed() && this.dimension.getId() == MoCreatures.WyvernLairDimensionID && (this.rand.nextInt(50) == 0) && this.getPosY() < 10D) {
                 this.remove();
-            }
+            }*/
 
             if (getIsFlying() && this.getNavigator().noPath() && !isMovementCeased() && this.getAttackTarget() == null && rand.nextInt(30) == 0) {
                 this.wander.makeUpdate();
@@ -400,7 +396,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
         return 1;
     }
 
-    @Override
+    /*@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
@@ -473,7 +469,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
             return true;
         }
 
-        /*if (getIsChested() && player.isCrouching()) {
+        *//*if (getIsChested() && player.isCrouching()) {
             if (this.localchest == null) {
                 this.localchest = new MoCAnimalChest("WyvernChest", 9);
             }
@@ -481,7 +477,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
                 player.displayGUIChest(this.localchest);
             }
             return true;
-        }*/
+        }*//*
 
         if (!stack.isEmpty() && this.getIsGhost() && this.getIsTamed() && stack.getItem() == MoCItems.AMULETGHOST) {
 
@@ -577,7 +573,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
         }
 
         return super.processInteract(player, hand);
-    }
+    }*/
 
     /**
      * Drops the current armor
@@ -669,7 +665,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
     }
 
     @Override
-    protected void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
+    public void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
         if ((entityIn instanceof PlayerEntity) && this.rand.nextInt(3) == 0) {
             MoCreatures.poisonPlayer((PlayerEntity) entityIn);
             ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 200, 0));

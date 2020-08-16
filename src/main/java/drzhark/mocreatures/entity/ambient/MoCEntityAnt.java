@@ -4,16 +4,15 @@ import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.MoCEntityInsect;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
 
 public class MoCEntityAnt extends MoCEntityInsect {
 
@@ -32,17 +31,15 @@ public class MoCEntityAnt extends MoCEntityInsect {
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(FOUND_FOOD, Boolean.valueOf(false));
+        this.dataManager.register(FOUND_FOOD, Boolean.FALSE);
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityInsect.registerAttributes().func_233815_a_(Attributes.MOVEMENT_SPEED, 0.28D);
     }
 
     public boolean getHasFood() {
-        return ((Boolean)this.dataManager.get(FOUND_FOOD)).booleanValue();
+        return this.dataManager.get(FOUND_FOOD);
     }
 
     public void setHasFood(boolean flag) {

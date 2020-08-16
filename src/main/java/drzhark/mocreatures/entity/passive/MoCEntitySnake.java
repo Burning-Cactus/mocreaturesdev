@@ -9,14 +9,12 @@ import drzhark.mocreatures.entity.ai.EntityAIHunt;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.ai.EntityAIPanicMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
-import drzhark.mocreatures.network.MoCMessageHandler;
-import drzhark.mocreatures.network.message.MoCMessageAnimation;
-import net.minecraft.block.Block;
+import drzhark.mocreatures.registry.MoCItems;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -25,16 +23,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 
 /**
  * Biome - specific Forest Desert plains Swamp Jungle Tundra Taiga Extreme Hills
@@ -79,13 +72,11 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
         this.targetSelector.addGoal(2, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityTameableAnimal.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 10.0D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 2.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
@@ -157,7 +148,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
         return (this.getRidingEntity() != null);
     }
 
-    @Override
+    /*@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
@@ -177,7 +168,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
         }
 
         return super.processInteract(player, hand);
-    }
+    }*/
 
     @Override
     public boolean isNotScared() {
@@ -550,66 +541,66 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
         return getCanSpawnHereCreature() && getCanSpawnHereLiving(); //&& checkSpawningBiome()
     }
 
-    @Override
-    public boolean checkSpawningBiome() {
-        BlockPos pos = new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(getBoundingBox().minY), this.getPosZ());
-        /**
-         * swamp: python, bright green, #1 (done) plains: coral, cobra #1, #2,
-         * #3, #4 (everyone but 7) desert: rattlesnake , #2 jungle: all except
-         * rattlesnake forest: all except rattlesnake hills: all except python,
-         * bright green, bright orange, rattlesnake tundra-taiga: none ocean:
-         * leave alone
-         */
-
-        /**
-         * Biome lists: Ocean Plains Desert Extreme Hills Forest Taiga Swampland
-         * River Frozen Ocean Frozen River Ice Plains Ice Mountains Mushroom
-         * Island Mushroom Island Shore Beach DesertHills ForestHills TaigaHills
-         * Extreme Hills Edge Jungle JungleHills
-         *
-         */
-        try {
-            Biome currentbiome = MoCTools.Biomekind(this.world, pos);
-            int l = this.rand.nextInt(10);
-
-            if (BiomeDictionary.hasType(currentbiome, Type.SNOWY)) {
-                return false;
-            }
-
-            if (BiomeDictionary.hasType(currentbiome, Type.SANDY)) {
-                if (l < 5) {
-                    setType(7); // rattlesnake or spotted brownish ?
-                } else {
-                    setType(2);
-                }
-            }
-
-            if (getSubType() == 7 && !(BiomeDictionary.hasType(currentbiome, Type.SANDY))) {
-                setType(2);
-            }
-            if (BiomeDictionary.hasType(currentbiome, Type.HILLS)) {
-                if (l < 4) {
-                    setType(1);
-                } else if (l < 7) {
-                    setType(5);
-                } else {
-                    setType(6);
-                }
-            }
-            if (BiomeDictionary.hasType(currentbiome, Type.SWAMP)) {
-                // python or bright green bright orange
-                if (l < 4) {
-                    setType(8);
-                } else if (l < 8) {
-                    setType(4);
-                } else {
-                    setType(1);
-                }
-            }
-        } catch (Exception e) {
-        }
-        return true;
-    }
+//    @Override
+//    public boolean checkSpawningBiome() {
+//        BlockPos pos = new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(getBoundingBox().minY), this.getPosZ());
+//        /**
+//         * swamp: python, bright green, #1 (done) plains: coral, cobra #1, #2,
+//         * #3, #4 (everyone but 7) desert: rattlesnake , #2 jungle: all except
+//         * rattlesnake forest: all except rattlesnake hills: all except python,
+//         * bright green, bright orange, rattlesnake tundra-taiga: none ocean:
+//         * leave alone
+//         */
+//
+//        /**
+//         * Biome lists: Ocean Plains Desert Extreme Hills Forest Taiga Swampland
+//         * River Frozen Ocean Frozen River Ice Plains Ice Mountains Mushroom
+//         * Island Mushroom Island Shore Beach DesertHills ForestHills TaigaHills
+//         * Extreme Hills Edge Jungle JungleHills
+//         *
+//         */
+//        try {
+//            Biome currentbiome = MoCTools.Biomekind(this.world, pos);
+//            int l = this.rand.nextInt(10);
+//
+//            if (BiomeDictionary.hasType(currentbiome, Type.SNOWY)) {
+//                return false;
+//            }
+//
+//            if (BiomeDictionary.hasType(currentbiome, Type.SANDY)) {
+//                if (l < 5) {
+//                    setType(7); // rattlesnake or spotted brownish ?
+//                } else {
+//                    setType(2);
+//                }
+//            }
+//
+//            if (getSubType() == 7 && !(BiomeDictionary.hasType(currentbiome, Type.SANDY))) {
+//                setType(2);
+//            }
+//            if (BiomeDictionary.hasType(currentbiome, Type.HILLS)) {
+//                if (l < 4) {
+//                    setType(1);
+//                } else if (l < 7) {
+//                    setType(5);
+//                } else {
+//                    setType(6);
+//                }
+//            }
+//            if (BiomeDictionary.hasType(currentbiome, Type.SWAMP)) {
+//                // python or bright green bright orange
+//                if (l < 4) {
+//                    setType(8);
+//                } else if (l < 8) {
+//                    setType(4);
+//                } else {
+//                    setType(1);
+//                }
+//            }
+//        } catch (Exception e) {
+//        }
+//        return true;
+//    }
 
     @Override
     public int nameYOffset() {
@@ -632,7 +623,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    protected void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
+    public void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
         if (isVenomous()) {
             if (entityIn instanceof PlayerEntity) {
                 MoCreatures.poisonPlayer((PlayerEntity) entityIn);

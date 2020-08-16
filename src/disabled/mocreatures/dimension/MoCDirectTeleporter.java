@@ -1,7 +1,7 @@
 package drzhark.mocreatures.dimension;
 
 import drzhark.mocreatures.dimension.feature.MoCWorldGenPortal;
-import drzhark.mocreatures.init.MoCDimensions;
+import drzhark.mocreatures.registry.MoCDimensions;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;

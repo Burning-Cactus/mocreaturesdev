@@ -22,7 +22,7 @@ public class MoCEntityRay extends MoCEntityTameableAquatic {
         return false;
     }
 
-    @Override
+    /*@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
@@ -40,7 +40,7 @@ public class MoCEntityRay extends MoCEntityTameableAquatic {
         }
 
         return super.processInteract(player, hand);
-    }
+    }*/
 
     @Override
     public float getAdjustedYOffset() {

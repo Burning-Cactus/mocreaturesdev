@@ -2,10 +2,10 @@ package drzhark.mocreatures.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraftforge.common.IShearable;
+import net.minecraftforge.common.IForgeShearable;
 
 
-public class MoCBlockLeaf extends MoCBlock implements IShearable {
+public class MoCBlockLeaf extends MoCBlock implements IForgeShearable {
 
     public MoCBlockLeaf(Block.Properties builder) {
         super(builder

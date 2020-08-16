@@ -85,7 +85,8 @@ minecraft {
 
             args '--mod', 'mocreatures', '--all',
                     '--output', file('src/generated/resources/'),
-                    '--existing', file('src/main/resources')
+                    '--existing', file('src/main/resources'),
+                    '--existing', file('src/generated/resources')
 
             mods {
                 mocreatures {

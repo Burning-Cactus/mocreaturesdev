@@ -1,10 +1,10 @@
 package drzhark.mocreatures.data.datagen.loot_tables;
 
-import drzhark.mocreatures.init.MoCBlocks;
+import drzhark.mocreatures.registry.MoCBlocks;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.data.loot.BlockLootTables;
-import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.loot.LootTable;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;

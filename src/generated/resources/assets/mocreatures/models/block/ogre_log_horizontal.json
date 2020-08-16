@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "side": "mocreatures:block/ogre_log",
+    "end": "mocreatures:block/ogre_log_top"
+  }
+}

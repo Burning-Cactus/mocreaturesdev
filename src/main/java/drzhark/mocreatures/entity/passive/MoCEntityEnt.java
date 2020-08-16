@@ -4,14 +4,15 @@ import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityAnimal;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -48,13 +49,11 @@ public class MoCEntityEnt extends MoCEntityAnimal {
         this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityAnimal.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 40.0D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.2D);
     }
 
     @Override
@@ -306,7 +305,7 @@ public class MoCEntityEnt extends MoCEntityAnimal {
     }*/
 
     @Override
-    protected void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
+    public void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
         MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_GOAT_SMACK);
         MoCTools.bigsmack(this, entityIn, 1F);
         super.applyEnchantments(entityLivingBaseIn, entityIn);

@@ -5,15 +5,14 @@ import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -44,17 +43,16 @@ public class MoCEntityHorseMob extends MoCEntityMob {
         this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityMob.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.3D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     @Override
     public void selectType() {
-        if (this.world.getDimension().doesWaterVaporize()) {
+        if (/*this.world.getDimension().doesWaterVaporize()*/false) {
             setType(38);
 //            this.isImmuneToFire = true; TODO: Fire immunity can't be set through the entity class, will probably need to use an event handler.
         } else {
@@ -350,7 +348,7 @@ public class MoCEntityHorseMob extends MoCEntityMob {
 
     @Override
     public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
-        if (this.getPosY() < 50D && !this.world.dimension.doesWaterVaporize()) {
+        if (this.getPosY() < 50D /*&& !this.world.dimension.doesWaterVaporize()*/) {
             setType(32);
         }
         return super.canSpawn(worldIn, reason);

@@ -6,16 +6,13 @@ import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAIFleeFromPlayer;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.passive.MoCEntityPetScorpion;
-import drzhark.mocreatures.init.MoCEntities;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
-import drzhark.mocreatures.network.MoCMessageHandler;
-import drzhark.mocreatures.network.message.MoCMessageAnimation;
+import drzhark.mocreatures.registry.MoCEntities;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -28,11 +25,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 
 public class MoCEntityScorpion extends MoCEntityMob {
 
@@ -71,12 +65,11 @@ public class MoCEntityScorpion extends MoCEntityMob {
         this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(18.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityMob.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 18.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.3D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     @Override
@@ -107,16 +100,16 @@ public class MoCEntityScorpion extends MoCEntityMob {
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(IS_PICKED, Boolean.valueOf(false));
-        this.dataManager.register(HAS_BABIES, Boolean.valueOf(false)); 
+        this.dataManager.register(IS_PICKED, Boolean.FALSE);
+        this.dataManager.register(HAS_BABIES, Boolean.FALSE);
     }
 
     public boolean getHasBabies() {
-        return ((Boolean)this.dataManager.get(HAS_BABIES)).booleanValue();
+        return this.dataManager.get(HAS_BABIES);
     }
 
     public boolean getIsPicked() {
-        return ((Boolean)this.dataManager.get(IS_PICKED)).booleanValue();
+        return this.dataManager.get(IS_PICKED);
     }
 
     public boolean getIsPoisoning() {
@@ -124,11 +117,11 @@ public class MoCEntityScorpion extends MoCEntityMob {
     }
 
     public void setHasBabies(boolean flag) {
-        this.dataManager.set(HAS_BABIES, Boolean.valueOf(flag));
+        this.dataManager.set(HAS_BABIES, flag);
     }
 
     public void setPicked(boolean flag) {
-        this.dataManager.set(IS_PICKED, Boolean.valueOf(flag));
+        this.dataManager.set(IS_PICKED, flag);
     }
 
     public void setPoisoning(boolean flag) {
@@ -233,7 +226,7 @@ public class MoCEntityScorpion extends MoCEntityMob {
     }
 
     @Override
-    protected void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
+    public void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
         boolean flag = (entityIn instanceof PlayerEntity);
         if (!getIsPoisoning() && this.rand.nextInt(5) == 0 && entityIn instanceof LivingEntity) {
             setPoisoning(true);
@@ -252,7 +245,7 @@ public class MoCEntityScorpion extends MoCEntityMob {
 
             } else if (getSubType() == 3)// red scorpions
             {
-                if (!this.world.isRemote && flag && !this.world.dimension.doesWaterVaporize()) {
+                if (!this.world.isRemote && flag /*&& !this.world.dimension.doesWaterVaporize()*/) {
                     MoCreatures.burnPlayer((PlayerEntity) entityIn);
                     ((LivingEntity) entityIn).setFire(15);
                 }
@@ -364,15 +357,15 @@ public class MoCEntityScorpion extends MoCEntityMob {
 //
 //    }
 
-    @Override
-    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
-        return (/*isValidLightLevel() &&*/ MoCreatures.entityMap.get(this.getType()).getFrequency() > 0) && getCanSpawnHereLiving()
-                && getCanSpawnHereCreature();
-    }
+//    @Override
+//    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
+//        return (/*isValidLightLevel() &&*/ MoCreatures.entityMap.get(this.getType()).getFrequency() > 0) && getCanSpawnHereLiving()
+//                && getCanSpawnHereCreature();
+//    }
 
     @Override
     public boolean checkSpawningBiome() {
-        if (this.world.dimension.doesWaterVaporize()) {
+        if (/*this.world.dimension.doesWaterVaporize()*/false) {
             setType(3);
 //            this.isImmuneToFire = true;
             return true;
@@ -385,12 +378,12 @@ public class MoCEntityScorpion extends MoCEntityMob {
 
         Biome currentbiome = MoCTools.Biomekind(this.world, pos);
 
-        if (BiomeDictionary.hasType(currentbiome, Type.SNOWY)) {
+        /*if (BiomeDictionary.hasType(currentbiome, Type.SNOWY)) {
             setType(4);
         } else if (!this.world.canBlockSeeSky(pos) && (this.getPosY() < 50D)) {
             setType(2);
             return true;
-        }
+        }*/
 
         return true;
     }

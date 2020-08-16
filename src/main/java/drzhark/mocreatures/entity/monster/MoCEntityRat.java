@@ -3,24 +3,22 @@ package drzhark.mocreatures.entity.monster;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class MoCEntityRat extends MoCEntityMob {
@@ -37,12 +35,11 @@ public class MoCEntityRat extends MoCEntityMob {
         this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityMob.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 10.0D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.3D);
     }
 
     @Override
@@ -78,23 +75,18 @@ public class MoCEntityRat extends MoCEntityMob {
     public boolean attackEntityFrom(DamageSource damagesource, float i) {
         Entity entity = damagesource.getTrueSource();
 
-        if (entity != null && entity instanceof LivingEntity) {
+        if (entity instanceof LivingEntity) {
             setAttackTarget((LivingEntity) entity);
             if (!this.world.isRemote) {
                 List<MoCEntityRat> list =
                         this.world.getEntitiesWithinAABB(MoCEntityRat.class,
                                 new AxisAlignedBB(this.getPosX(), this.getPosY(), this.getPosZ(), this.getPosX() + 1.0D, this.getPosY() + 1.0D, this.getPosZ() + 1.0D)
                                         .expand(16D, 4D, 16D));
-                Iterator<MoCEntityRat> iterator = list.iterator();
-                do {
-                    if (!iterator.hasNext()) {
-                        break;
-                    }
-                    MoCEntityRat entityrat = (MoCEntityRat) iterator.next();
+                for (MoCEntityRat entityrat : list) {
                     if ((entityrat != null) && (entityrat.getAttackTarget() == null)) {
                         entityrat.setAttackTarget((LivingEntity) entity);
                     }
-                } while (true);
+                }
             }
         }
         return super.attackEntityFrom(damagesource, i);
@@ -110,7 +102,6 @@ public class MoCEntityRat extends MoCEntityMob {
 
         if ((this.rand.nextInt(100) == 0) && (this.getBrightness() > 0.5F)) {
             setAttackTarget(null);
-            return;
         }
     }
 

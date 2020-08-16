@@ -1,6 +1,6 @@
 package drzhark.mocreatures;
 
-import drzhark.mocreatures.init.MoCItems;
+import drzhark.mocreatures.registry.MoCItems;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;

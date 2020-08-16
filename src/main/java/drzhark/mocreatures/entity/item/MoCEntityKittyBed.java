@@ -3,9 +3,11 @@ package drzhark.mocreatures.entity.item;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCItems;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -15,7 +17,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.*;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class MoCEntityKittyBed extends LivingEntity {
@@ -44,51 +46,49 @@ public class MoCEntityKittyBed extends LivingEntity {
         return MoCreatures.getTexture("fullkittybed.png");
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D); // setMaxHealth
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return LivingEntity.registerAttributes().func_233815_a_(Attributes.MAX_HEALTH, 20.0D);
     }
 
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(HAS_MILK, Boolean.valueOf(false));
-        this.dataManager.register(HAS_FOOD, Boolean.valueOf(false));
-        this.dataManager.register(PICKED_UP, Boolean.valueOf(false));
-        this.dataManager.register(SHEET_COLOR, Integer.valueOf(0));
+        this.dataManager.register(HAS_MILK, Boolean.FALSE);
+        this.dataManager.register(HAS_FOOD, Boolean.FALSE);
+        this.dataManager.register(PICKED_UP, Boolean.FALSE);
+        this.dataManager.register(SHEET_COLOR, 0);
     }
 
     public boolean getHasFood() {
-        return ((Boolean)this.dataManager.get(HAS_FOOD)).booleanValue();
+        return this.dataManager.get(HAS_FOOD);
     }
 
     public boolean getHasMilk() {
-        return ((Boolean)this.dataManager.get(HAS_MILK)).booleanValue();
+        return this.dataManager.get(HAS_MILK);
     }
 
     public boolean getPickedUp() {
-        return ((Boolean)this.dataManager.get(PICKED_UP)).booleanValue();
+        return this.dataManager.get(PICKED_UP);
     }
 
     public int getSheetColor() {
-        return ((Integer)this.dataManager.get(SHEET_COLOR)).intValue();
+        return this.dataManager.get(SHEET_COLOR);
     }
 
     public void setHasFood(boolean flag) {
-        this.dataManager.set(HAS_FOOD, Boolean.valueOf(flag));
+        this.dataManager.set(HAS_FOOD, flag);
     }
 
     public void setHasMilk(boolean flag) {
-        this.dataManager.set(HAS_MILK, Boolean.valueOf(flag));
+        this.dataManager.set(HAS_MILK, flag);
     }
 
     public void setPickedUp(boolean flag) {
-        this.dataManager.set(PICKED_UP, Boolean.valueOf(flag));
+        this.dataManager.set(PICKED_UP, flag);
     }
 
     public void setSheetColor(int i) {
-        this.dataManager.set(SHEET_COLOR, Integer.valueOf(i));
+        this.dataManager.set(SHEET_COLOR, i);
         //this.bedColor = EnumDyeColor.byMetadata(i).getUnlocalizedName().toLowerCase();
     }
 
@@ -162,14 +162,14 @@ public class MoCEntityKittyBed extends LivingEntity {
     }
 
     @Override
-    public boolean processInitialInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
         final ItemStack stack = player.getHeldItem(hand);
         if (!stack.isEmpty() && (stack.getItem() == Items.MILK_BUCKET)) {
             player.setHeldItem(hand, new ItemStack(Items.BUCKET, 1));
             MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_KITTYBED_POURINGMILK);
             setHasMilk(true);
             setHasFood(false);
-            return true;
+            return ActionResultType.SUCCESS;
         }
         if (!stack.isEmpty() && !getHasFood() && (stack.getItem() == MoCItems.PETFOOD)) {
             stack.shrink(1);
@@ -179,7 +179,7 @@ public class MoCEntityKittyBed extends LivingEntity {
             MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_KITTYBED_POURINGFOOD);
             setHasMilk(false);
             setHasFood(true);
-            return true;
+            return ActionResultType.SUCCESS;
         }
         if (!stack.isEmpty() && ((stack.getItem() == Items.STONE_PICKAXE) || (stack.getItem() == Items.WOODEN_PICKAXE)
                         || (stack.getItem() == Items.IRON_PICKAXE) || (stack.getItem() == Items.GOLDEN_PICKAXE) || (stack.getItem() == Items.DIAMOND_PICKAXE))) {
@@ -187,7 +187,7 @@ public class MoCEntityKittyBed extends LivingEntity {
 //            player.inventory.addItemStackToInventory(new ItemStack(MoCItems.KITTYBED[color], 1));
             this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, (((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F) + 1.0F) * 2.0F);
             remove();
-            return true;
+            return ActionResultType.SUCCESS;
         }
         if (this.getRidingEntity() == null) {
             if (this.startRiding(player)) {
@@ -195,14 +195,14 @@ public class MoCEntityKittyBed extends LivingEntity {
                 setPickedUp(true);
             }
 
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override
-    public void move(MoverType type, Vec3d motion) {
+    public void move(MoverType type, Vector3d motion) {
         if ((this.getRidingEntity() != null) || !this.onGround || !MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.staticLitter.get()) {
             if (!this.world.isRemote) {
                 super.move(type, motion);

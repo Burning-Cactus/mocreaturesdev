@@ -6,6 +6,8 @@ import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAnimation;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -28,11 +30,10 @@ public class MoCEntityInsect extends MoCEntityAmbient {
         this.goalSelector.addGoal(2, this.wander = new EntityAIWanderMoC2(this, 1.0D, 80));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityAmbient.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 4.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     @Override

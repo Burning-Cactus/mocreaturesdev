@@ -1,15 +1,11 @@
 package drzhark.mocreatures.entity;
 
-import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.MoCPetData;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
-import drzhark.mocreatures.network.MoCMessageHandler;
-import drzhark.mocreatures.network.message.MoCMessageHealth;
-import drzhark.mocreatures.network.message.MoCMessageHeart;
+import drzhark.mocreatures.registry.MoCItems;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -24,10 +20,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -129,7 +122,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
             if (!this.world.isRemote) {
                 // Remove when client is updated
                 ((ServerPlayerEntity) player).sendAllContents(player.openContainer, player.openContainer.getInventory());
-                player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."));
+                player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."), Util.DUMMY_UUID);
             }
             return false;
         }
@@ -137,14 +130,14 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         //if the player interacting is not the owner, do nothing!
         if (MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get() && this.getOwnerId() != null
                 && !player.getUniqueID().equals(this.getOwnerId())) {
-            player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."));
+            player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."), Util.DUMMY_UUID);
             return false;
         }
 
         return true;
     }
 
-    @Override
+    /*@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
@@ -152,17 +145,17 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         }
 
         return super.processInteract(player, hand);
-    }
+    }*/
 
     // This should always run first for all tameable ambients
-    public Boolean processTameInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType processTameInteract(PlayerEntity player, Hand hand) {
         if (!this.checkOwnership(player, hand)) {
-            return false;
+            return ActionResultType.FAIL;
         }
 
         final ItemStack stack = player.getHeldItem(hand);
         if (stack.isEmpty()) {
-            return super.processInteract(player, hand);
+            return super.processInitialInteract(player, hand);
         }
 
         //before ownership check
@@ -180,25 +173,25 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
                 this.setOwnerId(null);
 
             }
-            return true;
+            return ActionResultType.SUCCESS;
         }
         //if the player interacting is not the owner, do nothing!
         if (MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get() && this.getOwnerId() != null
                 && !player.getUniqueID().equals(this.getOwnerId()) && !MoCTools.isThisPlayerAnOP(player)) {
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
         //changes name
         if (!this.world.isRemote && getIsTamed()
                 && (stack.getItem() == MoCItems.MEDALLION || stack.getItem() == Items.BOOK || stack.getItem() == Items.NAME_TAG)) {
             if (MoCTools.tameWithName(player, this)) {
-                return true;
+                return ActionResultType.SUCCESS;
             }
-            return false;
+            return ActionResultType.FAIL;
         }
 
         //sets it free, untamed
-        if (getIsTamed() && stack.getItem() == MoCItems.SCROLLFREEDOM) {
+        if (getIsTamed() && stack.getItem() == MoCItems.SCROLLOFFREEDOM) {
             stack.shrink(1);
             if (stack.isEmpty()) {
                 player.setHeldItem(hand, ItemStack.EMPTY);
@@ -214,7 +207,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
                 this.setTamed(false);
             }
 
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
         //removes owner, any other player can claim it by renaming it
@@ -230,7 +223,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
                 }
                 this.setOwnerId(null);
             }
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
         if (getIsTamed() && isMyHealFood(stack)) {
@@ -242,7 +235,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
             if (!this.world.isRemote) {
                 this.setHealth(getMaxHealth());
             }
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
         //stores in fishnet
@@ -257,7 +250,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
                 this.remove();
             }
 
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
         //heals
@@ -270,7 +263,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
             if (!this.world.isRemote) {
                 this.setHealth(getMaxHealth());
             }
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
         if (getIsTamed() && stack.getItem() == Items.SHEARS) {
@@ -278,7 +271,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
                 dropMyStuff();
             }
 
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
         return null;
@@ -324,7 +317,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         if (getOwnerPetId() != -1) {
             nbttagcompound.putInt("PetId", this.getOwnerPetId());
         }
-        if (this instanceof IMoCTameable && getIsTamed() && MoCreatures.instance.mapData != null) {
+        if (getIsTamed() && MoCreatures.instance.mapData != null) {
             MoCreatures.instance.mapData.updateOwnerPet(this);
         }
     }
@@ -437,8 +430,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         int i = 0;
 
         List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(8D, 3D, 8D));
-        for (int j = 0; j < list.size(); j++) {
-            Entity entity = list.get(j);
+        for (Entity entity : list) {
             if (compatibleMate(entity)) {
                 i++;
             }
@@ -449,8 +441,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         }
 
         List<Entity> list1 = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(4D, 2D, 4D));
-        for (int k = 0; k < list1.size(); k++) {
-            Entity mate = list1.get(k);
+        for (Entity mate : list1) {
             if (!(compatibleMate(mate)) || (mate == this)) {
                 continue;
             }
@@ -463,7 +454,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
                 return;
             }
 
-            setGestationTime(getGestationTime()+1);
+            setGestationTime(getGestationTime() + 1);
 //            if (!this.world.isRemote) {
 //                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHeart(this.getEntityId()),
 //                        new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));

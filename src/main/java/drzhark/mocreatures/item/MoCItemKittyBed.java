@@ -1,7 +1,7 @@
 package drzhark.mocreatures.item;
 
 import drzhark.mocreatures.entity.item.MoCEntityKittyBed;
-import drzhark.mocreatures.init.MoCEntities;
+import drzhark.mocreatures.registry.MoCEntities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

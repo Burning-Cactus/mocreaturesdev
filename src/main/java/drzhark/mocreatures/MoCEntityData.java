@@ -2,14 +2,11 @@ package drzhark.mocreatures;
 
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.world.biome.Biome.SpawnListEntry;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.BiomeDictionary.Type;
 
 import java.util.List;
 
 public class MoCEntityData {
+/*
 
     private EntityClassification typeOfCreature;
     private SpawnListEntry spawnListEntry;
@@ -142,5 +139,6 @@ public class MoCEntityData {
     public SpawnListEntry getSpawnListEntry() {
         return this.spawnListEntry;
     }
+*/
 
 }

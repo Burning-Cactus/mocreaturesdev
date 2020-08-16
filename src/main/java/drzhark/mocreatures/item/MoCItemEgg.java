@@ -1,21 +1,14 @@
 package drzhark.mocreatures.item;
 
-import drzhark.mocreatures.entity.aquatic.MoCEntityFishy;
-import drzhark.mocreatures.entity.aquatic.MoCEntityMediumFish;
-import drzhark.mocreatures.entity.aquatic.MoCEntitySmallFish;
 import drzhark.mocreatures.entity.item.MoCEntityEgg;
-import drzhark.mocreatures.init.MoCEntities;
+import drzhark.mocreatures.registry.MoCEntities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class MoCItemEgg extends MoCItem {
 
@@ -28,7 +21,7 @@ public class MoCItemEgg extends MoCItem {
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         final ItemStack stack = player.getHeldItem(hand);
         stack.shrink(1);
-        if (!world.isRemote && player.onGround) {
+        if (!world.isRemote && !player.isAirBorne) {
             int i = stack.getDamage();
             if (i == 30) {
                 i = 31; //for ostrich eggs. placed eggs become stolen eggs.

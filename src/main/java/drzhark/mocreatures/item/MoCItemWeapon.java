@@ -1,12 +1,14 @@
 package drzhark.mocreatures.item;
 
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
@@ -24,11 +26,15 @@ public class MoCItemWeapon extends MoCItem {
     private final IItemTier material;
     private int specialWeaponType = 0;
     private boolean breakable = false;
+    private final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
     public MoCItemWeapon(IItemTier materialIn, Item.Properties builder) {
         super(builder.maxDamage(materialIn.getMaxUses()));
         this.material = materialIn;
         this.attackDamage = 4F + materialIn.getAttackDamage();
+        ImmutableMultimap.Builder<Attribute, AttributeModifier> attributeBuilder = ImmutableMultimap.builder();
+        attributeBuilder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)this.attackDamage, AttributeModifier.Operation.ADDITION));
+        this.attributeModifiers = attributeBuilder.build();
     }
 
     /**
@@ -191,14 +197,11 @@ public class MoCItemWeapon extends MoCItem {
 
     /**
      * Gets a map of item attribute modifiers, used by ItemSword to increase hit damage.
+     * @return
      */
     @SuppressWarnings("deprecation")
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
-        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(equipmentSlot);
-        if (equipmentSlot == EquipmentSlotType.MAINHAND) {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier",
-                    (double) this.attackDamage, AttributeModifier.Operation.ADDITION));
-        }
-        return multimap;
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
+        return equipmentSlot == EquipmentSlotType.MAINHAND ? this.attributeModifiers : super.getAttributeModifiers(equipmentSlot);
     }
 }

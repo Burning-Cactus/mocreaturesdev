@@ -13,8 +13,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 
 public class MoCEntityLeopard extends MoCEntityBigCat {
 
@@ -31,7 +29,7 @@ public class MoCEntityLeopard extends MoCEntityBigCat {
         super.selectType();
     }
 
-    @Override
+    /*@Override
     public boolean checkSpawningBiome() {
         int i = MathHelper.floor(this.getPosX());
         int j = MathHelper.floor(getBoundingBox().minY);
@@ -48,7 +46,7 @@ public class MoCEntityLeopard extends MoCEntityBigCat {
         }
         setType(1);
         return true;
-    }
+    }*/
 
     @Override
     public ResourceLocation getTexture() {
@@ -62,7 +60,7 @@ public class MoCEntityLeopard extends MoCEntityBigCat {
         }
     }
 
-    @Override
+    /*@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
@@ -80,7 +78,7 @@ public class MoCEntityLeopard extends MoCEntityBigCat {
         }
 
         return super.processInteract(player, hand);
-    }
+    }*/
 
     @Override
     public String getOffspringClazz(IMoCTameable mate) {

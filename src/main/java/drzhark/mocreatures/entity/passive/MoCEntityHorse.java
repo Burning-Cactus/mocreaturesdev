@@ -2,21 +2,22 @@ package drzhark.mocreatures.entity.passive;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
-import drzhark.mocreatures.client.particle.MoCEntityFXUndead;
 import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
 import drzhark.mocreatures.entity.ai.EntityAIFollowAdult;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
-import drzhark.mocreatures.init.MoCEntities;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCParticleTypes;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCEntities;
+import drzhark.mocreatures.registry.MoCItems;
+import drzhark.mocreatures.registry.MoCParticleTypes;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.item.ItemEntity;
@@ -29,7 +30,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -40,13 +40,8 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.List;
@@ -106,11 +101,10 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
         this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityTameableAnimal.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 30D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
@@ -191,7 +185,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
         return !this.isBeingRidden();
     }
 
-    @Override
+    /*@Override
     public boolean checkSpawningBiome() {
         BlockPos pos = new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(getBoundingBox().minY), this.getPosZ());
 
@@ -214,7 +208,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
         } catch (Exception e) {
         }
         return true;
-    }
+    }*/
 
     /**
      * returns one of the RGB color codes
@@ -1388,7 +1382,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
                       // parent type
     }
 
-    @Override
+    /*@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
@@ -1800,7 +1794,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
 
             return true;
         }
-        /*if (getIsChested() && player.isCrouching()) {
+        *//*if (getIsChested() && player.isCrouching()) {
             // if first time opening horse chest, we must initialize it
             if (this.localchest == null) {
                 this.localchest = new MoCAnimalChest("HorseChest", getInventorySize());// , new
@@ -1811,7 +1805,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
             }
             return true;
 
-        }*/
+        }*//*
 
         if (!stack.isEmpty()
                 && ((stack.getItem() == Item.getItemFromBlock(Blocks.PUMPKIN)) || (stack.getItem() == Items.MUSHROOM_STEW)
@@ -1852,7 +1846,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
         }
 
         return super.processInteract(player, hand);
-    }
+    }*/
 
     /**
      * Can this horse be trapped in a special amulet?
@@ -2331,8 +2325,8 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
         if (horse instanceof DonkeyEntity) {
             return 65; // donkey
         }
-        if (horse instanceof HorseEntity) {
-            switch ((byte) ((HorseEntity) horse).getHorseVariant()) {
+        /*if (horse instanceof HorseEntity) { TODO: get the value of the vanilla horse variant
+            switch ((byte) ((HorseEntity) horse).getHorseVariant) {
                 case 0: //white
                     return 1;
                 case 1: //creamy
@@ -2349,7 +2343,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
                     return 3;
             }
 
-        }
+        }*/
         return -1;
     }
 
@@ -2722,7 +2716,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
 
     @Override
     public void setType(int i) {
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(calculateMaxHealth());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(calculateMaxHealth());
         this.setHealth(getMaxHealth());
         if (getSubType() == 38 || getSubType() == 40) {
             //TODO: this.isImmuneToFire = true;
@@ -2731,7 +2725,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData livingdata, CompoundNBT dataTag) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData livingdata, CompoundNBT dataTag) {
         if (getSubType() == 38 || getSubType() == 40) {
             //TODO: this.isImmuneToFire = true;
         }

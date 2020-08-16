@@ -1,16 +1,12 @@
 package drzhark.mocreatures.entity.passive;
 
-import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.IMoCTameable;
-import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -82,7 +78,7 @@ public class MoCEntityPandaBear extends MoCEntityBear{
         return this.getSubType() == 3 && !stack.isEmpty() && stack.getItem() == Items.SUGAR_CANE;
     }
     
-    @Override
+    /*@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
@@ -127,7 +123,7 @@ public class MoCEntityPandaBear extends MoCEntityBear{
         }
 
         return super.processInteract(player, hand);
-    }
+    }*/
     
     @Override
     public void livingTick() {

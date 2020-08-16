@@ -13,10 +13,11 @@ import drzhark.mocreatures.entity.passive.MoCEntityOstrich;
 import drzhark.mocreatures.entity.passive.MoCEntityPetScorpion;
 import drzhark.mocreatures.entity.passive.MoCEntitySnake;
 import drzhark.mocreatures.entity.passive.MoCEntityWyvern;
-import drzhark.mocreatures.init.MoCEntities;
-import drzhark.mocreatures.init.MoCItems;
-import net.minecraft.block.material.Material;
+import drzhark.mocreatures.registry.MoCEntities;
+import drzhark.mocreatures.registry.MoCItems;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -24,7 +25,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.Util;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
@@ -49,10 +51,8 @@ public class MoCEntityEgg extends LivingEntity {
         return MoCreatures.getTexture("egg.png");
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D); // setMaxHealth
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityEgg.registerAttributes().func_233815_a_(Attributes.MAX_HEALTH, 10.0D);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class MoCEntityEgg extends LivingEntity {
         return null;
     }
 
-    @Override
+//    @Override
     public boolean handleWaterMovement() {
         return this.isInWater();
     }
@@ -111,7 +111,7 @@ public class MoCEntityEgg extends LivingEntity {
         this.moveStrafing = 0.0F;
         this.moveForward = 0.0F;
 //        this.randomYawVelocity = 0.0F;
-        travel(new Vec3d(this.moveStrafing, this.moveVertical, this.moveForward));
+        travel(new Vector3d(this.moveStrafing, this.moveVertical, this.moveForward));
     }
 
     @Override
@@ -239,9 +239,9 @@ public class MoCEntityEgg extends LivingEntity {
                     {
                         MoCEntityOstrich entityspawn = new MoCEntityOstrich(MoCEntities.OSTRICH, this.world);
                         int typeInt = 1;
-                        if (this.world.dimension.doesWaterVaporize() || getEggType() == 32) {
+                        /*if (this.world.dimension.doesWaterVaporize() || getEggType() == 32) {
                             typeInt = 5;
-                        }
+                        }*/
                         entityspawn.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
                         entityspawn.setType(typeInt);
                         entityspawn.setEdad(35);
@@ -326,7 +326,7 @@ public class MoCEntityEgg extends LivingEntity {
         PlayerEntity entityplayer = this.world.getClosestPlayer(this, 24D);
         if (entityplayer != null) {
             entityplayer.sendMessage(new TranslationTextComponent("Egg hatching soon! KEEP WATCH! The hatched creature located @ "
-                    + (int) this.getPosX() + ", " + (int) this.getPosY() + ", " + (int) this.getPosZ() + " will be lost if you leave area"));
+                    + (int) this.getPosX() + ", " + (int) this.getPosY() + ", " + (int) this.getPosZ() + " will be lost if you leave area"), Util.DUMMY_UUID);
         }
     }
 

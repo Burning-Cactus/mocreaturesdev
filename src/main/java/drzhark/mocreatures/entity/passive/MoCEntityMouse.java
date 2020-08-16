@@ -1,32 +1,19 @@
 package drzhark.mocreatures.entity.passive;
 
-import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityAnimal;
 import drzhark.mocreatures.entity.ai.EntityAIFleeFromPlayer;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
-import drzhark.mocreatures.init.MoCSoundEvents;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IWorld;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 
 public class MoCEntityMouse extends MoCEntityAnimal {
 
@@ -43,11 +30,10 @@ public class MoCEntityMouse extends MoCEntityAnimal {
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityAnimal.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 4.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.35D);
     }
 
     @Override
@@ -72,7 +58,7 @@ public class MoCEntityMouse extends MoCEntityAnimal {
         }
     }
 
-    @Override
+    /*@Override
     public boolean checkSpawningBiome() {
         BlockPos pos = new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(getBoundingBox().minY), this.getPosZ());
         Biome currentbiome = MoCTools.Biomekind(this.world, pos);
@@ -84,7 +70,7 @@ public class MoCEntityMouse extends MoCEntityAnimal {
         } catch (Exception e) {
         }
         return true;
-    }
+    }*/
 
     public boolean getIsPicked() {
         return this.getRidingEntity() != null;
@@ -94,7 +80,7 @@ public class MoCEntityMouse extends MoCEntityAnimal {
         return !this.onGround && isOnLadder();
     }
 
-    @Override
+    /*@Override
     public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
         int i = MathHelper.floor(this.getPosX());
         int j = MathHelper.floor(getBoundingBox().minY);
@@ -103,9 +89,9 @@ public class MoCEntityMouse extends MoCEntityAnimal {
         Block block = this.world.getBlockState(pos.down()).getBlock();
         return ((MoCreatures.entityMap.get(this.getType()).getFrequency() > 0) && this.world.checkNoEntityCollision(this)
                 && (this.world.getCollisionShapes(this, this.getBoundingBox()).count() == 0)
-                && !this.world.containsAnyLiquid(this.getBoundingBox()) && ((block == Blocks.COBBLESTONE) || (block.getTags().contains(BlockTags.PLANKS.getId()))
+                && !this.world.containsAnyLiquid(this.getBoundingBox()) && ((block == Blocks.COBBLESTONE) || (block.getTags().contains(BlockTags.PLANKS.getName()))
                 || (block == Blocks.DIRT) || (block == Blocks.STONE) || (block == Blocks.GRASS)));
-    }
+    }*/
 
     @Override
     protected SoundEvent getDeathSound() {
@@ -135,18 +121,18 @@ public class MoCEntityMouse extends MoCEntityAnimal {
         }
     }
 
-    @Override
-    public boolean processInteract(PlayerEntity player, Hand hand) {
+    /*@Override TODO Apparently this method in MobEntity is final?!?!?
+    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
         if (this.getRidingEntity() == null) {
             if (this.startRiding(player)) {
                 this.rotationYaw = player.rotationYaw;
             }
 
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
-        return super.processInteract(player, hand);
-    }
+        return super.processInitialInteract(player, hand);
+    }*/
 
     @Override
     public boolean isOnLadder() {

@@ -3,6 +3,7 @@ package drzhark.mocreatures.client.particle;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -18,7 +19,7 @@ public class MoCEntityFXVacuum extends SpriteTexturedParticle {
     private final double portalPosY;
     private final double portalPosZ;
 
-    public MoCEntityFXVacuum(World par1World, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+    public MoCEntityFXVacuum(ClientWorld par1World, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
         super(par1World, x, y, z, xSpeed, ySpeed, zSpeed);
 
         this.particleRed = 1F;
@@ -106,7 +107,7 @@ public class MoCEntityFXVacuum extends SpriteTexturedParticle {
 
         @Nullable
         @Override
-        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             MoCEntityFXVacuum vacuumParticle = new MoCEntityFXVacuum(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
             return null;
         }

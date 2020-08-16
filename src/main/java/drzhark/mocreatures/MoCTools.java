@@ -10,11 +10,9 @@ import drzhark.mocreatures.entity.item.MoCEntityThrowableRock;
 import drzhark.mocreatures.entity.monster.MoCEntityOgre;
 import drzhark.mocreatures.entity.monster.MoCEntitySilverSkeleton;
 import drzhark.mocreatures.entity.passive.MoCEntityHorse;
-import drzhark.mocreatures.init.MoCEntities;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
-import drzhark.mocreatures.network.MoCMessageHandler;
-import drzhark.mocreatures.network.message.MoCMessageNameGUI;
+import drzhark.mocreatures.registry.MoCEntities;
+import drzhark.mocreatures.registry.MoCItems;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
@@ -25,7 +23,6 @@ import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,14 +33,11 @@ import net.minecraft.pathfinding.Path;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.JukeboxTileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion;
@@ -51,15 +45,12 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeManager;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.fml.network.NetworkDirection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -602,7 +593,8 @@ public class MoCTools {
         Biome biome = biomeProvider.getBiome(pos);
         //TODO works?
 
-        return biome.getRegistryName().toString();
+//        return biome.getRegistryName().toString();
+        return "null";
     }
 
     public static Biome Biomekind(World world, BlockPos pos) {
@@ -618,7 +610,7 @@ public class MoCTools {
         List<Entity> list = entity.world.getEntitiesWithinAABBExcludingEntity(entity, entity.getBoundingBox().expand(d, d, d));
 
         for (int i = 0; i < list.size(); i++) {
-            Entity entity1 = (Entity) list.get(i);
+            Entity entity1 = list.get(i);
             if (!(entity1 instanceof ItemEntity)) {
                 continue;
             }
@@ -814,7 +806,7 @@ public class MoCTools {
             int i2 = MathHelper.floor(d2 - f - 1.0D);
             int j2 = MathHelper.floor(d2 + f + 1.0D);
             List<Entity> list = entity.world.getEntitiesWithinAABBExcludingEntity(entity, new AxisAlignedBB(k, k1, i2, i1, l1, j2));
-            Vec3d vec3d = new Vec3d(d, d1, d2);
+            Vector3d vec3d = new Vector3d(d, d1, d2);
             for (Entity value : list) {
                 Entity entity1 = (Entity) value;
                 double d7 = entity1.getDistance(entity) / f;
@@ -880,12 +872,12 @@ public class MoCTools {
             if (mobGriefing && (!entity.world.isRemote()) && blockstate.getBlock() != Blocks.AIR) {
                 BlockEvent.BreakEvent event = null;
                 if (!entity.world.isRemote) {
-                    try {
+                    /*try {
                         event =
                                 new BlockEvent.BreakEvent(entity.world, chunkposition, blockstate, FakePlayerFactory.get(
                                         DimensionManager.getWorld(entity.world.getServer(), entity.world.dimension.getType(), false, false), MoCreatures.MOCFAKEPLAYER));
                     } catch (Throwable t) {
-                    }
+                    }*/
                 }
                 if (event != null && !event.isCanceled()) {
 //                    blockstate.getBlock().dropBlockAsItemWithChance(entity.world, chunkposition, blockstate, 0.3F, 1);
@@ -1213,7 +1205,7 @@ public class MoCTools {
         if (MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get()) {
             if (storedCreature == null) {
                 ep.sendMessage(new TranslationTextComponent(TextFormatting.RED + "ERROR:" + TextFormatting.WHITE
-                        + "The stored creature is NULL and could not be created. Report to admin."));
+                        + "The stored creature is NULL and could not be created. Report to admin."), Util.DUMMY_UUID);
                 return false;
             }
             int max = 0;
@@ -1226,7 +1218,7 @@ public class MoCTools {
                 }
                 if (count >= max) {
                     String message = "\2474" + ep.getName() + " can not tame more creatures, limit of " + max + " reached";
-                    ep.sendMessage(new TranslationTextComponent(message));
+                    ep.sendMessage(new TranslationTextComponent(message), Util.DUMMY_UUID);
                     return false;
                 }
             }
@@ -1473,7 +1465,7 @@ public class MoCTools {
         return null;
     }
 
-    public static int countPlayersInDimension(ServerWorld world, DimensionType dimension) {
+    /*public static int countPlayersInDimension(ServerWorld world, DimensionType dimension) {
         int playersInDimension = 0;
         for (int j = 0; j < world.getPlayers().size(); ++j) {
             ServerPlayerEntity entityplayermp = (ServerPlayerEntity) world.getPlayers().get(j);
@@ -1483,7 +1475,7 @@ public class MoCTools {
             }
         }
         return playersInDimension;
-    }
+    }*/
 
     public static boolean isThisPlayerAnOP(PlayerEntity player) {
         if (player.world.isRemote) {
@@ -1498,7 +1490,7 @@ public class MoCTools {
             int var2 = 1 + world.rand.nextInt(4);
             for (int i = 0; i < var2; ++i) {
                 float var4 = (i % 2 - 0.5F) * 1 / 4.0F;
-                float var5 = (i / 2 - 0.5F) * 1 / 4.0F;
+                float var5 = (((float)(i / 2)) - 0.5F) * 1 / 4.0F;
                 MoCEntityMaggot maggot = new MoCEntityMaggot(MoCEntities.MAGGOT, world);
                 maggot.setLocationAndAngles(entity.getPosX() + var4, entity.getPosY() + 0.5D, entity.getPosZ() + var5, world.rand.nextFloat() * 360.0F, 0.0F);
                 world.addEntity(maggot);
@@ -1578,7 +1570,7 @@ public class MoCTools {
             if (nbt.contains("Owner") && !nbt.getString("Owner").equals("")) {
                 return true; // ignore
             }
-            if (nbt.contains("Tamed") && nbt.getBoolean("Tamed") == true) {
+            if (nbt.contains("Tamed") && nbt.getBoolean("Tamed")) {
                 return true; // ignore
             }
         }

@@ -1,7 +1,7 @@
 package drzhark.mocreatures.dimension.feature;
 
 import com.mojang.datafixers.Dynamic;
-import drzhark.mocreatures.init.MoCBlocks;
+import drzhark.mocreatures.registry.MoCBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

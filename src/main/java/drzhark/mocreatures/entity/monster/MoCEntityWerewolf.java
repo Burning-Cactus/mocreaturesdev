@@ -5,9 +5,11 @@ import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCItems;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
@@ -24,7 +26,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -53,12 +55,11 @@ public class MoCEntityWerewolf extends MoCEntityMob {
         this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityMob.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 40.0D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 2.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
@@ -129,19 +130,19 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     }
 
     public boolean getIsHumanForm() {
-        return ((Boolean)this.dataManager.get(IS_HUMAN)).booleanValue();
+        return this.dataManager.get(IS_HUMAN);
     }
 
     public void setHumanForm(boolean flag) {
-        this.dataManager.set(IS_HUMAN, Boolean.valueOf(flag));
+        this.dataManager.set(IS_HUMAN, flag);
     }
 
     public boolean getIsHunched() {
-        return ((Boolean)this.dataManager.get(IS_HUNCHED)).booleanValue();
+        return this.dataManager.get(IS_HUNCHED);
     }
 
     public void setHunched(boolean flag) {
-        this.dataManager.set(IS_HUNCHED, Boolean.valueOf(flag));
+        this.dataManager.set(IS_HUNCHED, flag);
     }
 
     @Override
@@ -159,7 +160,7 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     @Override
     public boolean attackEntityFrom(DamageSource damagesource, float i) {
         Entity entity = damagesource.getTrueSource();
-        if (!getIsHumanForm() && (entity != null) && (entity instanceof PlayerEntity)) {
+        if (!getIsHumanForm() && (entity instanceof PlayerEntity)) {
             PlayerEntity entityplayer = (PlayerEntity) entity;
             ItemStack stack = entityplayer.getHeldItemMainhand();
             if (!stack.isEmpty()) {
@@ -356,12 +357,12 @@ public class MoCEntityWerewolf extends MoCEntityMob {
             setHumanForm(false);
             this.setHealth(40);
             this.transforming = false;
-            this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.5D);
         } else {
             setHumanForm(true);
             this.setHealth(15);
             this.transforming = false;
-            this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25D);
         }
     }
 
@@ -389,7 +390,7 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     }
 
     @Override
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         if (getSubType() == 4) {
 //            this.isImmuneToFire = true; TODO: Fire immunity
         }

@@ -2,7 +2,7 @@ package drzhark.mocreatures.item;
 
 import drzhark.mocreatures.MoCProxy;
 import drzhark.mocreatures.MoCTools;
-import drzhark.mocreatures.init.MoCItems;
+import drzhark.mocreatures.registry.MoCItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;

@@ -1,14 +1,9 @@
 package drzhark.mocreatures.entity.passive;
 
-import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.IMoCTameable;
-import drzhark.mocreatures.init.MoCItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -65,7 +60,7 @@ public class MoCEntityGrizzlyBear extends MoCEntityBear{
         return (this.getBrightness() < 0.4F) && super.shouldAttackPlayers();
     }
     
-    @Override
+    /*@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
@@ -108,7 +103,7 @@ public class MoCEntityGrizzlyBear extends MoCEntityBear{
         }
 
         return super.processInteract(player, hand);
-    }
+    }*/
     
     @Override
     public String getOffspringClazz(IMoCTameable mate) {

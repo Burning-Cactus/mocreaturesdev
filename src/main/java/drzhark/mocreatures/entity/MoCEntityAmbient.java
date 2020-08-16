@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.WolfEntity;
@@ -28,12 +29,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.*;
+import net.minecraft.world.server.ServerWorld;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,15 +60,20 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
         return MoCreatures.getTexture(this.texture);
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return AnimalEntity.registerAttributes();
     }
 
     @Override
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData par1EntityLivingData, CompoundNBT dataTag) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData par1EntityLivingData, CompoundNBT dataTag) {
         selectType();
         return super.onInitialSpawn(worldIn, difficulty, reason, par1EntityLivingData, dataTag);
+    }
+
+    @Nullable
+    @Override
+    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+        return null;
     }
 
     /**
@@ -80,10 +85,10 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
         setType(1);
     }
 
-    @Override
+    /*@Override
     public AgeableEntity createChild(AgeableEntity var1) {
         return null;
-    }
+    }*/
 
     @Override
     protected void registerData() {
@@ -376,7 +381,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     protected void getPathOrWalkableBlock(Entity entity, float f) {
-        Path pathentity = this.navigator.getPathToPos(entity.getPosition(), 0);
+        Path pathentity = this.navigator.getPathToPos(new BlockPos(entity.getPositionVec()), 0);
         if ((pathentity == null) && (f > 8F)) {
             int i = MathHelper.floor(entity.getPosX()) - 2;
             int j = MathHelper.floor(entity.getPosZ()) - 2;
@@ -424,16 +429,16 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
 
     @Override
     public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
-        if (MoCreatures.entityMap.get(this.getType()).getFrequency() <= 0) {
+        /*if (MoCreatures.entityMap.get(this.getType()).getFrequency() <= 0) {
             return false;
-        }
+        }*/
         BlockPos pos = new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(getBoundingBox().minY), this.getPosZ());
 
-        String s = MoCTools.biomeName(this.world, pos);
+        /*String s = MoCTools.biomeName(this.world, pos); TODO: Biomes have changed, rewrite this.
 
         if (s.equals("Jungle") || s.equals("JungleHills")) {
             return getCanSpawnHereJungle();
-        }
+        }*/
 
         return super.canSpawn(worldIn, reason);
     }
@@ -831,7 +836,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     @Override
-    public void travel(Vec3d movement) {
+    public void travel(Vector3d movement) {
         if (!getIsFlying()) {
             super.travel(movement);
             return;
@@ -842,11 +847,11 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     public void moveEntityWithHeadingFlying(float strafe, float vertical, float forward) {
         if (this.isServerWorld()) {
 
-            this.moveRelative(0.1F, new Vec3d(strafe, vertical, forward));
+            this.moveRelative(0.1F, new Vector3d(strafe, vertical, forward));
             this.move(MoverType.SELF, this.getMotion());
             this.getMotion().scale(0.8999999761581421D);
         } else {
-            super.travel(new Vec3d(strafe, vertical, forward));
+            super.travel(new Vector3d(strafe, vertical, forward));
         }
     }
 

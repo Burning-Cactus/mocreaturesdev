@@ -1,9 +1,8 @@
 package drzhark.mocreatures.data.datagen.lang;
 
 import drzhark.mocreatures.MoCItemGroup;
-import drzhark.mocreatures.init.MoCBlocks;
-import drzhark.mocreatures.init.MoCEntities;
-import drzhark.mocreatures.init.MoCItems;
+import drzhark.mocreatures.registry.MoCBlocks;
+import drzhark.mocreatures.registry.MoCItems;
 import net.minecraft.data.DataGenerator;
 
 public class MoCEnUSLangProvider extends MoCLangProvider {
@@ -78,7 +77,7 @@ public class MoCEnUSLangProvider extends MoCLangProvider {
         add(MoCItems.SCORPBOOTSDIRT, "Scorpion Boots");
         add(MoCItems.SCORPBOOTSFROST, "Frost Scorpion Boots");
         add(MoCItems.SCORPBOOTSNETHER, "Nether Scorpion Boots");
-        add(MoCItems.SCROLLFREEDOM, "Scroll of Freedom");
+        add(MoCItems.SCROLLOFFREEDOM, "Scroll of Freedom");
         add(MoCItems.SCROLLOFOWNER, "Scroll of Ownership");
         add(MoCItems.SCROLLOFSALE, "Scroll of Sale");
         add(MoCItems.FISHNET, "Fishnet");
@@ -139,7 +138,7 @@ public class MoCEnUSLangProvider extends MoCLangProvider {
         add(MoCItems.HEARTFIRE, "Heart of Fire");
         add(MoCItems.HEARTUNDEAD, "Heart of Undead");
 
-        add(MoCItemGroup.TABMOC.getTranslationKey(), "Mo' Creatures");
+        add(MoCItemGroup.TABMOC.func_242392_c().getString(), "Mo' Creatures");
         //TODO: Finish English translations
     }
 }

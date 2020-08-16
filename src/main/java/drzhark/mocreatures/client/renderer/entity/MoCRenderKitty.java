@@ -1,17 +1,13 @@
 package drzhark.mocreatures.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.client.model.MoCModelKitty;
 import drzhark.mocreatures.entity.passive.MoCEntityKitty;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
 public class MoCRenderKitty extends MoCRenderMoC<MoCEntityKitty, MoCModelKitty> {
@@ -120,7 +116,7 @@ public class MoCRenderKitty extends MoCRenderMoC<MoCEntityKitty, MoCModelKitty> 
     }
 
     protected void rotateAnimal(MoCEntityKitty entitykitty, MatrixStack stack) {
-        if (!entitykitty.onGround) {
+        if (entitykitty.isAirBorne) {
             stack.rotate(Vector3f.XN.rotationDegrees(90F));
         }
     }

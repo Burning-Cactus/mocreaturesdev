@@ -1,11 +1,9 @@
 package drzhark.mocreatures.entity.monster;
 
 import drzhark.mocreatures.MoCreatures;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -17,10 +15,8 @@ public class MoCEntityHellRat extends MoCEntityRat {
         super(type, world);
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityRat.registerAttributes().func_233815_a_(Attributes.MAX_HEALTH, 20.0D);
     }
 
     @Override

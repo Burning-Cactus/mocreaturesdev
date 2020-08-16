@@ -5,19 +5,15 @@ import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityTameableAquatic;
 import drzhark.mocreatures.entity.ai.EntityAIPanicMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
-import drzhark.mocreatures.init.MoCEntities;
-import drzhark.mocreatures.init.MoCSoundEvents;
-import drzhark.mocreatures.network.MoCMessageHandler;
-import drzhark.mocreatures.network.message.MoCMessageHeart;
+import drzhark.mocreatures.registry.MoCEntities;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -43,13 +39,11 @@ public class MoCEntityDolphin extends MoCEntityTameableAquatic {
         this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 1.0D, 30));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityTameableAquatic.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.5D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 5.0D);
     }
 
     @Override
@@ -156,24 +150,24 @@ public class MoCEntityDolphin extends MoCEntityTameableAquatic {
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(IS_HUNGRY, Boolean.valueOf(false));
-        this.dataManager.register(HAS_EATEN, Boolean.valueOf(false));
+        this.dataManager.register(IS_HUNGRY, Boolean.FALSE);
+        this.dataManager.register(HAS_EATEN, Boolean.FALSE);
     }
 
     public boolean getIsHungry() {
-        return (((Boolean)this.dataManager.get(IS_HUNGRY)).booleanValue());
+        return this.dataManager.get(IS_HUNGRY);
     }
 
     public boolean getHasEaten() {
-        return (((Boolean)this.dataManager.get(HAS_EATEN)).booleanValue());
+        return this.dataManager.get(HAS_EATEN);
     }
 
     public void setIsHungry(boolean flag) {
-        this.dataManager.set(IS_HUNGRY, Boolean.valueOf(flag));
+        this.dataManager.set(IS_HUNGRY, flag);
     }
 
     public void setHasEaten(boolean flag) {
-        this.dataManager.set(HAS_EATEN, Boolean.valueOf(flag));
+        this.dataManager.set(HAS_EATEN, flag);
     }
 
     //TODO
@@ -253,7 +247,7 @@ public class MoCEntityDolphin extends MoCEntityTameableAquatic {
         return 0.4F;
     }
 
-    @Override
+    /*@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
@@ -308,7 +302,7 @@ public class MoCEntityDolphin extends MoCEntityTameableAquatic {
         }
 
         return super.processInteract(player, hand);
-    }
+    }*/
 
     @Override
     public void livingTick() {
@@ -413,12 +407,8 @@ public class MoCEntityDolphin extends MoCEntityTameableAquatic {
 
     @Override
     public void remove() {
-        if (!this.world.isRemote && getIsTamed() && (getHealth() > 0)) {
-            return;
-        } else {
+        if (!(!this.world.isRemote && getIsTamed() && (getHealth() > 0)))
             super.remove();
-            return;
-        }
     }
 
     @Override

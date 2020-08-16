@@ -1,32 +1,29 @@
 package drzhark.mocreatures.entity.passive;
 
-import drzhark.mocreatures.MoCPetData;
 import drzhark.mocreatures.MoCTools;
-import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
 import drzhark.mocreatures.entity.ai.EntityAIFollowAdult;
 import drzhark.mocreatures.entity.ai.EntityAIFollowOwnerPlayer;
 import drzhark.mocreatures.entity.ai.EntityAIHunt;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCItems;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import drzhark.mocreatures.inventory.MoCAnimalChest;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -72,7 +69,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
         this.targetSelector.addGoal(4, new EntityAIHunt(this, AnimalEntity.class, true));
     }
 
-    @Override
+    /*@Override
     protected void registerAttributes() {
         super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40D);
@@ -80,6 +77,14 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
         this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(8.0D);
+    }*/
+
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityTameableAnimal.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 40D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 5.0D)
+                .func_233815_a_(Attributes.FOLLOW_RANGE, 8.0D);
     }
 
     /**
@@ -87,10 +92,10 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
      */
     @Override
     public void selectType() {
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(calculateMaxHealth());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(calculateMaxHealth());
         this.setHealth(getMaxHealth());
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(calculateAttackDmg());
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(getAttackRange());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(calculateAttackDmg());
+        this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(getAttackRange());
         if (getIsAdult()) {
             setEdad(getMaxEdad());
         }
@@ -124,54 +129,54 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(RIDEABLE, Boolean.valueOf(false)); 
-        this.dataManager.register(SITTING, Boolean.valueOf(false));
-        this.dataManager.register(GHOST, Boolean.valueOf(false)); 
-        this.dataManager.register(HAS_AMULET, Boolean.valueOf(false)); 
-        this.dataManager.register(CHESTED, Boolean.valueOf(false));
+        this.dataManager.register(RIDEABLE, Boolean.FALSE);
+        this.dataManager.register(SITTING, Boolean.FALSE);
+        this.dataManager.register(GHOST, Boolean.FALSE);
+        this.dataManager.register(HAS_AMULET, Boolean.FALSE);
+        this.dataManager.register(CHESTED, Boolean.FALSE);
     }
 
     public boolean getHasAmulet() {
-        return ((Boolean)this.dataManager.get(HAS_AMULET)).booleanValue();
+        return this.dataManager.get(HAS_AMULET);
     }
 
     @Override
     public boolean getIsSitting() {
-        return ((Boolean)this.dataManager.get(SITTING)).booleanValue();
+        return this.dataManager.get(SITTING);
     }
 
     @Override
     public boolean getIsRideable() {
-        return ((Boolean)this.dataManager.get(RIDEABLE)).booleanValue();
+        return this.dataManager.get(RIDEABLE);
     }
 
     public boolean getIsChested() {
-        return ((Boolean)this.dataManager.get(CHESTED)).booleanValue();
+        return this.dataManager.get(CHESTED);
     }
 
     @Override
     public boolean getIsGhost() {
-        return ((Boolean)this.dataManager.get(GHOST)).booleanValue();
+        return this.dataManager.get(GHOST);
     }
 
     public void setHasAmulet(boolean flag) {
-        this.dataManager.set(HAS_AMULET, Boolean.valueOf(flag));
+        this.dataManager.set(HAS_AMULET, flag);
     }
 
     public void setSitting(boolean flag) {
-        this.dataManager.set(SITTING, Boolean.valueOf(flag));
+        this.dataManager.set(SITTING, flag);
     }
 
     public void setIsChested(boolean flag) {
-        this.dataManager.set(CHESTED, Boolean.valueOf(flag));
+        this.dataManager.set(CHESTED, flag);
     }
 
     public void setRideable(boolean flag) {
-        this.dataManager.set(RIDEABLE, Boolean.valueOf(flag));
+        this.dataManager.set(RIDEABLE, flag);
     }
 
     public void setIsGhost(boolean flag) {
-        this.dataManager.set(GHOST, Boolean.valueOf(flag));
+        this.dataManager.set(GHOST, flag);
     }
 
     // Method used for receiving damage from another source
@@ -436,7 +441,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
 
     }
 
-    @Override
+    /*@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
@@ -521,7 +526,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
             return true;
         }
 
-        /*if (getIsChested() && player.isCrouching()) {
+        *//*if (getIsChested() && player.isCrouching()) {
             if (this.localchest == null) {
                 this.localchest = new MoCAnimalChest(this.chestName, 18);
             }
@@ -529,10 +534,10 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
                 player.displayGUIChest(this.localchest);
             }
             return true;
-        }*/
+        }*//*
 
         return super.processInteract(player, hand);
-    }
+    }*/
 
     @Override
     public float getSizeFactor() {

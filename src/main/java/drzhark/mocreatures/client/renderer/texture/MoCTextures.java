@@ -24,9 +24,9 @@ public class MoCTextures {
     public void loadTextures() {
         try {
             TEXTURE_RESOURCES.put(MoCProxy.ARMOR_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/armor/"));
-            TEXTURE_RESOURCES.put(MoCProxy.BLOCK_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/blocks/"));
+            TEXTURE_RESOURCES.put(MoCProxy.BLOCK_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/block/"));
             TEXTURE_RESOURCES.put(MoCProxy.GUI_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/gui/"));
-            TEXTURE_RESOURCES.put(MoCProxy.ITEM_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/items/"));
+            TEXTURE_RESOURCES.put(MoCProxy.ITEM_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/item/"));
             TEXTURE_RESOURCES.put(MoCProxy.MISC_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/misc/"));
             TEXTURE_RESOURCES.put(MoCProxy.MODEL_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/models/"));
         } catch (URISyntaxException e) {

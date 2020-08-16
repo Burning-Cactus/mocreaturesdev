@@ -9,28 +9,23 @@ import drzhark.mocreatures.entity.item.MoCEntityEgg;
 import drzhark.mocreatures.entity.item.MoCEntityKittyBed;
 import drzhark.mocreatures.entity.item.MoCEntityLitterBox;
 import drzhark.mocreatures.entity.passive.MoCEntityHorse;
-import drzhark.mocreatures.network.MoCMessageHandler;
-import drzhark.mocreatures.network.message.MoCMessageHealth;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.SwimmerPathNavigator;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
-import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.List;
 import java.util.UUID;
@@ -62,16 +57,15 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
 //        this.goalSelector.addGoal(4, this.wander = new EntityAIWanderMoC2(this, 1.0D, 80));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.7F);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2D);
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MonsterEntity.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 20.0D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 2D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.7F);
     }
 
     @Override
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData par1EntityLivingData, CompoundNBT dataTag) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData par1EntityLivingData, CompoundNBT dataTag) {
         selectType();
         return super.onInitialSpawn(worldIn, difficulty, reason, par1EntityLivingData, dataTag);
     }
@@ -344,7 +338,7 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     }
 
     @Override
-    public void travel(Vec3d motion) {
+    public void travel(Vector3d motion) {
         if (!isFlyer()) {
             super.travel(motion);
             return;
@@ -355,11 +349,11 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     public void moveEntityWithHeadingFlyer(float strafe, float vertical, float forward) {
         if (this.isServerWorld()) {
 
-            this.moveRelative( 0.1F, new Vec3d(strafe, vertical, forward));
+            this.moveRelative( 0.1F, new Vector3d(strafe, vertical, forward));
             this.move(MoverType.SELF, this.getMotion());
             this.getMotion().scale(0.8999999761581421D);
         } else {
-            super.travel(new Vec3d(strafe, vertical, forward));
+            super.travel(new Vector3d(strafe, vertical, forward));
         }
     }
 
@@ -536,7 +530,7 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     @Override
     public boolean attackEntityAsMob(Entity entityIn) {
         boolean flag =
-                entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), ((int) this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE)
+                entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), ((int) this.getAttribute(Attributes.ATTACK_DAMAGE)
                         .getValue()));
         if (flag) {
             this.applyEnchantments(this, entityIn);

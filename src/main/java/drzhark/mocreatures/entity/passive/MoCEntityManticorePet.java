@@ -51,7 +51,7 @@ public class MoCEntityManticorePet extends MoCEntityBigCat {
         return true;
     }
 
-    @Override
+    /*@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
@@ -69,7 +69,7 @@ public class MoCEntityManticorePet extends MoCEntityBigCat {
         }
 
         return super.processInteract(player, hand);
-    }
+    }*/
 
     @Override
     public String getOffspringClazz(IMoCTameable mate) {

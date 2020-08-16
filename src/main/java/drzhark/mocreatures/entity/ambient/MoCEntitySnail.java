@@ -5,9 +5,8 @@ import drzhark.mocreatures.entity.MoCEntityAmbient;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -33,11 +32,10 @@ public class MoCEntitySnail extends MoCEntityAmbient {
         this.dataManager.register(IS_HIDDING, Boolean.valueOf(false));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.10D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityAmbient.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 5.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.1D);
     }
 
     @Override

@@ -7,7 +7,7 @@ import drzhark.mocreatures.entity.ambient.MoCEntityAnt;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.EnumSet;
 
@@ -56,7 +56,7 @@ public class EntityAIWanderMoC2 extends Goal {
             }
         }
 
-        Vec3d vec3 = RandomPositionGeneratorMoCFlyer.findRandomTarget(this.entity, 10, 12);
+        Vector3d vec3 = RandomPositionGeneratorMoCFlyer.findRandomTarget(this.entity, 10, 12);
 
         if (vec3 != null && this.entity instanceof IMoCEntity && this.entity.getNavigator() instanceof PathNavigateFlyerMoC) {
             int distToFloor = MoCTools.distanceToFloor(this.entity);

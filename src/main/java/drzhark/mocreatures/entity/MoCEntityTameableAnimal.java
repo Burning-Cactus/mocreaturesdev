@@ -1,14 +1,11 @@
 package drzhark.mocreatures.entity;
 
-import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.MoCPetData;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
-import drzhark.mocreatures.network.MoCMessageHandler;
-import drzhark.mocreatures.network.message.MoCMessageHeart;
+import drzhark.mocreatures.registry.MoCItems;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -23,10 +20,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -128,7 +122,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
             if (!this.world.isRemote) {
                 // Remove when client is updated
                 ((ServerPlayerEntity) player).sendAllContents(player.openContainer, player.openContainer.getInventory());
-                player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."));
+                player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."), Util.DUMMY_UUID);
             }
             return false;
         }
@@ -136,22 +130,24 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
         //if the player interacting is not the owner, do nothing!
         if (MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get() && this.getOwnerId() != null
                 && !player.getUniqueID().equals(this.getOwnerId())) {
-            player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."));
+            player.sendMessage(new TranslationTextComponent(TextFormatting.RED + "This pet does not belong to you."), Util.DUMMY_UUID);
             return false;
         }
 
         return true;
     }
 
-    @Override
-    public boolean processInteract(PlayerEntity player, Hand hand) {
+    /*@Override
+    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
-            return tameResult;
+            if(tameResult)
+                return ActionResultType.SUCCESS;
+            return ActionResultType.FAIL;
         }
 
-        return super.processInteract(player, hand);
-    }
+        return super.processInitialInteract(player, hand);
+    }*/
 
     // This should always run first for all tameable animals
     public Boolean processTameInteract(PlayerEntity player, Hand hand) {
@@ -185,7 +181,7 @@ public class MoCEntityTameableAnimal extends MoCEntityAnimal implements IMoCTame
             return false;
         }
         //sets it free, untamed
-        if (!stack.isEmpty() && getIsTamed() && ((stack.getItem() == MoCItems.SCROLLFREEDOM))) {
+        if (!stack.isEmpty() && getIsTamed() && ((stack.getItem() == MoCItems.SCROLLOFFREEDOM))) {
             stack.shrink(1);
             if (stack.isEmpty()) {
                 player.setHeldItem(hand, ItemStack.EMPTY);

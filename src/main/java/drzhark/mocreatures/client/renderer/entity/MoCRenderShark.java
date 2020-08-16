@@ -1,22 +1,19 @@
 package drzhark.mocreatures.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import drzhark.mocreatures.MoCreatures;
-import drzhark.mocreatures.client.MoCClientProxy;
 import drzhark.mocreatures.client.model.MoCModelShark;
 import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.aquatic.MoCEntityShark;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
 public class MoCRenderShark extends LivingRenderer<MoCEntityShark, MoCModelShark> {
@@ -83,10 +80,10 @@ public class MoCRenderShark extends LivingRenderer<MoCEntityShark, MoCModelShark
                     tessellator.getBuffer().pos(i + 1, -1 + byte0, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
                     tessellator.draw();
 //                    GL11.glEnable(3553 /* GL_TEXTURE_2D */);
-                    fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, 0x20ffffff);
+//                    fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, 0x20ffffff);
 //                    GL11.glEnable(2929 /* GL_DEPTH_TEST */);
 //                    GL11.glDepthMask(true);
-                    fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, -1);
+//                    fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, -1);
 //                    GL11.glDisable(3042 /* GL_BLEND */);
 //                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 }
@@ -138,10 +135,10 @@ public class MoCRenderShark extends LivingRenderer<MoCEntityShark, MoCModelShark
                 }
                 tessellator.draw();
 //                GL11.glEnable(3553 /* GL_TEXTURE_2D */);
-                fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, 0x20ffffff);
+//                fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, 0x20ffffff);
 //                GL11.glEnable(2929 /* GL_DEPTH_TEST */);
 //                GL11.glDepthMask(true);
-                fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, -1);
+//                fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, -1);
 //                GL11.glEnable(2896 /* GL_LIGHTING */);
 //                GL11.glDisable(3042 /* GL_BLEND */);
 //                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

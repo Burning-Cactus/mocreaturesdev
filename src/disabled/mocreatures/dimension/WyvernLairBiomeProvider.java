@@ -1,7 +1,7 @@
 package drzhark.mocreatures.dimension;
 
 import com.google.common.collect.ImmutableSet;
-import drzhark.mocreatures.init.MoCBiomes;
+import drzhark.mocreatures.registry.MoCBiomes;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
 

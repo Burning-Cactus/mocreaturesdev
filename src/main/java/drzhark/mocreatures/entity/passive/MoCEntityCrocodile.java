@@ -6,11 +6,12 @@ import drzhark.mocreatures.entity.ai.EntityAIFleeFromPlayer;
 import drzhark.mocreatures.entity.ai.EntityAIHunt;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -50,45 +51,43 @@ public class MoCEntityCrocodile extends MoCEntityTameableAnimal {
 
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25.0D);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityTameableAnimal.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 25.0D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(IS_RESTING, Boolean.valueOf(false));
-        this.dataManager.register(EATING_PREY, Boolean.valueOf(false));
-        this.dataManager.register(IS_BITING, Boolean.valueOf(false));
+        this.dataManager.register(IS_RESTING, Boolean.FALSE);
+        this.dataManager.register(EATING_PREY, Boolean.FALSE);
+        this.dataManager.register(IS_BITING, Boolean.FALSE);
     }
 
     public boolean getIsBiting() {
-        return ((Boolean)this.dataManager.get(IS_BITING)).booleanValue();
+        return this.dataManager.get(IS_BITING);
     }
 
     public boolean getIsSitting() {
-        return ((Boolean)this.dataManager.get(IS_RESTING)).booleanValue();
+        return this.dataManager.get(IS_RESTING);
     }
 
     public boolean getHasCaughtPrey() {
-        return ((Boolean)this.dataManager.get(EATING_PREY)).booleanValue();
+        return this.dataManager.get(EATING_PREY);
     }
 
     public void setBiting(boolean flag) {
-        this.dataManager.set(IS_BITING, Boolean.valueOf(flag));
+        this.dataManager.set(IS_BITING, flag);
     }
 
     public void setIsSitting(boolean flag) {
-        this.dataManager.set(IS_RESTING, Boolean.valueOf(flag));
+        this.dataManager.set(IS_RESTING, flag);
     }
 
     public void setHasCaughtPrey(boolean flag) {
-        this.dataManager.set(EATING_PREY, Boolean.valueOf(flag));
+        this.dataManager.set(EATING_PREY, flag);
     }
 
     @Override

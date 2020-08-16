@@ -6,39 +6,31 @@ import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
 import drzhark.mocreatures.entity.ai.EntityAIFollowAdult;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCItems;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import drzhark.mocreatures.inventory.MoCAnimalChest;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 
 import java.util.List;
 
@@ -87,13 +79,11 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
         this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityTameableAnimal.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 30D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.2D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 5.0D);
     }
 
     @Override
@@ -102,7 +92,7 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
         if (getSubType() == 0) {
             setType(this.rand.nextInt(2) + 1);
         }
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(calculateMaxHealth());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(calculateMaxHealth());
         this.setHealth(getMaxHealth());
     }
 
@@ -592,7 +582,7 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
         return getIsTamed();
     }*/
 
-    @Override
+    /*@Override
     public boolean checkSpawningBiome() {
         BlockPos pos = new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(getBoundingBox().minY), this.getPosZ());
         Biome currentbiome = MoCTools.Biomekind(this.world, pos);
@@ -617,7 +607,7 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
         }
 
         return false;
-    }
+    }*/
 
     @Override
     public float getSizeFactor() {
@@ -900,10 +890,10 @@ public class MoCEntityElephant extends MoCEntityTameableAnimal {
         return MoCSoundEvents.ENTITY_ELEPHANT_AMBIENT;
     }
 
-    @Override
+    /*@Override
     public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
         return (MoCreatures.entityMap.get(this.getType()).getFrequency() > 0) && getCanSpawnHereCreature() && getCanSpawnHereLiving();
-    }
+    }*/
 
     /*@Override
     public void dropMyStuff() {

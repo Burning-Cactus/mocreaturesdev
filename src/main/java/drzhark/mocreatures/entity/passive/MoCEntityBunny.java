@@ -8,11 +8,12 @@ import drzhark.mocreatures.entity.ai.EntityAIFollowAdult;
 import drzhark.mocreatures.entity.ai.EntityAIFollowOwnerPlayer;
 import drzhark.mocreatures.entity.ai.EntityAIPanicMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
-import drzhark.mocreatures.init.MoCEntities;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCEntities;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,12 +23,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 
 import java.util.List;
 
@@ -61,11 +57,10 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityTameableAnimal.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 4.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.35D);
     }
 
     @Override
@@ -92,7 +87,7 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
 
     }
 
-    @Override
+    /*@Override
     public boolean checkSpawningBiome() {
         int i = MathHelper.floor(this.getPosX());
         int j = MathHelper.floor(getBoundingBox().minY);
@@ -108,7 +103,7 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
         } catch (Exception e) {
         }
         return true;
-    }
+    }*/
 
     @Override
     public ResourceLocation getTexture() {
@@ -144,7 +139,7 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
         return SoundEvents.ENTITY_RABBIT_AMBIENT;
     }
 
-    @Override
+    /*@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
@@ -173,7 +168,7 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
         }
 
         return super.processInteract(player, hand);
-    }
+    }*/
 
     @Override
     public void tick() {

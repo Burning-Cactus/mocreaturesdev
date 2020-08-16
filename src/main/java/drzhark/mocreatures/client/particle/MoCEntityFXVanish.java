@@ -1,6 +1,7 @@
 package drzhark.mocreatures.client.particle;
 
 import net.minecraft.client.particle.*;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -16,7 +17,7 @@ public class MoCEntityFXVanish extends SpriteTexturedParticle {
     private final double portalPosZ;
     private final boolean implode;
 
-    public MoCEntityFXVanish(World par1World, double par2, double par4, double par6, double par8, double par10, double par12) {
+    public MoCEntityFXVanish(ClientWorld par1World, double par2, double par4, double par6, double par8, double par10, double par12) {
         super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
 
         this.particleRed = 1F;
@@ -92,7 +93,7 @@ public class MoCEntityFXVanish extends SpriteTexturedParticle {
 
         @Nullable
         @Override
-        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             MoCEntityFXVanish vanishEffect = new MoCEntityFXVanish(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
             vanishEffect.selectSpriteRandomly(spriteSet);
             return vanishEffect;

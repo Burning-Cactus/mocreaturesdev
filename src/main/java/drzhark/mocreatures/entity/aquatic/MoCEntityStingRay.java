@@ -2,12 +2,11 @@ package drzhark.mocreatures.entity.aquatic;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
-import drzhark.mocreatures.network.MoCMessageHandler;
-import drzhark.mocreatures.network.message.MoCMessageAnimation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -22,10 +21,8 @@ public class MoCEntityStingRay extends MoCEntityRay {
         setEdad(50 + (this.rand.nextInt(40)));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityRay.registerAttributes().func_233815_a_(Attributes.MAX_HEALTH, 10D);
     }
 
     @Override

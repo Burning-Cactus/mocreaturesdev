@@ -1,15 +1,15 @@
 package drzhark.mocreatures.data.datagen.loot_tables;
 
-import drzhark.mocreatures.init.MoCEntities;
-import drzhark.mocreatures.init.MoCItems;
+import drzhark.mocreatures.registry.MoCEntities;
+import drzhark.mocreatures.registry.MoCItems;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.loot.EntityLootTables;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Items;
+import net.minecraft.loot.*;
+import net.minecraft.loot.functions.SetCount;
 import net.minecraft.util.IItemProvider;
-import net.minecraft.world.storage.loot.*;
-import net.minecraft.world.storage.loot.functions.SetCount;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;

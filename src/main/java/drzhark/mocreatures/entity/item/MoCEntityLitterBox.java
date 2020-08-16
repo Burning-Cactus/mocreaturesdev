@@ -4,9 +4,11 @@ import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.monster.MoCEntityOgre;
-import drzhark.mocreatures.init.MoCItems;
+import drzhark.mocreatures.registry.MoCItems;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -19,7 +21,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.*;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -38,33 +40,31 @@ public class MoCEntityLitterBox extends LivingEntity {
         return MoCreatures.getTexture("litterbox.png");
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D); // setMaxHealth
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return LivingEntity.registerAttributes().func_233815_a_(Attributes.MAX_HEALTH, 20.0D);
     }
 
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(PICKED_UP, Boolean.valueOf(false));
-        this.dataManager.register(USED_LITTER, Boolean.valueOf(false));
+        this.dataManager.register(PICKED_UP, Boolean.FALSE);
+        this.dataManager.register(USED_LITTER, Boolean.FALSE);
     }
 
     public boolean getPickedUp() {
-        return ((Boolean)this.dataManager.get(PICKED_UP)).booleanValue();
+        return this.dataManager.get(PICKED_UP);
     }
 
     public boolean getUsedLitter() {
-        return ((Boolean)this.dataManager.get(USED_LITTER)).booleanValue();
+        return this.dataManager.get(USED_LITTER);
     }
 
     public void setPickedUp(boolean flag) {
-        this.dataManager.set(PICKED_UP, Boolean.valueOf(flag));
+        this.dataManager.set(PICKED_UP, flag);
     }
 
     public void setUsedLitter(boolean flag) {
-        this.dataManager.set(USED_LITTER, Boolean.valueOf(flag));
+        this.dataManager.set(USED_LITTER, flag);
     }
 
     public boolean attackEntityFrom(Entity entity, int i) {
@@ -135,14 +135,14 @@ public class MoCEntityLitterBox extends LivingEntity {
     }
 
     @Override
-    public boolean processInitialInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
         final ItemStack stack = player.getHeldItem(hand);
         if (!stack.isEmpty() && ((stack.getItem() == Items.STONE_PICKAXE) || (stack.getItem() == Items.WOODEN_PICKAXE)
                         || (stack.getItem() == Items.IRON_PICKAXE) || (stack.getItem() == Items.GOLDEN_PICKAXE) || (stack.getItem() == Items.DIAMOND_PICKAXE))) {
             player.inventory.addItemStackToInventory(new ItemStack(MoCItems.LITTERBOX));
             this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, (((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F) + 1.0F) * 2.0F);
             remove();
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
         if (!stack.isEmpty() && (stack.getItem() == Item.getItemFromBlock(Blocks.SAND))) {
@@ -152,7 +152,7 @@ public class MoCEntityLitterBox extends LivingEntity {
             }
             setUsedLitter(false);
             this.littertime = 0;
-            return true;
+            return ActionResultType.SUCCESS;
         }
         
         if (this.getRidingEntity() == null) {
@@ -161,14 +161,14 @@ public class MoCEntityLitterBox extends LivingEntity {
                 this.rotationYaw = player.rotationYaw;
             }
 
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override
-    public void move(MoverType type, Vec3d motion) {
+    public void move(MoverType type, Vector3d motion) {
         if ((this.getRidingEntity() != null) || !this.onGround || !MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.staticLitter.get()) {
             if (!this.world.isRemote) {
                 super.move(type, motion);

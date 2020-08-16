@@ -3,13 +3,11 @@ package drzhark.mocreatures.client.renderer.entity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import drzhark.mocreatures.client.model.MoCModelBunny;
 import drzhark.mocreatures.entity.passive.MoCEntityBunny;
-import net.minecraft.client.renderer.Quaternion;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
 public class MoCRenderBunny<T extends MoCEntityBunny, M extends MoCModelBunny<T>> extends MoCRenderMoC<T, M> {
@@ -38,7 +36,7 @@ public class MoCRenderBunny<T extends MoCEntityBunny, M extends MoCModelBunny<T>
     }
 
     protected void rotBunny(MoCEntityBunny entitybunny, MatrixStack stack) {
-        if (!entitybunny.onGround && (entitybunny.getRidingEntity() == null)) {
+        if (entitybunny.isAirBorne && (entitybunny.getRidingEntity() == null)) {
             if (entitybunny.getMotion().y > 0.5D) {
                 stack.rotate(Vector3f.XN.rotationDegrees(35F));
             } else if (entitybunny.getMotion().y < -0.5D) {

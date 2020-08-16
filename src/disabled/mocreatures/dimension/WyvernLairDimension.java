@@ -2,9 +2,9 @@ package drzhark.mocreatures.dimension;
 
 import drzhark.mocreatures.client.renderer.MoCSkyRenderer;
 import drzhark.mocreatures.dimension.gen.WyvernLairGenSettings;
-import drzhark.mocreatures.init.MoCBiomeProviderTypes;
-import drzhark.mocreatures.init.MoCBlocks;
-import drzhark.mocreatures.init.MoCChunkGeneratorTypes;
+import drzhark.mocreatures.registry.MoCBiomeProviderTypes;
+import drzhark.mocreatures.registry.MoCBlocks;
+import drzhark.mocreatures.registry.MoCChunkGeneratorTypes;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;

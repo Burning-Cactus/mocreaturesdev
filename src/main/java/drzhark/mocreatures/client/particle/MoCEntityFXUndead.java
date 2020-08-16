@@ -1,6 +1,7 @@
 package drzhark.mocreatures.client.particle;
 
 import net.minecraft.client.particle.*;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -11,7 +12,7 @@ import javax.annotation.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class MoCEntityFXUndead extends SpriteTexturedParticle {
 
-    public MoCEntityFXUndead(World par1World, double x, double y, double z) {
+    public MoCEntityFXUndead(ClientWorld par1World, double x, double y, double z) {
         super(par1World, x, y, z, 0.0D, 0.0D, 0.0D);
         this.motionX *= 0.8D;
         this.motionY *= 0.8D;
@@ -105,7 +106,7 @@ public class MoCEntityFXUndead extends SpriteTexturedParticle {
 
         @Nullable
         @Override
-        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             MoCEntityFXUndead undeadParticle = new MoCEntityFXUndead(worldIn, x, y, z);
             undeadParticle.selectSpriteRandomly(spriteSet);
             return undeadParticle;

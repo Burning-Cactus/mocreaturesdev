@@ -1,6 +1,6 @@
 package drzhark.mocreatures.util;
 
-import drzhark.mocreatures.init.MoCItems;
+import drzhark.mocreatures.registry.MoCItems;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.crafting.Ingredient;
@@ -88,5 +88,10 @@ public enum MoCArmorMaterial implements IArmorMaterial {
     @Override
     public float getToughness() {
         return this.toughness;
+    }
+
+    @Override
+    public float func_230304_f_() {
+        return 0;
     }
 }

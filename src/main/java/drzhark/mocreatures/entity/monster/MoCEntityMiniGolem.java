@@ -4,11 +4,11 @@ import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.item.MoCEntityThrowableRock;
-import drzhark.mocreatures.init.MoCEntities;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -25,8 +25,8 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
 
     public int tcounter;
     public MoCEntityThrowableRock tempRock;
-    private static final DataParameter<Boolean> ANGRY = EntityDataManager.<Boolean>createKey(MoCEntityMiniGolem.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HAS_ROCK = EntityDataManager.<Boolean>createKey(MoCEntityMiniGolem.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> ANGRY = EntityDataManager.createKey(MoCEntityMiniGolem.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> HAS_ROCK = EntityDataManager.createKey(MoCEntityMiniGolem.class, DataSerializers.BOOLEAN);
     
 
     public MoCEntityMiniGolem(EntityType<? extends MoCEntityMiniGolem> type, World world) {
@@ -43,35 +43,34 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
         this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityMob.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 15.0D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 2.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(ANGRY, Boolean.valueOf(false));
-        this.dataManager.register(HAS_ROCK, Boolean.valueOf(false)); 
+        this.dataManager.register(ANGRY, Boolean.FALSE);
+        this.dataManager.register(HAS_ROCK, Boolean.FALSE);
     }
 
     public boolean getIsAngry() {
-        return ((Boolean)this.dataManager.get(ANGRY)).booleanValue();
+        return this.dataManager.get(ANGRY);
     }
 
     public void setIsAngry(boolean flag) {
-        this.dataManager.set(ANGRY, Boolean.valueOf(flag));
+        this.dataManager.set(ANGRY, flag);
     }
 
     public boolean getHasRock() {
-        return ((Boolean)this.dataManager.get(HAS_ROCK)).booleanValue();
+        return this.dataManager.get(HAS_ROCK);
     }
 
     public void setHasRock(boolean flag) {
-        this.dataManager.set(HAS_ROCK, Boolean.valueOf(flag));
+        this.dataManager.set(HAS_ROCK, flag);
     }
 
     @Override
@@ -79,12 +78,7 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
         super.livingTick();
 
         if (!this.world.isRemote) {
-            if (this.getAttackTarget() == null) {
-                setIsAngry(false);
-
-            } else {
-                setIsAngry(true);
-            }
+            setIsAngry(this.getAttackTarget() != null);
 
             if (getIsAngry() && this.getAttackTarget() != null) {
                 if (!getHasRock() && this.rand.nextInt(30) == 0) {

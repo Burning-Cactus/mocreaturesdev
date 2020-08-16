@@ -6,11 +6,13 @@ import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityMob;
 import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.item.MoCEntityThrowableRock;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -61,12 +63,11 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
         this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityMob.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 50.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 2.0D);
     }
 
     @Override
@@ -87,15 +88,15 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
     protected void registerData() {
         super.registerData();
         initGolemCubes();
-        this.dataManager.register(GOLEM_STATE, Integer.valueOf(0)); // 0 spawned / 1 summoning rocks /2 has enemy /3 half life (harder) /4 dying
+        this.dataManager.register(GOLEM_STATE, 0); // 0 spawned / 1 summoning rocks /2 has enemy /3 half life (harder) /4 dying
     }
 
     public int getGolemState() {
-        return ((Integer)this.dataManager.get(GOLEM_STATE)).intValue();
+        return this.dataManager.get(GOLEM_STATE);
     }
 
     public void setGolemState(int i) {
-        this.dataManager.set(GOLEM_STATE, Integer.valueOf(i));
+        this.dataManager.set(GOLEM_STATE, i);
     }
 
     @Override
@@ -194,8 +195,8 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
     private void destroyGolem() {
         List<Integer> usedBlocks = usedCubes();
         if ((!usedBlocks.isEmpty()) && (MoCTools.mobGriefing(this.world)) && (MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.golemDestroyBlocks.get())) {
-            for (int i = 0; i < usedBlocks.size(); i++) {
-                Block block = Block.getStateById(generateBlock(this.golemCubes[usedBlocks.get(i)])).getBlock();
+            for (Integer usedBlock : usedBlocks) {
+                Block block = Block.getStateById(generateBlock(this.golemCubes[usedBlock])).getBlock();
                 ItemEntity entityitem = new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), new ItemStack(block, 1));
                 entityitem.setPickupDelay(10);
                 this.world.addEntity(entityitem);
@@ -213,9 +214,6 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
         //finds a missing rock spot in its body
         //looks for a random rock around it
         BlockPos myTRockPos = MoCTools.getRandomBlockPos(this, 24D);
-        if (myTRockPos == null) {
-            return;
-        }
 
         boolean canDestroyBlocks = MoCTools.mobGriefing(this.world) && MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.golemDestroyBlocks.get();
         BlockState blockstate = this.world.getBlockState(myTRockPos);
@@ -318,7 +316,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
         if (entity == null) {
             return;
         }
-        List<Integer> armBlocks = new ArrayList<Integer>();
+        List<Integer> armBlocks = new ArrayList<>();
 
         for (int i = 9; i < 15; i++) {
             if (this.golemCubes[i] != 30) {

@@ -1,10 +1,9 @@
 package drzhark.mocreatures.entity.item;
 
 import drzhark.mocreatures.MoCTools;
-import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.monster.MoCEntityGolem;
-import drzhark.mocreatures.init.MoCEntities;
+import drzhark.mocreatures.registry.MoCEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -21,7 +20,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -33,9 +32,9 @@ public class MoCEntityThrowableRock extends Entity {
     private double oPosX;
     private double oPosY;
     private double oPosZ;
-    private static final DataParameter<Integer> ROCK_STATE = EntityDataManager.<Integer>createKey(MoCEntityThrowableRock.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> MASTERS_ID = EntityDataManager.<Integer>createKey(MoCEntityThrowableRock.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> BEHAVIOUR_TYPE = EntityDataManager.<Integer>createKey(MoCEntityThrowableRock.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> ROCK_STATE = EntityDataManager.createKey(MoCEntityThrowableRock.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> MASTERS_ID = EntityDataManager.createKey(MoCEntityThrowableRock.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> BEHAVIOUR_TYPE = EntityDataManager.createKey(MoCEntityThrowableRock.class, DataSerializers.VARINT);
 
     public MoCEntityThrowableRock(EntityType<? extends MoCEntityThrowableRock> type, World worldIn) {
         super(type, worldIn);
@@ -59,30 +58,30 @@ public class MoCEntityThrowableRock extends Entity {
     }
 
     public BlockState getState() {
-        return Block.getStateById(((Integer)this.dataManager.get(ROCK_STATE)).intValue() & 65535);
+        return Block.getStateById(this.dataManager.get(ROCK_STATE) & 65535);
     }
 
     public void setMasterID(int i) {
-        this.dataManager.set(MASTERS_ID, Integer.valueOf(i));
+        this.dataManager.set(MASTERS_ID, i);
     }
 
     public int getMasterID() {
-        return ((Integer)this.dataManager.get(MASTERS_ID)).intValue();
+        return this.dataManager.get(MASTERS_ID);
     }
 
     public void setBehavior(int i) {
-        this.dataManager.set(BEHAVIOUR_TYPE, Integer.valueOf(i));
+        this.dataManager.set(BEHAVIOUR_TYPE, i);
     }
 
     public int getBehavior() {
-        return ((Integer)this.dataManager.get(BEHAVIOUR_TYPE)).intValue();
+        return this.dataManager.get(BEHAVIOUR_TYPE);
     }
 
     @Override
     protected void registerData() {
-        this.dataManager.register(BEHAVIOUR_TYPE, Integer.valueOf(0));
-        this.dataManager.register(ROCK_STATE, Integer.valueOf(0));
-        this.dataManager.register(MASTERS_ID, Integer.valueOf(0));
+        this.dataManager.register(BEHAVIOUR_TYPE, 0);
+        this.dataManager.register(ROCK_STATE, 0);
+        this.dataManager.register(MASTERS_ID, 0);
     }
 
     @Override
@@ -214,7 +213,7 @@ public class MoCEntityThrowableRock extends Entity {
             this.setMotion(((master.getPosX() - this.getPosX()) / summonedSpeed), (master.getPosY() - this.getPosY()) / 20D + 0.15D, (master.getPosZ() - this.getPosZ()) / summonedSpeed);
 
             if (distXZToMaster < 2.5F && master instanceof MoCEntityGolem) {
-                this.setMotion(Vec3d.ZERO);
+                this.setMotion(Vector3d.ZERO);
             }
 
             if (!this.world.isRemote) {

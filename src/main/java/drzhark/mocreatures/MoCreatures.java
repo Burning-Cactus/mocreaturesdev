@@ -7,12 +7,9 @@ import drzhark.mocreatures.client.handlers.MoCKeyHandler;
 import drzhark.mocreatures.client.renderer.texture.MoCTextures;
 import drzhark.mocreatures.configuration.MoCConfig;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
@@ -24,14 +21,12 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLCommonLaunchHandler;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.UUID;
 
 @Mod(MoCConstants.MOD_ID)
@@ -44,11 +39,9 @@ public class MoCreatures {
     public static boolean isCustomSpawnerLoaded = false;
     public static GameProfile MOCFAKEPLAYER = new GameProfile(UUID.fromString("6E379B45-1111-2222-3333-2FE1A88BCD66"), "[MoCreatures]");
 
-    public static final DimensionType WYVERN_LAIR = null;
-    public static int WyvernLairDimensionID; //17;
+//    public static final DimensionType WYVERN_LAIR = null;
 
 //    public static Map<String, MoCEntityData> mocEntityMap = new TreeMap<String, MoCEntityData>(String.CASE_INSENSITIVE_ORDER);
-    public static Map<EntityType<?>, MoCEntityData> entityMap = new HashMap<>();
 //    public static Map<Integer, Class<? extends LivingEntity>> instaSpawnerMap = new HashMap<Integer, Class<? extends LivingEntity>>();
     public static final String MOC_LOGO = TextFormatting.WHITE + "[" + TextFormatting.AQUA + "Mo'Creatures" + TextFormatting.WHITE + "]";
     public static final MoCTextures MOCTEXTURES = new MoCTextures();
@@ -70,7 +63,7 @@ public class MoCreatures {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
         bus.addListener(this::setup);
-        bus.addListener(this::onServerStart);
+//        bus.addListener(this::onServerStart);
 
         MoCreatures.instance = this;
     }
@@ -82,8 +75,8 @@ public class MoCreatures {
     }
 
     //TODO: Register commands properly in 1.15
-    private void onServerStart(FMLServerStartingEvent event) {
-        CommandDispatcher dispatcher = event.getCommandDispatcher();
+//    private void onServerStart(FMLServerStartingEvent event) {
+//        CommandDispatcher dispatcher = event.getCommandDispatcher();
 //        proxy.initGUI();
 //        event.registerServerCommand(new CommandMoCreatures());
 //        event.registerServerCommand(new CommandMoCTP());
@@ -93,7 +86,7 @@ public class MoCreatures {
 //                event.registerServerCommand(new CommandMoCSpawn());
 //            }
 //        }
-    }
+//    }
 
 //
 //    //how to check for client: if(FMLCommonHandler.instance().getSide().isRemote())

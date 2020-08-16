@@ -2,15 +2,15 @@ package drzhark.mocreatures.entity.ai;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import com.sun.javafx.geom.Vec3d;
 import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.MoCEntityAquatic;
-import net.minecraft.command.arguments.EntitySelector;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -72,8 +72,8 @@ public class EntityAIFleeFromEntityMoC extends Goal {
             return false;
         } else {
             this.closestLivingEntity = list.get(0);
-            Vec3d vec3 =
-                    RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.entity, 16, 7, new Vec3d(this.closestLivingEntity.getPosX(),
+            Vector3d vec3 =
+                    RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.entity, 16, 7, new Vector3d(this.closestLivingEntity.getPosX(),
                             this.closestLivingEntity.getPosY(), this.closestLivingEntity.getPosZ()));
 
             if (vec3 == null) {

@@ -1,7 +1,7 @@
 package drzhark.mocreatures.data.datagen.recipes;
 
 import drzhark.mocreatures.MoCConstants;
-import drzhark.mocreatures.init.MoCItems;
+import drzhark.mocreatures.registry.MoCItems;
 import net.minecraft.data.CookingRecipeBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;

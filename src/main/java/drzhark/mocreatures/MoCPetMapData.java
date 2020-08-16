@@ -2,18 +2,11 @@ package drzhark.mocreatures;
 
 import com.google.common.collect.Maps;
 import drzhark.mocreatures.entity.IMoCTameable;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.DoubleNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.world.storage.SaveHandler;
 import net.minecraft.world.storage.WorldSavedData;
-import net.minecraftforge.common.DimensionManager;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
@@ -83,7 +76,7 @@ public class MoCPetMapData extends WorldSavedData {
                     nbt.putInt("ChunkX", ((Entity) pet).chunkCoordX);
                     nbt.putInt("ChunkY", ((Entity) pet).chunkCoordY);
                     nbt.putInt("ChunkZ", ((Entity) pet).chunkCoordZ);
-                    nbt.putInt("Dimension", ((Entity) pet).world.getDimension().getType().getId());
+//                    nbt.putInt("Dimension", ((Entity) pet).world.getDimension().getType().getId());
                     nbt.putInt("PetId", pet.getOwnerPetId());
                 }
             }

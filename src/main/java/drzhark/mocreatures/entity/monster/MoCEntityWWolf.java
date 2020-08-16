@@ -8,9 +8,10 @@ import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.passive.MoCEntityBear;
 import drzhark.mocreatures.entity.passive.MoCEntityBigCat;
 import drzhark.mocreatures.entity.passive.MoCEntityHorse;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -19,7 +20,6 @@ import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -29,8 +29,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.List;
@@ -52,12 +50,11 @@ public class MoCEntityWWolf extends MoCEntityMob {
         this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityMob.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 15.0D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.3D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     @Override
@@ -123,9 +120,9 @@ public class MoCEntityWWolf extends MoCEntityMob {
         int k = MathHelper.floor(this.getPosZ());
 
         Biome biome = MoCTools.Biomekind(this.world, new BlockPos(i, j, k));
-        if (BiomeDictionary.hasType(biome, Type.SNOWY)) {
+        /*if (BiomeDictionary.hasType(biome, Type.SNOWY)) {
             setType(3);
-        }
+        }*/
         selectType();
         return true;
     }

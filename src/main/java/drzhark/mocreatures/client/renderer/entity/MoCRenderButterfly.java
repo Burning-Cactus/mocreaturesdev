@@ -19,7 +19,7 @@ public class MoCRenderButterfly<T extends MoCEntityButterfly, M extends MoCModel
 
     @Override
     protected void preRenderCallback(T entitybutterfly, MatrixStack stack, float par2) {
-        if (entitybutterfly.isOnAir() || !entitybutterfly.onGround) {
+        if (entitybutterfly.isOnAir() || entitybutterfly.isAirBorne) {
             adjustHeight(entitybutterfly, stack, entitybutterfly.tFloat());
         }
         if (entitybutterfly.climbing()) {

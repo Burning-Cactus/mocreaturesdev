@@ -7,12 +7,13 @@ import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
 import drzhark.mocreatures.entity.ai.EntityAIFollowAdult;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.entity.item.MoCEntityEgg;
-import drzhark.mocreatures.init.MoCEntities;
-import drzhark.mocreatures.init.MoCItems;
-import drzhark.mocreatures.init.MoCSoundEvents;
+import drzhark.mocreatures.registry.MoCEntities;
+import drzhark.mocreatures.registry.MoCSoundEvents;
 import drzhark.mocreatures.inventory.MoCAnimalChest;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -20,16 +21,14 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -75,74 +74,72 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
         this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return MoCEntityTameableAnimal.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 20D)
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D)
+                .func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(EGG_WATCH, Boolean.valueOf(false));
-        this.dataManager.register(CHESTED, Boolean.valueOf(false));
-        this.dataManager.register(RIDEABLE, Boolean.valueOf(false));
-        this.dataManager.register(IS_HIDING, Boolean.valueOf(false));
-        this.dataManager.register(HELMET_TYPE, Integer.valueOf(0));
-        this.dataManager.register(FLAG_COLOR, Integer.valueOf(0));
+        this.dataManager.register(EGG_WATCH, Boolean.FALSE);
+        this.dataManager.register(CHESTED, Boolean.FALSE);
+        this.dataManager.register(RIDEABLE, Boolean.FALSE);
+        this.dataManager.register(IS_HIDING, Boolean.FALSE);
+        this.dataManager.register(HELMET_TYPE, 0);
+        this.dataManager.register(FLAG_COLOR, 0);
     }
 
     @Override
     public boolean getIsRideable() {
-        return ((Boolean)this.dataManager.get(RIDEABLE)).booleanValue();
+        return this.dataManager.get(RIDEABLE);
     }
 
     @Override
     public void setRideable(boolean flag) {
-        this.dataManager.set(RIDEABLE, Boolean.valueOf(flag));
+        this.dataManager.set(RIDEABLE, flag);
     }
 
     public boolean getEggWatching() {
-        return ((Boolean)this.dataManager.get(EGG_WATCH)).booleanValue();
+        return this.dataManager.get(EGG_WATCH);
     }
 
     public void setEggWatching(boolean flag) {
-        this.dataManager.set(EGG_WATCH, Boolean.valueOf(flag));
+        this.dataManager.set(EGG_WATCH, flag);
     }
 
     public boolean getHiding() {
-        return ((Boolean)this.dataManager.get(IS_HIDING)).booleanValue();
+        return this.dataManager.get(IS_HIDING);
     }
 
     public void setHiding(boolean flag) {
-        this.dataManager.set(IS_HIDING, Boolean.valueOf(flag));
+        this.dataManager.set(IS_HIDING, flag);
     }
 
     public int getHelmet() {
-        return ((Integer)this.dataManager.get(HELMET_TYPE)).intValue();
+        return this.dataManager.get(HELMET_TYPE);
     }
 
     public void setHelmet(int i) {
-        this.dataManager.set(HELMET_TYPE, Integer.valueOf(i));
+        this.dataManager.set(HELMET_TYPE, i);
     }
 
     public int getFlagColor() {
-        return ((Integer)this.dataManager.get(FLAG_COLOR)).intValue();
+        return this.dataManager.get(FLAG_COLOR);
     }
 
     public void setFlagColor(int i) {
-        this.dataManager.set(FLAG_COLOR, Integer.valueOf(i));
+        this.dataManager.set(FLAG_COLOR, i);
     }
 
     public boolean getIsChested() {
-        return ((Boolean)this.dataManager.get(CHESTED)).booleanValue();
+        return this.dataManager.get(CHESTED);
     }
 
     public void setIsChested(boolean flag) {
-        this.dataManager.set(CHESTED, Boolean.valueOf(flag));
+        this.dataManager.set(CHESTED, flag);
     }
 
     @Override
@@ -262,7 +259,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
                 setType(4);
             }
         }
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(calculateMaxHealth());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(calculateMaxHealth());
         this.setHealth(getMaxHealth());
     }
 
@@ -487,7 +484,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
                 //look for and protect eggs and move close
                 MoCEntityEgg myEgg = (MoCEntityEgg) getBoogey(8D);
                 if ((myEgg != null) && (MoCTools.getSqDistanceTo(myEgg, this.getPosX(), this.getPosY(), this.getPosZ()) > 4D)) {
-                    Path pathentity = this.navigator.getPathToPos(myEgg.getPosition(), 0);
+                    Path pathentity = this.navigator.getPathToPos(new BlockPos(myEgg.getPositionVec()), 0);
                     this.navigator.setPath(pathentity, 16F);
                 }
                 if (myEgg == null) //didn't find egg
@@ -534,7 +531,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
         );
     }
 
-    @Override
+    /*@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         final Boolean tameResult = this.processTameInteract(player, hand);
         if (tameResult != null) {
@@ -661,7 +658,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
             return true;
         }
 
-        /*if (player.isSneaking() && getIsChested()) {
+        *//*if (player.isSneaking() && getIsChested()) {
             // if first time opening a chest, we must initialize it
             if (this.localchest == null) {
                 this.localchest = new MoCAnimalChest("OstrichChest", 9);
@@ -670,7 +667,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
                 player.displayGUIChest(this.localchest);
             }
             return true;
-        }*/
+        }*//*
 
         if (getIsTamed() && (getSubType() > 1) && !stack.isEmpty()) {
 
@@ -723,7 +720,7 @@ public class MoCEntityOstrich extends MoCEntityTameableAnimal {
         }
 
         return super.processInteract(player, hand);
-    }
+    }*/
 
     /**
      * Drops a block of the color of the flag if carrying one

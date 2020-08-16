@@ -1,4 +1,4 @@
-package drzhark.mocreatures.init;
+package drzhark.mocreatures.registry;
 
 import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.dimension.WyvernLairBiome;

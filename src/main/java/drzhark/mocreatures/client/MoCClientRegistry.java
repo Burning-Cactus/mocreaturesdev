@@ -7,8 +7,8 @@ import drzhark.mocreatures.client.particle.MoCEntityFXUndead;
 import drzhark.mocreatures.client.particle.MoCEntityFXVacuum;
 import drzhark.mocreatures.client.particle.MoCEntityFXVanish;
 import drzhark.mocreatures.client.renderer.entity.*;
-import drzhark.mocreatures.init.MoCEntities;
-import drzhark.mocreatures.init.MoCParticleTypes;
+import drzhark.mocreatures.registry.MoCEntities;
+import drzhark.mocreatures.registry.MoCParticleTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,7 +17,6 @@ import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(modid = MoCConstants.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MoCClientRegistry {
