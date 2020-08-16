@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "mocreatures:item/helmetcroc"
+    "layer0": "mocreatures:item/helmetcroc"
   }
 }

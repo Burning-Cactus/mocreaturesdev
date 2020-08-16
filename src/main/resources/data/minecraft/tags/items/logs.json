@@ -1,4 +1,7 @@
 {
   "replace": false,
-  "values": []
+  "values": [
+    "mocreatures:wyvern_log",
+    "mocreatures:ogre_log"
+  ]
 }

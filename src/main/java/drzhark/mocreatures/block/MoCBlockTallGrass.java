@@ -16,25 +16,18 @@ import java.util.Random;
 
 public class MoCBlockTallGrass extends BushBlock implements IForgeShearable, IGrowable {
 
-    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.8D, 0.9D);
-    protected static final VoxelShape SHAPE = VoxelShapes.create(AABB);
+//    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.8D, 0.9D);
+//    protected static final VoxelShape SHAPE = VoxelShapes.create(AABB);
+protected static final VoxelShape SHAPE = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 13.0D, 14.0D);
 
     public MoCBlockTallGrass(Block.Properties builder) {
         super(builder
                 .sound(SoundType.PLANT));
     }
 
-    public MoCBlockTallGrass(Block.Properties builder, boolean lighted) {
-        this(builder);
-//        if (lighted) {
-//            this.setLightLevel(0.8F);
-//        }
-    }
-
     @Override
     protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        Block block = state.getBlock();
-        return block == MoCBlocks.WYVERN_GRASS || block == MoCBlocks.WYVERN_DIRT || block == MoCBlocks.OGRE_GRASS || block == MoCBlocks.OGRE_DIRT;
+        return state.isIn(MoCBlocks.WYVERN_GRASS) || state.isIn(MoCBlocks.WYVERN_DIRT) || state.isIn(MoCBlocks.OGRE_GRASS) || state.isIn(MoCBlocks.OGRE_DIRT);
     }
 
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {

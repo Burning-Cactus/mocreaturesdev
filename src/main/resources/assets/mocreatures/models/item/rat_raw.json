@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "mocreatures:item/rat_raw"
+    "layer0": "mocreatures:item/rat_raw"
   }
 }

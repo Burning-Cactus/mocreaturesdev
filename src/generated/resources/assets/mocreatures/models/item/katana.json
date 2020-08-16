@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "texture": "mocreatures:item/katana"
+    "layer0": "mocreatures:item/katana"
   }
 }

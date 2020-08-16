@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "texture": "mocreatures:item/scorpsworddirt"
+    "layer0": "mocreatures:item/scorpsworddirt"
   }
 }

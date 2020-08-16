@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "mocreatures:item/turtle_soup"
+    "layer0": "mocreatures:item/turtle_soup"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "mocreatures:item/haystack"
+    "layer0": "mocreatures:item/haystack"
   }
 }

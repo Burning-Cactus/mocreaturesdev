@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "mocreatures:item/mammothplatform"
+    "layer0": "mocreatures:item/mammothplatform"
   }
 }

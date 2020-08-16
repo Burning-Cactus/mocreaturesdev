@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "mocreatures:item/crab_cooked"
+    "layer0": "mocreatures:item/crab_cooked"
   }
 }

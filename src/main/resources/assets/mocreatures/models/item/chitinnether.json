@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "mocreatures:item/chitinnether"
+    "layer0": "mocreatures:item/chitinnether"
   }
 }

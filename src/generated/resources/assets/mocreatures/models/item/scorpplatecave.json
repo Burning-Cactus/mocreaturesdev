@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "mocreatures:item/scorpplatecave"
+    "layer0": "mocreatures:item/scorpplatecave"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "mocreatures:item/whip"
+    "layer0": "mocreatures:item/whip"
   }
 }

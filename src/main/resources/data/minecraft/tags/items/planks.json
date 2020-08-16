@@ -1,4 +1,7 @@
 {
   "replace": false,
-  "values": []
+  "values": [
+    "mocreatures:wyvern_planks",
+    "mocreatures:ogre_planks"
+  ]
 }

@@ -1,7 +1,9 @@
 package drzhark.mocreatures.data.datagen.models;
 
 import drzhark.mocreatures.MoCConstants;
+import drzhark.mocreatures.registry.MoCBlocks;
 import drzhark.mocreatures.registry.MoCItems;
+import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -125,13 +127,19 @@ public class MoCItemModelProvider extends ItemModelProvider {
         simpleItem(MoCItems.RAT_BURGER);
         simpleItem(MoCItems.TURTLE_RAW);
         simpleItem(MoCItems.TURTLE_SOUP);
+        tallGrass(MoCBlocks.WYVERN_TALLGRASS);
+        tallGrass(MoCBlocks.OGRE_TALLGRASS);
     }
 
     private void simpleItem(Item item) {
-        singleTexture(item.getRegistryName().getPath(), new ResourceLocation("item/generated"), new ResourceLocation(MoCConstants.MOD_ID, "item/" + item.getRegistryName().getPath()));
+        singleTexture(item.getRegistryName().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(MoCConstants.MOD_ID, "item/" + item.getRegistryName().getPath()));
     }
 
     private void handheldItem(Item item) {
-        singleTexture(item.getRegistryName().getPath(), new ResourceLocation("item/handheld"), new ResourceLocation(MoCConstants.MOD_ID, "item/" + item.getRegistryName().getPath()));
+        singleTexture(item.getRegistryName().getPath(), new ResourceLocation("item/handheld"), "layer0", new ResourceLocation(MoCConstants.MOD_ID, "item/" + item.getRegistryName().getPath()));
+    }
+
+    private void tallGrass(Block block) {
+        singleTexture(block.getRegistryName().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(MoCConstants.MOD_ID, "block/" + block.getRegistryName().getPath()));
     }
 }

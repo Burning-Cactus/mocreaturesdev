@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "mocreatures:item/omelet"
+    "layer0": "mocreatures:item/omelet"
   }
 }

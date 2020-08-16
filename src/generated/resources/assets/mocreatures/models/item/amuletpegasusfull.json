@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "mocreatures:item/amuletpegasusfull"
+    "layer0": "mocreatures:item/amuletpegasusfull"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "mocreatures:item/scorplegsnether"
+    "layer0": "mocreatures:item/scorplegsnether"
   }
 }

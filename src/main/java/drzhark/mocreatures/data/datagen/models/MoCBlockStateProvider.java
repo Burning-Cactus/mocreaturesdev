@@ -5,8 +5,11 @@ import drzhark.mocreatures.MoCConstants;
 import drzhark.mocreatures.registry.MoCBlocks;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
+import net.minecraftforge.client.model.generators.ModelFile;
 
 public class MoCBlockStateProvider extends BlockStateProvider {
     public MoCBlockStateProvider(DataGenerator gen, ExistingFileHelper exFileHelper) {
@@ -27,6 +30,34 @@ public class MoCBlockStateProvider extends BlockStateProvider {
         this.logBlock((RotatedPillarBlock) MoCBlocks.WYVERN_LOG);
         this.logBlock((RotatedPillarBlock) MoCBlocks.OGRE_LOG);
 
+        getVariantBuilder(MoCBlocks.WYVERN_GRASS).partialState().setModels(
+                new ConfiguredModel(models().cubeBottomTop(
+                        MoCBlocks.WYVERN_GRASS.getRegistryName().getPath(),
+                        new ResourceLocation(MoCConstants.MOD_ID, "block/wyvern_grass_block_side"),
+                        new ResourceLocation(MoCConstants.MOD_ID, "block/wyvern_grass_block_top"),
+                        new ResourceLocation(MoCConstants.MOD_ID, "block/wyvern_dirt")
+                )));
+
+        getVariantBuilder(MoCBlocks.OGRE_GRASS).partialState().setModels(
+                new ConfiguredModel(models().cubeBottomTop(
+                        MoCBlocks.OGRE_GRASS.getRegistryName().getPath(),
+                        new ResourceLocation(MoCConstants.MOD_ID, "block/ogre_grass_block_side"),
+                        new ResourceLocation(MoCConstants.MOD_ID, "block/ogre_grass_block_top"),
+                        new ResourceLocation(MoCConstants.MOD_ID, "block/ogre_dirt")
+                )));
+
+        getVariantBuilder(MoCBlocks.WYVERN_TALLGRASS).partialState().setModels(
+                new ConfiguredModel(models().cross(
+                        MoCBlocks.WYVERN_TALLGRASS.getRegistryName().getPath(),
+                        new ResourceLocation(MoCConstants.MOD_ID, "block/wyvern_tallgrass")
+                )));
+
+        getVariantBuilder(MoCBlocks.OGRE_TALLGRASS).partialState().setModels(
+                new ConfiguredModel(models().cross(
+                        MoCBlocks.OGRE_TALLGRASS.getRegistryName().getPath(),
+                        new ResourceLocation(MoCConstants.MOD_ID, "block/ogre_tallgrass")
+                )));
+
         this.simpleBlockItem(MoCBlocks.WYVERN_DIRT, models().getExistingFile(MoCBlocks.WYVERN_DIRT.getRegistryName()));
         this.simpleBlockItem(MoCBlocks.WYVERN_PLANKS, models().getExistingFile(MoCBlocks.WYVERN_PLANKS.getRegistryName()));
         this.simpleBlockItem(MoCBlocks.WYVERN_STONE, models().getExistingFile(MoCBlocks.WYVERN_STONE.getRegistryName()));
@@ -37,5 +68,7 @@ public class MoCBlockStateProvider extends BlockStateProvider {
         this.simpleBlockItem(MoCBlocks.OGRE_LEAVES, models().getExistingFile(MoCBlocks.OGRE_LEAVES.getRegistryName()));
         this.simpleBlockItem(MoCBlocks.WYVERN_LOG, models().getExistingFile(MoCBlocks.WYVERN_LOG.getRegistryName()));
         this.simpleBlockItem(MoCBlocks.OGRE_LOG, models().getExistingFile(MoCBlocks.OGRE_LOG.getRegistryName()));
+        this.simpleBlockItem(MoCBlocks.WYVERN_GRASS, models().getExistingFile(MoCBlocks.WYVERN_GRASS.getRegistryName()));
+        this.simpleBlockItem(MoCBlocks.OGRE_GRASS, models().getExistingFile(MoCBlocks.OGRE_GRASS.getRegistryName()));
     }
 }

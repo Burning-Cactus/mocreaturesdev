@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "texture": "mocreatures:item/builderhammer"
+    "layer0": "mocreatures:item/builderhammer"
   }
 }

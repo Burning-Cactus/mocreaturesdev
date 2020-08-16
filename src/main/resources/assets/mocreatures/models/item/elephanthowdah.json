@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "mocreatures:item/elephanthowdah"
+    "layer0": "mocreatures:item/elephanthowdah"
   }
 }

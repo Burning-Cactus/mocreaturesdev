@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "texture": "mocreatures:item/nunchaku"
+    "layer0": "mocreatures:item/nunchaku"
   }
 }

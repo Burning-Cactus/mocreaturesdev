@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "mocreatures:item/legscroc"
+    "layer0": "mocreatures:item/legscroc"
   }
 }

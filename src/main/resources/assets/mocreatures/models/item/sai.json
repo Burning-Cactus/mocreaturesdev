@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "texture": "mocreatures:item/sai"
+    "layer0": "mocreatures:item/sai"
   }
 }

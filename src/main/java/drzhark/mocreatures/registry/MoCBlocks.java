@@ -60,14 +60,14 @@ public class MoCBlocks {
                     new MoCBlock(Block.Properties.create(Material.EARTH).sound(SoundType.GROUND).harvestTool(ToolType.SHOVEL).harvestLevel(0).hardnessAndResistance(0.6F).tickRandomly()).setRegistryName("wyvern_dirt"),
                     new MoCBlockLeaf(Block.Properties.create(Material.LEAVES)).setRegistryName("wyvern_leaves"),
                     new RotatedPillarBlock(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(2.0F).harvestTool(ToolType.AXE).harvestLevel(0)).setRegistryName("wyvern_log"),
-                    new MoCBlockTallGrass(Block.Properties.create(Material.TALL_PLANTS)).setRegistryName("wyvern_tallgrass"),
+                    new MoCBlockTallGrass(Block.Properties.create(Material.TALL_PLANTS).doesNotBlockMovement().zeroHardnessAndResistance()).setRegistryName("wyvern_tallgrass"),
                     new MoCBlock(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD)).setRegistryName("wyvern_planks"),
                     new MoCBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5F, 10.0F).harvestTool(ToolType.PICKAXE).harvestLevel(1).tickRandomly()).setRegistryName("ogre_stone"),
                     new MoCBlockGrass(Block.Properties.create(Material.PLANTS)).setRegistryName("ogre_grass"),
                     new MoCBlock(Block.Properties.create(Material.EARTH).sound(SoundType.GROUND).harvestTool(ToolType.SHOVEL).harvestLevel(0).hardnessAndResistance(0.6F).tickRandomly()).setRegistryName("ogre_dirt"),
                     new MoCBlockLeaf(Block.Properties.create(Material.LEAVES)).setRegistryName("ogre_leaves"),
                     new RotatedPillarBlock(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(2.0F).harvestTool(ToolType.AXE).harvestLevel(0)).setRegistryName("ogre_log"),
-                    new MoCBlockTallGrass(Block.Properties.create(Material.TALL_PLANTS)).setRegistryName("ogre_tallgrass"),
+                    new MoCBlockTallGrass(Block.Properties.create(Material.TALL_PLANTS).doesNotBlockMovement().zeroHardnessAndResistance()).setRegistryName("ogre_tallgrass"),
                     new MoCBlock(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD)).setRegistryName("ogre_planks")
             };
             registry.registerAll(blocks);
