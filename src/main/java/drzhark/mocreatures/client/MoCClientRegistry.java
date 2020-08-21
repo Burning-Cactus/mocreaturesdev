@@ -38,7 +38,7 @@ public class MoCClientRegistry {
 
         //Creatures
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.BIRD, m -> new MoCRenderBird<>(m, new MoCModelBird<>(), 0.5F));
-        RenderingRegistry.registerEntityRenderingHandler(MoCEntities.BEAR, m -> new MoCRenderBear<>(m, new MoCModelBear<>(), 0.5F));
+        RenderingRegistry.registerEntityRenderingHandler(MoCEntities.BLACK_BEAR, m -> new MoCRenderBear<>(m, new MoCModelBear<>(), 0.5F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.GRIZZLY_BEAR, m -> new MoCRenderBear<>(m, new MoCModelBear<>(), 0.5F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.PANDA_BEAR, m -> new MoCRenderBear<>(m, new MoCModelBear<>(), 0.5F));
         RenderingRegistry.registerEntityRenderingHandler(MoCEntities.POLAR_BEAR, m -> new MoCRenderBear<>(m, new MoCModelBear<>(), 0.5F));

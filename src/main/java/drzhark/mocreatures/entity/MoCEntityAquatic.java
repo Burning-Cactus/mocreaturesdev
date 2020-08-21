@@ -71,7 +71,9 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return CreatureEntity.registerAttributes().func_233815_a_(Attributes.MAX_HEALTH, 6.0D);
+        return CreatureEntity.registerAttributes()
+                .func_233815_a_(Attributes.MAX_HEALTH, 6.0D)
+                .func_233815_a_(Attributes.FOLLOW_RANGE, 16.0D);
 //                .func_233815_a_(Attributes.MOVEMENT_SPEED, getMoveSpeed());
     }
 

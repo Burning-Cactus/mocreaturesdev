@@ -6,6 +6,7 @@ import drzhark.mocreatures.client.MoCClientTickHandler;
 import drzhark.mocreatures.client.handlers.MoCKeyHandler;
 import drzhark.mocreatures.client.renderer.texture.MoCTextures;
 import drzhark.mocreatures.configuration.MoCConfig;
+import drzhark.mocreatures.registry.MoCEntityAttributes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.RegistryKey;
@@ -78,6 +79,8 @@ public class MoCreatures {
     }
 
     private void setup(FMLCommonSetupEvent event) {
+        MoCEntityAttributes.init();
+
         MinecraftForge.EVENT_BUS.register(new MoCEventHooks());
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(new MoCClientTickHandler()));
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(new MoCKeyHandler()));

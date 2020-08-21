@@ -33,7 +33,8 @@ public class MoCEntityInsect extends MoCEntityAmbient {
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityAmbient.registerAttributes()
                 .func_233815_a_(Attributes.MAX_HEALTH, 4.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D)
+                .func_233815_a_(Attributes.FOLLOW_RANGE, 16.0D);
     }
 
     @Override

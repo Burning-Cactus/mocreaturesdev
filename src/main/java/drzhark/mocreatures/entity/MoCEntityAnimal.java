@@ -79,7 +79,8 @@ public abstract class MoCEntityAnimal extends AnimalEntity implements IMoCEntity
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return AnimalEntity.registerAttributes()
                 .func_233815_a_(Attributes.MAX_HEALTH, 20.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D)
+                .func_233815_a_(Attributes.FOLLOW_RANGE, 16.0D);
     }
 
     @Override

@@ -92,7 +92,7 @@ public class MoCEntities {
      * Creature
      */
     public static final EntityType<MoCEntityBird> BIRD = buildType("bird", MoCEntityBird::new, EntityClassification.CREATURE, 0.4F, 0.3F);
-    public static final EntityType<MoCEntityBlackBear> BEAR = buildType("bear", MoCEntityBlackBear::new, EntityClassification.CREATURE, 1.2F, 1.5F);
+    public static final EntityType<MoCEntityBlackBear> BLACK_BEAR = buildType("black_bear", MoCEntityBlackBear::new, EntityClassification.CREATURE, 1.2F, 1.5F);
     public static final EntityType<MoCEntityBoar> BOAR = buildType("boar", MoCEntityBoar::new, EntityClassification.CREATURE, 0.9F, 0.8F);
     public static final EntityType<MoCEntityBunny> BUNNY = buildType("bunny", MoCEntityBunny::new, EntityClassification.CREATURE, 0.5F, 0.5F);
     public static final EntityType<MoCEntityCrocodile> CROCODILE = buildType("crocodile", MoCEntityCrocodile::new, EntityClassification.CREATURE, 1.4F, 0.6F);
@@ -217,7 +217,18 @@ public class MoCEntities {
                     SCORPION,
                     WEREWOLF,
                     WRAITH,
-                    WWOLF
+                    WWOLF,
+                    ANT,
+                    BEE,
+                    BUTTERFLY,
+                    CRAB,
+                    CRICKET,
+                    DRAGONFLY,
+                    FIREFLY,
+                    FLY,
+                    MAGGOT,
+                    SNAIL,
+                    ROACH
             );
 /*
             // ambients

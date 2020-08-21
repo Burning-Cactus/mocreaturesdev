@@ -79,7 +79,7 @@ public class MoCEntityWWolf extends MoCEntityMob {
             case 3:
                 return MoCreatures.getTexture("wwolf/wolftimber.png"); //snow wolf
             case 4:
-                return MoCreatures.getTexture("wwolf/wolfdark.png");
+                return MoCreatures.getTexture("wwolf/wolfbrown.png");
             case 5:
                 return MoCreatures.getTexture("wwolf/wolfbright.png");
 
@@ -119,7 +119,7 @@ public class MoCEntityWWolf extends MoCEntityMob {
         int j = MathHelper.floor(getBoundingBox().minY);
         int k = MathHelper.floor(this.getPosZ());
 
-        Biome biome = MoCTools.Biomekind(this.world, new BlockPos(i, j, k));
+//        Biome biome = MoCTools.Biomekind(this.world, new BlockPos(i, j, k));
         /*if (BiomeDictionary.hasType(biome, Type.SNOWY)) {
             setType(3);
         }*/

@@ -61,7 +61,8 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
         return MonsterEntity.registerAttributes()
                 .func_233815_a_(Attributes.MAX_HEALTH, 20.0D)
                 .func_233815_a_(Attributes.ATTACK_DAMAGE, 2D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.7F);
+                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.7F)
+                .func_233815_a_(Attributes.FOLLOW_RANGE, 16.0D);
     }
 
     @Override

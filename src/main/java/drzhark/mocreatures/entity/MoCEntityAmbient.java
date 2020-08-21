@@ -13,6 +13,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.WolfEntity;
@@ -61,7 +62,8 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return AnimalEntity.registerAttributes();
+        return AnimalEntity.registerAttributes()
+                .func_233815_a_(Attributes.FOLLOW_RANGE, 16.0D);
     }
 
     @Override

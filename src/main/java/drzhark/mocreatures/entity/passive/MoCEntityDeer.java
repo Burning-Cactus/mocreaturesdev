@@ -35,11 +35,9 @@ public class MoCEntityDeer extends MoCEntityTameableAnimal {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new EntityAIFleeFromEntityMoC(this, new Predicate<Entity>() {
-            public boolean apply(Entity entity) {
-                return !(entity instanceof MoCEntityDeer) && (entity.getHeight() > 0.8F || entity.getWidth() > 0.8F);
-            }
-        }, 6.0F, this.getMyAISpeed(), this.getMyAISpeed() * 1.2D));
+        this.goalSelector.addGoal(1, new EntityAIFleeFromEntityMoC(this, entity ->
+                !(entity instanceof MoCEntityDeer) && (entity.getHeight() > 0.8F || entity.getWidth() > 0.8F),
+                6.0F, this.getMyAISpeed(), this.getMyAISpeed() * 1.2D));
         this.goalSelector.addGoal(2, new PanicGoal(this, this.getMyAISpeed() * 1.2D));
         this.goalSelector.addGoal(4, new EntityAIFollowAdult(this, getMyAISpeed()));
         this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, getMyAISpeed()));

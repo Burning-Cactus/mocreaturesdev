@@ -93,7 +93,7 @@ public class EntityAINearestAttackableTargetMoC extends EntityAITargetMoC {
             return false;
         } else {
             double d0 = this.getTargetDistance();
-            List<LivingEntity> list =
+            List list =
                     this.taskOwner.world.getEntitiesWithinAABB(this.targetClass, this.taskOwner.getBoundingBox().expand(d0, 4.0D, d0),
                             Predicates.and(this.targetEntitySelector, (Predicate) EntityPredicates.NOT_SPECTATING));
             Collections.sort(list, this.theNearestAttackableTargetSorter);
