@@ -2,7 +2,7 @@
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
     "side": "mocreatures:block/ogre_grass_block_side",
-    "bottom": "mocreatures:block/ogre_grass_block_top",
-    "top": "mocreatures:block/ogre_dirt"
+    "bottom": "mocreatures:block/ogre_dirt",
+    "top": "mocreatures:block/ogre_grass_block_top"
   }
 }

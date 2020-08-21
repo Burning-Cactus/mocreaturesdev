@@ -1,0 +1,61 @@
+{
+  "type": "mocreatures:wyvern_lair",
+  "generator": {
+    "type": "minecraft:noise",
+    "seed": 0,
+    "settings": {
+      "bedrock_roof_position": -1,
+      "bedrock_floor_position": -1,
+      "sea_level": 0,
+      "disable_mob_generation": false,
+      "structures": {
+        "stronghold": {
+          "distance": 0,
+          "count": 0,
+          "spread": 0
+        },
+        "structures": {}
+      },
+      "noise": {
+        "top_slide": {
+          "target": 4,
+          "size": 5,
+          "offset": 10
+        },
+        "bottom_slide": {
+          "target": 8,
+          "size": 5,
+          "offset": 20
+        },
+        "sampling": {
+          "xz_scale": 8,
+          "xz_factor": 3,
+          "y_scale": 2,
+          "y_factor": 1
+        },
+        "size_vertical": 2,
+        "size_horizontal": 1,
+        "height": 100,
+        "density_factor": 1,
+        "density_offset": 0,
+        "random_density_offset": false,
+        "simplex_surface_noise": false,
+        "island_noise_override": true,
+        "amplified": false
+      },
+      "default_block": {
+        "Name": "mocreatures:wyvern_stone"
+      },
+      "default_fluid": {
+        "Name": "minecraft:water",
+        "Properties": {
+          "level": "0"
+        }
+      }
+    },
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "mocreatures:wyvern_biome"
+    }
+  }
+}

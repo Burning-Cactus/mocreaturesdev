@@ -1,0 +1,38 @@
+{
+  "type": "tree",
+  "config": {
+    "trunk_provider": {
+      "type": "rotated_block_provider",
+      "state": {
+        "Name": "mocreatures:wyvern_log",
+        "Properties": {"state": ""}
+      }
+    },
+    "leaves_provider": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "mocreatures:wyvern_leaves",
+        "Properties": {
+          "state": ""
+        }
+      }
+    },
+    "foliage_placer": {
+      "radius": {},
+      "offset": {},
+      "type": "",
+
+    },
+    "trunk_placer": {
+      "type": "straight_trunk_placer",
+      "base_height": 6,
+      "height_rand_a": 3,
+      "height_rand_b": 10
+    },
+    "minimum_size": {
+      "type": "two_layers_feature_size"
+    },
+    "decorators": [],
+    "heightmap": "WORLD_SURFACE"
+  }
+}

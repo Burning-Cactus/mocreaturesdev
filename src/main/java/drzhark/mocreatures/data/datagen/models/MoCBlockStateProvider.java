@@ -34,16 +34,16 @@ public class MoCBlockStateProvider extends BlockStateProvider {
                 new ConfiguredModel(models().cubeBottomTop(
                         MoCBlocks.WYVERN_GRASS.getRegistryName().getPath(),
                         new ResourceLocation(MoCConstants.MOD_ID, "block/wyvern_grass_block_side"),
-                        new ResourceLocation(MoCConstants.MOD_ID, "block/wyvern_grass_block_top"),
-                        new ResourceLocation(MoCConstants.MOD_ID, "block/wyvern_dirt")
+                        new ResourceLocation(MoCConstants.MOD_ID, "block/wyvern_dirt"),
+                        new ResourceLocation(MoCConstants.MOD_ID, "block/wyvern_grass_block_top")
                 )));
 
         getVariantBuilder(MoCBlocks.OGRE_GRASS).partialState().setModels(
                 new ConfiguredModel(models().cubeBottomTop(
                         MoCBlocks.OGRE_GRASS.getRegistryName().getPath(),
                         new ResourceLocation(MoCConstants.MOD_ID, "block/ogre_grass_block_side"),
-                        new ResourceLocation(MoCConstants.MOD_ID, "block/ogre_grass_block_top"),
-                        new ResourceLocation(MoCConstants.MOD_ID, "block/ogre_dirt")
+                        new ResourceLocation(MoCConstants.MOD_ID, "block/ogre_dirt"),
+                        new ResourceLocation(MoCConstants.MOD_ID, "block/ogre_grass_block_top")
                 )));
 
         getVariantBuilder(MoCBlocks.WYVERN_TALLGRASS).partialState().setModels(

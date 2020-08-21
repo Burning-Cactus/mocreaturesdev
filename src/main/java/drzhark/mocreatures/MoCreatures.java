@@ -8,8 +8,13 @@ import drzhark.mocreatures.client.renderer.texture.MoCTextures;
 import drzhark.mocreatures.configuration.MoCConfig;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
@@ -46,6 +51,10 @@ public class MoCreatures {
     public static final String MOC_LOGO = TextFormatting.WHITE + "[" + TextFormatting.AQUA + "Mo'Creatures" + TextFormatting.WHITE + "]";
     public static final MoCTextures MOCTEXTURES = new MoCTextures();
     public static final String ENTITY_TEXTURES = "textures/entity/";
+
+    public static final RegistryKey<DimensionType> WYVERN_LAIR_TYPE = RegistryKey.func_240903_a_(Registry.DIMENSION_TYPE_KEY, new ResourceLocation(MoCConstants.MOD_ID, "wyvern_lair"));
+    public static final RegistryKey<World> WYVERN_LAIR = RegistryKey.func_240903_a_(Registry.WORLD_KEY, new ResourceLocation(MoCConstants.MOD_ID, "wyvern_lair"));
+    public static final RegistryKey<Biome> WYVERN_LAIR_BIOME = RegistryKey.func_240903_a_(Registry.BIOME_KEY, new ResourceLocation(MoCConstants.MOD_ID, "wyvern_biome"));
 
 
     public MoCreatures() {

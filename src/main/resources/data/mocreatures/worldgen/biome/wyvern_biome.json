@@ -1,0 +1,43 @@
+{
+  "precipitation": "none",
+  "category": "the_end",
+  "depth": 1,
+  "scale": 1,
+  "temperature": 0.5,
+  "temperature_modifier": "none",
+  "downfall": 0,
+  "effects": {
+    "fog_color": 3851,
+    "sky_color": 0,
+    "water_color": 255,
+    "water_fog_color": 100,
+    "grass_color_modifier": "none"
+  },
+  "surface_builder": {
+    "type": "minecraft:default",
+    "config": {
+      "top_material": {
+        "Name": "mocreatures:wyvern_grass"
+      },
+      "under_material": {
+        "Name": "mocreatures:wyvern_dirt"
+      },
+      "underwater_material": {
+        "Name": "mocreatures:wyvern_dirt"
+      }
+    }
+  },
+  "carvers": {
+    "air": [],
+    "liquid": []
+  },
+  "features": [],
+  "starts": [],
+  "spawners": {
+  },
+  "player_spawn_friendly": true,
+  "creature_spawn_probability": 1,
+  "spawn_costs": {
+
+  }
+}
