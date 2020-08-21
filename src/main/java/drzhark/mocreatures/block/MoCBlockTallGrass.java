@@ -19,10 +19,12 @@ public class MoCBlockTallGrass extends BushBlock implements IForgeShearable, IGr
 //    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.8D, 0.9D);
 //    protected static final VoxelShape SHAPE = VoxelShapes.create(AABB);
 protected static final VoxelShape SHAPE = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 13.0D, 14.0D);
-
     public MoCBlockTallGrass(Block.Properties builder) {
         super(builder
-                .sound(SoundType.PLANT));
+                .sound(SoundType.PLANT)
+                .setLightLevel((f) -> {
+                    return 1;
+                }));
     }
 
     @Override

@@ -31,7 +31,18 @@
     "air": [],
     "liquid": []
   },
-  "features": [],
+  "features": [
+    [],
+    ["minecraft:lake_water"],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    ["mocreatures:patch_grass_wyvern"],
+    []
+  ],
   "starts": [],
   "spawners": {
   },

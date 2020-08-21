@@ -5,7 +5,7 @@
     "seed": 0,
     "settings": {
       "bedrock_roof_position": -1,
-      "bedrock_floor_position": -1,
+      "bedrock_floor_position": -6,
       "sea_level": 0,
       "disable_mob_generation": false,
       "structures": {
@@ -18,28 +18,28 @@
       },
       "noise": {
         "top_slide": {
-          "target": 4,
+          "target": -10,
+          "size": 2,
+          "offset": 0
+        },
+        "bottom_slide": {
+          "target": 0,
           "size": 5,
           "offset": 10
         },
-        "bottom_slide": {
-          "target": 8,
-          "size": 5,
-          "offset": 20
-        },
         "sampling": {
-          "xz_scale": 8,
+          "xz_scale": 1,
           "xz_factor": 3,
           "y_scale": 2,
           "y_factor": 1
         },
-        "size_vertical": 2,
+        "size_vertical": 1,
         "size_horizontal": 1,
-        "height": 100,
-        "density_factor": 1,
+        "height": 50,
+        "density_factor": 0,
         "density_offset": 0,
         "random_density_offset": false,
-        "simplex_surface_noise": false,
+        "simplex_surface_noise": true,
         "island_noise_override": true,
         "amplified": false
       },
