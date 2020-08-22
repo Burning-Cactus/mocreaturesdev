@@ -45,8 +45,8 @@ public class MoCEntityGoat extends MoCEntityTameableAnimal {
     private int tailcount; // 90 to -45
     private int earcount; // 20 to 40 default = 30
     private int eatcount;
-    private static final DataParameter<Boolean> IS_CHARGING = EntityDataManager.<Boolean>createKey(MoCEntityGoat.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> IS_UPSET = EntityDataManager.<Boolean>createKey(MoCEntityGoat.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_CHARGING = EntityDataManager.createKey(MoCEntityGoat.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_UPSET = EntityDataManager.createKey(MoCEntityGoat.class, DataSerializers.BOOLEAN);
     
     public MoCEntityGoat(EntityType<? extends MoCEntityGoat> type, World world) {
         super(type, world);

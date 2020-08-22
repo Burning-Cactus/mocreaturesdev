@@ -6,7 +6,6 @@ import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
 import drzhark.mocreatures.entity.ai.EntityAIFleeFromPlayer;
 import drzhark.mocreatures.entity.ai.EntityAIHunt;
-import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.ai.EntityAIPanicMoC;
 import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
 import drzhark.mocreatures.registry.MoCItems;
@@ -17,6 +16,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -52,7 +52,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     private boolean isNearPlayer;
     public float bodyswing;
 
-    public static final String snakeNames[] = {"Dark", "Spotted", "Orange", "Green", "Coral", "Cobra", "Rattle", "Python"};
+    public static final String[] snakeNames = {"Dark", "Spotted", "Orange", "Green", "Coral", "Cobra", "Rattle", "Python"};
 
     public MoCEntitySnake(EntityType<? extends MoCEntitySnake> type, World world) {
         super(type, world);
@@ -69,7 +69,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
         this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 0.8D, 30));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.targetSelector.addGoal(1, new EntityAIHunt(this, AnimalEntity.class, true));
-        this.targetSelector.addGoal(2, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -172,10 +172,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
 
     @Override
     public boolean isNotScared() {
-        if (getSubType() > 2 && getEdad() > 50) {
-            return true;
-        }
-        return false;
+        return getSubType() > 2 && getEdad() > 50;
     }
 
     /**

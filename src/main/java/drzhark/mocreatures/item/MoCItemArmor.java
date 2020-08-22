@@ -2,6 +2,7 @@ package drzhark.mocreatures.item;
 
 import drzhark.mocreatures.MoCProxy;
 import drzhark.mocreatures.MoCTools;
+import drzhark.mocreatures.client.renderer.texture.MoCTextures;
 import drzhark.mocreatures.registry.MoCItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -78,7 +79,7 @@ public class MoCItemArmor extends ArmorItem {
             tempArmorTexture = "scorpn_2.png";
         }
 
-        return "mocreatures:" + MoCProxy.ARMOR_TEXTURE + tempArmorTexture;
+        return "mocreatures:" + MoCTextures.ARMOR_TEXTURE + tempArmorTexture;
     }
 
     /**

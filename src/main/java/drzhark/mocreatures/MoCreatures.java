@@ -24,6 +24,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -73,6 +74,7 @@ public class MoCreatures {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
         bus.addListener(this::setup);
+        bus.addListener(this::clientSetup);
 //        bus.addListener(this::onServerStart);
 
         MoCreatures.instance = this;
@@ -82,8 +84,12 @@ public class MoCreatures {
         MoCEntityAttributes.init();
 
         MinecraftForge.EVENT_BUS.register(new MoCEventHooks());
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(new MoCClientTickHandler()));
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(new MoCKeyHandler()));
+    }
+
+    private void clientSetup(FMLClientSetupEvent event) {
+        MinecraftForge.EVENT_BUS.register(new MoCClientTickHandler());
+        MinecraftForge.EVENT_BUS.register(new MoCKeyHandler());
+//        MOCTEXTURES.loadTextures();
     }
 
     //TODO: Register commands properly in 1.15
@@ -164,6 +170,7 @@ public class MoCreatures {
 
     public static ResourceLocation getTexture(String texture) {
         return new ResourceLocation(MoCConstants.MOD_ID, ENTITY_TEXTURES + texture);
+//        return MOCTEXTURES.getTexture(texture);
     }
 
 }

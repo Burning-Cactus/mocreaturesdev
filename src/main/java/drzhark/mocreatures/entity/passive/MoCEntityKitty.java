@@ -49,10 +49,10 @@ public class MoCEntityKitty extends MoCEntityTameableAnimal {
     private boolean onTree;
     private ItemEntity itemAttackTarget;
     
-    private static final DataParameter<Boolean> SITTING = EntityDataManager.<Boolean>createKey(MoCEntityKitty.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HUNGRY = EntityDataManager.<Boolean>createKey(MoCEntityKitty.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> EMO = EntityDataManager.<Boolean>createKey(MoCEntityKitty.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> KITTY_STATE = EntityDataManager.<Integer>createKey(MoCEntityKitty.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(MoCEntityKitty.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> HUNGRY = EntityDataManager.createKey(MoCEntityKitty.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> EMO = EntityDataManager.createKey(MoCEntityKitty.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> KITTY_STATE = EntityDataManager.createKey(MoCEntityKitty.class, DataSerializers.VARINT);
     
     public MoCEntityKitty(EntityType<? extends MoCEntityKitty> type, World world) {
         super(type, world);

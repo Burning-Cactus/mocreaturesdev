@@ -45,8 +45,8 @@ public class MoCEntityBird extends MoCEntityTameableAnimal {
     private int jumpTimer;
     protected EntityAIWanderMoC2 wander;
     public static final String birdNames[] = {"Dove", "Crow", "Parrot", "Blue", "Canary", "Red"};
-    private static final DataParameter<Boolean> PRE_TAMED = EntityDataManager.<Boolean>createKey(MoCEntityBird.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> IS_FLYING = EntityDataManager.<Boolean>createKey(MoCEntityBird.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> PRE_TAMED = EntityDataManager.createKey(MoCEntityBird.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_FLYING = EntityDataManager.createKey(MoCEntityBird.class, DataSerializers.BOOLEAN);
     
     public MoCEntityBird(EntityType<? extends MoCEntityBird> type, World world) {
         super(type, world);

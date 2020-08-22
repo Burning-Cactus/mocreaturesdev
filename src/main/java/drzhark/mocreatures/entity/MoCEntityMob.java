@@ -43,10 +43,10 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     protected PathNavigator navigatorFlyer;
     protected EntityAIWanderMoC2 wander;
 
-    protected static final DataParameter<Boolean> ADULT = EntityDataManager.<Boolean>createKey(CreatureEntity.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Integer> TYPE = EntityDataManager.<Integer>createKey(CreatureEntity.class, DataSerializers.VARINT);
-    protected static final DataParameter<Integer> AGE = EntityDataManager.<Integer>createKey(CreatureEntity.class, DataSerializers.VARINT);
-    protected static final DataParameter<String> NAME_STR = EntityDataManager.<String>createKey(CreatureEntity.class, DataSerializers.STRING);
+    protected static final DataParameter<Boolean> ADULT = EntityDataManager.createKey(CreatureEntity.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Integer> TYPE = EntityDataManager.createKey(CreatureEntity.class, DataSerializers.VARINT);
+    protected static final DataParameter<Integer> AGE = EntityDataManager.createKey(CreatureEntity.class, DataSerializers.VARINT);
+    protected static final DataParameter<String> NAME_STR = EntityDataManager.createKey(CreatureEntity.class, DataSerializers.STRING);
     
     public MoCEntityMob(EntityType<? extends MoCEntityMob> type, World world) {
         super(type, world);
@@ -127,7 +127,7 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
 
     @Override
     public String getPetName() {
-        return ((String)this.dataManager.get(NAME_STR)).toString();
+        return this.dataManager.get(NAME_STR).toString();
     }
 
     @Override
@@ -155,12 +155,12 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
 
     @Override
     public void setEdad(int i) {
-        this.dataManager.set(AGE, Integer.valueOf(i));
+        this.dataManager.set(AGE, i);
     }
 
     @Override
     public void setPetName(String name) {
-        this.dataManager.set(NAME_STR, String.valueOf(name));
+        this.dataManager.set(NAME_STR, name);
     }
 
     public boolean getCanSpawnHereLiving() {
@@ -377,9 +377,9 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
 
     @Override
     public boolean renderName() {
-//        return MoCreatures.proxy.getDisplayPetName() TODO: Fix name rendering
-//                && (getPetName() != null && !getPetName().equals("") && (!this.isBeingRidden()) && (this.getRidingEntity() == null));
-        return false;
+        return MoCConfig.CLIENT_CONFIG.displayPetName.get() //TODO: Fix name rendering
+                && (getPetName() != null && !getPetName().equals("") && (!this.isBeingRidden()) && (this.getRidingEntity() == null));
+//        return false;
     }
 
     /*protected Vec3d findPossibleShelter() {

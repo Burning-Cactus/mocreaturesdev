@@ -17,7 +17,7 @@ import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 public class MoCEntityAttributes {
     public static void init() {
         //Creatures
-        /*register(MoCEntities.BIRD, MoCEntityBird.registerAttributes().func_233813_a_());
+        register(MoCEntities.BIRD, MoCEntityBird.registerAttributes().func_233813_a_());
         register(MoCEntities.BLACK_BEAR, MoCEntityBlackBear.registerAttributes().func_233813_a_());
         register(MoCEntities.BOAR, MoCEntityBoar.registerAttributes().func_233813_a_());
         register(MoCEntities.BUNNY, MoCEntityBunny.registerAttributes().func_233813_a_());
@@ -26,9 +26,9 @@ public class MoCEntityAttributes {
         register(MoCEntities.DEER, MoCEntityDeer.registerAttributes().func_233813_a_());
         register(MoCEntities.ELEPHANT, MoCEntityElephant.registerAttributes().func_233813_a_());
         register(MoCEntities.ENT, MoCEntityEnt.registerAttributes().func_233813_a_());
-        register(MoCEntities.FOX, MoCEntityFox.registerAttributes().func_233813_a_());*/
+        register(MoCEntities.FOX, MoCEntityFox.registerAttributes().func_233813_a_());
         register(MoCEntities.GOAT, MoCEntityGoat.registerAttributes().func_233813_a_());
-        /*register(MoCEntities.GRIZZLY_BEAR, MoCEntityGrizzlyBear.registerAttributes().func_233813_a_());
+        register(MoCEntities.GRIZZLY_BEAR, MoCEntityGrizzlyBear.registerAttributes().func_233813_a_());
         register(MoCEntities.KITTY, MoCEntityKitty.registerAttributes().func_233813_a_());
         register(MoCEntities.KOMODO_DRAGON, MoCEntityKomodo.registerAttributes().func_233813_a_());
         register(MoCEntities.LEOGER, MoCEntityLeoger.registerAttributes().func_233813_a_());
@@ -53,7 +53,7 @@ public class MoCEntityAttributes {
         register(MoCEntities.TURTLE, MoCEntityTurtle.registerAttributes().func_233813_a_());
         register(MoCEntities.TURKEY, MoCEntityTurkey.registerAttributes().func_233813_a_());
         register(MoCEntities.WILDHORSE, MoCEntityHorse.registerAttributes().func_233813_a_());
-        register(MoCEntities.WYVERN, MoCEntityWyvern.registerAttributes().func_233813_a_());*/
+        register(MoCEntities.WYVERN, MoCEntityWyvern.registerAttributes().func_233813_a_());
 
         //Mobs
         register(MoCEntities.CAVE_OGRE, MoCEntityCaveOgre.registerAttributes().func_233813_a_());
@@ -73,7 +73,7 @@ public class MoCEntityAttributes {
         register(MoCEntities.WWOLF, MoCEntityWWolf.registerAttributes().func_233813_a_());
 
         //Aquatic
-        /*register(MoCEntities.ANCHOVY, MoCEntityAnchovy.registerAttributes().func_233813_a_());
+        register(MoCEntities.ANCHOVY, MoCEntityAnchovy.registerAttributes().func_233813_a_());
         register(MoCEntities.ANGELFISH, MoCEntityAngelFish.registerAttributes().func_233813_a_());
         register(MoCEntities.ANGLER, MoCEntityAngler.registerAttributes().func_233813_a_());
         register(MoCEntities.BASS, MoCEntityBass.registerAttributes().func_233813_a_());
@@ -89,7 +89,7 @@ public class MoCEntityAttributes {
         register(MoCEntities.SALMON, MoCEntitySalmon.registerAttributes().func_233813_a_());
         register(MoCEntities.MANTARAY, MoCEntityMantaRay.registerAttributes().func_233813_a_());
         register(MoCEntities.SHARK, MoCEntityShark.registerAttributes().func_233813_a_());
-        register(MoCEntities.STINGRAY, MoCEntityStingRay.registerAttributes().func_233813_a_());*/
+        register(MoCEntities.STINGRAY, MoCEntityStingRay.registerAttributes().func_233813_a_());
 
         //Ambients
         register(MoCEntities.ANT, MoCEntityAnt.registerAttributes().func_233813_a_());

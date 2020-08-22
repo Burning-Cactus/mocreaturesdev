@@ -14,12 +14,6 @@ public class MoCProxy {
 
     //TODO: Proxies are no longer necessary in 1.14+
 
-    public static String ARMOR_TEXTURE = "textures/armor/";
-    public static String BLOCK_TEXTURE = "textures/blocks/";
-    public static String ITEM_TEXTURE = "textures/items/";
-    public static String MODEL_TEXTURE = "textures/models/";
-    public static String GUI_TEXTURE = "textures/gui/";
-    public static String MISC_TEXTURE = "textures/misc/";
 
     //CONFIG VARIABLES
     // Client Only
@@ -84,21 +78,21 @@ public class MoCProxy {
 
     //-----------------THE FOLLOWING ARE CLIENT SIDE ONLY, NOT TO BE USED IN SERVER AS THEY AFFECT ONLY DISPLAY / SOUNDS
 
-
-    public boolean getAnimateTextures() {
-        return false;
-    }
-
-    public boolean getDisplayPetName() {
-        return this.displayPetName;
-    }
-
-    public boolean getDisplayPetIcons() {
-        return this.displayPetIcons;
-    }
-
-    public boolean getDisplayPetHealth() {
-        return this.displayPetHealth;
-    }
+//
+//    public boolean getAnimateTextures() {
+//        return false;
+//    }
+//
+//    public boolean getDisplayPetName() {
+//        return this.displayPetName;
+//    }
+//
+//    public boolean getDisplayPetIcons() {
+//        return this.displayPetIcons;
+//    }
+//
+//    public boolean getDisplayPetHealth() {
+//        return this.displayPetHealth;
+//    }
 
 }

@@ -21,14 +21,21 @@ public class MoCTextures {
     private static final Map<String, ResourceLocation> RESOURCE_CACHE = Maps.newHashMap();
     private static final Map<String, String[]> TEXTURE_RESOURCES = Maps.newHashMap();
 
+    public static String ARMOR_TEXTURE = "textures/armor/";
+    public static String BLOCK_TEXTURE = "textures/block/";
+    public static String ITEM_TEXTURE = "textures/item/";
+    public static String ENTITY_TEXTURE = "textures/entity/";
+    public static String GUI_TEXTURE = "textures/gui/";
+    public static String MISC_TEXTURE = "textures/misc/";
+
     public void loadTextures() {
         try {
-            TEXTURE_RESOURCES.put(MoCProxy.ARMOR_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/armor/"));
-            TEXTURE_RESOURCES.put(MoCProxy.BLOCK_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/block/"));
-            TEXTURE_RESOURCES.put(MoCProxy.GUI_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/gui/"));
-            TEXTURE_RESOURCES.put(MoCProxy.ITEM_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/item/"));
-            TEXTURE_RESOURCES.put(MoCProxy.MISC_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/misc/"));
-            TEXTURE_RESOURCES.put(MoCProxy.MODEL_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/models/"));
+            TEXTURE_RESOURCES.put(ARMOR_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/armor/"));
+            TEXTURE_RESOURCES.put(BLOCK_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/block/"));
+            TEXTURE_RESOURCES.put(ENTITY_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/entity/"));
+            TEXTURE_RESOURCES.put(GUI_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/gui/"));
+            TEXTURE_RESOURCES.put(ITEM_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/item/"));
+            TEXTURE_RESOURCES.put(MISC_TEXTURE, getResourceListing(this.getClass(), "assets/mocreatures/textures/misc/"));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         } catch (IOException e) {

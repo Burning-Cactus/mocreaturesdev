@@ -32,8 +32,6 @@ public class MoCClientProxy extends MoCProxy {
     /**
      * Sets the name client side. Name is synchronized with datawatchers
      *
-     * @param player
-     * @param mocanimal
      */
 //    @Override  TODO: Rewrite this method
 //    public void setName(PlayerEntity player, IMoCEntity mocanimal) {
@@ -949,26 +947,26 @@ public class MoCClientProxy extends MoCProxy {
 //    public int getParticleFX() {
 //        return this.particleFX;
 //    }
-
-    @Override
-    public boolean getDisplayPetName() {
-        return this.displayPetName;
-    }
-
-    @Override
-    public boolean getDisplayPetIcons() {
-        return this.displayPetIcons;
-    }
-
-    @Override
-    public boolean getDisplayPetHealth() {
-        return this.displayPetHealth;
-    }
-
-    @Override
-    public boolean getAnimateTextures() {
-        return this.animateTextures;
-    }
+//
+//    @Override
+//    public boolean getDisplayPetName() {
+//        return this.displayPetName;
+//    }
+//
+//    @Override
+//    public boolean getDisplayPetIcons() {
+//        return this.displayPetIcons;
+//    }
+//
+//    @Override
+//    public boolean getDisplayPetHealth() {
+//        return this.displayPetHealth;
+//    }
+//
+//    @Override
+//    public boolean getAnimateTextures() {
+//        return this.animateTextures;
+//    }
 
 //    @Override
 //    public void printMessageToPlayer(String msg) {

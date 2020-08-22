@@ -35,8 +35,8 @@ public class MoCEntityScorpion extends MoCEntityMob {
     public int mouthCounter;
     public int armCounter;
 
-    private static final DataParameter<Boolean> IS_PICKED = EntityDataManager.<Boolean>createKey(MoCEntityScorpion.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HAS_BABIES = EntityDataManager.<Boolean>createKey(MoCEntityScorpion.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_PICKED = EntityDataManager.createKey(MoCEntityScorpion.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> HAS_BABIES = EntityDataManager.createKey(MoCEntityScorpion.class, DataSerializers.BOOLEAN);
     
     public MoCEntityScorpion(EntityType<? extends MoCEntityScorpion> type, World world) {
         super(type, world);
@@ -62,7 +62,7 @@ public class MoCEntityScorpion extends MoCEntityMob {
         this.goalSelector.addGoal(7, new FleeSunGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new EntityAIFleeFromPlayer(this, 1.2D, 4D));
         this.goalSelector.addGoal(6, new LeapAtTargetGoal(this, 0.4F));
-        this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {

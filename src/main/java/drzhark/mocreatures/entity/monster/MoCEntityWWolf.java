@@ -1,10 +1,8 @@
 package drzhark.mocreatures.entity.monster;
 
-import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityMob;
-import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
 import drzhark.mocreatures.entity.passive.MoCEntityBear;
 import drzhark.mocreatures.entity.passive.MoCEntityBigCat;
 import drzhark.mocreatures.entity.passive.MoCEntityHorse;
@@ -14,6 +12,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.monster.ZombieEntity;
@@ -28,7 +27,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.List;
@@ -47,7 +45,7 @@ public class MoCEntityWWolf extends MoCEntityMob {
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -73,18 +71,18 @@ public class MoCEntityWWolf extends MoCEntityMob {
     public ResourceLocation getTexture() {
         switch (getSubType()) {
             case 1:
-                return MoCreatures.getTexture("wwolf/wolfblack.png");
+                return MoCreatures.getTexture("wolfblack.png");
             case 2:
-                return MoCreatures.getTexture("wwolf/wolfwild.png");
+                return MoCreatures.getTexture("wolfwild.png");
             case 3:
-                return MoCreatures.getTexture("wwolf/wolftimber.png"); //snow wolf
+                return MoCreatures.getTexture("wolftimber.png"); //snow wolf
             case 4:
-                return MoCreatures.getTexture("wwolf/wolfbrown.png");
+                return MoCreatures.getTexture("wolfbrown.png");
             case 5:
-                return MoCreatures.getTexture("wwolf/wolfbright.png");
+                return MoCreatures.getTexture("wolfbright.png");
 
             default:
-                return MoCreatures.getTexture("wwolf/wolfwild.png");
+                return MoCreatures.getTexture("wolfwild.png");
         }
     }
 
@@ -113,19 +111,19 @@ public class MoCEntityWWolf extends MoCEntityMob {
         }
     }
 
-    @Override
+    /*@Override
     public boolean checkSpawningBiome() {
         int i = MathHelper.floor(this.getPosX());
         int j = MathHelper.floor(getBoundingBox().minY);
         int k = MathHelper.floor(this.getPosZ());
 
 //        Biome biome = MoCTools.Biomekind(this.world, new BlockPos(i, j, k));
-        /*if (BiomeDictionary.hasType(biome, Type.SNOWY)) {
+        *//*if (BiomeDictionary.hasType(biome, Type.SNOWY)) {
             setType(3);
-        }*/
+        }*//*
         selectType();
         return true;
-    }
+    }*/
 
     @Override
     public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
@@ -139,8 +137,7 @@ public class MoCEntityWWolf extends MoCEntityMob {
         double d1 = -1D;
         LivingEntity entityliving = null;
         List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(d, d, d));
-        for (int i = 0; i < list.size(); i++) {
-            Entity entity1 = list.get(i);
+        for (Entity entity1 : list) {
             if (!(entity1 instanceof LivingEntity) || (entity1 == entity) || (entity1 == entity.getRidingEntity())
                     || (entity1 == entity.getRidingEntity()) || (entity1 instanceof PlayerEntity) || (entity1 instanceof MobEntity)
                     || (entity1 instanceof MoCEntityBigCat) || (entity1 instanceof MoCEntityBear) || (entity1 instanceof CowEntity)
@@ -194,8 +191,7 @@ public class MoCEntityWWolf extends MoCEntityMob {
         super.livingTick();
         if (!this.world.isRemote && !this.isBeingRidden() && this.rand.nextInt(100) == 0) {
             List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(4D, 2D, 4D));
-            for (int i = 0; i < list.size(); i++) {
-                Entity entity = list.get(i);
+            for (Entity entity : list) {
                 if (!(entity instanceof MobEntity)) {
                     continue;
                 }

@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 
 public class MoCEntityMole extends MoCEntityTameableAnimal {
 
-    private static final DataParameter<Integer> MOLE_STATE = EntityDataManager.<Integer>createKey(MoCEntityMole.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> MOLE_STATE = EntityDataManager.createKey(MoCEntityMole.class, DataSerializers.VARINT);
 
     public MoCEntityMole(EntityType<? extends MoCEntityMole> type, World world) {
         super(type, world);
