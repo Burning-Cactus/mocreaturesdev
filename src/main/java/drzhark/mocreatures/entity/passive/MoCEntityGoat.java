@@ -73,8 +73,8 @@ public class MoCEntityGoat extends MoCEntityTameableAnimal {
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(IS_CHARGING, Boolean.valueOf(false));
-        this.dataManager.register(IS_UPSET, Boolean.valueOf(false));
+        this.dataManager.register(IS_CHARGING, false);
+        this.dataManager.register(IS_UPSET, false);
     }
 
     @Override
@@ -83,19 +83,19 @@ public class MoCEntityGoat extends MoCEntityTameableAnimal {
     }
 
     public boolean getUpset() {
-        return ((Boolean)this.dataManager.get(IS_UPSET)).booleanValue();
+        return this.dataManager.get(IS_UPSET);
     }
 
     public boolean getCharging() {
-        return ((Boolean)this.dataManager.get(IS_CHARGING)).booleanValue();
+        return this.dataManager.get(IS_CHARGING);
     }
 
     public void setUpset(boolean flag) {
-        this.dataManager.set(IS_UPSET, Boolean.valueOf(flag));
+        this.dataManager.set(IS_UPSET, flag);
     }
 
     public void setCharging(boolean flag) {
-        this.dataManager.set(IS_CHARGING, Boolean.valueOf(flag));
+        this.dataManager.set(IS_CHARGING, flag);
     }
 
     @Override

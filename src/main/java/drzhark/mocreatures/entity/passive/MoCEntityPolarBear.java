@@ -4,15 +4,22 @@ import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.IMoCTameable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class MoCEntityPolarBear extends MoCEntityBear{
 
     public MoCEntityPolarBear(EntityType<? extends MoCEntityPolarBear> type, World world) {
         super(type, world);
     }
-    
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
     @Override
     public void selectType() {
         if (getSubType() == 0) {

@@ -1,4 +1,4 @@
-package drzhark.mocreatures;
+package drzhark.mocreatures.handlers;
 
 import drzhark.mocreatures.entity.IMoCTameable;
 import net.minecraft.entity.player.PlayerEntity;

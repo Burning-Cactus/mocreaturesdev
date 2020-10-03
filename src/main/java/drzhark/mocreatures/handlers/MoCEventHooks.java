@@ -1,4 +1,4 @@
-package drzhark.mocreatures;
+package drzhark.mocreatures.handlers;
 
 
 //TODO: update to 1.15, disabling these for now

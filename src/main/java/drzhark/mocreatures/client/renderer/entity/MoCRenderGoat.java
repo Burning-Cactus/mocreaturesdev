@@ -6,12 +6,13 @@ import drzhark.mocreatures.entity.passive.MoCEntityGoat;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class MoCRenderGoat extends LivingRenderer<MoCEntityGoat, MoCModelGoat> {
+public class MoCRenderGoat extends MobRenderer<MoCEntityGoat, MoCModelGoat> {
 
     @Override
     public ResourceLocation getEntityTexture(MoCEntityGoat entitygoat) {
