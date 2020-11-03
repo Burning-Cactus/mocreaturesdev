@@ -5,9 +5,18 @@ import drzhark.mocreatures.MoCItemGroup;
 import drzhark.mocreatures.item.*;
 import drzhark.mocreatures.util.MoCArmorMaterial;
 import drzhark.mocreatures.util.MoCItemTier;
+import net.minecraft.block.DispenserBlock;
+import net.minecraft.client.Minecraft;
+import net.minecraft.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemTier;
+import net.minecraft.item.*;
+import net.minecraft.util.Direction;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -21,6 +30,7 @@ import java.util.List;
 
 @ObjectHolder(MoCConstants.MOD_ID)
 public class MoCItems {
+
     public static final Item RECORDSHUFFLE = null;
     public static final Item HORSESADDLE = null;
 
@@ -156,8 +166,96 @@ public class MoCItems {
     public static final Item TURTLE_RAW = null;
     public static final Item TURTLE_SOUP = null;
 
+    //Spawn eggs
+    public static final Item BIRD_SPAWN_EGG = null;
+    public static final Item BLACK_BEAR_SPAWN_EGG = null;
+    public static final Item BOAR_SPAWN_EGG = null;
+    public static final Item BUNNY_SPAWN_EGG = null;
+    public static final Item CROCODILE_SPAWN_EGG = null;
+    public static final Item DEER_SPAWN_EGG = null;
+    public static final Item DUCK_SPAWN_EGG = null;
+    public static final Item ELEPHANT_SPAWN_EGG = null;
+    public static final Item ENT_SPAWN_EGG = null;
+    public static final Item FOX_SPAWN_EGG = null;
+    public static final Item GOAT_SPAWN_EGG = null;
+    public static final Item GRIZZLY_BEAR_SPAWN_EGG = null;
+    public static final Item KITTY_SPAWN_EGG = null;
+    public static final Item KOMODO_DRAGON_SPAWN_EGG = null;
+    public static final Item LEOGER_SPAWN_EGG = null;
+    public static final Item LEOPARD_SPAWN_EGG = null;
+    public static final Item LIARD_SPAWN_EGG = null;
+    public static final Item LION_SPAWN_EGG = null;
+    public static final Item LIGER_SPAWN_EGG = null;
+    public static final Item LITHER_SPAWN_EGG = null;
+//    public static final Item MANTICORE_PET_SPAWN_EGG = null;
+    public static final Item MOLE_SPAWN_EGG = null;
+    public static final Item MOUSE_SPAWN_EGG = null;
+    public static final Item OSTRICH_SPAWN_EGG = null;
+    public static final Item PANDA_BEAR_SPAWN_EGG = null;
+    public static final Item PANTHARD_SPAWN_EGG = null;
+    public static final Item PANTHER_SPAWN_EGG = null;
+    public static final Item PANTHGER_SPAWN_EGG = null;
+//    public static final Item PET_SCORPION_SPAWN_EGG = null;
+    public static final Item POLAR_BEAR_SPAWN_EGG = null;
+    public static final Item RACCOON_SPAWN_EGG = null;
+    public static final Item SNAKE_SPAWN_EGG = null;
+    public static final Item TIGER_SPAWN_EGG = null;
+    public static final Item TURTLE_SPAWN_EGG = null;
+    public static final Item TURKEY_SPAWN_EGG = null;
+    public static final Item WILDHORSE_SPAWN_EGG = null;
+    public static final Item WYVERN_SPAWN_EGG = null;
+
+    public static final Item BIG_GOLEM_SPAWN_EGG = null;
+    public static final Item CAVE_OGRE_SPAWN_EGG = null;
+    public static final Item FIRE_OGRE_SPAWN_EGG = null;
+    public static final Item FLAME_WRAITH_SPAWN_EGG = null;
+    public static final Item GREEN_OGRE_SPAWN_EGG = null;
+    public static final Item HORSEMOB_SPAWN_EGG = null;
+    public static final Item HELLRAT_SPAWN_EGG = null;
+    public static final Item MANTICORE_SPAWN_EGG = null;
+    public static final Item MINI_GOLEM_SPAWN_EGG = null;
+    public static final Item RAT_SPAWN_EGG = null;
+    public static final Item SILVER_SKELETON_SPAWN_EGG = null;
+    public static final Item SCORPION_SPAWN_EGG = null;
+    public static final Item WEREWOLF_SPAWN_EGG = null;
+    public static final Item WRAITH_SPAWN_EGG = null;
+    public static final Item WWOLF_SPAWN_EGG = null;
+
+    public static final Item ANCHOVY_SPAWN_EGG = null;
+    public static final Item ANGELFISH_SPAWN_EGG = null;
+    public static final Item ANGLER_SPAWN_EGG = null;
+    public static final Item BASS_SPAWN_EGG = null;
+    public static final Item CLOWNFISH_SPAWN_EGG = null;
+    public static final Item COD_SPAWN_EGG = null;
+    public static final Item DOLPHIN_SPAWN_EGG = null;
+    public static final Item FISHY_SPAWN_EGG = null;
+    public static final Item GOLDFISH_SPAWN_EGG = null;
+    public static final Item HIPPOTANG_SPAWN_EGG = null;
+    public static final Item JELLYFISH_SPAWN_EGG = null;
+    public static final Item MANDERIN_SPAWN_EGG = null;
+    public static final Item PIRANHA_SPAWN_EGG = null;
+    public static final Item SALMON_SPAWN_EGG = null;
+    public static final Item MANTARAY_SPAWN_EGG = null;
+    public static final Item SHARK_SPAWN_EGG = null;
+    public static final Item STINGRAY_SPAWN_EGG = null;
+
+    public static final Item ANT_SPAWN_EGG = null;
+    public static final Item BEE_SPAWN_EGG = null;
+    public static final Item BUTTERFLY_SPAWN_EGG = null;
+    public static final Item CRAB_SPAWN_EGG = null;
+    public static final Item CRICKET_SPAWN_EGG = null;
+    public static final Item DRAGONFLY_SPAWN_EGG = null;
+    public static final Item FIREFLY_SPAWN_EGG = null;
+    public static final Item FLY_SPAWN_EGG = null;
+    public static final Item MAGGOT_SPAWN_EGG = null;
+    public static final Item SNAIL_SPAWN_EGG = null;
+    public static final Item ROACH_SPAWN_EGG = null;
+
     @Mod.EventBusSubscriber(modid = MoCConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistrationHandler {
+
+        public static final List<SpawnEggItem> SPAWN_EGGS = new ArrayList<>();
+
         /**
          * Register this mod's {@link Item}s.
          *
@@ -291,10 +389,121 @@ public class MoCItems {
                     new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC).food(MoCFoods.CRAB_COOKED)).setRegistryName("crab_cooked")
             ));
 
+            Item[] spawnEggs = {
+                    new SpawnEggItem(MoCEntities.BIRD, 14020607, 14020607, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("bird_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.BLACK_BEAR, 10, 1, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("black_bear_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.BOAR, 14772545, 9141102, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("boar_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.BUNNY, 12623485, 9141102, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("bunny_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.CROCODILE, 16711680, 65407, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("crocodile_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.DEER, 14021607, 33023, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("deer_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.DUCK, 14021607, 15656192, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("duck_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.ELEPHANT, 14772545, 23423, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("elephant_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.ENT, 12623485, 16711680, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("ent_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.FOX, 14772545, 5253242, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("fox_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.GOAT, 7434694, 6053069, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("goat_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.GRIZZLY_BEAR, 14772545, 1, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("grizzly_bear_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.KITTY, 12623485, 5253242, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("kitty_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.KOMODO_DRAGON, 16711680, 23423, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("komodo_dragon_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.LEOGER, 14772545, 14772545, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("leoger_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.LEOPARD, 13749760, 10, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("leopard_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.LIARD, 15313474, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("liard_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.LION, 15313474, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("lion_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.LIGER, 15313474, 12623485, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("liger_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.LITHER, 15313474, 14772545, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("lither_spawn_egg"),
+                    //Manticore pet spawn egg
+                    new SpawnEggItem(MoCEntities.MOLE, 14020607, 16711680, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("mole_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.MOUSE, 14772545, 0, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("mouse_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.OSTRICH, 14020607, 9639167, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("ostrich_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.PANDA_BEAR, 10, 9141102, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("panda_bear_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.PANTHARD, 10, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("panthard_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.PANTHER, 10, 205, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("panther_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.PANTHGER, 10, 14772545, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("panthger_spawn_egg"),
+                    //Pet scorpion spawn egg
+                    new SpawnEggItem(MoCEntities.POLAR_BEAR, 14020607, 9141102, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("polar_bear_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.RACCOON, 14772545, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("raccoon_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.SNAKE, 14020607, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("snake_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.TIGER, 14772545, 0, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("tiger_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.TURTLE, 14772545, 9320590, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("turtle_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.TURKEY, 14020607, 16711680, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("turkey_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.WILDHORSE, 12623485, 15656192, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("wildhorse_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.WYVERN, 14772545, 65407, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("wyvern_spawn_egg"),
+
+                    new SpawnEggItem(MoCEntities.BIG_GOLEM, 16711680, 16622, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("big_golem_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.CAVE_OGRE, 16711680, 33023, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("cave_ogre_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.FIRE_OGRE, 16711680, 9320595, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("fire_ogre_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.GREEN_OGRE, 16711680, 65407, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("green_ogre_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.FLAME_WRAITH, 16711680, 12623485, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("flame_wraith_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.HORSEMOB, 16711680, 9320590, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("horsemob_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.HELLRAT, 16711680, 14772545, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("hellrat_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.MANTICORE, 16711680, 0, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("manticore_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.MINI_GOLEM, 16711680, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("mini_golem_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.RAT, 16711680, 9141102, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("rat_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.SILVER_SKELETON, 16711680, 33023, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("silver_skeleton_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.SCORPION, 16711680, 6053069, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("scorpion_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.WEREWOLF, 16711680, 7434694, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("werewolf_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.WRAITH, 16711680, 0, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("wraith_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.WWOLF, 16711680, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("wwolf_spawn_egg"),
+
+                    new SpawnEggItem(MoCEntities.ANCHOVY, 5665535, 205, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("anchovy_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.ANGELFISH, 5665535, 7434694, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("angelfish_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.ANGLER, 5665535, 10, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("angler_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.BASS, 33023, 2372490, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("bass_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.CLOWNFISH, 5665535, 14772545, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("clownfish_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.COD, 33023, 16622, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("cod_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.DOLPHIN, 33023, 15631086, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("dolphin_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.FISHY, 5665535, 65407, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("fishy_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.GOLDFISH, 5665535, 15656192, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("goldfish_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.HIPPOTANG, 5665535, 2037680, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("hippotang_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.JELLYFISH, 33023, 14772545, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("jellyfish_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.MANDERIN, 5665535, 12623485, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("manderin_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.PIRANHA, 33023, 16711680, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("piranha_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.SALMON, 33023, 12623485, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("salmon_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.MANTARAY, 33023, 9141102, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("mantaray_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.SHARK, 33023, 9013643, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("shark_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.STINGRAY, 33023, 6053069, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("stingray_spawn_egg"),
+
+                    new SpawnEggItem(MoCEntities.ANT, 65407, 12623485, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("ant_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.BEE, 65407, 15656192, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("bee_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.BUTTERFLY, 65407, 7434694, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("butterfly_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.CRAB, 65407, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("crab_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.CRICKET, 65407, 16622, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("cricket_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.DRAGONFLY, 65407, 14020607, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("dragonfly_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.FIREFLY, 65407, 9320590, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("firefly_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.FLY, 65407, 1, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("fly_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.MAGGOT, 65407, 9141102, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("maggot_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.SNAIL, 65407, 14772545, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("snail_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.ROACH, 65407, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("roach_spawn_egg")
+            };
+
             final IForgeRegistry<Item> registry = event.getRegistry();
             for(Item item : items) {
                 registry.register(item);
             }
+            for(Item item : spawnEggs) {
+                registry.register(item);
+                SPAWN_EGGS.add((SpawnEggItem) item);
+            }
+        }
+    }
+
+    /**
+     * Register the dispenser behavior of spawn eggs.
+     */
+    public static void registerDispenserBehavior() {
+        DefaultDispenseItemBehavior defaultdispenseitembehavior = new DefaultDispenseItemBehavior() {
+            /**
+             * Dispense the specified stack
+             */
+            public ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
+                Direction direction = source.getBlockState().get(DispenserBlock.FACING);
+                EntityType<?> entitytype = ((SpawnEggItem)stack.getItem()).getType(stack.getTag());
+                entitytype.spawn(source.getWorld(), stack, (PlayerEntity)null, source.getBlockPos().offset(direction), SpawnReason.DISPENSER, direction != Direction.UP, false);
+                stack.shrink(1);
+                return stack;
+            }
+        };
+        for(SpawnEggItem spawneggitem : RegistrationHandler.SPAWN_EGGS) {
+            DispenserBlock.registerDispenseBehavior(spawneggitem, defaultdispenseitembehavior);
         }
     }
 }

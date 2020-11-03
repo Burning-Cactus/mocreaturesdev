@@ -2,7 +2,6 @@ package drzhark.mocreatures.entity.ai;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.sun.javafx.geom.Vec3d;
 import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.MoCEntityAquatic;
 import net.minecraft.entity.CreatureEntity;

@@ -1,6 +1,5 @@
 package drzhark.mocreatures.entity.ai;
 
-import com.sun.javafx.geom.Vec3d;
 import drzhark.mocreatures.entity.IMoCEntity;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;

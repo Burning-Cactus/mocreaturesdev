@@ -1,6 +1,5 @@
 package drzhark.mocreatures.entity.ai;
 
-import com.sun.javafx.geom.Vec3d;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.math.BlockPos;

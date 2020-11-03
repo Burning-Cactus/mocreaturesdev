@@ -1,6 +1,5 @@
 package drzhark.mocreatures.item;
 
-import drzhark.mocreatures.MoCProxy;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.client.renderer.texture.MoCTextures;
 import drzhark.mocreatures.registry.MoCItems;

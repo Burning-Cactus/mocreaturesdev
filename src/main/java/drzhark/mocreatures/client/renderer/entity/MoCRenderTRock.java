@@ -1,12 +1,8 @@
 package drzhark.mocreatures.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.sun.prism.TextureMap;
 import drzhark.mocreatures.MoCConstants;
-import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.item.MoCEntityThrowableRock;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;

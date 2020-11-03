@@ -1,7 +1,6 @@
 package drzhark.mocreatures.client.renderer.texture;
 
 import com.google.common.collect.Maps;
-import drzhark.mocreatures.MoCProxy;
 import net.minecraft.util.ResourceLocation;
 
 import java.io.File;

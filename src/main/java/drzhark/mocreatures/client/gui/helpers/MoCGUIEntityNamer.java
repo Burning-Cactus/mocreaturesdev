@@ -1,22 +1,9 @@
 package drzhark.mocreatures.client.gui.helpers;
 
-import drzhark.mocreatures.MoCProxy;
-import drzhark.mocreatures.client.MoCClientProxy;
-import drzhark.mocreatures.entity.IMoCEntity;
-import drzhark.mocreatures.entity.IMoCTameable;
-import drzhark.mocreatures.network.MoCMessageHandler;
-import drzhark.mocreatures.network.message.MoCMessageUpdatePetName;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
-
-import java.io.IOException;
 
 @OnlyIn(Dist.CLIENT)
 public class MoCGUIEntityNamer extends Screen {

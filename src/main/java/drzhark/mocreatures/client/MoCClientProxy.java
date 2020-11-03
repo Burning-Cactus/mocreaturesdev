@@ -1,25 +1,11 @@
 package drzhark.mocreatures.client;
 
-import drzhark.mocreatures.MoCProxy;
-import drzhark.mocreatures.client.gui.helpers.MoCGUIEntityNamer;
-import drzhark.mocreatures.client.particle.MoCEntityFXStar;
-import drzhark.mocreatures.client.particle.MoCEntityFXUndead;
-import drzhark.mocreatures.client.particle.MoCEntityFXVacuum;
-import drzhark.mocreatures.client.particle.MoCEntityFXVanish;
 import drzhark.mocreatures.client.renderer.texture.MoCTextures;
-import drzhark.mocreatures.entity.IMoCEntity;
-import drzhark.mocreatures.entity.monster.MoCEntityGolem;
-import drzhark.mocreatures.entity.passive.MoCEntityHorse;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class MoCClientProxy extends MoCProxy {
+public class MoCClientProxy {
 
     public static MoCClientProxy instance;
     public static MoCTextures mocTextures = new MoCTextures();

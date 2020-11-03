@@ -2,7 +2,7 @@
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
     "side": "mocreatures:block/wyvern_grass_block_side",
-    "bottom": "mocreatures:block/wyvern_grass_block_top",
-    "top": "mocreatures:block/wyvern_dirt"
+    "bottom": "mocreatures:block/wyvern_dirt",
+    "top": "mocreatures:block/wyvern_grass_block_top"
   }
 }

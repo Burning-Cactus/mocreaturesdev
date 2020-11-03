@@ -6,6 +6,7 @@ import drzhark.mocreatures.registry.MoCItems;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.Item;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -129,6 +130,9 @@ public class MoCItemModelProvider extends ItemModelProvider {
         simpleItem(MoCItems.TURTLE_SOUP);
         tallGrass(MoCBlocks.WYVERN_TALLGRASS);
         tallGrass(MoCBlocks.OGRE_TALLGRASS);
+        for(SpawnEggItem item : MoCItems.RegistrationHandler.SPAWN_EGGS) {
+            withExistingParent(item.getRegistryName().getPath(), new ResourceLocation("item/template_spawn_egg"));
+        }
     }
 
     private void simpleItem(Item item) {

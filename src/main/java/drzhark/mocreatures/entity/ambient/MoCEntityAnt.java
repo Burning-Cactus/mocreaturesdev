@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class MoCEntityAnt extends MoCEntityInsect {
 
-    private static final DataParameter<Boolean> FOUND_FOOD = EntityDataManager.<Boolean>createKey(MoCEntityAnt.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> FOUND_FOOD = EntityDataManager.createKey(MoCEntityAnt.class, DataSerializers.BOOLEAN);
     
     public MoCEntityAnt(EntityType<? extends MoCEntityAnt> type, World world) {
         super(type, world);
@@ -43,7 +43,7 @@ public class MoCEntityAnt extends MoCEntityInsect {
     }
 
     public void setHasFood(boolean flag) {
-        this.dataManager.set(FOUND_FOOD, Boolean.valueOf(flag));
+        this.dataManager.set(FOUND_FOOD, flag);
     }
 
     @Override
