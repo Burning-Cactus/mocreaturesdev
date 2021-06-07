@@ -19,11 +19,11 @@ public class MoCEntityButterfly extends MoCEntityInsect {
     private int fCounter;
 
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
 
-        if (!this.world.isRemote) {
-            if (getIsFlying() && this.rand.nextInt(200) == 0) {
+        if (!this.level.isClientSide) {
+            if (getIsFlying() && this.random.nextInt(200) == 0) {
                 setIsFlying(false);
             }
         }
@@ -32,7 +32,7 @@ public class MoCEntityButterfly extends MoCEntityInsect {
     @Override
     public void selectType() {
         if (getSubType() == 0) {
-            setType(this.rand.nextInt(10) + 1);
+            setType(this.random.nextInt(10) + 1);
         }
     }
 
@@ -86,8 +86,8 @@ public class MoCEntityButterfly extends MoCEntityInsect {
     @Override
     public boolean isMyFavoriteFood(ItemStack stack) {
         return !stack.isEmpty()
-                && (stack.getItem() == Item.getItemFromBlock(Blocks.POPPY) || stack.getItem() == Item
-                        .getItemFromBlock(Blocks.DANDELION));
+                && (stack.getItem() == Item.byBlock(Blocks.POPPY) || stack.getItem() == Item
+                        .byBlock(Blocks.DANDELION));
     }
 
     @Override
@@ -101,7 +101,7 @@ public class MoCEntityButterfly extends MoCEntityInsect {
     }
 
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         if (getIsFlying()) {
             return 0.13F;
         }

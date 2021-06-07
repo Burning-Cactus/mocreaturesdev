@@ -14,6 +14,8 @@ import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 
+import net.minecraft.entity.ai.goal.Goal.Flag;
+
 public class EntityAINearestAttackableTargetMoC extends EntityAITargetMoC {
 
     protected final Class<? extends LivingEntity> targetClass;
@@ -45,7 +47,7 @@ public class EntityAINearestAttackableTargetMoC extends EntityAITargetMoC {
         this.targetClass = classTarget;
         this.targetChance = chance;
         this.theNearestAttackableTargetSorter = new EntityAINearestAttackableTargetMoC.Sorter(creature);
-        this.setMutexFlags(EnumSet.of(Flag.TARGET));
+        this.setFlags(EnumSet.of(Flag.TARGET));
         this.targetEntitySelector = new Predicate<LivingEntity>() {
 
             @Override
@@ -70,7 +72,7 @@ public class EntityAINearestAttackableTargetMoC extends EntityAITargetMoC {
                             d0 *= 0.7F * f;
                         }
 
-                        if (entitylivingbaseIn.getDistance(EntityAINearestAttackableTargetMoC.this.taskOwner) > d0) {
+                        if (entitylivingbaseIn.distanceTo(EntityAINearestAttackableTargetMoC.this.taskOwner) > d0) {
                             return false;
                         }
                     }
@@ -85,17 +87,17 @@ public class EntityAINearestAttackableTargetMoC extends EntityAITargetMoC {
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean shouldExecute() {
+    public boolean canUse() {
         if (this.theAttacker != null && (this.theAttacker.isMovementCeased() || !this.theAttacker.isNotScared())) {
             return false;
         }
-        if (this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0) {
+        if (this.targetChance > 0 && this.taskOwner.getRandom().nextInt(this.targetChance) != 0) {
             return false;
         } else {
             double d0 = this.getTargetDistance();
             List list =
-                    this.taskOwner.world.getEntitiesWithinAABB(this.targetClass, this.taskOwner.getBoundingBox().expand(d0, 4.0D, d0),
-                            Predicates.and(this.targetEntitySelector, (Predicate) EntityPredicates.NOT_SPECTATING));
+                    this.taskOwner.level.getEntitiesOfClass(this.targetClass, this.taskOwner.getBoundingBox().expandTowards(d0, 4.0D, d0),
+                            Predicates.and(this.targetEntitySelector, (Predicate) EntityPredicates.NO_SPECTATORS));
             Collections.sort(list, this.theNearestAttackableTargetSorter);
 
             if (list.isEmpty()) {
@@ -114,9 +116,9 @@ public class EntityAINearestAttackableTargetMoC extends EntityAITargetMoC {
      * Execute a one shot task or start executing a continuous task
      */
     @Override
-    public void startExecuting() {
-        this.taskOwner.setAttackTarget(this.targetEntity);
-        super.startExecuting();
+    public void start() {
+        this.taskOwner.setTarget(this.targetEntity);
+        super.start();
     }
 
     public static class Sorter implements Comparator<Entity> {
@@ -128,8 +130,8 @@ public class EntityAINearestAttackableTargetMoC extends EntityAITargetMoC {
         }
 
         public int compare(Entity p_compare_1_, Entity p_compare_2_) {
-            double d0 = this.entity.getDistanceSq(p_compare_1_);
-            double d1 = this.entity.getDistanceSq(p_compare_2_);
+            double d0 = this.entity.distanceToSqr(p_compare_1_);
+            double d1 = this.entity.distanceToSqr(p_compare_2_);
             return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
         }
     }

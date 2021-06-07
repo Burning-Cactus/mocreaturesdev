@@ -32,16 +32,16 @@ public class MoCRenderMoC<T extends LivingEntity, M extends EntityModel<T>> exte
         if (entityMoC.renderName()) {
             float f2 = 1.6F;
             float f3 = 0.01666667F * f2;
-            float f5 = ((Entity) entityMoC).getDistance(this.renderManager.pointedEntity);
+            float f5 = ((Entity) entityMoC).distanceTo(this.entityRenderDispatcher.crosshairPickEntity);
             if (f5 < 16F) {
                 String s = "";
                 s = (new StringBuilder()).append(s).append(entityMoC.getPetName()).toString();
                 float f7 = 0.1F;
-                FontRenderer fontrenderer = getFontRendererFromRenderManager();
-                matrixStackIn.push();
+                FontRenderer fontrenderer = getFont();
+                matrixStackIn.pushPose();
 //                matrixStackIn.translate((float) d + 0.0F, (float) d1 + f7, (float) d2);
 //                matrixStackIn.normal3f(0.0F, 1.0F, 0.0F);
-                matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-this.renderManager.pointedEntity.getEyeHeight()));
+                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-this.entityRenderDispatcher.crosshairPickEntity.getEyeHeight()));
                 matrixStackIn.scale(-f3, -f3, f3);
 //                GL11.glDisable(2896 /* GL_LIGHTING */);
                 Tessellator tessellator1 = Tessellator.getInstance();
@@ -51,21 +51,21 @@ public class MoCRenderMoC<T extends LivingEntity, M extends EntityModel<T>> exte
                     if (!flag) {
                         yOff += 8;
                     }
-                    tessellator1.getBuffer().begin(7, DefaultVertexFormats.POSITION_COLOR);
+                    tessellator1.getBuilder().begin(7, DefaultVertexFormats.POSITION_COLOR);
                     // might break SSP
                     float f8 = ((LivingEntity) entityMoC).getHealth();
                     float f9 = ((LivingEntity) entityMoC).getMaxHealth();
                     float f10 = f8 / f9;
                     float f11 = 40F * f10;
-                    tessellator1.getBuffer().pos(-20F + f11, -10 + yOff, 0.0D).color(0.7F, 0.0F, 0.0F, 1.0F).endVertex();
-                    tessellator1.getBuffer().pos(-20F + f11, -6 + yOff, 0.0D).color(0.7F, 0.0F, 0.0F, 1.0F).endVertex();
-                    tessellator1.getBuffer().pos(20D, -6 + yOff, 0.0D).color(0.7F, 0.0F, 0.0F, 1.0F).endVertex();
-                    tessellator1.getBuffer().pos(20D, -10 + yOff, 0.0D).color(0.7F, 0.0F, 0.0F, 1.0F).endVertex();
-                    tessellator1.getBuffer().pos(-20D, -10 + yOff, 0.0D).color(0.0F, 0.7F, 0.0F, 1.0F).endVertex();
-                    tessellator1.getBuffer().pos(-20D, -6 + yOff, 0.0D).color(0.0F, 0.7F, 0.0F, 1.0F).endVertex();
-                    tessellator1.getBuffer().pos(f11 - 20F, -6 + yOff, 0.0D).color(0.0F, 0.7F, 0.0F, 1.0F).endVertex();
-                    tessellator1.getBuffer().pos(f11 - 20F, -10 + yOff, 0.0D).color(0.0F, 0.7F, 0.0F, 1.0F).endVertex();
-                    tessellator1.draw();
+                    tessellator1.getBuilder().vertex(-20F + f11, -10 + yOff, 0.0D).color(0.7F, 0.0F, 0.0F, 1.0F).endVertex();
+                    tessellator1.getBuilder().vertex(-20F + f11, -6 + yOff, 0.0D).color(0.7F, 0.0F, 0.0F, 1.0F).endVertex();
+                    tessellator1.getBuilder().vertex(20D, -6 + yOff, 0.0D).color(0.7F, 0.0F, 0.0F, 1.0F).endVertex();
+                    tessellator1.getBuilder().vertex(20D, -10 + yOff, 0.0D).color(0.7F, 0.0F, 0.0F, 1.0F).endVertex();
+                    tessellator1.getBuilder().vertex(-20D, -10 + yOff, 0.0D).color(0.0F, 0.7F, 0.0F, 1.0F).endVertex();
+                    tessellator1.getBuilder().vertex(-20D, -6 + yOff, 0.0D).color(0.0F, 0.7F, 0.0F, 1.0F).endVertex();
+                    tessellator1.getBuilder().vertex(f11 - 20F, -6 + yOff, 0.0D).color(0.0F, 0.7F, 0.0F, 1.0F).endVertex();
+                    tessellator1.getBuilder().vertex(f11 - 20F, -10 + yOff, 0.0D).color(0.0F, 0.7F, 0.0F, 1.0F).endVertex();
+                    tessellator1.end();
 //                    GL11.glEnable(3553 /* GL_TEXTURE_2D */);
                 }
                 if (flag) {
@@ -74,13 +74,13 @@ public class MoCRenderMoC<T extends LivingEntity, M extends EntityModel<T>> exte
 //                    GL11.glEnable(3042 /* GL_BLEND */);
 //                    GL11.glBlendFunc(770, 771);
 //                    GL11.glDisable(3553 /* GL_TEXTURE_2D */);
-                    tessellator1.getBuffer().begin(7, DefaultVertexFormats.POSITION_COLOR);
-                    int i = fontrenderer.getStringWidth(s) / 2;
-                    tessellator1.getBuffer().pos(-i - 1, -1 + yOff, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-                    tessellator1.getBuffer().pos(-i - 1, 8 + yOff, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-                    tessellator1.getBuffer().pos(i + 1, 8 + yOff, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-                    tessellator1.getBuffer().pos(i + 1, -1 + yOff, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-                    tessellator1.draw();
+                    tessellator1.getBuilder().begin(7, DefaultVertexFormats.POSITION_COLOR);
+                    int i = fontrenderer.width(s) / 2;
+                    tessellator1.getBuilder().vertex(-i - 1, -1 + yOff, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                    tessellator1.getBuilder().vertex(-i - 1, 8 + yOff, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                    tessellator1.getBuilder().vertex(i + 1, 8 + yOff, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                    tessellator1.getBuilder().vertex(i + 1, -1 + yOff, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                    tessellator1.end();
 //                    GL11.glEnable(3553 /* GL_TEXTURE_2D */);
 //                    fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, yOff, 0x20ffffff);
 //                    GL11.glEnable(2929 /* GL_DEPTH_TEST */);
@@ -90,7 +90,7 @@ public class MoCRenderMoC<T extends LivingEntity, M extends EntityModel<T>> exte
 //                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 }
 //                GL11.glEnable(2896 /* GL_LIGHTING */);
-                matrixStackIn.pop();
+                matrixStackIn.popPose();
             }
         }
     }
@@ -105,9 +105,9 @@ public class MoCRenderMoC<T extends LivingEntity, M extends EntityModel<T>> exte
     }
 
     @Override
-    protected void preRenderCallback(T entityliving, MatrixStack stack, float f) {
+    protected void scale(T entityliving, MatrixStack stack, float f) {
         IMoCEntity mocreature = (IMoCEntity) entityliving;
-        super.preRenderCallback(entityliving, stack, f);
+        super.scale(entityliving, stack, f);
         //adjustOffsets is not working well
         //adjustOffsets(mocreature.getAdjustedXOffset(), mocreature.getAdjustedYOffset(), mocreature.getAdjustedZOffset());
         adjustPitch(stack, mocreature);
@@ -159,7 +159,7 @@ public class MoCRenderMoC<T extends LivingEntity, M extends EntityModel<T>> exte
     }
 
     @Override
-    public ResourceLocation getEntityTexture(T entity) {
+    public ResourceLocation getTextureLocation(T entity) {
         return ((IMoCEntity) entity).getTexture();
     }
 

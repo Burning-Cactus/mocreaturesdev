@@ -40,22 +40,22 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
     public int mouthCounter;
     private int attackCounter;
     private int standingCounter;
-    private static final DataParameter<Integer> BEAR_STATE = EntityDataManager.createKey(MoCEntityBear.class, DataSerializers.VARINT);
-    private static final DataParameter<Boolean> RIDEABLE = EntityDataManager.createKey(MoCEntityBear.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> CHESTED = EntityDataManager.createKey(MoCEntityBear.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> GHOST = EntityDataManager.createKey(MoCEntityBear.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> BEAR_STATE = EntityDataManager.defineId(MoCEntityBear.class, DataSerializers.INT);
+    private static final DataParameter<Boolean> RIDEABLE = EntityDataManager.defineId(MoCEntityBear.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> CHESTED = EntityDataManager.defineId(MoCEntityBear.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> GHOST = EntityDataManager.defineId(MoCEntityBear.class, DataSerializers.BOOLEAN);
     public MoCAnimalChest localchest;
     public ItemStack localstack;
     
     public MoCEntityBear(EntityType<? extends MoCEntityBear> type, World world) {
         super(type, world);
         setEdad(55);
-        if (this.rand.nextInt(4) == 0) {
+        if (this.random.nextInt(4) == 0) {
             setAdult(false);
         } else {
             setAdult(true);
         }
-        this.stepHeight = 1.0F;
+        this.maxUpStep = 1.0F;
     }
 
     @Override
@@ -73,10 +73,10 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityTameableAnimal.registerAttributes()
-//                .func_233815_a_(Attributes.MAX_HEALTH, calculateMaxHealth())
+//                .add(Attributes.MAX_HEALTH, calculateMaxHealth())
 //        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-//                .func_233815_a_(Attributes.ATTACK_DAMAGE, getAttackStrength())
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
+//                .add(Attributes.ATTACK_DAMAGE, getAttackStrength())
+                .add(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     /**
@@ -84,12 +84,12 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
      * server data to client.
      */
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(BEAR_STATE, 0);
-        this.dataManager.register(RIDEABLE, Boolean.FALSE);
-        this.dataManager.register(CHESTED, Boolean.FALSE);
-        this.dataManager.register(GHOST, Boolean.FALSE);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(BEAR_STATE, 0);
+        this.entityData.define(RIDEABLE, Boolean.FALSE);
+        this.entityData.define(CHESTED, Boolean.FALSE);
+        this.entityData.define(GHOST, Boolean.FALSE);
     }
 
     /**
@@ -98,36 +98,36 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
      * @return
      */
     public int getBearState() {
-        return this.dataManager.get(BEAR_STATE);
+        return this.entityData.get(BEAR_STATE);
     }
 
     public void setBearState(int i) {
-        this.dataManager.set(BEAR_STATE, i);
+        this.entityData.set(BEAR_STATE, i);
     }
 
     @Override
     public boolean getIsRideable() {
-        return this.dataManager.get(RIDEABLE);
+        return this.entityData.get(RIDEABLE);
     }
 
     public boolean getIsChested() {
-        return this.dataManager.get(CHESTED);
+        return this.entityData.get(CHESTED);
     }
 
     public boolean getIsGhost() {
-        return this.dataManager.get(GHOST);
+        return this.entityData.get(GHOST);
     }
 
     public void setIsChested(boolean flag) {
-        this.dataManager.set(CHESTED, flag);
+        this.entityData.set(CHESTED, flag);
     }
 
     public void setRideable(boolean flag) {
-        this.dataManager.set(RIDEABLE, flag);
+        this.entityData.set(RIDEABLE, flag);
     }
 
     public void setIsGhost(boolean flag) {
-        this.dataManager.set(GHOST, flag);
+        this.entityData.set(GHOST, flag);
     }
     
     @Override
@@ -174,9 +174,9 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public boolean attackEntityAsMob(Entity entityIn) {
+    public boolean doHurtTarget(Entity entityIn) {
         startAttack();
-        return super.attackEntityAsMob(entityIn);
+        return super.doHurtTarget(entityIn);
     }
 
     /**
@@ -188,14 +188,14 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        if (super.attackEntityFrom(damagesource, i)) {
-            Entity entity = damagesource.getTrueSource();
-            if (this.isRidingOrBeingRiddenBy(entity)) {
+    public boolean hurt(DamageSource damagesource, float i) {
+        if (super.hurt(damagesource, i)) {
+            Entity entity = damagesource.getEntity();
+            if (this.hasIndirectPassenger(entity)) {
                 return true;
             }
             if ((entity != this && entity instanceof LivingEntity) && super.shouldAttackPlayers()) {
-                setAttackTarget((LivingEntity) entity);
+                setTarget((LivingEntity) entity);
             }
             return true;
         } else {
@@ -209,47 +209,47 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
         if (this.mouthCounter > 0 && ++this.mouthCounter > 20) {
             this.mouthCounter = 0;
         }
         if (this.attackCounter > 0 && ++this.attackCounter > 9) {
             this.attackCounter = 0;
         }
-        if (!this.world.isRemote && !getIsAdult() && getEdad() < 80 && (this.rand.nextInt(300) == 0)) {
+        if (!this.level.isClientSide && !getIsAdult() && getEdad() < 80 && (this.random.nextInt(300) == 0)) {
             setBearState(2);
         }
         /**
          * Sitting non tamed bears will resume on fours stance every now and then
          */
-        if (!this.world.isRemote && getBearState() == 2 && !getIsTamed() && this.rand.nextInt(800) == 0) {
+        if (!this.level.isClientSide && getBearState() == 2 && !getIsTamed() && this.random.nextInt(800) == 0) {
             setBearState(0);
         }
-        if (!this.world.isRemote && getBearState() == 2 && !getIsTamed() && !this.getNavigator().noPath()) {
+        if (!this.level.isClientSide && getBearState() == 2 && !getIsTamed() && !this.getNavigation().isDone()) {
             setBearState(0);
         }
-        if (!this.world.isRemote && this.standingCounter > 0 && ++this.standingCounter > 100) {
+        if (!this.level.isClientSide && this.standingCounter > 0 && ++this.standingCounter > 100) {
             this.standingCounter = 0;
             setBearState(0);
         }
         /**\
          * Standing if close to a vulnerable player
          */
-        if (!this.world.isRemote && !getIsTamed() && getIsStanding() 
-                && getBearState() != 2 && getIsAdult() && (this.rand.nextInt(200) == 0) && shouldAttackPlayers()) {
-            PlayerEntity entityplayer1 = this.world.getClosestPlayer(this, 4D);
-            if ((entityplayer1 != null && this.canEntityBeSeen(entityplayer1) && !entityplayer1.abilities.disableDamage)) {
+        if (!this.level.isClientSide && !getIsTamed() && getIsStanding() 
+                && getBearState() != 2 && getIsAdult() && (this.random.nextInt(200) == 0) && shouldAttackPlayers()) {
+            PlayerEntity entityplayer1 = this.level.getNearestPlayer(this, 4D);
+            if ((entityplayer1 != null && this.canSee(entityplayer1) && !entityplayer1.abilities.invulnerable)) {
                 this.setStand();
                 setBearState(1);
             }
         }
         //TODO move to AI
-        if (!this.world.isRemote && getSubType() == 3 && (this.deathTime == 0) && getBearState() != 2) {
+        if (!this.level.isClientSide && getSubType() == 3 && (this.deathTime == 0) && getBearState() != 2) {
             ItemEntity entityitem = getClosestItem(this, 12D, Items.SUGAR_CANE, Items.SUGAR);
             if (entityitem != null) {
 
-                float f = entityitem.getDistance(this);
+                float f = entityitem.distanceTo(this);
                 if (f > 2.0F) {
                     getMyOwnPath(entityitem, f);
                 }
@@ -265,7 +265,7 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
 
     @Override
     public boolean canAttackTarget(LivingEntity entity) {
-        return !(entity instanceof MoCEntityBear) && entity.getHeight() <= 1D && entity.getWidth() <= 1D;
+        return !(entity instanceof MoCEntityBear) && entity.getBbHeight() <= 1D && entity.getBbWidth() <= 1D;
     }
 
     @Override
@@ -296,7 +296,7 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
     }
 
     private void startAttack() {
-       if (!this.world.isRemote && this.attackCounter == 0 && getBearState() == 1) {
+       if (!this.level.isClientSide && this.attackCounter == 0 && getBearState() == 1) {
 //            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
 //                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             this.attackCounter = 1;
@@ -385,9 +385,9 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
 //    }
 
     @Override
-    public double getMountedYOffset() {
+    public double getPassengersRidingOffset() {
         double Yfactor = ((0.086D * this.getEdad()) - 2.5D) / 10D;
-        return this.getHeight() * Yfactor;
+        return this.getBbHeight() * Yfactor;
     }
     
     @Override
@@ -406,11 +406,11 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
     }
     
     @Override
-    public void updatePassenger(Entity passenger) {
+    public void positionRider(Entity passenger) {
         double dist = getSizeFactor() * (0.1D);
-        double newPosX = this.getPosX() + (dist * Math.sin(this.renderYawOffset / 57.29578F));
-        double newPosZ = this.getPosZ() - (dist * Math.cos(this.renderYawOffset / 57.29578F));
-        passenger.setPosition(newPosX, this.getPosY() + getMountedYOffset() + passenger.getYOffset(), newPosZ);
+        double newPosX = this.getX() + (dist * Math.sin(this.yBodyRot / 57.29578F));
+        double newPosZ = this.getZ() - (dist * Math.cos(this.yBodyRot / 57.29578F));
+        passenger.setPos(newPosX, this.getY() + getPassengersRidingOffset() + passenger.getMyRidingOffset(), newPosZ);
     }
     
     /*@Override
@@ -423,21 +423,21 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
 
     @Override
     public void dropMyStuff() {
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
             dropArmor();
-            MoCTools.dropSaddle(this, this.world);
+            MoCTools.dropSaddle(this, this.level);
 
             if (getIsChested()) {
 //                MoCTools.dropInventory(this, this.localchest);
-                MoCTools.dropCustomItem(this, this.world, new ItemStack(Blocks.CHEST, 1));
+                MoCTools.dropCustomItem(this, this.level, new ItemStack(Blocks.CHEST, 1));
                 setIsChested(false);
             }
         }
     }
     
     @Override
-    public void writeAdditional(CompoundNBT nbttagcompound) {
-        super.writeAdditional(nbttagcompound);
+    public void addAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.addAdditionalSaveData(nbttagcompound);
         nbttagcompound.putBoolean("Saddle", getIsRideable());
         nbttagcompound.putBoolean("Chested", getIsChested());
         nbttagcompound.putBoolean("Ghost", getIsGhost());

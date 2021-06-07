@@ -115,12 +115,12 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
     //private boolean kneeSwitch;
 
     public MoCModelNewHorse() {
-        this.textureWidth = 128;
-        this.textureHeight = 128;
+        this.texWidth = 128;
+        this.texHeight = 128;
 
         this.Body = new ModelRenderer(this, 0, 34);
         this.Body.addBox(-5F, -8F, -19F, 10, 10, 24);
-        this.Body.setRotationPoint(0F, 11F, 9F);
+        this.Body.setPos(0F, 11F, 9F);
 
         /*
          * Tail = new ModelRenderer(this, 24, 0); Tail.addBox(-1.5F, -2F, 3F, 3,
@@ -130,228 +130,228 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
 
         this.TailA = new ModelRenderer(this, 44, 0);
         this.TailA.addBox(-1F, -1F, 0F, 2, 2, 3);
-        this.TailA.setRotationPoint(0F, 3F, 14F);
+        this.TailA.setPos(0F, 3F, 14F);
         setRotation(this.TailA, -1.134464F, 0F, 0F);
 
         this.TailB = new ModelRenderer(this, 38, 7);
         this.TailB.addBox(-1.5F, -2F, 3F, 3, 4, 7);
-        this.TailB.setRotationPoint(0F, 3F, 14F);
+        this.TailB.setPos(0F, 3F, 14F);
         setRotation(this.TailB, -1.134464F, 0F, 0F);
 
         this.TailC = new ModelRenderer(this, 24, 3);
         this.TailC.addBox(-1.5F, -4.5F, 9F, 3, 4, 7);
-        this.TailC.setRotationPoint(0F, 3F, 14F);
+        this.TailC.setPos(0F, 3F, 14F);
         setRotation(this.TailC, -1.40215F, 0F, 0F);
 
         this.Leg1A = new ModelRenderer(this, 78, 29);
         this.Leg1A.addBox(-2.5F, -2F, -2.5F, 4, 9, 5);
-        this.Leg1A.setRotationPoint(4F, 9F, 11F);
+        this.Leg1A.setPos(4F, 9F, 11F);
 
         this.Leg1B = new ModelRenderer(this, 78, 43);
         this.Leg1B.addBox(-2F, 0F, -1.5F, 3, 5, 3);
-        this.Leg1B.setRotationPoint(4F, 16F, 11F);
+        this.Leg1B.setPos(4F, 16F, 11F);
 
         this.Leg1C = new ModelRenderer(this, 78, 51);
         this.Leg1C.addBox(-2.5F, 5.1F, -2F, 4, 3, 4);
-        this.Leg1C.setRotationPoint(4F, 16F, 11F);
+        this.Leg1C.setPos(4F, 16F, 11F);
 
         this.Leg2A = new ModelRenderer(this, 96, 29);
         this.Leg2A.addBox(-1.5F, -2F, -2.5F, 4, 9, 5);
-        this.Leg2A.setRotationPoint(-4F, 9F, 11F);
+        this.Leg2A.setPos(-4F, 9F, 11F);
 
         this.Leg2B = new ModelRenderer(this, 96, 43);
         this.Leg2B.addBox(-1F, 0F, -1.5F, 3, 5, 3);
-        this.Leg2B.setRotationPoint(-4F, 16F, 11F);
+        this.Leg2B.setPos(-4F, 16F, 11F);
 
         this.Leg2C = new ModelRenderer(this, 96, 51);
         this.Leg2C.addBox(-1.5F, 5.1F, -2F, 4, 3, 4);
-        this.Leg2C.setRotationPoint(-4F, 16F, 11F);
+        this.Leg2C.setPos(-4F, 16F, 11F);
 
         this.Leg3A = new ModelRenderer(this, 44, 29);
         this.Leg3A.addBox(-1.9F, -1F, -2.1F, 3, 8, 4);
-        this.Leg3A.setRotationPoint(4F, 9F, -8F);
+        this.Leg3A.setPos(4F, 9F, -8F);
 
         this.Leg3B = new ModelRenderer(this, 44, 41);
         this.Leg3B.addBox(-1.9F, 0F, -1.6F, 3, 5, 3);
-        this.Leg3B.setRotationPoint(4F, 16F, -8F);
+        this.Leg3B.setPos(4F, 16F, -8F);
 
         this.Leg3C = new ModelRenderer(this, 44, 51);
         this.Leg3C.addBox(-2.4F, 5.1F, -2.1F, 4, 3, 4);
-        this.Leg3C.setRotationPoint(4F, 16F, -8F);
+        this.Leg3C.setPos(4F, 16F, -8F);
 
         this.Leg4A = new ModelRenderer(this, 60, 29);
         this.Leg4A.addBox(-1.1F, -1F, -2.1F, 3, 8, 4);
-        this.Leg4A.setRotationPoint(-4F, 9F, -8F);
+        this.Leg4A.setPos(-4F, 9F, -8F);
 
         this.Leg4B = new ModelRenderer(this, 60, 41);
         this.Leg4B.addBox(-1.1F, 0F, -1.6F, 3, 5, 3);
-        this.Leg4B.setRotationPoint(-4F, 16F, -8F);
+        this.Leg4B.setPos(-4F, 16F, -8F);
 
         this.Leg4C = new ModelRenderer(this, 60, 51);
         this.Leg4C.addBox(-1.6F, 5.1F, -2.1F, 4, 3, 4);
-        this.Leg4C.setRotationPoint(-4F, 16F, -8F);
+        this.Leg4C.setPos(-4F, 16F, -8F);
 
         this.Head = new ModelRenderer(this, 0, 0);
         this.Head.addBox(-2.5F, -10F, -1.5F, 5, 5, 7);
-        this.Head.setRotationPoint(0F, 4F, -10F);
+        this.Head.setPos(0F, 4F, -10F);
         setRotation(this.Head, 0.5235988F, 0F, 0F);
 
         this.UMouth = new ModelRenderer(this, 24, 18);
         this.UMouth.addBox(-2F, -10F, -7F, 4, 3, 6);
-        this.UMouth.setRotationPoint(0F, 4F, -10F);
+        this.UMouth.setPos(0F, 4F, -10F);
         setRotation(this.UMouth, 0.5235988F, 0F, 0F);
 
         this.LMouth = new ModelRenderer(this, 24, 27);
         this.LMouth.addBox(-2F, -7F, -6.5F, 4, 2, 5);
-        this.LMouth.setRotationPoint(0F, 4F, -10F);
+        this.LMouth.setPos(0F, 4F, -10F);
         setRotation(this.LMouth, 0.5235988F, 0F, 0F);
 
         this.UMouth2 = new ModelRenderer(this, 24, 18);
         this.UMouth2.addBox(-2F, -10F, -8F, 4, 3, 6);
-        this.UMouth2.setRotationPoint(0F, 4F, -10F);
+        this.UMouth2.setPos(0F, 4F, -10F);
         setRotation(this.UMouth2, 0.4363323F, 0F, 0F);
 
         this.LMouth2 = new ModelRenderer(this, 24, 27);
         this.LMouth2.addBox(-2F, -7F, -5.5F, 4, 2, 5);
-        this.LMouth2.setRotationPoint(0F, 4F, -10F);
+        this.LMouth2.setPos(0F, 4F, -10F);
         setRotation(this.LMouth2, 0.7853982F, 0F, 0F);
 
         this.Unicorn = new ModelRenderer(this, 24, 0);
         this.Unicorn.addBox(-0.5F, -18F, 2F, 1, 8, 1);
-        this.Unicorn.setRotationPoint(0F, 4F, -10F);
+        this.Unicorn.setPos(0F, 4F, -10F);
         setRotation(this.Unicorn, 0.5235988F, 0F, 0F);
 
         this.Ear1 = new ModelRenderer(this, 0, 0);
         this.Ear1.addBox(0.45F, -12F, 4F, 2, 3, 1);
-        this.Ear1.setRotationPoint(0F, 4F, -10F);
+        this.Ear1.setPos(0F, 4F, -10F);
         setRotation(this.Ear1, 0.5235988F, 0F, 0F);
 
         this.Ear2 = new ModelRenderer(this, 0, 0);
         this.Ear2.addBox(-2.45F, -12F, 4F, 2, 3, 1);
-        this.Ear2.setRotationPoint(0F, 4F, -10F);
+        this.Ear2.setPos(0F, 4F, -10F);
         setRotation(this.Ear2, 0.5235988F, 0F, 0F);
 
         this.MuleEarL = new ModelRenderer(this, 0, 12);
         this.MuleEarL.addBox(-2F, -16F, 4F, 2, 7, 1);
-        this.MuleEarL.setRotationPoint(0F, 4F, -10F);
+        this.MuleEarL.setPos(0F, 4F, -10F);
         setRotation(this.MuleEarL, 0.5235988F, 0F, 0.2617994F);
 
         this.MuleEarR = new ModelRenderer(this, 0, 12);
         this.MuleEarR.addBox(0F, -16F, 4F, 2, 7, 1);
-        this.MuleEarR.setRotationPoint(0F, 4F, -10F);
+        this.MuleEarR.setPos(0F, 4F, -10F);
         setRotation(this.MuleEarR, 0.5235988F, 0F, -0.2617994F);
 
         this.Neck = new ModelRenderer(this, 0, 12);
         this.Neck.addBox(-2.05F, -9.8F, -2F, 4, 14, 8);
-        this.Neck.setRotationPoint(0F, 4F, -10F);
+        this.Neck.setPos(0F, 4F, -10F);
         setRotation(this.Neck, 0.5235988F, 0F, 0F);
 
         this.Bag1 = new ModelRenderer(this, 0, 34);
         this.Bag1.addBox(-3F, 0F, 0F, 8, 8, 3);
-        this.Bag1.setRotationPoint(-7.5F, 3F, 10F);
+        this.Bag1.setPos(-7.5F, 3F, 10F);
         setRotation(this.Bag1, 0F, 1.570796F, 0F);
 
         this.Bag2 = new ModelRenderer(this, 0, 47);
         this.Bag2.addBox(-3F, 0F, 0F, 8, 8, 3);
-        this.Bag2.setRotationPoint(4.5F, 3F, 10F);
+        this.Bag2.setPos(4.5F, 3F, 10F);
         setRotation(this.Bag2, 0F, 1.570796F, 0F);
 
         this.Saddle = new ModelRenderer(this, 80, 0);
         this.Saddle.addBox(-5F, 0F, -3F, 10, 1, 8);
-        this.Saddle.setRotationPoint(0F, 2F, 2F);
+        this.Saddle.setPos(0F, 2F, 2F);
 
         this.SaddleB = new ModelRenderer(this, 106, 9);
         this.SaddleB.addBox(-1.5F, -1F, -3F, 3, 1, 2);
-        this.SaddleB.setRotationPoint(0F, 2F, 2F);
+        this.SaddleB.setPos(0F, 2F, 2F);
 
         this.SaddleC = new ModelRenderer(this, 80, 9);
         this.SaddleC.addBox(-4F, -1F, 3F, 8, 1, 2);
-        this.SaddleC.setRotationPoint(0F, 2F, 2F);
+        this.SaddleC.setPos(0F, 2F, 2F);
 
         this.SaddleL2 = new ModelRenderer(this, 74, 0);
         this.SaddleL2.addBox(-0.5F, 6F, -1F, 1, 2, 2);
-        this.SaddleL2.setRotationPoint(5F, 3F, 2F);
+        this.SaddleL2.setPos(5F, 3F, 2F);
 
         this.SaddleL = new ModelRenderer(this, 70, 0);
         this.SaddleL.addBox(-0.5F, 0F, -0.5F, 1, 6, 1);
-        this.SaddleL.setRotationPoint(5F, 3F, 2F);
+        this.SaddleL.setPos(5F, 3F, 2F);
 
         this.SaddleR2 = new ModelRenderer(this, 74, 4);
         this.SaddleR2.addBox(-0.5F, 6F, -1F, 1, 2, 2);
-        this.SaddleR2.setRotationPoint(-5F, 3F, 2F);
+        this.SaddleR2.setPos(-5F, 3F, 2F);
 
         this.SaddleR = new ModelRenderer(this, 80, 0);
         this.SaddleR.addBox(-0.5F, 0F, -0.5F, 1, 6, 1);
-        this.SaddleR.setRotationPoint(-5F, 3F, 2F);
+        this.SaddleR.setPos(-5F, 3F, 2F);
 
         this.SaddleMouthL = new ModelRenderer(this, 74, 13);
         this.SaddleMouthL.addBox(1.5F, -8F, -4F, 1, 2, 2);
-        this.SaddleMouthL.setRotationPoint(0F, 4F, -10F);
+        this.SaddleMouthL.setPos(0F, 4F, -10F);
         setRotation(this.SaddleMouthL, 0.5235988F, 0F, 0F);
 
         this.SaddleMouthR = new ModelRenderer(this, 74, 13);
         this.SaddleMouthR.addBox(-2.5F, -8F, -4F, 1, 2, 2);
-        this.SaddleMouthR.setRotationPoint(0F, 4F, -10F);
+        this.SaddleMouthR.setPos(0F, 4F, -10F);
         setRotation(this.SaddleMouthR, 0.5235988F, 0F, 0F);
 
         this.SaddleMouthLine = new ModelRenderer(this, 44, 10);
         this.SaddleMouthLine.addBox(2.6F, -6F, -6F, 0, 3, 16);
-        this.SaddleMouthLine.setRotationPoint(0F, 4F, -10F);
+        this.SaddleMouthLine.setPos(0F, 4F, -10F);
 
         this.SaddleMouthLineR = new ModelRenderer(this, 44, 5);
         this.SaddleMouthLineR.addBox(-2.6F, -6F, -6F, 0, 3, 16);
-        this.SaddleMouthLineR.setRotationPoint(0F, 4F, -10F);
+        this.SaddleMouthLineR.setPos(0F, 4F, -10F);
 
         this.Mane = new ModelRenderer(this, 58, 0);
         this.Mane.addBox(-1F, -11.5F, 5F, 2, 16, 4);
-        this.Mane.setRotationPoint(0F, 4F, -10F);
+        this.Mane.setPos(0F, 4F, -10F);
         //Mane.addBox(-1F, -9.5F, 6F, 2, 16, 4);
         //Mane.setRotationPoint(0F, 3F, -12F);
         setRotation(this.Mane, 0.5235988F, 0F, 0F);
 
         this.HeadSaddle = new ModelRenderer(this, 80, 12);
         this.HeadSaddle.addBox(-2.5F, -10.1F, -7F, 5, 5, 12, 0.2F);
-        this.HeadSaddle.setRotationPoint(0F, 4F, -10F);
+        this.HeadSaddle.setPos(0F, 4F, -10F);
         setRotation(this.HeadSaddle, 0.5235988F, 0F, 0F);
 
         this.MidWing = new ModelRenderer(this, 82, 68);
         this.MidWing.addBox(1F, 0.1F, 1F, 12, 2, 11);
-        this.MidWing.setRotationPoint(5F, 3F, -6F);
+        this.MidWing.setPos(5F, 3F, -6F);
         setRotation(this.MidWing, 0F, 0.0872665F, 0F);
 
         this.InnerWing = new ModelRenderer(this, 0, 96);
         this.InnerWing.addBox(0F, 0F, 0F, 7, 2, 11);
-        this.InnerWing.setRotationPoint(5F, 3F, -6F);
+        this.InnerWing.setPos(5F, 3F, -6F);
         setRotation(this.InnerWing, 0F, -0.3490659F, 0F);
 
         this.OuterWing = new ModelRenderer(this, 0, 68);
         this.OuterWing.addBox(0F, 0F, 0F, 22, 2, 11);
-        this.OuterWing.setRotationPoint(17F, 3F, -6F);
+        this.OuterWing.setPos(17F, 3F, -6F);
         setRotation(this.OuterWing, 0F, -0.3228859F, 0F);
 
         this.InnerWingR = new ModelRenderer(this, 0, 110);
         this.InnerWingR.addBox(-7F, 0F, 0F, 7, 2, 11);
-        this.InnerWingR.setRotationPoint(-5F, 3F, -6F);
+        this.InnerWingR.setPos(-5F, 3F, -6F);
         setRotation(this.InnerWingR, 0F, 0.3490659F, 0F);
 
         this.MidWingR = new ModelRenderer(this, 82, 82);
         this.MidWingR.addBox(-13F, 0.1F, 1F, 12, 2, 11);
-        this.MidWingR.setRotationPoint(-5F, 3F, -6F);
+        this.MidWingR.setPos(-5F, 3F, -6F);
         setRotation(this.MidWingR, 0F, -0.0872665F, 0F);
 
         this.OuterWingR = new ModelRenderer(this, 0, 82);
         this.OuterWingR.addBox(-22F, 0F, 0F, 22, 2, 11);
-        this.OuterWingR.setRotationPoint(-17F, 3F, -6F);
+        this.OuterWingR.setPos(-17F, 3F, -6F);
         setRotation(this.OuterWingR, 0F, 0.3228859F, 0F);
 
         this.ButterflyL = new ModelRenderer(this, 0, 98);
         this.ButterflyL.addBox(-1F, 0F, -14F, 26, 0, 30);
-        this.ButterflyL.setRotationPoint(4.5F, 3F, -2F);
+        this.ButterflyL.setPos(4.5F, 3F, -2F);
         setRotation(this.ButterflyL, 0F, 0F, -0.78539F);
 
         this.ButterflyR = new ModelRenderer(this, 0, 68);
         this.ButterflyR.addBox(-25F, 0F, -14F, 26, 0, 30);
-        this.ButterflyR.setRotationPoint(-4.5F, 3F, -2F);
+        this.ButterflyR.setPos(-4.5F, 3F, -2F);
         setRotation(this.ButterflyR, 0F, 0F, 0.78539F);
 
     }
@@ -363,7 +363,7 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
      *  - Burning Cactus
      */
     @Override
-    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         MoCEntityHorse entityhorse = (MoCEntityHorse) entityIn;
         int type = entityhorse.getSubType();
         int vanishingInt = entityhorse.getVanishC();
@@ -376,11 +376,11 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
         //boolean chested = entityhorse.getChestedHorse();
         boolean eating = entityhorse.getIsSitting();
         //boolean flyer = entityhorse.isFlyer();
-        boolean standing = (entityhorse.standCounter != 0 && entityhorse.getRidingEntity() == null);
+        boolean standing = (entityhorse.standCounter != 0 && entityhorse.getVehicle() == null);
         boolean openMouth = (entityhorse.mouthCounter != 0);
         boolean moveTail = (entityhorse.tailCounter != 0);
 
-        boolean rider = (entityhorse.isBeingRidden());
+        boolean rider = (entityhorse.isVehicle());
         boolean floating = (entityhorse.getIsGhost() || (entityhorse.isFlyer() && entityhorse.isOnAir()));
         //                || (entityhorse.getRidingEntity() == null && !entityhorse.onGround)
         //                || (entityhorse.isBeingRidden() && !entityhorse.getRidingEntity().onGround));
@@ -392,49 +392,49 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
 //            if (saddled) {
         boolean showSaddle = (corporeal && saddled);
 
-        this.HeadSaddle.showModel = showSaddle;
-        this.Saddle.showModel = showSaddle;
-        this.SaddleB.showModel = showSaddle;
-        this.SaddleC.showModel = showSaddle;
-        this.SaddleL.showModel = showSaddle;
-        this.SaddleL2.showModel = showSaddle;
-        this.SaddleR.showModel = showSaddle;
-        this.SaddleR2.showModel = showSaddle;
-        this.SaddleMouthL.showModel = showSaddle;
-        this.SaddleMouthR.showModel = showSaddle;
+        this.HeadSaddle.visible = showSaddle;
+        this.Saddle.visible = showSaddle;
+        this.SaddleB.visible = showSaddle;
+        this.SaddleC.visible = showSaddle;
+        this.SaddleL.visible = showSaddle;
+        this.SaddleL2.visible = showSaddle;
+        this.SaddleR.visible = showSaddle;
+        this.SaddleR2.visible = showSaddle;
+        this.SaddleMouthL.visible = showSaddle;
+        this.SaddleMouthR.visible = showSaddle;
         if (rider) {
-            this.SaddleMouthLine.showModel = showSaddle;
-            this.SaddleMouthLineR.showModel = showSaddle;
+            this.SaddleMouthLine.visible = showSaddle;
+            this.SaddleMouthLineR.visible = showSaddle;
                 }
 //
 //            }
 
             if (type == 65 || type == 66 || type == 67) //mule, donkey or zonkey
             {
-                this.MuleEarL.showModel = true;
-                this.MuleEarR.showModel = true;
+                this.MuleEarL.visible = true;
+                this.MuleEarR.visible = true;
             } else {
-                this.Ear1.showModel = true;
-                this.Ear2.showModel = true;
+                this.Ear1.visible = true;
+                this.Ear2.visible = true;
 
             }
-            this.UMouth2.showModel = openMouth;
-            this.LMouth2.showModel = openMouth;
-            this.UMouth.showModel = !openMouth;
-            this.LMouth.showModel = !openMouth;
+            this.UMouth2.visible = openMouth;
+            this.LMouth2.visible = openMouth;
+            this.UMouth.visible = !openMouth;
+            this.LMouth.visible = !openMouth;
 
-            this.Unicorn.showModel = entityhorse.isUnicorned();
+            this.Unicorn.visible = entityhorse.isUnicorned();
 
-            this.Bag1.showModel = entityhorse.getIsChested();
-            this.Bag2.showModel = entityhorse.getIsChested();
+            this.Bag1.visible = entityhorse.getIsChested();
+            this.Bag2.visible = entityhorse.getIsChested();
 
             if (entityhorse.isFlyer() && type < 45) { //pegasus
-                this.MidWing.showModel = true;
-                this.InnerWing.showModel = true;
-                this.OuterWing.showModel = true;
-                this.InnerWingR.showModel = true;
-                this.MidWingR.showModel = true;
-                this.OuterWingR.showModel = true;
+                this.MidWing.visible = true;
+                this.InnerWing.visible = true;
+                this.OuterWing.visible = true;
+                this.InnerWingR.visible = true;
+                this.MidWingR.visible = true;
+                this.OuterWingR.visible = true;
             } else if (type > 44 && type < 60) { //fairys
 //                GL11.glPushMatrix();
 //                GL11.glEnable(3042 /* GL_BLEND */);
@@ -442,8 +442,8 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
 //                GL11.glBlendFunc(770, 771);
 //                GL11.glColor4f(1.2F, 1.2F, 1.2F, transparency);
 //                GL11.glScalef(1.3F, 1.0F, 1.3F);
-                this.ButterflyL.showModel = true;
-                this.ButterflyR.showModel = true;
+                this.ButterflyL.visible = true;
+                this.ButterflyR.visible = true;
 //                GL11.glDisable(3042/* GL_BLEND */);
 //                GL11.glPopMatrix();
             }/*
@@ -472,10 +472,10 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
 //
 //            this.Neck.render(f5);
 //            this.Head.render(f5);
-            this.UMouth2.showModel = openMouth;
-            this.LMouth2.showModel = openMouth;
-            this.UMouth.showModel = !openMouth;
-            this.LMouth.showModel = !openMouth;
+            this.UMouth2.visible = openMouth;
+            this.LMouth2.visible = openMouth;
+            this.UMouth.visible = !openMouth;
+            this.LMouth.visible = !openMouth;
 
 //            this.Mane.render(f5);
 //            this.Body.render(f5);
@@ -500,30 +500,30 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
 //            this.Leg4C.render(f5);
 
             if (type == 39 || type == 40 || type == 28) {
-                this.MidWing.showModel = true;
-                this.InnerWing.showModel = true;
-                this.OuterWing.showModel = true;
-                this.InnerWingR.showModel = true;
-                this.MidWingR.showModel = true;
-                this.OuterWingR.showModel = true;
+                this.MidWing.visible = true;
+                this.InnerWing.visible = true;
+                this.OuterWing.visible = true;
+                this.InnerWingR.visible = true;
+                this.MidWingR.visible = true;
+                this.OuterWingR.visible = true;
             }
             if (type >= 50 && type < 60) {
-                this.ButterflyL.showModel = true;
-                this.ButterflyR.showModel = true;
+                this.ButterflyL.visible = true;
+                this.ButterflyR.visible = true;
             }
 
-                this.HeadSaddle.showModel = saddled;
-                this.Saddle.showModel = saddled;
-                this.SaddleB.showModel = saddled;
-                this.SaddleC.showModel = saddled;
-                this.SaddleL.showModel = saddled;
-                this.SaddleL2.showModel = saddled;
-                this.SaddleR.showModel = saddled;
-                this.SaddleR2.showModel = saddled;
-                this.SaddleMouthL.showModel = saddled;
-                this.SaddleMouthR.showModel = saddled;
-                this.SaddleMouthLine.showModel = rider && saddled;
-                this.SaddleMouthLineR.showModel = rider && saddled;
+                this.HeadSaddle.visible = saddled;
+                this.Saddle.visible = saddled;
+                this.SaddleB.visible = saddled;
+                this.SaddleC.visible = saddled;
+                this.SaddleL.visible = saddled;
+                this.SaddleL2.visible = saddled;
+                this.SaddleR.visible = saddled;
+                this.SaddleR2.visible = saddled;
+                this.SaddleMouthL.visible = saddled;
+                this.SaddleMouthR.visible = saddled;
+                this.SaddleMouthLine.visible = rider && saddled;
+                this.SaddleMouthLineR.visible = rider && saddled;
 
 //            GL11.glDisable(3042/* GL_BLEND */);
 //            GL11.glPopMatrix();
@@ -542,8 +542,8 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
 //                GL11.glBlendFunc(770, 771);
 //                GL11.glColor4f(0.8F, 0.8F, 0.8F, wingTransparency);
 //                GL11.glScalef(1.3F, 1.0F, 1.3F);
-                this.ButterflyL.showModel = true;
-                this.ButterflyR.showModel = true;
+                this.ButterflyL.visible = true;
+                this.ButterflyR.visible = true;
 //                GL11.glDisable(3042/* GL_BLEND */);
 //                GL11.glPopMatrix();
             }
@@ -553,21 +553,21 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
 
 
     @Override
-    protected Iterable<ModelRenderer> getHeadParts() {
+    protected Iterable<ModelRenderer> headParts() {
         return ImmutableList.of(Head, UMouth, LMouth, UMouth2, LMouth2, Unicorn, Ear1, Ear2, MuleEarL, MuleEarR, Neck, HeadSaddle, Mane);
     }
 
     @Override
-    protected Iterable<ModelRenderer> getBodyParts() {
+    protected Iterable<ModelRenderer> bodyParts() {
         return ImmutableList.of(Body, TailA, TailB, TailC, Leg1A, Leg1B, Leg1C, Leg2A, Leg2B, Leg2C, Leg3A, Leg3B, Leg3C, Leg4A, Leg4B, Leg4C,
                 Bag1, Bag2, Saddle, SaddleB, SaddleC, SaddleL, SaddleL2, SaddleR, SaddleR2, SaddleMouthL, SaddleMouthR, SaddleMouthLine,
                 SaddleMouthLineR, MidWing, InnerWing, OuterWing, InnerWingR, MidWingR, OuterWingR, ButterflyL, ButterflyR);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+        model.xRot = x;
+        model.yRot = y;
+        model.zRot = z;
     }
 
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, boolean eating, boolean rider, boolean floating,
@@ -592,104 +592,104 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
             HeadXRot = HeadXRot + (MathHelper.cos(f * 0.4F) * 0.15F * f1);
         }
 
-        this.Head.rotationPointY = 4.0F;
-        this.Head.rotationPointZ = -10F;
-        this.Head.rotateAngleX = 0.5235988F + (HeadXRot);
-        this.Head.rotateAngleY = (f3 / 57.29578F);//fixes SMP bug
-        this.TailA.rotationPointY = 3F;
-        this.TailB.rotationPointZ = 14F;
-        this.Bag2.rotationPointY = 3F;
-        this.Bag2.rotationPointZ = 10F;
-        this.Body.rotateAngleX = 0F;
+        this.Head.y = 4.0F;
+        this.Head.z = -10F;
+        this.Head.xRot = 0.5235988F + (HeadXRot);
+        this.Head.yRot = (f3 / 57.29578F);//fixes SMP bug
+        this.TailA.y = 3F;
+        this.TailB.z = 14F;
+        this.Bag2.y = 3F;
+        this.Bag2.z = 10F;
+        this.Body.xRot = 0F;
 
         if (standing && !shuffle) //standing on hind legs
         {
-            this.Head.rotationPointY = -6F;
-            this.Head.rotationPointZ = -1F;
-            this.Head.rotateAngleX = (15 / 57.29578F) + (HeadXRot);
+            this.Head.y = -6F;
+            this.Head.z = -1F;
+            this.Head.xRot = (15 / 57.29578F) + (HeadXRot);
             ;//120 degrees
-            this.Head.rotateAngleY = (f3 / 57.29578F);
-            this.TailA.rotationPointY = 9F;
-            this.TailB.rotationPointZ = 18F;
-            this.Bag2.rotationPointY = 5.5F;
-            this.Bag2.rotationPointZ = 15F;
-            this.Body.rotateAngleX = -45 / 57.29578F;
+            this.Head.yRot = (f3 / 57.29578F);
+            this.TailA.y = 9F;
+            this.TailB.z = 18F;
+            this.Bag2.y = 5.5F;
+            this.Bag2.z = 15F;
+            this.Body.xRot = -45 / 57.29578F;
 
         } else if (eating && !shuffle)//neck down
         {
-            this.Head.rotationPointY = 11.0F; //new lower position
-            this.Head.rotationPointZ = -10F;
-            this.Head.rotateAngleX = 2.18166F;//120 degrees
-            this.Head.rotateAngleY = 0.0F;//don't twist your neck if eating
+            this.Head.y = 11.0F; //new lower position
+            this.Head.z = -10F;
+            this.Head.xRot = 2.18166F;//120 degrees
+            this.Head.yRot = 0.0F;//don't twist your neck if eating
 
         }
 
-        this.Ear1.rotationPointY = this.Head.rotationPointY;
-        this.Ear2.rotationPointY = this.Head.rotationPointY;
-        this.MuleEarL.rotationPointY = this.Head.rotationPointY;
-        this.MuleEarR.rotationPointY = this.Head.rotationPointY;
-        this.Neck.rotationPointY = this.Head.rotationPointY;
-        this.UMouth.rotationPointY = this.Head.rotationPointY;
-        this.UMouth2.rotationPointY = this.Head.rotationPointY;
-        this.LMouth.rotationPointY = this.Head.rotationPointY;
-        this.LMouth2.rotationPointY = this.Head.rotationPointY;
-        this.Mane.rotationPointY = this.Head.rotationPointY;
-        this.Unicorn.rotationPointY = this.Head.rotationPointY;
+        this.Ear1.y = this.Head.y;
+        this.Ear2.y = this.Head.y;
+        this.MuleEarL.y = this.Head.y;
+        this.MuleEarR.y = this.Head.y;
+        this.Neck.y = this.Head.y;
+        this.UMouth.y = this.Head.y;
+        this.UMouth2.y = this.Head.y;
+        this.LMouth.y = this.Head.y;
+        this.LMouth2.y = this.Head.y;
+        this.Mane.y = this.Head.y;
+        this.Unicorn.y = this.Head.y;
 
-        this.Ear1.rotationPointZ = this.Head.rotationPointZ;
-        this.Ear2.rotationPointZ = this.Head.rotationPointZ;
-        this.MuleEarL.rotationPointZ = this.Head.rotationPointZ;
-        this.MuleEarR.rotationPointZ = this.Head.rotationPointZ;
-        this.Neck.rotationPointZ = this.Head.rotationPointZ;
-        this.UMouth.rotationPointZ = this.Head.rotationPointZ;
-        this.UMouth2.rotationPointZ = this.Head.rotationPointZ;
-        this.LMouth.rotationPointZ = this.Head.rotationPointZ;
-        this.LMouth2.rotationPointZ = this.Head.rotationPointZ;
-        this.Mane.rotationPointZ = this.Head.rotationPointZ;
-        this.Unicorn.rotationPointZ = this.Head.rotationPointZ;
+        this.Ear1.z = this.Head.z;
+        this.Ear2.z = this.Head.z;
+        this.MuleEarL.z = this.Head.z;
+        this.MuleEarR.z = this.Head.z;
+        this.Neck.z = this.Head.z;
+        this.UMouth.z = this.Head.z;
+        this.UMouth2.z = this.Head.z;
+        this.LMouth.z = this.Head.z;
+        this.LMouth2.z = this.Head.z;
+        this.Mane.z = this.Head.z;
+        this.Unicorn.z = this.Head.z;
 
-        this.Ear1.rotateAngleX = this.Head.rotateAngleX;
-        this.Ear2.rotateAngleX = this.Head.rotateAngleX;
-        this.MuleEarL.rotateAngleX = this.Head.rotateAngleX;
-        this.MuleEarR.rotateAngleX = this.Head.rotateAngleX;
-        this.Neck.rotateAngleX = this.Head.rotateAngleX;
-        this.UMouth.rotateAngleX = this.Head.rotateAngleX;
-        this.UMouth2.rotateAngleX = this.Head.rotateAngleX - 0.0872664F;
-        this.LMouth.rotateAngleX = this.Head.rotateAngleX;
-        this.LMouth2.rotateAngleX = this.Head.rotateAngleX + 0.261799F;
-        this.Mane.rotateAngleX = this.Head.rotateAngleX;
-        this.Unicorn.rotateAngleX = this.Head.rotateAngleX;
+        this.Ear1.xRot = this.Head.xRot;
+        this.Ear2.xRot = this.Head.xRot;
+        this.MuleEarL.xRot = this.Head.xRot;
+        this.MuleEarR.xRot = this.Head.xRot;
+        this.Neck.xRot = this.Head.xRot;
+        this.UMouth.xRot = this.Head.xRot;
+        this.UMouth2.xRot = this.Head.xRot - 0.0872664F;
+        this.LMouth.xRot = this.Head.xRot;
+        this.LMouth2.xRot = this.Head.xRot + 0.261799F;
+        this.Mane.xRot = this.Head.xRot;
+        this.Unicorn.xRot = this.Head.xRot;
 
-        this.Ear1.rotateAngleY = this.Head.rotateAngleY;
-        this.Ear2.rotateAngleY = this.Head.rotateAngleY;
-        this.MuleEarL.rotateAngleY = this.Head.rotateAngleY;
-        this.MuleEarR.rotateAngleY = this.Head.rotateAngleY;
-        this.Neck.rotateAngleY = this.Head.rotateAngleY;
-        this.UMouth.rotateAngleY = this.Head.rotateAngleY;
-        this.LMouth.rotateAngleY = this.Head.rotateAngleY;
-        this.UMouth2.rotateAngleY = this.Head.rotateAngleY;
-        this.LMouth2.rotateAngleY = this.Head.rotateAngleY;
-        this.Mane.rotateAngleY = this.Head.rotateAngleY;
-        this.Unicorn.rotateAngleY = this.Head.rotateAngleY;
+        this.Ear1.yRot = this.Head.yRot;
+        this.Ear2.yRot = this.Head.yRot;
+        this.MuleEarL.yRot = this.Head.yRot;
+        this.MuleEarR.yRot = this.Head.yRot;
+        this.Neck.yRot = this.Head.yRot;
+        this.UMouth.yRot = this.Head.yRot;
+        this.LMouth.yRot = this.Head.yRot;
+        this.UMouth2.yRot = this.Head.yRot;
+        this.LMouth2.yRot = this.Head.yRot;
+        this.Mane.yRot = this.Head.yRot;
+        this.Unicorn.yRot = this.Head.yRot;
 
         //(if chested)
-        this.Bag1.rotateAngleX = RLegXRot / 5F;//(MathHelper.cos(f * 0.6662F) * 1.4F * f2) / 10F;
-        this.Bag2.rotateAngleX = -RLegXRot / 5F;//(MathHelper.cos(f * 0.6662F) * 1.4F * f2) / 10F;
+        this.Bag1.xRot = RLegXRot / 5F;//(MathHelper.cos(f * 0.6662F) * 1.4F * f2) / 10F;
+        this.Bag2.xRot = -RLegXRot / 5F;//(MathHelper.cos(f * 0.6662F) * 1.4F * f2) / 10F;
 
         if (wings) {
-            this.InnerWing.rotateAngleX = this.Body.rotateAngleX;
-            this.MidWing.rotateAngleX = this.Body.rotateAngleX;
-            this.OuterWing.rotateAngleX = this.Body.rotateAngleX;
-            this.InnerWingR.rotateAngleX = this.Body.rotateAngleX;
-            this.MidWingR.rotateAngleX = this.Body.rotateAngleX;
-            this.OuterWingR.rotateAngleX = this.Body.rotateAngleX;
+            this.InnerWing.xRot = this.Body.xRot;
+            this.MidWing.xRot = this.Body.xRot;
+            this.OuterWing.xRot = this.Body.xRot;
+            this.InnerWingR.xRot = this.Body.xRot;
+            this.MidWingR.xRot = this.Body.xRot;
+            this.OuterWingR.xRot = this.Body.xRot;
 
             if (standing) {
-                this.InnerWing.rotationPointY = -5F;
-                this.InnerWing.rotationPointZ = 4F;
+                this.InnerWing.y = -5F;
+                this.InnerWing.z = 4F;
             } else {
-                this.InnerWing.rotationPointY = 3F;
-                this.InnerWing.rotationPointZ = -6F;
+                this.InnerWing.y = 3F;
+                this.InnerWing.z = -6F;
             }
 
             /**
@@ -714,17 +714,17 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
             //setRotation(OuterWing, 0F, -0.3228859F, 0F);
 
             if (floating) {
-                this.OuterWing.rotateAngleY = -0.3228859F + (WingRot / 2F);
-                this.OuterWingR.rotateAngleY = 0.3228859F - (WingRot / 2F);
+                this.OuterWing.yRot = -0.3228859F + (WingRot / 2F);
+                this.OuterWingR.yRot = 0.3228859F - (WingRot / 2F);
 
             } else {
                 WingRot = 60 / 57.29578F;//0.7854F;
-                this.OuterWing.rotateAngleY = -90 / 57.29578F;//-1.396F;
-                this.OuterWingR.rotateAngleY = 90 / 57.29578F;//1.396F;
+                this.OuterWing.yRot = -90 / 57.29578F;//-1.396F;
+                this.OuterWingR.yRot = 90 / 57.29578F;//1.396F;
             }
 
-            this.InnerWingR.rotationPointY = this.InnerWing.rotationPointY;
-            this.InnerWingR.rotationPointZ = this.InnerWing.rotationPointZ;
+            this.InnerWingR.y = this.InnerWing.y;
+            this.InnerWingR.z = this.InnerWing.z;
 
             //OuterWing.rotationPointX = InnerWing.rotationPointX + (MathHelper.cos(WingRot)*12F);
             //the rotation point X rotates depending of the cos of rotation times the distance of the other block:
@@ -736,26 +736,26 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
             //OuterWing.rotationPointX = InnerWing.rotationPointX + (MathHelper.cos(WingRot)*12F);
             //OuterWing.rotationPointY = InnerWing.rotationPointY + (MathHelper.sin(WingRot)*12F);
 
-            this.OuterWing.rotationPointX = this.InnerWing.rotationPointX + (MathHelper.cos(WingRot) * 12F);
-            this.OuterWingR.rotationPointX = this.InnerWingR.rotationPointX - (MathHelper.cos(WingRot) * 12F);
+            this.OuterWing.x = this.InnerWing.x + (MathHelper.cos(WingRot) * 12F);
+            this.OuterWingR.x = this.InnerWingR.x - (MathHelper.cos(WingRot) * 12F);
 
-            this.MidWing.rotationPointY = this.InnerWing.rotationPointY;
-            this.MidWingR.rotationPointY = this.InnerWing.rotationPointY;
-            this.OuterWing.rotationPointY = this.InnerWing.rotationPointY + (MathHelper.sin(WingRot) * 12F);
-            this.OuterWingR.rotationPointY = this.InnerWingR.rotationPointY + (MathHelper.sin(WingRot) * 12F);
+            this.MidWing.y = this.InnerWing.y;
+            this.MidWingR.y = this.InnerWing.y;
+            this.OuterWing.y = this.InnerWing.y + (MathHelper.sin(WingRot) * 12F);
+            this.OuterWingR.y = this.InnerWingR.y + (MathHelper.sin(WingRot) * 12F);
 
-            this.MidWing.rotationPointZ = this.InnerWing.rotationPointZ;
-            this.MidWingR.rotationPointZ = this.InnerWing.rotationPointZ;
-            this.OuterWing.rotationPointZ = this.InnerWing.rotationPointZ;
-            this.OuterWingR.rotationPointZ = this.InnerWing.rotationPointZ;
+            this.MidWing.z = this.InnerWing.z;
+            this.MidWingR.z = this.InnerWing.z;
+            this.OuterWing.z = this.InnerWing.z;
+            this.OuterWingR.z = this.InnerWing.z;
 
-            this.MidWing.rotateAngleZ = WingRot;
-            this.InnerWing.rotateAngleZ = WingRot;
-            this.OuterWing.rotateAngleZ = WingRot;
+            this.MidWing.zRot = WingRot;
+            this.InnerWing.zRot = WingRot;
+            this.OuterWing.zRot = WingRot;
 
-            this.InnerWingR.rotateAngleZ = -WingRot;
-            this.MidWingR.rotateAngleZ = -WingRot;
-            this.OuterWingR.rotateAngleZ = -WingRot;
+            this.InnerWingR.zRot = -WingRot;
+            this.MidWingR.zRot = -WingRot;
+            this.OuterWingR.zRot = -WingRot;
 
             //45deg = 0.7854F
             //1.396 (80degrees folded)
@@ -835,17 +835,17 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
              * and ghost horse wings
              */
             if (standing) {
-                this.ButterflyL.rotationPointY = -2.5F;
-                this.ButterflyL.rotationPointZ = 6.5F;
+                this.ButterflyL.y = -2.5F;
+                this.ButterflyL.z = 6.5F;
             } else {
-                this.ButterflyL.rotationPointY = 3F;
-                this.ButterflyL.rotationPointZ = -2F;
+                this.ButterflyL.y = 3F;
+                this.ButterflyL.z = -2F;
             }
 
-            this.ButterflyR.rotationPointY = this.ButterflyL.rotationPointY;
-            this.ButterflyR.rotationPointZ = this.ButterflyL.rotationPointZ;
-            this.ButterflyL.rotateAngleX = this.Body.rotateAngleX;
-            this.ButterflyR.rotateAngleX = this.Body.rotateAngleX;
+            this.ButterflyR.y = this.ButterflyL.y;
+            this.ButterflyR.z = this.ButterflyL.z;
+            this.ButterflyL.xRot = this.Body.xRot;
+            this.ButterflyR.xRot = this.Body.xRot;
 
             //this to be added for the ghost or adjusted
             //ButterflyL.rotateAngleZ = -0.52359F + RLegXRot;
@@ -855,8 +855,8 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
             if (type == 21) {
                 baseAngle = 0F;
             }
-            this.ButterflyL.rotateAngleZ = -baseAngle + WingRot;
-            this.ButterflyR.rotateAngleZ = baseAngle - WingRot;
+            this.ButterflyL.zRot = -baseAngle + WingRot;
+            this.ButterflyR.zRot = baseAngle - WingRot;
         }
 
         /**
@@ -879,10 +879,10 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
         }
 
         if (standing) {
-            this.Leg3A.rotationPointY = -2F;
-            this.Leg3A.rotationPointZ = -2F;
-            this.Leg4A.rotationPointY = this.Leg3A.rotationPointY;
-            this.Leg4A.rotationPointZ = this.Leg3A.rotationPointZ;
+            this.Leg3A.y = -2F;
+            this.Leg3A.z = -2F;
+            this.Leg4A.y = this.Leg3A.y;
+            this.Leg4A.z = this.Leg3A.z;
 
             RLegXRot = (-60 / 57.29578F) + MathHelper.cos((f2 * 0.4F) + 3.141593F);
             LLegXRot = (-60 / 57.29578F) + MathHelper.cos(f2 * 0.4F);
@@ -893,44 +893,44 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
             RLegXRotC = (-15 / 57.29578F);
             LLegXRotC = (15 / 57.29578F);
 
-            this.Leg3B.rotationPointY = this.Leg3A.rotationPointY + (MathHelper.sin((90 / 57.29578F) + RLegXRot) * 7F);
-            this.Leg3B.rotationPointZ = this.Leg3A.rotationPointZ + (MathHelper.cos((270 / 57.29578F) + RLegXRot) * 7F);
+            this.Leg3B.y = this.Leg3A.y + (MathHelper.sin((90 / 57.29578F) + RLegXRot) * 7F);
+            this.Leg3B.z = this.Leg3A.z + (MathHelper.cos((270 / 57.29578F) + RLegXRot) * 7F);
 
             //front right -4X(ign), 9Y, -8Z, the distance is again 7Y
-            this.Leg4B.rotationPointY = this.Leg4A.rotationPointY + (MathHelper.sin((90 / 57.29578F) + LLegXRot) * 7F);
-            this.Leg4B.rotationPointZ = this.Leg4A.rotationPointZ + (MathHelper.cos((270 / 57.29578F) + LLegXRot) * 7F);
+            this.Leg4B.y = this.Leg4A.y + (MathHelper.sin((90 / 57.29578F) + LLegXRot) * 7F);
+            this.Leg4B.z = this.Leg4A.z + (MathHelper.cos((270 / 57.29578F) + LLegXRot) * 7F);
 
-            this.Leg1B.rotationPointY = this.Leg1A.rotationPointY + (MathHelper.sin((90 / 57.29578F) + RLegXRotC) * 7F);
-            this.Leg1B.rotationPointZ = this.Leg1A.rotationPointZ + (MathHelper.cos((270 / 57.29578F) + RLegXRotC) * 7F);
+            this.Leg1B.y = this.Leg1A.y + (MathHelper.sin((90 / 57.29578F) + RLegXRotC) * 7F);
+            this.Leg1B.z = this.Leg1A.z + (MathHelper.cos((270 / 57.29578F) + RLegXRotC) * 7F);
 
             //rear right
-            this.Leg2B.rotationPointY = this.Leg1B.rotationPointY;// Leg2A.rotationPointY + (MathHelper.sin((90/ 57.29578F) + RLegXRotC )*7F);
-            this.Leg2B.rotationPointZ = this.Leg1B.rotationPointZ;//Leg2A.rotationPointZ + (MathHelper.cos((270/ 57.29578F) + RLegXRotC )*7F);
+            this.Leg2B.y = this.Leg1B.y;// Leg2A.rotationPointY + (MathHelper.sin((90/ 57.29578F) + RLegXRotC )*7F);
+            this.Leg2B.z = this.Leg1B.z;//Leg2A.rotationPointZ + (MathHelper.cos((270/ 57.29578F) + RLegXRotC )*7F);
 
-            this.Leg1A.rotateAngleX = RLegXRotC;
-            this.Leg1B.rotateAngleX = LLegXRotC;
-            this.Leg1C.rotateAngleX = this.Leg1B.rotateAngleX;
+            this.Leg1A.xRot = RLegXRotC;
+            this.Leg1B.xRot = LLegXRotC;
+            this.Leg1C.xRot = this.Leg1B.xRot;
 
-            this.Leg2A.rotateAngleX = RLegXRotC;
-            this.Leg2B.rotateAngleX = LLegXRotC;
-            this.Leg2C.rotateAngleX = this.Leg2B.rotateAngleX;
+            this.Leg2A.xRot = RLegXRotC;
+            this.Leg2B.xRot = LLegXRotC;
+            this.Leg2C.xRot = this.Leg2B.xRot;
 
-            this.Leg3A.rotateAngleX = RLegXRot;
-            this.Leg3B.rotateAngleX = RLegXRotB;
-            this.Leg3C.rotateAngleX = RLegXRotB;
+            this.Leg3A.xRot = RLegXRot;
+            this.Leg3B.xRot = RLegXRotB;
+            this.Leg3C.xRot = RLegXRotB;
 
-            this.Leg4A.rotateAngleX = LLegXRot;
-            this.Leg4B.rotateAngleX = LLegXRotB;
-            this.Leg4C.rotateAngleX = LLegXRotB;
+            this.Leg4A.xRot = LLegXRot;
+            this.Leg4B.xRot = LLegXRotB;
+            this.Leg4C.xRot = LLegXRotB;
         }
 
         else
         //not standing
         {
-            this.Leg3A.rotationPointY = 9F;
-            this.Leg3A.rotationPointZ = -8F;
-            this.Leg4A.rotationPointY = this.Leg3A.rotationPointY;
-            this.Leg4A.rotationPointZ = this.Leg3A.rotationPointZ;
+            this.Leg3A.y = 9F;
+            this.Leg3A.z = -8F;
+            this.Leg4A.y = this.Leg3A.y;
+            this.Leg4A.z = this.Leg3A.z;
 
             if (!floating && f1 > 0.2F) {
 
@@ -959,44 +959,44 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
 
             }
 
-            this.Leg1B.rotationPointY = this.Leg1A.rotationPointY + (MathHelper.sin((90 / 57.29578F) + LLegXRot) * 7F);
-            this.Leg1B.rotationPointZ = this.Leg1A.rotationPointZ + (MathHelper.cos((270 / 57.29578F) + LLegXRot) * 7F);
+            this.Leg1B.y = this.Leg1A.y + (MathHelper.sin((90 / 57.29578F) + LLegXRot) * 7F);
+            this.Leg1B.z = this.Leg1A.z + (MathHelper.cos((270 / 57.29578F) + LLegXRot) * 7F);
 
             //rear right
-            this.Leg2B.rotationPointY = this.Leg2A.rotationPointY + (MathHelper.sin((90 / 57.29578F) + RLegXRot) * 7F);
-            this.Leg2B.rotationPointZ = this.Leg2A.rotationPointZ + (MathHelper.cos((270 / 57.29578F) + RLegXRot) * 7F);
+            this.Leg2B.y = this.Leg2A.y + (MathHelper.sin((90 / 57.29578F) + RLegXRot) * 7F);
+            this.Leg2B.z = this.Leg2A.z + (MathHelper.cos((270 / 57.29578F) + RLegXRot) * 7F);
 
             //front left 4X(ign), 9Y, -8Z, the distance is again 7Y
-            this.Leg3B.rotationPointY = this.Leg3A.rotationPointY + (MathHelper.sin((90 / 57.29578F) + RLegXRot) * 7F);
-            this.Leg3B.rotationPointZ = this.Leg3A.rotationPointZ + (MathHelper.cos((270 / 57.29578F) + RLegXRot) * 7F);
+            this.Leg3B.y = this.Leg3A.y + (MathHelper.sin((90 / 57.29578F) + RLegXRot) * 7F);
+            this.Leg3B.z = this.Leg3A.z + (MathHelper.cos((270 / 57.29578F) + RLegXRot) * 7F);
 
             //front right -4X(ign), 9Y, -8Z, the distance is again 7Y
-            this.Leg4B.rotationPointY = this.Leg4A.rotationPointY + (MathHelper.sin((90 / 57.29578F) + LLegXRot) * 7F);
-            this.Leg4B.rotationPointZ = this.Leg4A.rotationPointZ + (MathHelper.cos((270 / 57.29578F) + LLegXRot) * 7F);
+            this.Leg4B.y = this.Leg4A.y + (MathHelper.sin((90 / 57.29578F) + LLegXRot) * 7F);
+            this.Leg4B.z = this.Leg4A.z + (MathHelper.cos((270 / 57.29578F) + LLegXRot) * 7F);
 
-            this.Leg1A.rotateAngleX = LLegXRot;
-            this.Leg1B.rotateAngleX = LLegXRotC;
-            this.Leg1C.rotateAngleX = LLegXRotC;
+            this.Leg1A.xRot = LLegXRot;
+            this.Leg1B.xRot = LLegXRotC;
+            this.Leg1C.xRot = LLegXRotC;
 
-            this.Leg2A.rotateAngleX = RLegXRot;
-            this.Leg2B.rotateAngleX = RLegXRotC;
-            this.Leg2C.rotateAngleX = RLegXRotC;
+            this.Leg2A.xRot = RLegXRot;
+            this.Leg2B.xRot = RLegXRotC;
+            this.Leg2C.xRot = RLegXRotC;
 
-            this.Leg3A.rotateAngleX = RLegXRot;
-            this.Leg3B.rotateAngleX = RLegXRotB;
-            this.Leg3C.rotateAngleX = RLegXRotB;
+            this.Leg3A.xRot = RLegXRot;
+            this.Leg3B.xRot = RLegXRotB;
+            this.Leg3C.xRot = RLegXRotB;
 
-            this.Leg4A.rotateAngleX = LLegXRot;
-            this.Leg4B.rotateAngleX = LLegXRotB;
-            this.Leg4C.rotateAngleX = LLegXRotB;
+            this.Leg4A.xRot = LLegXRot;
+            this.Leg4B.xRot = LLegXRotB;
+            this.Leg4C.xRot = LLegXRotB;
 
         }
 
         if (type == 60 && shuffle) {
-            this.Leg3A.rotationPointY = 9F;
-            this.Leg3A.rotationPointZ = -8F;
-            this.Leg4A.rotationPointY = this.Leg3A.rotationPointY;
-            this.Leg4A.rotationPointZ = this.Leg3A.rotationPointZ;
+            this.Leg3A.y = 9F;
+            this.Leg3A.z = -8F;
+            this.Leg4A.y = this.Leg3A.y;
+            this.Leg4A.z = this.Leg3A.z;
 
             if (!floating)//&& f1 > 0.2F)
             {
@@ -1029,47 +1029,47 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
                  */
             }
 
-            this.Leg1B.rotationPointY = this.Leg1A.rotationPointY + (MathHelper.sin((90 / 57.29578F) + LLegXRot) * 7F);
-            this.Leg1B.rotationPointZ = this.Leg1A.rotationPointZ + (MathHelper.cos((270 / 57.29578F) + LLegXRot) * 7F);
+            this.Leg1B.y = this.Leg1A.y + (MathHelper.sin((90 / 57.29578F) + LLegXRot) * 7F);
+            this.Leg1B.z = this.Leg1A.z + (MathHelper.cos((270 / 57.29578F) + LLegXRot) * 7F);
 
             //rear right
-            this.Leg2B.rotationPointY = this.Leg2A.rotationPointY + (MathHelper.sin((90 / 57.29578F) + RLegXRot) * 7F);
-            this.Leg2B.rotationPointZ = this.Leg2A.rotationPointZ + (MathHelper.cos((270 / 57.29578F) + RLegXRot) * 7F);
+            this.Leg2B.y = this.Leg2A.y + (MathHelper.sin((90 / 57.29578F) + RLegXRot) * 7F);
+            this.Leg2B.z = this.Leg2A.z + (MathHelper.cos((270 / 57.29578F) + RLegXRot) * 7F);
 
             //front left 4X(ign), 9Y, -8Z, the distance is again 7Y
-            this.Leg3B.rotationPointY = this.Leg3A.rotationPointY + (MathHelper.sin((90 / 57.29578F) + LLegXRot) * 7F);
-            this.Leg3B.rotationPointZ = this.Leg3A.rotationPointZ + (MathHelper.cos((270 / 57.29578F) + LLegXRot) * 7F);
+            this.Leg3B.y = this.Leg3A.y + (MathHelper.sin((90 / 57.29578F) + LLegXRot) * 7F);
+            this.Leg3B.z = this.Leg3A.z + (MathHelper.cos((270 / 57.29578F) + LLegXRot) * 7F);
 
             //front right -4X(ign), 9Y, -8Z, the distance is again 7Y
-            this.Leg4B.rotationPointY = this.Leg4A.rotationPointY + (MathHelper.sin((90 / 57.29578F) + RLegXRot) * 7F);
-            this.Leg4B.rotationPointZ = this.Leg4A.rotationPointZ + (MathHelper.cos((270 / 57.29578F) + RLegXRot) * 7F);
+            this.Leg4B.y = this.Leg4A.y + (MathHelper.sin((90 / 57.29578F) + RLegXRot) * 7F);
+            this.Leg4B.z = this.Leg4A.z + (MathHelper.cos((270 / 57.29578F) + RLegXRot) * 7F);
 
-            this.Leg1A.rotateAngleX = LLegXRot;// + rand.nextFloat();
-            this.Leg1B.rotateAngleX = LLegXRotB;
-            this.Leg1C.rotateAngleX = LLegXRotB;
+            this.Leg1A.xRot = LLegXRot;// + rand.nextFloat();
+            this.Leg1B.xRot = LLegXRotB;
+            this.Leg1C.xRot = LLegXRotB;
 
-            this.Leg3A.rotateAngleX = LLegXRot;
-            this.Leg3B.rotateAngleX = LLegXRotB;
-            this.Leg3C.rotateAngleX = LLegXRotB;
+            this.Leg3A.xRot = LLegXRot;
+            this.Leg3B.xRot = LLegXRotB;
+            this.Leg3C.xRot = LLegXRotB;
 
-            this.Leg2A.rotateAngleX = RLegXRot;
-            this.Leg2B.rotateAngleX = RLegXRotB;
-            this.Leg2C.rotateAngleX = RLegXRotB;
+            this.Leg2A.xRot = RLegXRot;
+            this.Leg2B.xRot = RLegXRotB;
+            this.Leg2C.xRot = RLegXRotB;
 
-            this.Leg4A.rotateAngleX = RLegXRot;
-            this.Leg4B.rotateAngleX = RLegXRotB;
-            this.Leg4C.rotateAngleX = RLegXRotB;
+            this.Leg4A.xRot = RLegXRot;
+            this.Leg4B.xRot = RLegXRotB;
+            this.Leg4C.xRot = RLegXRotB;
 
         }
 
-        this.Leg1C.rotationPointY = this.Leg1B.rotationPointY;
-        this.Leg1C.rotationPointZ = this.Leg1B.rotationPointZ;
-        this.Leg2C.rotationPointY = this.Leg2B.rotationPointY;
-        this.Leg2C.rotationPointZ = this.Leg2B.rotationPointZ;
-        this.Leg3C.rotationPointY = this.Leg3B.rotationPointY;
-        this.Leg3C.rotationPointZ = this.Leg3B.rotationPointZ;
-        this.Leg4C.rotationPointY = this.Leg4B.rotationPointY;
-        this.Leg4C.rotationPointZ = this.Leg4B.rotationPointZ;
+        this.Leg1C.y = this.Leg1B.y;
+        this.Leg1C.z = this.Leg1B.z;
+        this.Leg2C.y = this.Leg2B.y;
+        this.Leg2C.z = this.Leg2B.z;
+        this.Leg3C.y = this.Leg3B.y;
+        this.Leg3C.z = this.Leg3B.z;
+        this.Leg4C.y = this.Leg4B.y;
+        this.Leg4C.z = this.Leg4B.z;
 
         /*
          * //rear left. -4X(ignored), 9Y, 11Z the distance is 7Y
@@ -1090,79 +1090,79 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
         if (saddled) {
 
             if (standing) {
-                this.Saddle.rotationPointY = 0.5F;
-                this.Saddle.rotationPointZ = 11F;
+                this.Saddle.y = 0.5F;
+                this.Saddle.z = 11F;
 
             } else {
-                this.Saddle.rotationPointY = 2F;
-                this.Saddle.rotationPointZ = 2F;
+                this.Saddle.y = 2F;
+                this.Saddle.z = 2F;
 
             }
 
-            this.SaddleB.rotationPointY = this.Saddle.rotationPointY;
-            this.SaddleC.rotationPointY = this.Saddle.rotationPointY;
-            this.SaddleL.rotationPointY = this.Saddle.rotationPointY;
-            this.SaddleR.rotationPointY = this.Saddle.rotationPointY;
-            this.SaddleL2.rotationPointY = this.Saddle.rotationPointY;
-            this.SaddleR2.rotationPointY = this.Saddle.rotationPointY;
-            this.Bag1.rotationPointY = this.Bag2.rotationPointY;
+            this.SaddleB.y = this.Saddle.y;
+            this.SaddleC.y = this.Saddle.y;
+            this.SaddleL.y = this.Saddle.y;
+            this.SaddleR.y = this.Saddle.y;
+            this.SaddleL2.y = this.Saddle.y;
+            this.SaddleR2.y = this.Saddle.y;
+            this.Bag1.y = this.Bag2.y;
 
-            this.SaddleB.rotationPointZ = this.Saddle.rotationPointZ;
-            this.SaddleC.rotationPointZ = this.Saddle.rotationPointZ;
-            this.SaddleL.rotationPointZ = this.Saddle.rotationPointZ;
-            this.SaddleR.rotationPointZ = this.Saddle.rotationPointZ;
-            this.SaddleL2.rotationPointZ = this.Saddle.rotationPointZ;
-            this.SaddleR2.rotationPointZ = this.Saddle.rotationPointZ;
-            this.Bag1.rotationPointZ = this.Bag2.rotationPointZ;
+            this.SaddleB.z = this.Saddle.z;
+            this.SaddleC.z = this.Saddle.z;
+            this.SaddleL.z = this.Saddle.z;
+            this.SaddleR.z = this.Saddle.z;
+            this.SaddleL2.z = this.Saddle.z;
+            this.SaddleR2.z = this.Saddle.z;
+            this.Bag1.z = this.Bag2.z;
 
-            this.Saddle.rotateAngleX = this.Body.rotateAngleX;
-            this.SaddleB.rotateAngleX = this.Body.rotateAngleX;
-            this.SaddleC.rotateAngleX = this.Body.rotateAngleX;
+            this.Saddle.xRot = this.Body.xRot;
+            this.SaddleB.xRot = this.Body.xRot;
+            this.SaddleC.xRot = this.Body.xRot;
 
-            this.SaddleMouthLine.rotationPointY = this.Head.rotationPointY;
-            this.SaddleMouthLineR.rotationPointY = this.Head.rotationPointY;
-            this.HeadSaddle.rotationPointY = this.Head.rotationPointY;
-            this.SaddleMouthL.rotationPointY = this.Head.rotationPointY;
-            this.SaddleMouthR.rotationPointY = this.Head.rotationPointY;
+            this.SaddleMouthLine.y = this.Head.y;
+            this.SaddleMouthLineR.y = this.Head.y;
+            this.HeadSaddle.y = this.Head.y;
+            this.SaddleMouthL.y = this.Head.y;
+            this.SaddleMouthR.y = this.Head.y;
 
-            this.SaddleMouthLine.rotationPointZ = this.Head.rotationPointZ;
-            this.SaddleMouthLineR.rotationPointZ = this.Head.rotationPointZ;
-            this.HeadSaddle.rotationPointZ = this.Head.rotationPointZ;
-            this.SaddleMouthL.rotationPointZ = this.Head.rotationPointZ;
-            this.SaddleMouthR.rotationPointZ = this.Head.rotationPointZ;
+            this.SaddleMouthLine.z = this.Head.z;
+            this.SaddleMouthLineR.z = this.Head.z;
+            this.HeadSaddle.z = this.Head.z;
+            this.SaddleMouthL.z = this.Head.z;
+            this.SaddleMouthR.z = this.Head.z;
 
-            this.SaddleMouthLine.rotateAngleX = HeadXRot;
-            this.SaddleMouthLineR.rotateAngleX = HeadXRot;
-            this.HeadSaddle.rotateAngleX = this.Head.rotateAngleX;
-            this.SaddleMouthL.rotateAngleX = this.Head.rotateAngleX;
-            this.SaddleMouthR.rotateAngleX = this.Head.rotateAngleX;
-            this.HeadSaddle.rotateAngleY = this.Head.rotateAngleY;
-            this.SaddleMouthL.rotateAngleY = this.Head.rotateAngleY;
-            this.SaddleMouthLine.rotateAngleY = this.Head.rotateAngleY;
-            this.SaddleMouthR.rotateAngleY = this.Head.rotateAngleY;
-            this.SaddleMouthLineR.rotateAngleY = this.Head.rotateAngleY;
+            this.SaddleMouthLine.xRot = HeadXRot;
+            this.SaddleMouthLineR.xRot = HeadXRot;
+            this.HeadSaddle.xRot = this.Head.xRot;
+            this.SaddleMouthL.xRot = this.Head.xRot;
+            this.SaddleMouthR.xRot = this.Head.xRot;
+            this.HeadSaddle.yRot = this.Head.yRot;
+            this.SaddleMouthL.yRot = this.Head.yRot;
+            this.SaddleMouthLine.yRot = this.Head.yRot;
+            this.SaddleMouthR.yRot = this.Head.yRot;
+            this.SaddleMouthLineR.yRot = this.Head.yRot;
 
             if (rider) {
-                this.SaddleL.rotateAngleX = -60 / 57.29578F;
-                this.SaddleL2.rotateAngleX = -60 / 57.29578F;
-                this.SaddleR.rotateAngleX = -60 / 57.29578F;
-                this.SaddleR2.rotateAngleX = -60 / 57.29578F;
+                this.SaddleL.xRot = -60 / 57.29578F;
+                this.SaddleL2.xRot = -60 / 57.29578F;
+                this.SaddleR.xRot = -60 / 57.29578F;
+                this.SaddleR2.xRot = -60 / 57.29578F;
 
-                this.SaddleL.rotateAngleZ = 0F;
-                this.SaddleL2.rotateAngleZ = 0F;
-                this.SaddleR.rotateAngleZ = 0F;
-                this.SaddleR2.rotateAngleZ = 0F;
+                this.SaddleL.zRot = 0F;
+                this.SaddleL2.zRot = 0F;
+                this.SaddleR.zRot = 0F;
+                this.SaddleR2.zRot = 0F;
                 ;
             } else {
-                this.SaddleL.rotateAngleX = RLegXRot / 3F;
-                this.SaddleL2.rotateAngleX = RLegXRot / 3F;
-                this.SaddleR.rotateAngleX = RLegXRot / 3F;
-                this.SaddleR2.rotateAngleX = RLegXRot / 3F;
+                this.SaddleL.xRot = RLegXRot / 3F;
+                this.SaddleL2.xRot = RLegXRot / 3F;
+                this.SaddleR.xRot = RLegXRot / 3F;
+                this.SaddleR2.xRot = RLegXRot / 3F;
 
-                this.SaddleL.rotateAngleZ = RLegXRot / 5F;
-                this.SaddleL2.rotateAngleZ = RLegXRot / 5F;
-                this.SaddleR.rotateAngleZ = -RLegXRot / 5F;
-                this.SaddleR2.rotateAngleZ = -RLegXRot / 5F;
+                this.SaddleL.zRot = RLegXRot / 5F;
+                this.SaddleL2.zRot = RLegXRot / 5F;
+                this.SaddleR.zRot = -RLegXRot / 5F;
+                this.SaddleR2.zRot = -RLegXRot / 5F;
             }
         }
 
@@ -1175,22 +1175,22 @@ public class MoCModelNewHorse<T extends CreatureEntity> extends AgeableModel<T> 
         }
 
         if (tail) {
-            this.TailA.rotateAngleY = MathHelper.cos(f2 * 0.7F);
+            this.TailA.yRot = MathHelper.cos(f2 * 0.7F);
             tailMov = 0;
         } else {
-            this.TailA.rotateAngleY = 0F;
+            this.TailA.yRot = 0F;
         }
-        this.TailB.rotateAngleY = this.TailA.rotateAngleY;
-        this.TailC.rotateAngleY = this.TailA.rotateAngleY;
+        this.TailB.yRot = this.TailA.yRot;
+        this.TailC.yRot = this.TailA.yRot;
 
-        this.TailB.rotationPointY = this.TailA.rotationPointY;
-        this.TailC.rotationPointY = this.TailA.rotationPointY;
-        this.TailB.rotationPointZ = this.TailA.rotationPointZ;
-        this.TailC.rotationPointZ = this.TailA.rotationPointZ;
+        this.TailB.y = this.TailA.y;
+        this.TailC.y = this.TailA.y;
+        this.TailB.z = this.TailA.z;
+        this.TailC.z = this.TailA.z;
 
-        this.TailA.rotateAngleX = tailMov;//-1.3089F+(f1*1.5F);
-        this.TailB.rotateAngleX = tailMov;//-1.3089F+(f1*1.5F);
-        this.TailC.rotateAngleX = -0.2618F + tailMov;//-1.5707F -tailMov;
+        this.TailA.xRot = tailMov;//-1.3089F+(f1*1.5F);
+        this.TailB.xRot = tailMov;//-1.3089F+(f1*1.5F);
+        this.TailC.xRot = -0.2618F + tailMov;//-1.5707F -tailMov;
 
     }
 

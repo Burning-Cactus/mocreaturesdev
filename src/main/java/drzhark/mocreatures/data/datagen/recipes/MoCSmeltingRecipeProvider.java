@@ -18,30 +18,30 @@ public final class MoCSmeltingRecipeProvider extends RecipeProvider {
     }
 
     @Override
-    protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
-        CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(MoCItems.CRAB_RAW), MoCItems.CRAB_COOKED, 0.35F, 200).addCriterion("has_crabraw", this.hasItem(MoCItems.CRAB_RAW)).build(consumer);
-        CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(MoCItems.CRAB_RAW), MoCItems.CRAB_COOKED, 0.35F, 100, IRecipeSerializer.SMOKING).addCriterion("has_crabraw", this.hasItem(MoCItems.CRAB_RAW)).build(consumer);
-        CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(MoCItems.CRAB_RAW), MoCItems.CRAB_COOKED, 0.35F, 400, IRecipeSerializer.CAMPFIRE_COOKING).addCriterion("has_crabraw", this.hasItem(MoCItems.CRAB_RAW)).build(consumer);
+    protected void buildShapelessRecipes(Consumer<IFinishedRecipe> consumer) {
+        CookingRecipeBuilder.smelting(Ingredient.of(MoCItems.CRAB_RAW), MoCItems.CRAB_COOKED, 0.35F, 200).unlockedBy("has_crabraw", this.has(MoCItems.CRAB_RAW)).save(consumer);
+        CookingRecipeBuilder.cooking(Ingredient.of(MoCItems.CRAB_RAW), MoCItems.CRAB_COOKED, 0.35F, 100, IRecipeSerializer.SMOKING_RECIPE).unlockedBy("has_crabraw", this.has(MoCItems.CRAB_RAW)).save(consumer);
+        CookingRecipeBuilder.cooking(Ingredient.of(MoCItems.CRAB_RAW), MoCItems.CRAB_COOKED, 0.35F, 400, IRecipeSerializer.CAMPFIRE_COOKING_RECIPE).unlockedBy("has_crabraw", this.has(MoCItems.CRAB_RAW)).save(consumer);
 
-        CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(MoCItems.RAT_RAW), MoCItems.RAT_COOKED, 0.35F, 200).addCriterion("has_ratraw", this.hasItem(MoCItems.RAT_RAW)).build(consumer);
-        CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(MoCItems.RAT_RAW), MoCItems.RAT_COOKED, 0.35F, 100, IRecipeSerializer.SMOKING).addCriterion("has_ratraw", this.hasItem(MoCItems.RAT_RAW)).build(consumer);
-        CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(MoCItems.RAT_RAW), MoCItems.RAT_COOKED, 0.35F, 400, IRecipeSerializer.CAMPFIRE_COOKING).addCriterion("has_ratraw", this.hasItem(MoCItems.RAT_RAW)).build(consumer);
+        CookingRecipeBuilder.smelting(Ingredient.of(MoCItems.RAT_RAW), MoCItems.RAT_COOKED, 0.35F, 200).unlockedBy("has_ratraw", this.has(MoCItems.RAT_RAW)).save(consumer);
+        CookingRecipeBuilder.cooking(Ingredient.of(MoCItems.RAT_RAW), MoCItems.RAT_COOKED, 0.35F, 100, IRecipeSerializer.SMOKING_RECIPE).unlockedBy("has_ratraw", this.has(MoCItems.RAT_RAW)).save(consumer);
+        CookingRecipeBuilder.cooking(Ingredient.of(MoCItems.RAT_RAW), MoCItems.RAT_COOKED, 0.35F, 400, IRecipeSerializer.CAMPFIRE_COOKING_RECIPE).unlockedBy("has_ratraw", this.has(MoCItems.RAT_RAW)).save(consumer);
 
-        CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(MoCItems.OSTRICH_RAW), MoCItems.OSTRICH_COOKED, 0.35F, 200).addCriterion("has_ostrichraw", this.hasItem(MoCItems.OSTRICH_RAW)).build(consumer);
-        CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(MoCItems.OSTRICH_RAW), MoCItems.OSTRICH_COOKED, 0.35F, 100, IRecipeSerializer.SMOKING).addCriterion("has_ostrichraw", this.hasItem(MoCItems.OSTRICH_RAW)).build(consumer);
-        CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(MoCItems.OSTRICH_RAW), MoCItems.OSTRICH_COOKED, 0.35F, 400, IRecipeSerializer.CAMPFIRE_COOKING).addCriterion("has_ostrichraw", this.hasItem(MoCItems.OSTRICH_RAW)).build(consumer);
+        CookingRecipeBuilder.smelting(Ingredient.of(MoCItems.OSTRICH_RAW), MoCItems.OSTRICH_COOKED, 0.35F, 200).unlockedBy("has_ostrichraw", this.has(MoCItems.OSTRICH_RAW)).save(consumer);
+        CookingRecipeBuilder.cooking(Ingredient.of(MoCItems.OSTRICH_RAW), MoCItems.OSTRICH_COOKED, 0.35F, 100, IRecipeSerializer.SMOKING_RECIPE).unlockedBy("has_ostrichraw", this.has(MoCItems.OSTRICH_RAW)).save(consumer);
+        CookingRecipeBuilder.cooking(Ingredient.of(MoCItems.OSTRICH_RAW), MoCItems.OSTRICH_COOKED, 0.35F, 400, IRecipeSerializer.CAMPFIRE_COOKING_RECIPE).unlockedBy("has_ostrichraw", this.has(MoCItems.OSTRICH_RAW)).save(consumer);
 
-        CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(MoCItems.TURKEY_RAW), MoCItems.TURKEY_COOKED, 0.35F, 200).addCriterion("has_turkeyraw", this.hasItem(MoCItems.TURKEY_RAW)).build(consumer);
-        CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(MoCItems.TURKEY_RAW), MoCItems.TURKEY_COOKED, 0.35F, 100, IRecipeSerializer.SMOKING).addCriterion("has_turkeyraw", this.hasItem(MoCItems.TURKEY_RAW)).build(consumer);
-        CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(MoCItems.TURKEY_RAW), MoCItems.TURKEY_COOKED, 0.35F, 400, IRecipeSerializer.CAMPFIRE_COOKING).addCriterion("has_turkeyraw", this.hasItem(MoCItems.TURKEY_COOKED)).build(consumer);
+        CookingRecipeBuilder.smelting(Ingredient.of(MoCItems.TURKEY_RAW), MoCItems.TURKEY_COOKED, 0.35F, 200).unlockedBy("has_turkeyraw", this.has(MoCItems.TURKEY_RAW)).save(consumer);
+        CookingRecipeBuilder.cooking(Ingredient.of(MoCItems.TURKEY_RAW), MoCItems.TURKEY_COOKED, 0.35F, 100, IRecipeSerializer.SMOKING_RECIPE).unlockedBy("has_turkeyraw", this.has(MoCItems.TURKEY_RAW)).save(consumer);
+        CookingRecipeBuilder.cooking(Ingredient.of(MoCItems.TURKEY_RAW), MoCItems.TURKEY_COOKED, 0.35F, 400, IRecipeSerializer.CAMPFIRE_COOKING_RECIPE).unlockedBy("has_turkeyraw", this.has(MoCItems.TURKEY_COOKED)).save(consumer);
 
-        CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(MoCItems.MOCEGG), MoCItems.OMELET, 0.35F, 200).addCriterion("has_mocegg", this.hasItem(MoCItems.MOCEGG)).build(consumer);
-        CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(MoCItems.MOCEGG), MoCItems.OMELET, 0.35F, 100, IRecipeSerializer.SMOKING).addCriterion("has_mocegg", this.hasItem(MoCItems.MOCEGG)).build(consumer);
-        CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(MoCItems.MOCEGG), MoCItems.OMELET, 0.35F, 400, IRecipeSerializer.CAMPFIRE_COOKING).addCriterion("has_mocegg", this.hasItem(MoCItems.MOCEGG)).build(consumer);
+        CookingRecipeBuilder.smelting(Ingredient.of(MoCItems.MOCEGG), MoCItems.OMELET, 0.35F, 200).unlockedBy("has_mocegg", this.has(MoCItems.MOCEGG)).save(consumer);
+        CookingRecipeBuilder.cooking(Ingredient.of(MoCItems.MOCEGG), MoCItems.OMELET, 0.35F, 100, IRecipeSerializer.SMOKING_RECIPE).unlockedBy("has_mocegg", this.has(MoCItems.MOCEGG)).save(consumer);
+        CookingRecipeBuilder.cooking(Ingredient.of(MoCItems.MOCEGG), MoCItems.OMELET, 0.35F, 400, IRecipeSerializer.CAMPFIRE_COOKING_RECIPE).unlockedBy("has_mocegg", this.has(MoCItems.MOCEGG)).save(consumer);
 
-        CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(Items.EGG), MoCItems.OMELET, 0.35F, 200).addCriterion("has_egg", this.hasItem(Items.EGG)).build(consumer);
-        CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(Items.EGG), MoCItems.OMELET, 0.35F, 100, IRecipeSerializer.SMOKING).addCriterion("has_egg", this.hasItem(Items.EGG)).build(consumer);
-        CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(Items.EGG), MoCItems.OMELET, 0.35F, 400, IRecipeSerializer.CAMPFIRE_COOKING).addCriterion("has_egg", this.hasItem(Items.EGG)).build(consumer);
+        CookingRecipeBuilder.smelting(Ingredient.of(Items.EGG), MoCItems.OMELET, 0.35F, 200).unlockedBy("has_egg", this.has(Items.EGG)).save(consumer);
+        CookingRecipeBuilder.cooking(Ingredient.of(Items.EGG), MoCItems.OMELET, 0.35F, 100, IRecipeSerializer.SMOKING_RECIPE).unlockedBy("has_egg", this.has(Items.EGG)).save(consumer);
+        CookingRecipeBuilder.cooking(Ingredient.of(Items.EGG), MoCItems.OMELET, 0.35F, 400, IRecipeSerializer.CAMPFIRE_COOKING_RECIPE).unlockedBy("has_egg", this.has(Items.EGG)).save(consumer);
     }
 
     /**

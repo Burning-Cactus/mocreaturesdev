@@ -17,7 +17,7 @@ public class MoCRenderInsect<T extends MoCEntityInsect, M extends EntityModel<T>
     }
 
     @Override
-    protected void preRenderCallback(T entityinsect, MatrixStack stack, float par2) {
+    protected void scale(T entityinsect, MatrixStack stack, float par2) {
         if (entityinsect.climbing()) {
             rotateAnimal(entityinsect);
         }

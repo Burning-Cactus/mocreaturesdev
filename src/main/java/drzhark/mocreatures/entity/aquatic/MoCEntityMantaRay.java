@@ -11,11 +11,11 @@ public class MoCEntityMantaRay extends MoCEntityRay {
 
     public MoCEntityMantaRay(EntityType<? extends MoCEntityMantaRay> type, World world) {
         super(type, world);
-        setEdad(80 + (this.rand.nextInt(100)));
+        setEdad(80 + (this.random.nextInt(100)));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return MoCEntityRay.registerAttributes().func_233815_a_(Attributes.MAX_HEALTH, 20.0D);
+        return MoCEntityRay.registerAttributes().add(Attributes.MAX_HEALTH, 20.0D);
     }
 
     @Override

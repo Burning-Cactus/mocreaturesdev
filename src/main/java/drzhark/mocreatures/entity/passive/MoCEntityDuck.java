@@ -19,11 +19,11 @@ public class MoCEntityDuck extends MoCEntityAnimal//EntityChicken
 {
 
     public boolean field_70885_d = false;
-    public float field_70886_e = 0.0F;
+    public float flap = 0.0F;
     public float destPos = 0.0F;
-    public float field_70884_g;
-    public float field_70888_h;
-    public float field_70889_i = 1.0F;
+    public float oFlapSpeed;
+    public float oFlap;
+    public float flapping = 1.0F;
 
     public MoCEntityDuck(EntityType<? extends MoCEntityDuck> type, World world) {
         super(type, world);
@@ -40,8 +40,8 @@ public class MoCEntityDuck extends MoCEntityAnimal//EntityChicken
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityAnimal.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 4.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
+                .add(Attributes.MAX_HEALTH, 4.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class MoCEntityDuck extends MoCEntityAnimal//EntityChicken
     }
 
     @Override
-    public boolean canDespawn(double d) {
+    public boolean removeWhenFarAway(double d) {
         if (MoCConfig.COMMON_CONFIG.GLOBAL.forceDespawns.get()) {
             return !getIsTamed();
         } else {
@@ -69,10 +69,10 @@ public class MoCEntityDuck extends MoCEntityAnimal//EntityChicken
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
-        this.field_70888_h = this.field_70886_e;
-        this.field_70884_g = this.destPos;
+    public void aiStep() {
+        super.aiStep();
+        this.oFlap = this.flap;
+        this.oFlapSpeed = this.destPos;
         this.destPos = (float) (this.destPos + (this.onGround ? -1 : 4) * 0.3D);
 
         if (this.destPos < 0.0F) {
@@ -83,17 +83,17 @@ public class MoCEntityDuck extends MoCEntityAnimal//EntityChicken
             this.destPos = 1.0F;
         }
 
-        if (!this.onGround && this.field_70889_i < 1.0F) {
-            this.field_70889_i = 1.0F;
+        if (!this.onGround && this.flapping < 1.0F) {
+            this.flapping = 1.0F;
         }
 
-        this.field_70889_i = (float) (this.field_70889_i * 0.9D);
+        this.flapping = (float) (this.flapping * 0.9D);
 
-        if (!this.onGround && this.getMotion().y < 0.0D) {
-            this.getMotion().mul(1, 0.6D, 1);
+        if (!this.onGround && this.getDeltaMovement().y < 0.0D) {
+            this.getDeltaMovement().multiply(1, 0.6D, 1);
         }
 
-        this.field_70886_e += this.field_70889_i * 2.0F;
+        this.flap += this.flapping * 2.0F;
     }
 
     @Override

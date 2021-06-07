@@ -10,8 +10,8 @@ public class MoCPlayerTracker {
     @SubscribeEvent
     public void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         PlayerEntity player = event.getPlayer();
-        if (player.getRidingEntity() != null && (player.getRidingEntity() instanceof IMoCTameable)) {
-            IMoCTameable mocEntity = (IMoCTameable) player.getRidingEntity();
+        if (player.getVehicle() != null && (player.getVehicle() instanceof IMoCTameable)) {
+            IMoCTameable mocEntity = (IMoCTameable) player.getVehicle();
             mocEntity.setRiderDisconnecting(true);
         }
     }

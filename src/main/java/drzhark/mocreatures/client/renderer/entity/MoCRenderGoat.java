@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class MoCRenderGoat extends MobRenderer<MoCEntityGoat, MoCModelGoat> {
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityGoat entitygoat) {
+    public ResourceLocation getTextureLocation(MoCEntityGoat entitygoat) {
         return entitygoat.getTexture();
     }
 
@@ -25,7 +25,7 @@ public class MoCRenderGoat extends MobRenderer<MoCEntityGoat, MoCModelGoat> {
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityGoat entitygoat, MatrixStack stack, float f) {
+    protected void scale(MoCEntityGoat entitygoat, MatrixStack stack, float f) {
         stack.translate(0.0F, this.depth, 0.0F);
         stretch(entitygoat, stack);
 

@@ -15,8 +15,8 @@ import org.lwjgl.opengl.GL11;
 public class MoCModelSnake<T extends MoCEntitySnake> extends EntityModel<T> {
 
     public MoCModelSnake() {
-        this.textureWidth = 64;
-        this.textureHeight = 32;
+        this.texWidth = 64;
+        this.texHeight = 32;
 
         this.bodySnake = new ModelRenderer[this.bodyparts];
         float factor = -0.3F;
@@ -60,90 +60,90 @@ public class MoCModelSnake<T extends MoCEntitySnake> extends EntityModel<T> {
             }
             this.bodySnake[i] = new ModelRenderer(this, 8, j);
             this.bodySnake[i].addBox(-1F, -0.5F, 0F, 2, 2, 2, factor);
-            this.bodySnake[i].setRotationPoint(0F, 23F, flength);
+            this.bodySnake[i].setPos(0F, 23F, flength);
 
         }
         this.Tail = new ModelRenderer(this, 36, 0);
         this.Tail.addBox(-0.5F, 0.5F, -1.0F, 1, 1, 5);
-        this.Tail.setRotationPoint(0F, 23F, flength);
+        this.Tail.setPos(0F, 23F, flength);
 
         flength = (this.bodyparts / 2) * fsep;
         this.Head = new ModelRenderer(this, 0, 0);
         this.Head.addBox(-1F, -0.5F, -2F, 2, 2, 2);
-        this.Head.setRotationPoint(0F, 23F, flength);
+        this.Head.setPos(0F, 23F, flength);
 
         this.Nose = new ModelRenderer(this, 16, 0);
         this.Nose.addBox(-0.5F, -0.3F, -4F, 1, 1, 2);
-        this.Nose.setRotationPoint(0F, 23F, flength);
+        this.Nose.setPos(0F, 23F, flength);
 
         this.LNose = new ModelRenderer(this, 22, 0);
         this.LNose.addBox(-0.5F, 0.3F, -4F, 1, 1, 2);
-        this.LNose.setRotationPoint(0F, 23F, flength);
+        this.LNose.setPos(0F, 23F, flength);
 
         this.TeethUR = new ModelRenderer(this, 46, 0);
         this.TeethUR.addBox(-0.4F, 0.3F, -3.8F, 0, 1, 1);
-        this.TeethUR.setRotationPoint(0F, 23F, flength);
+        this.TeethUR.setPos(0F, 23F, flength);
 
         this.TeethUL = new ModelRenderer(this, 44, 0);
         this.TeethUL.addBox(0.4F, 0.3F, -3.8F, 0, 1, 1);
-        this.TeethUL.setRotationPoint(0F, 23F, flength);
+        this.TeethUL.setPos(0F, 23F, flength);
 
         this.Tongue = new ModelRenderer(this, 28, 0);
         this.Tongue.addBox(-0.5F, 0.5F, -6F, 1, 0, 3);
-        this.Tongue.setRotationPoint(0F, 23F, flength);
+        this.Tongue.setPos(0F, 23F, flength);
 
         this.Tongue1 = new ModelRenderer(this, 28, 0);
         this.Tongue1.addBox(-0.5F, 0.5F, -5F, 1, 0, 3);
-        this.Tongue1.setRotationPoint(0F, 23F, flength);
+        this.Tongue1.setPos(0F, 23F, flength);
 
         this.Tongue0 = new ModelRenderer(this, 28, 0);
         this.Tongue0.addBox(-0.5F, 0.25F, -4F, 1, 0, 3);
-        this.Tongue0.setRotationPoint(0F, 23F, flength);
+        this.Tongue0.setPos(0F, 23F, flength);
 
         this.Wing1L = new ModelRenderer(this, 8, 4);
         this.Wing1L.addBox(0F, -0.5F, 0F, 2, 2, 2);
-        this.Wing1L.setRotationPoint(0F, 23F, ((this.bodyparts / 2) - 1) * fsep);
+        this.Wing1L.setPos(0F, 23F, ((this.bodyparts / 2) - 1) * fsep);
 
         this.Wing1R = new ModelRenderer(this, 8, 4);
         this.Wing1R.addBox(-2F, -0.5F, 0F, 2, 2, 2);
-        this.Wing1R.setRotationPoint(0F, 23F, ((this.bodyparts / 2) - 1) * fsep);
+        this.Wing1R.setPos(0F, 23F, ((this.bodyparts / 2) - 1) * fsep);
 
         this.Wing2L = new ModelRenderer(this, 8, 4);
         this.Wing2L.addBox(0.5F, -0.5F, 0F, 2, 2, 2);
-        this.Wing2L.setRotationPoint(0F, 23F, ((this.bodyparts / 2) - 2) * fsep);
+        this.Wing2L.setPos(0F, 23F, ((this.bodyparts / 2) - 2) * fsep);
 
         this.Wing2R = new ModelRenderer(this, 8, 4);
         this.Wing2R.addBox(-2.5F, -0.5F, 0F, 2, 2, 2);
-        this.Wing2R.setRotationPoint(0F, 23F, ((this.bodyparts / 2) - 2) * fsep);
+        this.Wing2R.setPos(0F, 23F, ((this.bodyparts / 2) - 2) * fsep);
 
         this.Wing3R = new ModelRenderer(this, 16, 4);
         this.Wing3R.addBox(-3F, -0.5F, 0F, 2, 2, 2);
-        this.Wing3R.setRotationPoint(0F, 23F, ((this.bodyparts / 2) - 3) * fsep);
+        this.Wing3R.setPos(0F, 23F, ((this.bodyparts / 2) - 3) * fsep);
 
         this.Wing3L = new ModelRenderer(this, 16, 4);
         this.Wing3L.addBox(1F, -0.5F, 0F, 2, 2, 2);
-        this.Wing3L.setRotationPoint(0F, 23F, ((this.bodyparts / 2) - 3) * fsep);
+        this.Wing3L.setPos(0F, 23F, ((this.bodyparts / 2) - 3) * fsep);
 
         this.Wing4R = new ModelRenderer(this, 16, 8);
         this.Wing4R.addBox(-2.5F, -0.5F, 0F, 2, 2, 2);
-        this.Wing4R.setRotationPoint(0F, 23F, ((this.bodyparts / 2) - 4) * fsep);
+        this.Wing4R.setPos(0F, 23F, ((this.bodyparts / 2) - 4) * fsep);
 
         this.Wing4L = new ModelRenderer(this, 16, 8);
         this.Wing4L.addBox(0.5F, -0.5F, 0F, 2, 2, 2);
-        this.Wing4L.setRotationPoint(0F, 23F, ((this.bodyparts / 2) - 4) * fsep);
+        this.Wing4L.setPos(0F, 23F, ((this.bodyparts / 2) - 4) * fsep);
 
         this.Wing5L = new ModelRenderer(this, 16, 8);
         this.Wing5L.addBox(0F, -0.5F, 0F, 2, 2, 2);
-        this.Wing5L.setRotationPoint(0F, 23F, ((this.bodyparts / 2) - 5) * fsep);
+        this.Wing5L.setPos(0F, 23F, ((this.bodyparts / 2) - 5) * fsep);
 
         this.Wing5R = new ModelRenderer(this, 16, 8);
         this.Wing5R.addBox(-2F, -0.5F, 0F, 2, 2, 2);
-        this.Wing5R.setRotationPoint(0F, 23F, ((this.bodyparts / 2) - 5) * fsep);
+        this.Wing5R.setPos(0F, 23F, ((this.bodyparts / 2) - 5) * fsep);
 
     }
 
     @Override
-    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         typeI = entityIn.getSubType();
         tongueOff = entityIn.getfTongue();
         mouthOff = entityIn.getfMouth();
@@ -161,79 +161,79 @@ public class MoCModelSnake<T extends MoCEntitySnake> extends EntityModel<T> {
 
     @SuppressWarnings("unused")
     private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+        model.xRot = x;
+        model.yRot = y;
+        model.zRot = z;
     }
 
     public void setRotationAngles(float f3, float f4, float f6, float f7, float frattle, boolean nearP, int type) {
         float rAX = (f4 / 57.29578F);// * 1.5F;
         float rAY = (f3 / 57.29578F);// * 1.5F;
-        this.Head.rotateAngleX = rAX;
-        this.Head.rotateAngleY = rAY;
-        this.bodySnake[0].rotateAngleX = rAX * 0.95F;/// 1.5F;
-        this.bodySnake[1].rotateAngleX = rAX * 0.90F;/// 2F;
-        this.bodySnake[2].rotateAngleX = rAX * 0.85F;/// 2.5F;
-        this.bodySnake[3].rotateAngleX = rAX * 0.80F;/// 3.0F;
-        this.bodySnake[4].rotateAngleX = rAX * 0.75F;/// 3.5F;
+        this.Head.xRot = rAX;
+        this.Head.yRot = rAY;
+        this.bodySnake[0].xRot = rAX * 0.95F;/// 1.5F;
+        this.bodySnake[1].xRot = rAX * 0.90F;/// 2F;
+        this.bodySnake[2].xRot = rAX * 0.85F;/// 2.5F;
+        this.bodySnake[3].xRot = rAX * 0.80F;/// 3.0F;
+        this.bodySnake[4].xRot = rAX * 0.75F;/// 3.5F;
 
         float f8 = (MathHelper.cos(f6 * 10F) / 40F);
 
-        this.Nose.rotateAngleX = this.Head.rotateAngleX - f7;
-        this.LNose.rotateAngleX = this.Head.rotateAngleX + f7;
-        this.Tongue1.rotateAngleX = this.Head.rotateAngleX + f8;
-        this.Tongue.rotateAngleX = this.Head.rotateAngleX + f8;
-        this.Tongue0.rotateAngleX = this.LNose.rotateAngleX;
-        this.TeethUR.rotateAngleX = this.Head.rotateAngleX - f7;
-        this.TeethUL.rotateAngleX = this.Head.rotateAngleX - f7;
-        this.bodySnake[0].rotateAngleY = 0.0F + (rAY * 0.85F);/// 1.5F;
-        this.bodySnake[1].rotateAngleY = 0.0F + (rAY * 0.65F);/// 2.0F;
-        this.bodySnake[2].rotateAngleY = 0.0F + (rAY * 0.45F);/// 2.5F;
-        this.bodySnake[3].rotateAngleY = 0.0F + (rAY * 0.25F);/// 3.0F;
-        this.bodySnake[4].rotateAngleY = 0.0F + (rAY * 0.10F);/// 3.5F;
-        this.Nose.rotateAngleY = this.Head.rotateAngleY;
-        this.Tongue.rotateAngleY = this.Head.rotateAngleY;
-        this.Tongue0.rotateAngleY = this.Head.rotateAngleY;
-        this.Tongue1.rotateAngleY = this.Head.rotateAngleY;
-        this.LNose.rotateAngleY = this.Head.rotateAngleY;
-        this.TeethUR.rotateAngleY = this.Head.rotateAngleY;
-        this.TeethUL.rotateAngleY = this.Head.rotateAngleY;
+        this.Nose.xRot = this.Head.xRot - f7;
+        this.LNose.xRot = this.Head.xRot + f7;
+        this.Tongue1.xRot = this.Head.xRot + f8;
+        this.Tongue.xRot = this.Head.xRot + f8;
+        this.Tongue0.xRot = this.LNose.xRot;
+        this.TeethUR.xRot = this.Head.xRot - f7;
+        this.TeethUL.xRot = this.Head.xRot - f7;
+        this.bodySnake[0].yRot = 0.0F + (rAY * 0.85F);/// 1.5F;
+        this.bodySnake[1].yRot = 0.0F + (rAY * 0.65F);/// 2.0F;
+        this.bodySnake[2].yRot = 0.0F + (rAY * 0.45F);/// 2.5F;
+        this.bodySnake[3].yRot = 0.0F + (rAY * 0.25F);/// 3.0F;
+        this.bodySnake[4].yRot = 0.0F + (rAY * 0.10F);/// 3.5F;
+        this.Nose.yRot = this.Head.yRot;
+        this.Tongue.yRot = this.Head.yRot;
+        this.Tongue0.yRot = this.Head.yRot;
+        this.Tongue1.yRot = this.Head.yRot;
+        this.LNose.yRot = this.Head.yRot;
+        this.TeethUR.yRot = this.Head.yRot;
+        this.TeethUL.yRot = this.Head.yRot;
 
         if (type == 6) //cobra
         {
-            this.Wing1L.rotateAngleX = this.bodySnake[1].rotateAngleX;
-            this.Wing1L.rotateAngleY = this.bodySnake[1].rotateAngleY;
-            this.Wing1R.rotateAngleX = this.bodySnake[1].rotateAngleX;
-            this.Wing1R.rotateAngleY = this.bodySnake[1].rotateAngleY;
+            this.Wing1L.xRot = this.bodySnake[1].xRot;
+            this.Wing1L.yRot = this.bodySnake[1].yRot;
+            this.Wing1R.xRot = this.bodySnake[1].xRot;
+            this.Wing1R.yRot = this.bodySnake[1].yRot;
 
-            this.Wing2L.rotateAngleX = this.bodySnake[2].rotateAngleX;
-            this.Wing2L.rotateAngleY = this.bodySnake[2].rotateAngleY;
-            this.Wing2R.rotateAngleX = this.bodySnake[2].rotateAngleX;
-            this.Wing2R.rotateAngleY = this.bodySnake[2].rotateAngleY;
+            this.Wing2L.xRot = this.bodySnake[2].xRot;
+            this.Wing2L.yRot = this.bodySnake[2].yRot;
+            this.Wing2R.xRot = this.bodySnake[2].xRot;
+            this.Wing2R.yRot = this.bodySnake[2].yRot;
 
-            this.Wing3L.rotateAngleX = this.bodySnake[3].rotateAngleX;
-            this.Wing3L.rotateAngleY = this.bodySnake[3].rotateAngleY;
-            this.Wing3R.rotateAngleX = this.bodySnake[3].rotateAngleX;
-            this.Wing3R.rotateAngleY = this.bodySnake[3].rotateAngleY;
+            this.Wing3L.xRot = this.bodySnake[3].xRot;
+            this.Wing3L.yRot = this.bodySnake[3].yRot;
+            this.Wing3R.xRot = this.bodySnake[3].xRot;
+            this.Wing3R.yRot = this.bodySnake[3].yRot;
 
-            this.Wing4L.rotateAngleX = this.bodySnake[4].rotateAngleX;
-            this.Wing4L.rotateAngleY = this.bodySnake[4].rotateAngleY;
-            this.Wing4R.rotateAngleX = this.bodySnake[4].rotateAngleX;
-            this.Wing4R.rotateAngleY = this.bodySnake[4].rotateAngleY;
+            this.Wing4L.xRot = this.bodySnake[4].xRot;
+            this.Wing4L.yRot = this.bodySnake[4].yRot;
+            this.Wing4R.xRot = this.bodySnake[4].xRot;
+            this.Wing4R.yRot = this.bodySnake[4].yRot;
 
-            this.Wing5L.rotateAngleX = this.bodySnake[4].rotateAngleX;
-            this.Wing5L.rotateAngleY = this.bodySnake[4].rotateAngleY;
-            this.Wing5R.rotateAngleX = this.bodySnake[4].rotateAngleX;
-            this.Wing5R.rotateAngleY = this.bodySnake[4].rotateAngleY;
+            this.Wing5L.xRot = this.bodySnake[4].xRot;
+            this.Wing5L.yRot = this.bodySnake[4].yRot;
+            this.Wing5R.xRot = this.bodySnake[4].xRot;
+            this.Wing5R.yRot = this.bodySnake[4].yRot;
         }
 
         if (type == 7) //rattlesnake
         {
             if (nearP || frattle != 0.0F) {
-                this.Tail.rotateAngleX = ((MathHelper.cos(f3 * 10F) * 20F) + 90F) / 57.29578F;
+                this.Tail.xRot = ((MathHelper.cos(f3 * 10F) * 20F) + 90F) / 57.29578F;
                 //Tail.rotateAngleX = ((MathHelper.cos(f3*10F)*20F) + 90F)/57.29578F;
             } else {
-                this.Tail.rotateAngleX = 0.0F;
+                this.Tail.xRot = 0.0F;
             }
         }
         //super.setRotationAngles(f, f1, f2, f3, f4, f5);
@@ -278,7 +278,7 @@ public class MoCModelSnake<T extends MoCEntitySnake> extends EntityModel<T> {
     float swing = 0F;
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         float sidef = 0.0F;
         // y = A * sin(w * t - k *x)
         // w1 = speed of wave propagation +/- as needed
@@ -296,7 +296,7 @@ public class MoCModelSnake<T extends MoCEntitySnake> extends EntityModel<T> {
             float yOff = 0F;
             //sideperf = 1F;
 
-            matrixStackIn.push();
+            matrixStackIn.pushPose();
             if (isresting) {
                 //this part doesn't work at all
                 /* if (i > (bodyparts/3) && (i <2*bodyparts/3)) {
@@ -450,7 +450,7 @@ public class MoCModelSnake<T extends MoCEntitySnake> extends EntityModel<T> {
                 this.Tail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             }
 
-            matrixStackIn.pop();
+            matrixStackIn.popPose();
         }
     }
 }

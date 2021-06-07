@@ -24,16 +24,16 @@ public class MoCItemKittyBed extends MoCItem {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        final ItemStack stack = player.getHeldItem(hand);
-        if (!world.isRemote) {
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        final ItemStack stack = player.getItemInHand(hand);
+        if (!world.isClientSide) {
             MoCEntityKittyBed entitykittybed = new MoCEntityKittyBed(MoCEntities.KITTY_BED, world/*, this.sheetType*/);
-            entitykittybed.setPosition(player.getPosX(), player.getPosY(), player.getPosZ());
-            world.addEntity(entitykittybed);
-            entitykittybed.getMotion().add((world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F, world.rand.nextFloat() * 0.05F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F);
+            entitykittybed.setPos(player.getX(), player.getY(), player.getZ());
+            world.addFreshEntity(entitykittybed);
+            entitykittybed.getDeltaMovement().add((world.random.nextFloat() - world.random.nextFloat()) * 0.3F, world.random.nextFloat() * 0.05F, (world.random.nextFloat() - world.random.nextFloat()) * 0.3F);
             stack.shrink(1);
             if (stack.isEmpty()) {
-                player.setHeldItem(hand, ItemStack.EMPTY);
+                player.setItemInHand(hand, ItemStack.EMPTY);
             }
         }
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);

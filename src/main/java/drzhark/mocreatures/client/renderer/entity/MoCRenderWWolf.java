@@ -17,7 +17,7 @@ public class MoCRenderWWolf extends MobRenderer<MoCEntityWWolf, MoCModelWolf<MoC
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityWWolf entity) {
+    public ResourceLocation getTextureLocation(MoCEntityWWolf entity) {
         return entity.getTexture();
     }
 }

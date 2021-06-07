@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 public class MoCRenderBird<T extends MoCEntityBird, M extends MoCModelBird<T>> extends MoCRenderMoC<T, M> {
 
     @Override
-    public ResourceLocation getEntityTexture(T par1Entity) {
+    public ResourceLocation getTextureLocation(T par1Entity) {
         return ((MoCEntityBird) par1Entity).getTexture();
     }
 
@@ -30,15 +30,15 @@ public class MoCRenderBird<T extends MoCEntityBird, M extends MoCModelBird<T>> e
     }
 
     @Override
-    protected float handleRotationFloat(MoCEntityBird entitybird, float f) {
+    protected float getBob(MoCEntityBird entitybird, float f) {
         float f1 = entitybird.winge + ((entitybird.wingb - entitybird.winge) * f);
         float f2 = entitybird.wingd + ((entitybird.wingc - entitybird.wingd) * f);
         return (MathHelper.sin(f1) + 1.0F) * f2;
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityBird entitybird, MatrixStack matrixStack, float f) {
-        if (!entitybird.world.isRemote && (entitybird.getRidingEntity() != null)) {
+    protected void scale(MoCEntityBird entitybird, MatrixStack matrixStack, float f) {
+        if (!entitybird.level.isClientSide && (entitybird.getVehicle() != null)) {
             matrixStack.translate(0.0F, 1.3F, 0.0F);
         }
     }

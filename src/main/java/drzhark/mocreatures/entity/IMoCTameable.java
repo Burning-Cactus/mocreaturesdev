@@ -19,10 +19,6 @@ public interface IMoCTameable extends IMoCEntity {
 
     void remove();
 
-    void writeAdditional(CompoundNBT nbttagcompound);
-
-    void readAdditional(CompoundNBT nbttagcompound);
-
     void setOwnerId(@Nullable UUID uuid);
 
     float getPetHealth();

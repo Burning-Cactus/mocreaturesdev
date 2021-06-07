@@ -18,8 +18,8 @@ public class MoCRenderButterfly<T extends MoCEntityButterfly, M extends MoCModel
     }
 
     @Override
-    protected void preRenderCallback(T entitybutterfly, MatrixStack stack, float par2) {
-        if (entitybutterfly.isOnAir() || entitybutterfly.isAirBorne) {
+    protected void scale(T entitybutterfly, MatrixStack stack, float par2) {
+        if (entitybutterfly.isOnAir() || entitybutterfly.hasImpulse) {
             adjustHeight(entitybutterfly, stack, entitybutterfly.tFloat());
         }
         if (entitybutterfly.climbing()) {
@@ -33,7 +33,7 @@ public class MoCRenderButterfly<T extends MoCEntityButterfly, M extends MoCModel
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityButterfly entitybutterfly) {
+    public ResourceLocation getTextureLocation(MoCEntityButterfly entitybutterfly) {
         return entitybutterfly.getTexture();
     }
 }

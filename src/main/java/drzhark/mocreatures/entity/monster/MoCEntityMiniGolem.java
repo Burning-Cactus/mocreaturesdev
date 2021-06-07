@@ -26,8 +26,8 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
 
     public int tcounter;
     public MoCEntityThrowableRock tempRock;
-    private static final DataParameter<Boolean> ANGRY = EntityDataManager.createKey(MoCEntityMiniGolem.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HAS_ROCK = EntityDataManager.createKey(MoCEntityMiniGolem.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> ANGRY = EntityDataManager.defineId(MoCEntityMiniGolem.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> HAS_ROCK = EntityDataManager.defineId(MoCEntityMiniGolem.class, DataSerializers.BOOLEAN);
     
 
     public MoCEntityMiniGolem(EntityType<? extends MoCEntityMiniGolem> type, World world) {
@@ -46,48 +46,48 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityMob.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 15.0D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 2.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
+                .add(Attributes.MAX_HEALTH, 15.0D)
+                .add(Attributes.ATTACK_DAMAGE, 2.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(ANGRY, Boolean.FALSE);
-        this.dataManager.register(HAS_ROCK, Boolean.FALSE);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(ANGRY, Boolean.FALSE);
+        this.entityData.define(HAS_ROCK, Boolean.FALSE);
     }
 
     public boolean getIsAngry() {
-        return this.dataManager.get(ANGRY);
+        return this.entityData.get(ANGRY);
     }
 
     public void setIsAngry(boolean flag) {
-        this.dataManager.set(ANGRY, flag);
+        this.entityData.set(ANGRY, flag);
     }
 
     public boolean getHasRock() {
-        return this.dataManager.get(HAS_ROCK);
+        return this.entityData.get(HAS_ROCK);
     }
 
     public void setHasRock(boolean flag) {
-        this.dataManager.set(HAS_ROCK, flag);
+        this.entityData.set(HAS_ROCK, flag);
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
 
-        if (!this.world.isRemote) {
-            setIsAngry(this.getAttackTarget() != null);
+        if (!this.level.isClientSide) {
+            setIsAngry(this.getTarget() != null);
 
-            if (getIsAngry() && this.getAttackTarget() != null) {
-                if (!getHasRock() && this.rand.nextInt(30) == 0) {
+            if (getIsAngry() && this.getTarget() != null) {
+                if (!getHasRock() && this.random.nextInt(30) == 0) {
                     acquireTRock();
                 }
 
                 if (getHasRock()) {
-                    this.getNavigator().clearPath();
+                    this.getNavigation().stop();
                     attackWithTRock();
                 }
             }
@@ -103,8 +103,8 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
         }
 
         //creates a dummy Trock on top of it
-        MoCEntityThrowableRock trock = new MoCEntityThrowableRock(this.world, this, this.getPosX(), this.getPosY() + 1.5D, this.getPosZ());
-        this.world.addEntity(trock);
+        MoCEntityThrowableRock trock = new MoCEntityThrowableRock(this.level, this, this.getX(), this.getY() + 1.5D, this.getZ());
+        this.level.addFreshEntity(trock);
         trock.setState(tRockState);
         trock.setBehavior(1);
         this.tempRock = trock;
@@ -113,7 +113,7 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
 
     @Override
     public boolean isMovementCeased() {
-        return getHasRock() && this.getAttackTarget() != null;
+        return getHasRock() && this.getTarget() != null;
     }
 
     /**
@@ -124,13 +124,13 @@ public class MoCEntityMiniGolem extends MoCEntityMob {
 
         if (this.tcounter < 50) {
             //maintains position of Trock above head
-            this.tempRock.setPosition(this.getPosX(), this.getPosY()+1.0D, this.getPosZ());
+            this.tempRock.setPos(this.getX(), this.getY()+1.0D, this.getZ());
         }
 
         if (this.tcounter >= 50) {
             //throws a newly spawned Trock and destroys the held Trock
-            if (this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 48F) {
-                MoCTools.throwStone(this, this.getAttackTarget(), this.tempRock.getState(), 10D, 0.25D);
+            if (this.getTarget() != null && this.distanceTo(this.getTarget()) < 48F) {
+                MoCTools.throwStone(this, this.getTarget(), this.tempRock.getState(), 10D, 0.25D);
             }
 
             this.tempRock.remove();

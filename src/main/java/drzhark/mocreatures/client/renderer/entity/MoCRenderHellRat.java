@@ -23,7 +23,7 @@ public class MoCRenderHellRat extends MoCRenderRat<MoCEntityHellRat> {
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityHellRat entityhellrat) {
+    public ResourceLocation getTextureLocation(MoCEntityHellRat entityhellrat) {
         return entityhellrat.getTexture();
     }
 }

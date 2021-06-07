@@ -46,9 +46,9 @@ public class MoCEntityHorseMob extends MoCEntityMob {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityMob.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.3D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D);
+                .add(Attributes.MAX_HEALTH, 30.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.3D)
+                .add(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class MoCEntityHorseMob extends MoCEntityMob {
 //            this.isImmuneToFire = true; TODO: Fire immunity can't be set through the entity class, will probably need to use an event handler.
         } else {
             if (getSubType() == 0) {
-                int j = this.rand.nextInt(100);
+                int j = this.random.nextInt(100);
                 if (j <= (40)) {
                     setType(23); //undead
                 } else if (j <= (80)) {
@@ -94,7 +94,7 @@ public class MoCEntityHorseMob extends MoCEntityMob {
                 String baseTex = "horseundead";
                 int max = 79;
 
-                if (this.rand.nextInt(3) == 0) {
+                if (this.random.nextInt(3) == 0) {
                     this.textCounter++;
                 }
                 if (this.textCounter < 10) {
@@ -155,15 +155,15 @@ public class MoCEntityHorseMob extends MoCEntityMob {
     @Override
     protected SoundEvent getAmbientSound() {
         openMouth();
-        if (this.rand.nextInt(10) == 0) {
+        if (this.random.nextInt(10) == 0) {
             stand();
         }
         return MoCSoundEvents.ENTITY_HORSE_AMBIENT_UNDEAD;
     }
 
     public boolean isOnAir() {
-        return this.world.isAirBlock(new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosY() - 0.2D), MathHelper
-                .floor(this.getPosZ())));
+        return this.level.isEmptyBlock(new BlockPos(MathHelper.floor(this.getX()), MathHelper.floor(this.getY() - 0.2D), MathHelper
+                .floor(this.getZ())));
     }
 
     @Override
@@ -209,40 +209,40 @@ public class MoCEntityHorseMob extends MoCEntityMob {
     }
 
     @Override
-    public void livingTick() {
+    public void aiStep() {
 
-        super.livingTick();
+        super.aiStep();
 
-        if (isOnAir() && isFlyer() && this.rand.nextInt(5) == 0) {
+        if (isOnAir() && isFlyer() && this.random.nextInt(5) == 0) {
             this.wingFlapCounter = 1;
         }
 
-        if (this.rand.nextInt(200) == 0) {
+        if (this.random.nextInt(200) == 0) {
             moveTail();
         }
 
-        if (!isOnAir() && (!this.isBeingRidden()) && this.rand.nextInt(250) == 0) {
+        if (!isOnAir() && (!this.isVehicle()) && this.random.nextInt(250) == 0) {
             stand();
         }
 
-        if (this.world.isRemote && getSubType() == 38 && this.rand.nextInt(50) == 0) {
+        if (this.level.isClientSide && getSubType() == 38 && this.random.nextInt(50) == 0) {
             LavaFX();
         }
 
-        if (this.world.isRemote && getSubType() == 23 && this.rand.nextInt(50) == 0) {
+        if (this.level.isClientSide && getSubType() == 23 && this.random.nextInt(50) == 0) {
             UndeadFX();
         }
 
-        if (!this.world.isRemote) {
-            if (isFlyer() && this.rand.nextInt(500) == 0) {
+        if (!this.level.isClientSide) {
+            if (isFlyer() && this.random.nextInt(500) == 0) {
                 wingFlap();
             }
 
-            if (!isOnAir() && (!this.isBeingRidden()) && this.rand.nextInt(300) == 0) {
+            if (!isOnAir() && (!this.isVehicle()) && this.random.nextInt(300) == 0) {
                 setEating();
             }
 
-            if (!this.isBeingRidden() && this.rand.nextInt(100) == 0) {
+            if (!this.isVehicle() && this.random.nextInt(100) == 0) {
                 MoCTools.findMobRider(this);
                 /*List list = this.world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().expand(4D, 4D, 4D));
                 for (int i = 0; i < list.size(); i++) {
@@ -320,7 +320,7 @@ public class MoCEntityHorseMob extends MoCEntityMob {
 //    }
 
     @Override
-    public boolean attackEntityAsMob(Entity entityIn) {
+    public boolean doHurtTarget(Entity entityIn) {
         if (entityIn instanceof PlayerEntity && !shouldAttackPlayers()) {
             return false;
         }
@@ -329,30 +329,30 @@ public class MoCEntityHorseMob extends MoCEntityMob {
         }
         openMouth();
         MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_HORSE_MAD);
-        return super.attackEntityAsMob(entityIn);
+        return super.doHurtTarget(entityIn);
     }
 
     @Override
-    public void onDeath(DamageSource damagesource) {
-        super.onDeath(damagesource);
+    public void die(DamageSource damagesource) {
+        super.die(damagesource);
 
         if ((this.getSubType() == 23) || (this.getSubType() == 24) || (this.getSubType() == 25)) {
-            MoCTools.spawnSlimes(this.world, this);
+            MoCTools.spawnSlimes(this.level, this);
         }
 
     }
 
     @Override
-    public double getMountedYOffset() {
-        return (this.getHeight() * 0.75D) - 0.1D;
+    public double getPassengersRidingOffset() {
+        return (this.getBbHeight() * 0.75D) - 0.1D;
     }
 
     @Override
-    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
-        if (this.getPosY() < 50D /*&& !this.world.dimension.doesWaterVaporize()*/) {
+    public boolean checkSpawnRules(IWorld worldIn, SpawnReason reason) {
+        if (this.getY() < 50D /*&& !this.world.dimension.doesWaterVaporize()*/) {
             setType(32);
         }
-        return super.canSpawn(worldIn, reason);
+        return super.checkSpawnRules(worldIn, reason);
     }
 
     public void UndeadFX() {
@@ -367,11 +367,11 @@ public class MoCEntityHorseMob extends MoCEntityMob {
      * Get this Entity's EnumCreatureAttribute
      */
     @Override
-    public CreatureAttribute getCreatureAttribute() {
+    public CreatureAttribute getMobType() {
         if (getSubType() == 23 || getSubType() == 24 || getSubType() == 25) {
             return CreatureAttribute.UNDEAD;
         }
-        return super.getCreatureAttribute();
+        return super.getMobType();
     }
 
     @Override
@@ -390,11 +390,11 @@ public class MoCEntityHorseMob extends MoCEntityMob {
     }
 
     @Override
-    public void updatePassenger(Entity passenger) {
+    public void positionRider(Entity passenger) {
         double dist = (0.4D);
-        double newPosX = this.getPosX() + (dist * Math.sin(this.renderYawOffset / 57.29578F));
-        double newPosZ = this.getPosZ() - (dist * Math.cos(this.renderYawOffset / 57.29578F));
-        passenger.setPosition(newPosX, this.getPosY() + getMountedYOffset() + passenger.getYOffset(), newPosZ);
-        passenger.rotationYaw = this.rotationYaw;
+        double newPosX = this.getX() + (dist * Math.sin(this.yBodyRot / 57.29578F));
+        double newPosZ = this.getZ() - (dist * Math.cos(this.yBodyRot / 57.29578F));
+        passenger.setPos(newPosX, this.getY() + getPassengersRidingOffset() + passenger.getMyRidingOffset(), newPosZ);
+        passenger.yRot = this.yRot;
     }
 }

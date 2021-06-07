@@ -28,7 +28,7 @@ public class MoCRenderFishy extends LivingRenderer<MoCEntityFishy, MoCModelFishy
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityFishy entityfishy, MatrixStack stack, float f) {
+    protected void scale(MoCEntityFishy entityfishy, MatrixStack stack, float f) {
         stack.translate(0.0F, 0.3F, 0.0F);
         if (!entityfishy.getIsAdult()) {
             stretch(entityfishy, stack);
@@ -36,8 +36,8 @@ public class MoCRenderFishy extends LivingRenderer<MoCEntityFishy, MoCModelFishy
     }
 
     @Override
-    protected float handleRotationFloat(MoCEntityFishy entityfishy, float f) {
-        return entityfishy.ticksExisted + f;
+    protected float getBob(MoCEntityFishy entityfishy, float f) {
+        return entityfishy.tickCount + f;
     }
 
     protected void stretch(MoCEntityFishy entityfishy, MatrixStack stack) {
@@ -45,7 +45,7 @@ public class MoCRenderFishy extends LivingRenderer<MoCEntityFishy, MoCModelFishy
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityFishy entityfishy) {
+    public ResourceLocation getTextureLocation(MoCEntityFishy entityfishy) {
         return entityfishy.getTexture();
     }
 }

@@ -21,8 +21,8 @@ public class MoCEntityMaggot extends MoCEntityAmbient {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityAmbient.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 4.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.1D);
+                .add(Attributes.MAX_HEALTH, 4.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.1D);
     }
 
 //    @Override
@@ -30,15 +30,15 @@ public class MoCEntityMaggot extends MoCEntityAmbient {
 //    }
 
     @Override
-    public boolean isOnLadder() {
-        return this.collidedHorizontally;
+    public boolean onClimbable() {
+        return this.horizontalCollision;
     }
 
     public boolean climbing() {
-        return !this.onGround && isOnLadder();
+        return !this.onGround && onClimbable();
     }
 
     @Override
-    public void jump() {
+    public void jumpFromGround() {
     }
 }

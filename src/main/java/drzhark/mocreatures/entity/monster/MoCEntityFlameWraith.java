@@ -22,22 +22,22 @@ public class MoCEntityFlameWraith extends MoCEntityWraith implements IMob {
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return MoCEntityWraith.registerAttributes().func_233815_a_(Attributes.MAX_HEALTH, 15.0D);
+        return MoCEntityWraith.registerAttributes().add(Attributes.MAX_HEALTH, 15.0D);
     }
 
     @Override
-    public void livingTick() {
-        if (!this.world.isRemote) {
-            if (this.world.isDaytime()) {
+    public void aiStep() {
+        if (!this.level.isClientSide) {
+            if (this.level.isDay()) {
                 float f = getBrightness();
                 if ((f > 0.5F)
-                        && this.world.canBlockSeeSky(new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosY()),
-                                MathHelper.floor(this.getPosZ()))) && ((this.rand.nextFloat() * 30F) < ((f - 0.4F) * 2.0F))) {
+                        && this.level.canSeeSkyFromBelowWater(new BlockPos(MathHelper.floor(this.getX()), MathHelper.floor(this.getY()),
+                                MathHelper.floor(this.getZ()))) && ((this.random.nextFloat() * 30F) < ((f - 0.4F) * 2.0F))) {
                     this.setHealth(getHealth() - 2);
                 }
             }
         }
-        super.livingTick();
+        super.aiStep();
     }
 
     //TODO TEST
@@ -47,16 +47,16 @@ public class MoCEntityFlameWraith extends MoCEntityWraith implements IMob {
     }*/
 
     @Override
-    public void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
+    public void doEnchantDamageEffects(LivingEntity entityLivingBaseIn, Entity entityIn) {
         /*if (!this.world.isRemote && !this.world.getDimension().doesWaterVaporize()) {
             entityLivingBaseIn.setFire(this.burningTime);
         }*/
-        super.applyEnchantments(entityLivingBaseIn, entityIn);
+        super.doEnchantDamageEffects(entityLivingBaseIn, entityIn);
     }
 
     @Override
-    public boolean isBurning() {
-        return this.rand.nextInt(100) == 0;
+    public boolean isOnFire() {
+        return this.random.nextInt(100) == 0;
     }
 
     @Override

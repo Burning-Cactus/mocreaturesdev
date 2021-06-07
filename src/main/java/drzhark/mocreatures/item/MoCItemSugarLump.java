@@ -5,6 +5,6 @@ import net.minecraft.item.Item;
 public class MoCItemSugarLump extends MoCItem {
 
     public MoCItemSugarLump(Item.Properties properties) {
-        super(properties.maxStackSize(16));
+        super(properties.stacksTo(16));
     }
 }

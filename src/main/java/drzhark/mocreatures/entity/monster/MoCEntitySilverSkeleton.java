@@ -37,15 +37,15 @@ public class MoCEntitySilverSkeleton extends MoCEntityMob {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityMob.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 25.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 2.0D);
+                .add(Attributes.MAX_HEALTH, 25.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D)
+                .add(Attributes.ATTACK_DAMAGE, 2.0D);
     }
 
     @Override
-    public void livingTick() {
-        if (!this.world.isRemote) {
-            setSprinting(this.getAttackTarget() != null);
+    public void aiStep() {
+        if (!this.level.isClientSide) {
+            setSprinting(this.getTarget() != null);
         }
 
         if (this.attackCounterLeft > 0 && ++this.attackCounterLeft > 10) {
@@ -56,7 +56,7 @@ public class MoCEntitySilverSkeleton extends MoCEntityMob {
             this.attackCounterRight = 0;
         }
 
-        super.livingTick();
+        super.aiStep();
     }
 //
 //    @Override TODO loot tables
@@ -84,8 +84,8 @@ public class MoCEntitySilverSkeleton extends MoCEntityMob {
      * Starts attack counters and synchronizes animations with clients
      */
     private void startAttackAnimation() {
-        if (!this.world.isRemote) {
-            boolean leftArmW = this.rand.nextInt(2) == 0;
+        if (!this.level.isClientSide) {
+            boolean leftArmW = this.random.nextInt(2) == 0;
 
             if (leftArmW) {
                 this.attackCounterLeft = 1;
@@ -100,13 +100,13 @@ public class MoCEntitySilverSkeleton extends MoCEntityMob {
     }
 
     @Override
-    public boolean attackEntityAsMob(Entity entityIn) {
+    public boolean doHurtTarget(Entity entityIn) {
         startAttackAnimation();
-        return super.attackEntityAsMob(entityIn);
+        return super.doHurtTarget(entityIn);
     }
 
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         if (isSprinting()) {
             return 0.35F;
         }
@@ -115,30 +115,30 @@ public class MoCEntitySilverSkeleton extends MoCEntityMob {
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_SKELETON_DEATH;
+        return SoundEvents.SKELETON_DEATH;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.ENTITY_SKELETON_HURT;
+        return SoundEvents.SKELETON_HURT;
     }
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_SKELETON_AMBIENT;
+        return SoundEvents.SKELETON_AMBIENT;
     }
 
     /**
      * Get this Entity's EnumCreatureAttribute
      */
     @Override
-    public CreatureAttribute getCreatureAttribute() {
+    public CreatureAttribute getMobType() {
         return CreatureAttribute.UNDEAD;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState block) {
-        this.playSound(SoundEvents.ENTITY_SKELETON_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.SKELETON_STEP, 0.15F, 1.0F);
     }
 
     @Override

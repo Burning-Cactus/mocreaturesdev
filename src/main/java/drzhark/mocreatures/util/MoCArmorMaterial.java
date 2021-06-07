@@ -13,28 +13,28 @@ import java.util.function.Supplier;
 
 public enum MoCArmorMaterial implements IArmorMaterial {
 
-    CROCARMOR("crocarmor", 15, new int[] {2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0, () -> {
-        return Ingredient.fromItems(new IItemProvider[] {MoCItems.HIDECROC});
+    CROCARMOR("crocarmor", 15, new int[] {2, 6, 5, 2}, 12, SoundEvents.ARMOR_EQUIP_GENERIC, 0, () -> {
+        return Ingredient.of(new IItemProvider[] {MoCItems.HIDECROC});
     }),
-    FURARMOR("furarmor", 15, new int[] {2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0, () -> {
-        return Ingredient.fromItems(new IItemProvider[] {MoCItems.FUR});
+    FURARMOR("furarmor", 15, new int[] {2, 6, 5, 2}, 12, SoundEvents.ARMOR_EQUIP_GENERIC, 0, () -> {
+        return Ingredient.of(new IItemProvider[] {MoCItems.FUR});
     }),
-    HIDEARMOR("hidearmor", 15, new int[] {2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0, () -> {
-        return Ingredient.fromItems(new IItemProvider[] {MoCItems.ANIMALHIDE});
+    HIDEARMOR("hidearmor", 15, new int[] {2, 6, 5, 2}, 12, SoundEvents.ARMOR_EQUIP_GENERIC, 0, () -> {
+        return Ingredient.of(new IItemProvider[] {MoCItems.ANIMALHIDE});
     }),
-    SCORPDARMOR("scorpdarmor", 15, new int[] {2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0, () -> {
-        return Ingredient.fromItems(new IItemProvider[] {MoCItems.CHITIN});
+    SCORPDARMOR("scorpdarmor", 15, new int[] {2, 6, 5, 2}, 12, SoundEvents.ARMOR_EQUIP_GENERIC, 0, () -> {
+        return Ingredient.of(new IItemProvider[] {MoCItems.CHITIN});
     }),
-    SCORPFARMOR("scorpfarmor", 18, new int[] {2, 7, 6, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0, () -> {
-        return Ingredient.fromItems(new IItemProvider[] {MoCItems.CHITINFROST});
+    SCORPFARMOR("scorpfarmor", 18, new int[] {2, 7, 6, 2}, 12, SoundEvents.ARMOR_EQUIP_GENERIC, 0, () -> {
+        return Ingredient.of(new IItemProvider[] {MoCItems.CHITINFROST});
     }),
-    SCORPNARMOR("scorpnarmor", 20, new int[] {2, 7, 6, 3}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0, () -> {
-        return Ingredient.fromItems(new IItemProvider[] {MoCItems.CHITINNETHER});
+    SCORPNARMOR("scorpnarmor", 20, new int[] {2, 7, 6, 3}, 15, SoundEvents.ARMOR_EQUIP_GENERIC, 0, () -> {
+        return Ingredient.of(new IItemProvider[] {MoCItems.CHITINNETHER});
     }),
-    SCORPCARMOR("scorpcarmor", 15, new int[] {2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0, () -> {
-        return Ingredient.fromItems(new IItemProvider[] {MoCItems.CHITINCAVE});
+    SCORPCARMOR("scorpcarmor", 15, new int[] {2, 6, 5, 2}, 12, SoundEvents.ARMOR_EQUIP_GENERIC, 0, () -> {
+        return Ingredient.of(new IItemProvider[] {MoCItems.CHITINCAVE});
     }),
-    SILVERARMOR("silverarmor", 15, new int[] {2, 6, 5, 2}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0, () -> Ingredient.EMPTY);
+    SILVERARMOR("silverarmor", 15, new int[] {2, 6, 5, 2}, 15, SoundEvents.ARMOR_EQUIP_GENERIC, 0, () -> Ingredient.EMPTY);
 
     MoCArmorMaterial(String name, int durability, int[] defense, int enchantabilityIn, SoundEvent soundEvent, float toughness, Supplier<Ingredient> material) {
         this.name = name;
@@ -56,28 +56,28 @@ public enum MoCArmorMaterial implements IArmorMaterial {
     private final float toughness;
 
     @Override
-    public int getDurability(EquipmentSlotType equipmentSlotType) {
+    public int getDurabilityForSlot(EquipmentSlotType equipmentSlotType) {
         return this.MAX_DAMAGE_ARRAY[equipmentSlotType.getIndex()]*maxDamageFactor;
     }
 
     @Override
-    public int getDamageReductionAmount(EquipmentSlotType equipmentSlotType) {
+    public int getDefenseForSlot(EquipmentSlotType equipmentSlotType) {
         return this.defense[equipmentSlotType.getIndex()];
     }
 
     @Override
-    public int getEnchantability() {
+    public int getEnchantmentValue() {
         return this.enchantability;
     }
 
     @Override
-    public SoundEvent getSoundEvent() {
+    public SoundEvent getEquipSound() {
         return this.sound;
     }
 
     @Override
-    public Ingredient getRepairMaterial() {
-        return this.repairMaterial.getValue();
+    public Ingredient getRepairIngredient() {
+        return this.repairMaterial.get();
     }
 
     @Override
@@ -91,7 +91,7 @@ public enum MoCArmorMaterial implements IArmorMaterial {
     }
 
     @Override
-    public float func_230304_f_() {
+    public float getKnockbackResistance() {
         return 0;
     }
 }

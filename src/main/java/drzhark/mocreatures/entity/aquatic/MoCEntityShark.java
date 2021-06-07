@@ -19,7 +19,7 @@ public class MoCEntityShark extends MoCEntityTameableAquatic {
     public MoCEntityShark(EntityType<? extends MoCEntityShark> type, World world) {
         super(type, world);
         this.texture = "shark.png";
-        setEdad(60 + this.rand.nextInt(100));
+        setEdad(60 + this.random.nextInt(100));
     }
 
     @Override
@@ -31,25 +31,25 @@ public class MoCEntityShark extends MoCEntityTameableAquatic {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityTameableAquatic.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 25.0D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 5.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.5D);
+                .add(Attributes.MAX_HEALTH, 25.0D)
+                .add(Attributes.ATTACK_DAMAGE, 5.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.5D);
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
+    protected void defineSynchedData() {
+        super.defineSynchedData();
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        if (super.attackEntityFrom(damagesource, i) && (this.world.getDifficulty().getId() > 0)) {
-            Entity entity = damagesource.getTrueSource();
-            if (this.isRidingOrBeingRiddenBy(entity)) {
+    public boolean hurt(DamageSource damagesource, float i) {
+        if (super.hurt(damagesource, i) && (this.level.getDifficulty().getId() > 0)) {
+            Entity entity = damagesource.getEntity();
+            if (this.hasIndirectPassenger(entity)) {
                 return true;
             }
             if (entity != this && entity instanceof LivingEntity) {
-                setAttackTarget((LivingEntity) entity);
+                setTarget((LivingEntity) entity);
                 return true;
             } else {
                 return false;
@@ -107,10 +107,10 @@ public class MoCEntityShark extends MoCEntityTameableAquatic {
      }*/
 
     @Override
-    public void livingTick() {
-        super.livingTick();
-        if (!this.world.isRemote) {
-            if (!getIsAdult() && (this.rand.nextInt(50) == 0)) {
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level.isClientSide) {
+            if (!getIsAdult() && (this.random.nextInt(50) == 0)) {
                 setEdad(getEdad() + 1);
                 if (getEdad() >= 200) {
                     setAdult(true);
@@ -121,7 +121,7 @@ public class MoCEntityShark extends MoCEntityTameableAquatic {
 
     @Override
     public void remove() {
-        if (!this.world.isRemote && getIsTamed() && (getHealth() > 0)) {
+        if (!this.level.isClientSide && getIsTamed() && (getHealth() > 0)) {
             return;
         } else {
             super.remove();
@@ -139,7 +139,7 @@ public class MoCEntityShark extends MoCEntityTameableAquatic {
     }
 
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         return 0.12F;
     }
 

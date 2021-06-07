@@ -32,17 +32,17 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
     private int bunnyReproduceTickerA;
     private int bunnyReproduceTickerB;
     private int jumpTimer;
-    private static final DataParameter<Boolean> HAS_EATEN = EntityDataManager.<Boolean>createKey(MoCEntityBunny.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> HAS_EATEN = EntityDataManager.<Boolean>defineId(MoCEntityBunny.class, DataSerializers.BOOLEAN);
     
     public MoCEntityBunny(EntityType<? extends MoCEntityBunny> type, World world) {
         super(type, world);
         setAdult(true);
         setTamed(false);
-        setEdad(50 + this.rand.nextInt(15));
-        if (this.rand.nextInt(4) == 0) {
+        setEdad(50 + this.random.nextInt(15));
+        if (this.random.nextInt(4) == 0) {
             setAdult(false);
         }
-        this.bunnyReproduceTickerA = this.rand.nextInt(64);
+        this.bunnyReproduceTickerA = this.random.nextInt(64);
         this.bunnyReproduceTickerB = 0;
     }
 
@@ -59,22 +59,22 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityTameableAnimal.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 4.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.35D);
+                .add(Attributes.MAX_HEALTH, 4.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.35D);
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(HAS_EATEN, Boolean.valueOf(false));
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(HAS_EATEN, Boolean.valueOf(false));
     }
 
     public boolean getHasEaten() {
-        return ((Boolean)this.dataManager.get(HAS_EATEN)).booleanValue();
+        return ((Boolean)this.entityData.get(HAS_EATEN)).booleanValue();
     }
 
     public void setHasEaten(boolean flag) {
-        this.dataManager.set(HAS_EATEN, Boolean.valueOf(flag));
+        this.entityData.set(HAS_EATEN, Boolean.valueOf(flag));
     }
 
     @Override
@@ -82,7 +82,7 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
         checkSpawningBiome();
 
         if (getSubType() == 0) {
-            setType(this.rand.nextInt(5) + 1);
+            setType(this.random.nextInt(5) + 1);
         }
 
     }
@@ -136,7 +136,7 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_RABBIT_AMBIENT;
+        return SoundEvents.RABBIT_AMBIENT;
     }
 
     /*@Override
@@ -174,18 +174,18 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
     public void tick() {
         super.tick();
 
-        if (this.getRidingEntity() != null) {
-            this.rotationYaw = this.getRidingEntity().rotationYaw;
+        if (this.getVehicle() != null) {
+            this.yRot = this.getVehicle().yRot;
         }
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
 
             if (--this.jumpTimer <= 0 && this.onGround
-                    && ((this.getMotion().x > 0.05D) || (this.getMotion().z > 0.05D) || (this.getMotion().x < -0.05D) || (this.getMotion().z < -0.05D))) {
-                this.setMotion(this.getMotion().x, 0.3D, this.getMotion().z);
+                    && ((this.getDeltaMovement().x > 0.05D) || (this.getDeltaMovement().z > 0.05D) || (this.getDeltaMovement().x < -0.05D) || (this.getDeltaMovement().z < -0.05D))) {
+                this.setDeltaMovement(this.getDeltaMovement().x, 0.3D, this.getDeltaMovement().z);
                 this.jumpTimer = 15;
             }
 
-            if (!getIsTamed() || !getIsAdult() || !getHasEaten() || (this.getRidingEntity() != null)) {
+            if (!getIsTamed() || !getIsAdult() || !getHasEaten() || (this.getVehicle() != null)) {
                 return;
             }
             if (this.bunnyReproduceTickerA < 1023) {
@@ -193,27 +193,27 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
             } else if (this.bunnyReproduceTickerB < 127) {
                 this.bunnyReproduceTickerB++;
             } else {
-                List<Entity> list1 = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(4.0D, 4.0D, 4.0D));
+                List<Entity> list1 = this.level.getEntities(this, getBoundingBox().expandTowards(4.0D, 4.0D, 4.0D));
                 for (int i1 = 0; i1 < list1.size(); i1++) {
                     Entity entity1 = (Entity) list1.get(i1);
                     if (!(entity1 instanceof MoCEntityBunny) || (entity1 == this)) {
                         continue;
                     }
                     MoCEntityBunny entitybunny = (MoCEntityBunny) entity1;
-                    if ((entitybunny.getRidingEntity() != null) || (entitybunny.bunnyReproduceTickerA < 1023) || !entitybunny.getIsAdult()
+                    if ((entitybunny.getVehicle() != null) || (entitybunny.bunnyReproduceTickerA < 1023) || !entitybunny.getIsAdult()
                             || !entitybunny.getHasEaten()) {
                         continue;
                     }
-                    MoCEntityBunny entitybunny1 = new MoCEntityBunny(MoCEntities.BUNNY, this.world);
-                    entitybunny1.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
+                    MoCEntityBunny entitybunny1 = new MoCEntityBunny(MoCEntities.BUNNY, this.level);
+                    entitybunny1.setPos(this.getX(), this.getY(), this.getZ());
                     entitybunny1.setAdult(false);
                     int babytype = this.getSubType();
-                    if (this.rand.nextInt(2) == 0) {
+                    if (this.random.nextInt(2) == 0) {
                         babytype = entitybunny.getSubType();
                     }
                     entitybunny1.setType(babytype);
-                    this.world.addEntity(entitybunny1);
-                    MoCTools.playCustomSound(this, SoundEvents.ENTITY_CHICKEN_EGG);
+                    this.level.addFreshEntity(entitybunny1);
+                    MoCTools.playCustomSound(this, SoundEvents.CHICKEN_EGG);
                     proceed();
                     entitybunny.proceed();
                     break;
@@ -225,7 +225,7 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
     public void proceed() {
         setHasEaten(false);
         this.bunnyReproduceTickerB = 0;
-        this.bunnyReproduceTickerA = this.rand.nextInt(64);
+        this.bunnyReproduceTickerA = this.random.nextInt(64);
     }
 
     @Override
@@ -242,11 +242,11 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
      * So bunny-hats don't suffer damage
      */
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        if (this.getRidingEntity() != null) {
+    public boolean hurt(DamageSource damagesource, float i) {
+        if (this.getVehicle() != null) {
             return false;
         }
-        return super.attackEntityFrom(damagesource, i);
+        return super.hurt(damagesource, i);
     }
 
     @Override
@@ -255,12 +255,12 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public double getYOffset() {
-        if (this.getRidingEntity() instanceof PlayerEntity) {
-            return ((PlayerEntity) this.getRidingEntity()).isSneaking() ? 0.25 : 0.5F;
+    public double getMyRidingOffset() {
+        if (this.getVehicle() instanceof PlayerEntity) {
+            return ((PlayerEntity) this.getVehicle()).isShiftKeyDown() ? 0.25 : 0.5F;
         }
 
-        return super.getYOffset();
+        return super.getMyRidingOffset();
     }
 
     @Override

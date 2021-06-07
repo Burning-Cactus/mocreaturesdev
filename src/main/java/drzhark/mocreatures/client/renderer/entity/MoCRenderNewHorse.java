@@ -18,7 +18,7 @@ public class MoCRenderNewHorse<T extends MoCEntityHorse, M extends MoCModelNewHo
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityHorse entityhorse) {
+    public ResourceLocation getTextureLocation(MoCEntityHorse entityhorse) {
         return entityhorse.getTexture();
     }
 
@@ -27,14 +27,14 @@ public class MoCRenderNewHorse<T extends MoCEntityHorse, M extends MoCModelNewHo
     }
 
     @Override
-    protected void preRenderCallback(T entityhorse, MatrixStack matrixStack, float f) {
+    protected void scale(T entityhorse, MatrixStack matrixStack, float f) {
         if (!entityhorse.getIsAdult() || entityhorse.getSubType() > 64) {
             stretch(entityhorse);
         }
         if (entityhorse.getIsGhost()) {
             adjustHeight(entityhorse, -0.3F + (entityhorse.tFloat() / 5F));
         }
-        super.preRenderCallback(entityhorse, matrixStack, f);
+        super.scale(entityhorse, matrixStack, f);
     }
 
     protected void stretch(MoCEntityHorse entityhorse) {

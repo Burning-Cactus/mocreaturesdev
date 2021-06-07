@@ -119,477 +119,477 @@ public class MoCModelOgre<T extends MoCEntityOgre> extends EntityModel<T> {
     private int armToAnimate;
 
     public MoCModelOgre() {
-        this.textureWidth = 128;
-        this.textureHeight = 128;
+        this.texWidth = 128;
+        this.texHeight = 128;
 
         this.Head = new ModelRenderer(this, 80, 0);
         this.Head.addBox(-6F, -12F, -6F, 12, 12, 12);
-        this.Head.setRotationPoint(0F, -13F, 0F);
+        this.Head.setPos(0F, -13F, 0F);
 
         this.Brow = new ModelRenderer(this, 68, 7);
         this.Brow.addBox(-5F, -10.5F, -8F, 10, 3, 2);
-        this.Brow.setRotationPoint(0F, -13F, 0F);
+        this.Brow.setPos(0F, -13F, 0F);
         setRotation(this.Brow, -0.0872665F, 0F, 0F);
 
         this.NoseBridge = new ModelRenderer(this, 80, 4);
         this.NoseBridge.addBox(-1F, -7F, -8F, 2, 2, 1);
-        this.NoseBridge.setRotationPoint(0F, -13F, 0F);
+        this.NoseBridge.setPos(0F, -13F, 0F);
         setRotation(this.NoseBridge, -0.1745329F, 0F, 0F);
 
         this.Nose = new ModelRenderer(this, 80, 0);
         this.Nose.addBox(-2F, -7F, -7F, 4, 2, 2);
-        this.Nose.setRotationPoint(0F, -13F, 0F);
+        this.Nose.setPos(0F, -13F, 0F);
         setRotation(this.Nose, 0.0872665F, 0F, 0F);
 
         this.RgtTusk = new ModelRenderer(this, 60, 4);
         this.RgtTusk.addBox(-3.5F, -6F, -6.5F, 1, 2, 1);
-        this.RgtTusk.setRotationPoint(0F, -13F, 0F);
+        this.RgtTusk.setPos(0F, -13F, 0F);
         setRotation(this.RgtTusk, 0.1745329F, 0F, 0F);
 
         this.RgtTooth = new ModelRenderer(this, 64, 4);
         this.RgtTooth.addBox(-1.5F, -5F, -6.5F, 1, 1, 1);
-        this.RgtTooth.setRotationPoint(0F, -13F, 0F);
+        this.RgtTooth.setPos(0F, -13F, 0F);
         setRotation(this.RgtTooth, 0.1745329F, 0F, 0F);
 
         this.LftTooth = new ModelRenderer(this, 72, 4);
         this.LftTooth.addBox(0.5F, -5F, -6.5F, 1, 1, 1);
-        this.LftTooth.setRotationPoint(0F, -13F, 0F);
+        this.LftTooth.setPos(0F, -13F, 0F);
         setRotation(this.LftTooth, 0.1745329F, 0F, 0F);
 
         this.LftTusk = new ModelRenderer(this, 76, 4);
         this.LftTusk.addBox(2.5F, -6F, -6.5F, 1, 2, 1);
-        this.LftTusk.setRotationPoint(0F, -13F, 0F);
+        this.LftTusk.setPos(0F, -13F, 0F);
         setRotation(this.LftTusk, 0.1745329F, 0F, 0F);
 
         this.Lip = new ModelRenderer(this, 60, 0);
         this.Lip.addBox(-4F, -4F, -7F, 8, 2, 2);
-        this.Lip.setRotationPoint(0F, -13F, 0F);
+        this.Lip.setPos(0F, -13F, 0F);
         setRotation(this.Lip, 0.1745329F, 0F, 0F);
 
         this.RgtEar = new ModelRenderer(this, 60, 12);
         this.RgtEar.addBox(-9F, -9F, -1F, 3, 5, 2);
-        this.RgtEar.setRotationPoint(0F, -13F, 0F);
+        this.RgtEar.setPos(0F, -13F, 0F);
 
         this.RgtRing = new ModelRenderer(this, 32, 58);
         this.RgtRing.addBox(-8F, -6F, -2F, 1, 4, 4);
-        this.RgtRing.setRotationPoint(0F, -13F, 0F);
+        this.RgtRing.setPos(0F, -13F, 0F);
 
         this.RgtRingHole = new ModelRenderer(this, 26, 50);
         this.RgtRingHole.addBox(-8F, -5F, -1F, 1, 2, 2);
-        this.RgtRingHole.setRotationPoint(0F, -13F, 0F);
+        this.RgtRingHole.setPos(0F, -13F, 0F);
 
         this.LftEar = new ModelRenderer(this, 70, 12);
         this.LftEar.addBox(6F, -9F, -1F, 3, 5, 2);
-        this.LftEar.setRotationPoint(0F, -13F, 0F);
+        this.LftEar.setPos(0F, -13F, 0F);
 
         this.LftRing = new ModelRenderer(this, 32, 58);
         this.LftRing.addBox(7F, -6F, -2F, 1, 4, 4);
-        this.LftRing.setRotationPoint(0F, -13F, 0F);
+        this.LftRing.setPos(0F, -13F, 0F);
 
         this.LftRingHole = new ModelRenderer(this, 26, 50);
         this.LftRingHole.addBox(7F, -5F, -1F, 1, 2, 2);
-        this.LftRingHole.setRotationPoint(0F, -13F, 0F);
+        this.LftRingHole.setPos(0F, -13F, 0F);
 
         this.HairRope = new ModelRenderer(this, 82, 83);
         this.HairRope.addBox(-2F, -8F, 9F, 4, 4, 4);
-        this.HairRope.setRotationPoint(0F, -13F, 0F);
+        this.HairRope.setPos(0F, -13F, 0F);
         setRotation(this.HairRope, 0.6108652F, 0F, 0F);
 
         this.Hair1 = new ModelRenderer(this, 78, 107);
         this.Hair1.addBox(-3F, -9F, 13F, 6, 8, 3);
-        this.Hair1.setRotationPoint(0F, -13F, 0F);
+        this.Hair1.setPos(0F, -13F, 0F);
         setRotation(this.Hair1, 0.6108652F, 0F, 0F);
 
         this.Hair2 = new ModelRenderer(this, 60, 107);
         this.Hair2.addBox(-3F, -6.5F, 11.6F, 6, 8, 3);
-        this.Hair2.setRotationPoint(0F, -13F, 0F);
+        this.Hair2.setPos(0F, -13F, 0F);
         setRotation(this.Hair2, 0.2617994F, 0F, 0F);
 
         this.Hair3 = new ModelRenderer(this, 42, 107);
         this.Hair3.addBox(-3F, -2.4F, 11.4F, 6, 8, 3);
-        this.Hair3.setRotationPoint(0F, -13F, 0F);
+        this.Hair3.setPos(0F, -13F, 0F);
 
         this.DiamondHorn = new ModelRenderer(this, 120, 31);
         this.DiamondHorn.addBox(-1F, -17F, -6F, 2, 6, 2);
-        this.DiamondHorn.setRotationPoint(0F, -13F, 0F);
+        this.DiamondHorn.setPos(0F, -13F, 0F);
         setRotation(this.DiamondHorn, 0.0872665F, 0F, 0F);
 
         this.RgtHorn = new ModelRenderer(this, 46, 6);
         this.RgtHorn.addBox(-6F, -12F, -11F, 2, 2, 5);
-        this.RgtHorn.setRotationPoint(0F, -13F, 0F);
+        this.RgtHorn.setPos(0F, -13F, 0F);
 
         this.RgtHornTip = new ModelRenderer(this, 44, 13);
         this.RgtHornTip.addBox(-6F, -15F, -11F, 2, 3, 2);
-        this.RgtHornTip.setRotationPoint(0F, -13F, 0F);
+        this.RgtHornTip.setPos(0F, -13F, 0F);
 
         this.LftHorn = new ModelRenderer(this, 46, 6);
         this.LftHorn.addBox(4F, -12F, -11F, 2, 2, 5);
-        this.LftHorn.setRotationPoint(0F, -13F, 0F);
+        this.LftHorn.setPos(0F, -13F, 0F);
 
         this.LftHornTip = new ModelRenderer(this, 52, 13);
         this.LftHornTip.addBox(4F, -15F, -11F, 2, 3, 2);
-        this.LftHornTip.setRotationPoint(0F, -13F, 0F);
+        this.LftHornTip.setPos(0F, -13F, 0F);
 
         this.NeckRest = new ModelRenderer(this, 39, 20);
         this.NeckRest.addBox(-7F, -19F, -3F, 14, 3, 11);
-        this.NeckRest.setRotationPoint(0F, 5F, 0F);
+        this.NeckRest.setPos(0F, 5F, 0F);
 
         this.Chest = new ModelRenderer(this, 32, 34);
         this.Chest.addBox(-9.5F, -17.8F, -7.3F, 19, 11, 13);
-        this.Chest.setRotationPoint(0F, 5F, 0F);
+        this.Chest.setPos(0F, 5F, 0F);
 
         setRotation(this.Chest, -0.1745329F, 0F, 0F);
         this.Stomach = new ModelRenderer(this, 28, 58);
         this.Stomach.addBox(-11F, -8F, -6F, 22, 11, 14);
-        this.Stomach.setRotationPoint(0F, 5F, 0F);
+        this.Stomach.setPos(0F, 5F, 0F);
 
         this.ButtCover = new ModelRenderer(this, 32, 118);
         this.ButtCover.addBox(-4F, 0F, 0F, 8, 8, 2);
-        this.ButtCover.setRotationPoint(0F, 8F, 6F);
+        this.ButtCover.setPos(0F, 8F, 6F);
 
         this.LoinCloth = new ModelRenderer(this, 32, 118);
         this.LoinCloth.addBox(-4F, 0F, -2F, 8, 8, 2);
-        this.LoinCloth.setRotationPoint(0F, 8F, -4F);
+        this.LoinCloth.setPos(0F, 8F, -4F);
 
         this.RgtThigh = new ModelRenderer(this, 0, 83);
         this.RgtThigh.addBox(-10F, 0F, -5F, 10, 11, 10);
-        this.RgtThigh.setRotationPoint(-2F, 4F, 1F);
+        this.RgtThigh.setPos(-2F, 4F, 1F);
 
         this.RgtLeg = new ModelRenderer(this, 0, 104);
         this.RgtLeg.addBox(-4F, -1F, -4F, 8, 11, 8);
-        this.RgtLeg.setRotationPoint(-5F, 10F, 0F);
+        this.RgtLeg.setPos(-5F, 10F, 0F);
         this.RgtThigh.addChild(this.RgtLeg);
 
         this.RgtKnee = new ModelRenderer(this, 0, 88);
         this.RgtKnee.addBox(-2F, -2F, -0.5F, 4, 4, 1);
-        this.RgtKnee.setRotationPoint(0F, 2F, -4.25F);
+        this.RgtKnee.setPos(0F, 2F, -4.25F);
         this.RgtLeg.addChild(this.RgtKnee);
 
         this.RgtToes = new ModelRenderer(this, 0, 123);
         this.RgtToes.addBox(-2.5F, -1F, -3F, 5, 2, 3);
-        this.RgtToes.setRotationPoint(-1.5F, 9F, -3.5F);
+        this.RgtToes.setPos(-1.5F, 9F, -3.5F);
         this.RgtLeg.addChild(this.RgtToes);
 
         this.RgtBigToe = new ModelRenderer(this, 20, 123);
         this.RgtBigToe.addBox(-1.5F, -1F, -3F, 3, 2, 3);
-        this.RgtBigToe.setRotationPoint(2.5F, 9F, -4F);
+        this.RgtBigToe.setPos(2.5F, 9F, -4F);
         this.RgtLeg.addChild(this.RgtBigToe);
 
         this.LftThigh = new ModelRenderer(this, 88, 83);
         this.LftThigh.addBox(0F, 0F, -5F, 10, 11, 10);
-        this.LftThigh.setRotationPoint(2F, 4F, 1F);
+        this.LftThigh.setPos(2F, 4F, 1F);
 
         this.LftLeg = new ModelRenderer(this, 96, 104);
         this.LftLeg.addBox(-4F, -1F, -4F, 8, 11, 8);
-        this.LftLeg.setRotationPoint(5F, 10F, 0F);
+        this.LftLeg.setPos(5F, 10F, 0F);
         this.LftThigh.addChild(this.LftLeg);
 
         this.LftKnee = new ModelRenderer(this, 118, 88);
         this.LftKnee.addBox(-2F, -2F, -0.5F, 4, 4, 1);
-        this.LftKnee.setRotationPoint(0F, 2F, -4.25F);
+        this.LftKnee.setPos(0F, 2F, -4.25F);
         this.LftLeg.addChild(this.LftKnee);
 
         this.LftToes = new ModelRenderer(this, 112, 123);
         this.LftToes.addBox(-2.5F, -1F, -3F, 5, 2, 3);
-        this.LftToes.setRotationPoint(1.5F, 9F, -3.5F);
+        this.LftToes.setPos(1.5F, 9F, -3.5F);
         this.LftLeg.addChild(this.LftToes);
 
         this.LftBigToe = new ModelRenderer(this, 96, 123);
         this.LftBigToe.addBox(-1.5F, -1F, -3F, 3, 2, 3);
-        this.LftBigToe.setRotationPoint(-2.5F, 9F, -4F);
+        this.LftBigToe.setPos(-2.5F, 9F, -4F);
         this.LftLeg.addChild(this.LftBigToe);
 
         //LEFT ARM
         this.LftShoulder = new ModelRenderer(this, 96, 31);
         this.LftShoulder.addBox(0F, -3F, -4F, 8, 7, 8);
-        this.LftShoulder.setRotationPoint(7F, -10F, 2F);
+        this.LftShoulder.setPos(7F, -10F, 2F);
 
         this.LftArm = new ModelRenderer(this, 100, 66);
         this.LftArm.addBox(0F, 0F, -4F, 6, 9, 8);
-        this.LftArm.setRotationPoint(6F, -1F, 1F);
+        this.LftArm.setPos(6F, -1F, 1F);
         this.LftShoulder.addChild(this.LftArm);
 
         this.LftHand = new ModelRenderer(this, 96, 46);
         this.LftHand.addBox(-4F, 0F, -4F, 8, 12, 8);
-        this.LftHand.setRotationPoint(3F, 8F, -1F);
+        this.LftHand.setPos(3F, 8F, -1F);
         this.LftArm.addChild(this.LftHand);
 
         this.LftElbow = new ModelRenderer(this, 86, 64);
         this.LftElbow.addBox(-2F, -1.5F, -0.5F, 4, 3, 1);
-        this.LftElbow.setRotationPoint(0F, 2.5F, 4F);
+        this.LftElbow.setPos(0F, 2.5F, 4F);
         this.LftHand.addChild(this.LftElbow);
 
         this.LftWeaponRoot = new ModelRenderer(this, 24, 104);
         this.LftWeaponRoot.addBox(-1.5F, -1.5F, -4F, 3, 3, 4);
-        this.LftWeaponRoot.setRotationPoint(-0.5F, 8.5F, -4F);
+        this.LftWeaponRoot.setPos(-0.5F, 8.5F, -4F);
         this.LftHand.addChild(this.LftWeaponRoot);
 
         this.LftWeaponEnd = new ModelRenderer(this, 74, 90);
         this.LftWeaponEnd.addBox(-1.5F, -1.5F, 0F, 3, 3, 2);
-        this.LftWeaponEnd.setRotationPoint(0F, 0F, 8F);
+        this.LftWeaponEnd.setPos(0F, 0F, 8F);
         this.LftWeaponRoot.addChild(this.LftWeaponEnd);
 
         this.LftWeaponLump = new ModelRenderer(this, 30, 83);
         this.LftWeaponLump.addBox(-2.5F, -2.5F, -4F, 5, 5, 4);
-        this.LftWeaponLump.setRotationPoint(0F, 0F, -4F);
+        this.LftWeaponLump.setPos(0F, 0F, -4F);
         this.LftWeaponRoot.addChild(this.LftWeaponLump);
 
         this.LftWeaponBetween = new ModelRenderer(this, 83, 42);
         this.LftWeaponBetween.addBox(-1.5F, -1.5F, -2F, 3, 3, 2);
-        this.LftWeaponBetween.setRotationPoint(0F, 0F, -4F);
+        this.LftWeaponBetween.setPos(0F, 0F, -4F);
         this.LftWeaponLump.addChild(this.LftWeaponBetween);
 
         this.LftWeaponTip = new ModelRenderer(this, 60, 118);
         this.LftWeaponTip.addBox(-2.5F, -2.5F, -5F, 5, 5, 5);
-        this.LftWeaponTip.setRotationPoint(0F, 0F, -2F);
+        this.LftWeaponTip.setPos(0F, 0F, -2F);
         this.LftWeaponBetween.addChild(this.LftWeaponTip);
 
         this.LftHammerNeck = new ModelRenderer(this, 32, 39);
         this.LftHammerNeck.addBox(-0.5F, -4F, -4F, 1, 4, 4);
-        this.LftHammerNeck.setRotationPoint(0F, -2.5F, -1F);
+        this.LftHammerNeck.setPos(0F, -2.5F, -1F);
         this.LftWeaponTip.addChild(this.LftHammerNeck);
 
         this.LftHammerHeadSupport = new ModelRenderer(this, 0, 0);
         this.LftHammerHeadSupport.addBox(-1F, 0F, -2F, 2, 2, 4);
-        this.LftHammerHeadSupport.setRotationPoint(0F, 2.5F, -3F);
+        this.LftHammerHeadSupport.setPos(0F, 2.5F, -3F);
         this.LftWeaponTip.addChild(this.LftHammerHeadSupport);
 
         this.LftHammerHead = new ModelRenderer(this, 32, 3);
         this.LftHammerHead.addBox(-2F, 0F, -2.5F, 4, 3, 5);
-        this.LftHammerHead.setRotationPoint(0F, 2F, 0F);
+        this.LftHammerHead.setPos(0F, 2F, 0F);
         this.LftHammerHeadSupport.addChild(this.LftHammerHead);
 
         this.LftSpike = new ModelRenderer(this, 52, 118);
         this.LftSpike.addBox(-1F, -1F, -3F, 2, 2, 3);
-        this.LftSpike.setRotationPoint(0F, 0F, -5F);
+        this.LftSpike.setPos(0F, 0F, -5F);
         this.LftWeaponTip.addChild(this.LftSpike);
 
         this.LftSpike1 = new ModelRenderer(this, 52, 118);
         this.LftSpike1.addBox(-3F, -1F, -1F, 3, 2, 2);
-        this.LftSpike1.setRotationPoint(-2.5F, 0F, -3F);
+        this.LftSpike1.setPos(-2.5F, 0F, -3F);
         this.LftWeaponTip.addChild(this.LftSpike1);
 
         this.LftSpike2 = new ModelRenderer(this, 52, 118);
         this.LftSpike2.addBox(3F, -1F, -1F, 3, 2, 2);
-        this.LftSpike2.setRotationPoint(-0.5F, 0F, -3F);
+        this.LftSpike2.setPos(-0.5F, 0F, -3F);
         this.LftWeaponTip.addChild(this.LftSpike2);
 
         this.LftSpike3 = new ModelRenderer(this, 52, 118);
         this.LftSpike3.addBox(-1F, 0F, -1F, 2, 3, 2);
-        this.LftSpike3.setRotationPoint(0F, 2.5F, -3F);
+        this.LftSpike3.setPos(0F, 2.5F, -3F);
         this.LftWeaponTip.addChild(this.LftSpike3);
 
         this.LftSpike4 = new ModelRenderer(this, 52, 118);
         this.LftSpike4.addBox(-1F, -3F, -1F, 2, 3, 2);
-        this.LftSpike4.setRotationPoint(0F, -2.5F, -3F);
+        this.LftSpike4.setPos(0F, -2.5F, -3F);
         this.LftWeaponTip.addChild(this.LftSpike4);
 
         //RIGHT ARM
         this.RgtShoulder = new ModelRenderer(this, 0, 31);
         this.RgtShoulder.addBox(0F, -3F, -4F, 8, 7, 8);
-        this.RgtShoulder.setRotationPoint(-15F, -10F, 2F);
+        this.RgtShoulder.setPos(-15F, -10F, 2F);
 
         this.RgtArm = new ModelRenderer(this, 0, 66);
         this.RgtArm.addBox(0F, 0F, -4F, 6, 9, 8);
-        this.RgtArm.setRotationPoint(-4F, -1F, 1F);
+        this.RgtArm.setPos(-4F, -1F, 1F);
         this.RgtShoulder.addChild(this.RgtArm);
 
         this.RgtHand = new ModelRenderer(this, 0, 46);
         this.RgtHand.addBox(-4F, 0F, -4F, 8, 12, 8);
-        this.RgtHand.setRotationPoint(3F, 8F, -1F);
+        this.RgtHand.setPos(3F, 8F, -1F);
         this.RgtArm.addChild(this.RgtHand);
 
         this.RgtElbow = new ModelRenderer(this, 86, 64);
         this.RgtElbow.addBox(-2F, -1.5F, -0.5F, 4, 3, 1);
-        this.RgtElbow.setRotationPoint(0F, 2.5F, 4F);
+        this.RgtElbow.setPos(0F, 2.5F, 4F);
         this.RgtHand.addChild(this.RgtElbow);
 
         this.RgtWeaponRoot = new ModelRenderer(this, 24, 104);
         this.RgtWeaponRoot.addBox(-1.5F, -1.5F, -4F, 3, 3, 4);
-        this.RgtWeaponRoot.setRotationPoint(-0.5F, 8.5F, -4F);
+        this.RgtWeaponRoot.setPos(-0.5F, 8.5F, -4F);
         this.RgtHand.addChild(this.RgtWeaponRoot);
 
         this.RgtWeaponEnd = new ModelRenderer(this, 74, 90);
         this.RgtWeaponEnd.addBox(-1.5F, -1.5F, 0F, 3, 3, 2);
-        this.RgtWeaponEnd.setRotationPoint(0F, 0F, 8F);
+        this.RgtWeaponEnd.setPos(0F, 0F, 8F);
         this.RgtWeaponRoot.addChild(this.RgtWeaponEnd);
 
         this.RgtWeaponLump = new ModelRenderer(this, 30, 83);
         this.RgtWeaponLump.addBox(-2.5F, -2.5F, -4F, 5, 5, 4);
-        this.RgtWeaponLump.setRotationPoint(0F, 0F, -4F);
+        this.RgtWeaponLump.setPos(0F, 0F, -4F);
         this.RgtWeaponRoot.addChild(this.RgtWeaponLump);
 
         this.RgtWeaponBetween = new ModelRenderer(this, 83, 42);
         this.RgtWeaponBetween.addBox(-1.5F, -1.5F, -2F, 3, 3, 2);
-        this.RgtWeaponBetween.setRotationPoint(0F, 0F, -4F);
+        this.RgtWeaponBetween.setPos(0F, 0F, -4F);
         this.RgtWeaponLump.addChild(this.RgtWeaponBetween);
 
         this.RgtWeaponTip = new ModelRenderer(this, 60, 118);
         this.RgtWeaponTip.addBox(-2.5F, -2.5F, -5F, 5, 5, 5);
-        this.RgtWeaponTip.setRotationPoint(0F, 0F, -2F);
+        this.RgtWeaponTip.setPos(0F, 0F, -2F);
         this.RgtWeaponBetween.addChild(this.RgtWeaponTip);
 
         this.RgtHammerNeck = new ModelRenderer(this, 32, 39);
         this.RgtHammerNeck.addBox(-0.5F, -4F, -4F, 1, 4, 4);
-        this.RgtHammerNeck.setRotationPoint(0F, -2.5F, -1F);
+        this.RgtHammerNeck.setPos(0F, -2.5F, -1F);
         this.RgtWeaponTip.addChild(this.RgtHammerNeck);
 
         this.RgtHammerHeadSupport = new ModelRenderer(this, 0, 0);
         this.RgtHammerHeadSupport.addBox(-1F, 0F, -2F, 2, 2, 4);
-        this.RgtHammerHeadSupport.setRotationPoint(0F, 2.5F, -3F);
+        this.RgtHammerHeadSupport.setPos(0F, 2.5F, -3F);
         this.RgtWeaponTip.addChild(this.RgtHammerHeadSupport);
 
         this.RgtHammerHead = new ModelRenderer(this, 32, 3);
         this.RgtHammerHead.addBox(-2F, 0F, -2.5F, 4, 3, 5);
-        this.RgtHammerHead.setRotationPoint(0F, 2F, 0F);
+        this.RgtHammerHead.setPos(0F, 2F, 0F);
         this.RgtHammerHeadSupport.addChild(this.RgtHammerHead);
 
         this.RgtSpike = new ModelRenderer(this, 52, 118);
         this.RgtSpike.addBox(-1F, -1F, -3F, 2, 2, 3);
-        this.RgtSpike.setRotationPoint(0F, 0F, -5F);
+        this.RgtSpike.setPos(0F, 0F, -5F);
         this.RgtWeaponTip.addChild(this.RgtSpike);
 
         this.RgtSpike1 = new ModelRenderer(this, 52, 118);
         this.RgtSpike1.addBox(-3F, -1F, -1F, 3, 2, 2);
-        this.RgtSpike1.setRotationPoint(-2.5F, 0F, -3F);
+        this.RgtSpike1.setPos(-2.5F, 0F, -3F);
         this.RgtWeaponTip.addChild(this.RgtSpike1);
 
         this.RgtSpike2 = new ModelRenderer(this, 52, 118);
         this.RgtSpike2.addBox(3F, -1F, -1F, 3, 2, 2);
-        this.RgtSpike2.setRotationPoint(-0.5F, 0F, -3F);
+        this.RgtSpike2.setPos(-0.5F, 0F, -3F);
         this.RgtWeaponTip.addChild(this.RgtSpike2);
 
         this.RgtSpike3 = new ModelRenderer(this, 52, 118);
         this.RgtSpike3.addBox(-1F, 0F, -1F, 2, 3, 2);
-        this.RgtSpike3.setRotationPoint(0F, 2.5F, -3F);
+        this.RgtSpike3.setPos(0F, 2.5F, -3F);
         this.RgtWeaponTip.addChild(this.RgtSpike3);
 
         this.RgtSpike4 = new ModelRenderer(this, 52, 118);
         this.RgtSpike4.addBox(-1F, -3F, -1F, 2, 3, 2);
-        this.RgtSpike4.setRotationPoint(0F, -2.5F, -3F);
+        this.RgtSpike4.setPos(0F, -2.5F, -3F);
         this.RgtWeaponTip.addChild(this.RgtSpike4);
 
         this.Head3RgtEar = new ModelRenderer(this, 110, 24);
         this.Head3RgtEar.addBox(-8F, -9F, -1F, 3, 5, 2);
-        this.Head3RgtEar.setRotationPoint(7F, -13F, 0F);
+        this.Head3RgtEar.setPos(7F, -13F, 0F);
 
         this.Head3LftEar = new ModelRenderer(this, 100, 24);
         this.Head3LftEar.addBox(5F, -9F, -1F, 3, 5, 2);
-        this.Head3LftEar.setRotationPoint(7F, -13F, 0F);
+        this.Head3LftEar.setPos(7F, -13F, 0F);
 
         this.Head3Eyelid = new ModelRenderer(this, 46, 3);
         this.Head3Eyelid.addBox(-3F, -8F, -4.5F, 6, 2, 1);
-        this.Head3Eyelid.setRotationPoint(7F, -13F, 0F);
+        this.Head3Eyelid.setPos(7F, -13F, 0F);
         setRotation(this.Head3Eyelid, 0.2617994F, 0F, 0F);
 
         this.Head3Nose = new ModelRenderer(this, 60, 9);
         this.Head3Nose.addBox(-1.5F, -8.5F, -3.5F, 3, 2, 1);
-        this.Head3Nose.setRotationPoint(7F, -13F, 0F);
+        this.Head3Nose.setPos(7F, -13F, 0F);
         setRotation(this.Head3Nose, 0.4886922F, 0F, 0F);
 
         this.Head3 = new ModelRenderer(this, 42, 83);
         this.Head3.addBox(-5F, -12F, -6F, 10, 12, 12);
-        this.Head3.setRotationPoint(7F, -13F, 0F);
+        this.Head3.setPos(7F, -13F, 0F);
 
         this.Head3Brow = new ModelRenderer(this, 46, 0);
         this.Head3Brow.addBox(-3F, -9F, -8.5F, 6, 2, 1);
-        this.Head3Brow.setRotationPoint(7F, -13F, 0F);
+        this.Head3Brow.setPos(7F, -13F, 0F);
         setRotation(this.Head3Brow, -0.2617994F, 0F, 0F);
 
         this.Head3Hair = new ModelRenderer(this, 80, 118);
         this.Head3Hair.addBox(-2F, -17F, -5F, 4, 6, 4);
-        this.Head3Hair.setRotationPoint(7F, -13F, 0F);
+        this.Head3Hair.setPos(7F, -13F, 0F);
         setRotation(this.Head3Hair, -0.6108652F, 0F, 0F);
 
         this.Head3Lip = new ModelRenderer(this, 22, 68);
         this.Head3Lip.addBox(-4F, -4F, -7F, 8, 2, 2);
-        this.Head3Lip.setRotationPoint(7F, -13F, 0F);
+        this.Head3Lip.setPos(7F, -13F, 0F);
         setRotation(this.Head3Lip, 0.1745329F, 0F, 0F);
 
         this.Head3RgtTusk = new ModelRenderer(this, 83, 34);
         this.Head3RgtTusk.addBox(-3.5F, -6F, -6.5F, 1, 2, 1);
-        this.Head3RgtTusk.setRotationPoint(7F, -13F, 0F);
+        this.Head3RgtTusk.setPos(7F, -13F, 0F);
 
         setRotation(this.Head3RgtTusk, 0.1745329F, 0F, 0F);
         this.Head3RgtTooth = new ModelRenderer(this, 87, 34);
         this.Head3RgtTooth.addBox(-1.5F, -5F, -6.5F, 1, 1, 1);
-        this.Head3RgtTooth.setRotationPoint(7F, -13F, 0F);
+        this.Head3RgtTooth.setPos(7F, -13F, 0F);
         setRotation(this.Head3RgtTooth, 0.1745329F, 0F, 0F);
 
         this.Head3LftTooth = new ModelRenderer(this, 96, 34);
         this.Head3LftTooth.addBox(0.5F, -5F, -6.5F, 1, 1, 1);
-        this.Head3LftTooth.setRotationPoint(7F, -13F, 0F);
+        this.Head3LftTooth.setPos(7F, -13F, 0F);
         setRotation(this.Head3LftTooth, 0.1745329F, 0F, 0F);
 
         this.Head3LftTusk = new ModelRenderer(this, 100, 34);
         this.Head3LftTusk.addBox(2.5F, -6F, -6.5F, 1, 2, 1);
-        this.Head3LftTusk.setRotationPoint(7F, -13F, 0F);
+        this.Head3LftTusk.setPos(7F, -13F, 0F);
         setRotation(this.Head3LftTusk, 0.1745329F, 0F, 0F);
 
         this.Head3RingHole = new ModelRenderer(this, 26, 50);
         this.Head3RingHole.addBox(6F, -5F, -1F, 1, 2, 2);
-        this.Head3RingHole.setRotationPoint(7F, -13F, 0F);
+        this.Head3RingHole.setPos(7F, -13F, 0F);
 
         this.Head3Ring = new ModelRenderer(this, 32, 58);
         this.Head3Ring.addBox(6F, -6F, -2F, 1, 4, 4);
-        this.Head3Ring.setRotationPoint(7F, -13F, 0F);
+        this.Head3Ring.setPos(7F, -13F, 0F);
 
         this.Head2Chin = new ModelRenderer(this, 21, 24);
         this.Head2Chin.addBox(-3F, -5F, -8F, 6, 3, 3);
-        this.Head2Chin.setRotationPoint(-7F, -13F, 0F);
+        this.Head2Chin.setPos(-7F, -13F, 0F);
         setRotation(this.Head2Chin, 0.2617994F, 0F, 0F);
 
         this.Head2 = new ModelRenderer(this, 0, 0);
         this.Head2.addBox(-5F, -12F, -6F, 10, 12, 12);
-        this.Head2.setRotationPoint(-7F, -13F, 0F);
+        this.Head2.setPos(-7F, -13F, 0F);
 
         this.Head2Lip = new ModelRenderer(this, 0, 24);
         this.Head2Lip.addBox(-4F, -5F, -8F, 8, 2, 2);
-        this.Head2Lip.setRotationPoint(-7F, -13F, 0F);
+        this.Head2Lip.setPos(-7F, -13F, 0F);
 
         this.Head2LftTusk = new ModelRenderer(this, 46, 28);
         this.Head2LftTusk.addBox(2.5F, -8F, -6.5F, 1, 2, 1);
-        this.Head2LftTusk.setRotationPoint(-7F, -13F, 0F);
+        this.Head2LftTusk.setPos(-7F, -13F, 0F);
         setRotation(this.Head2LftTusk, 0.1745329F, 0F, 0F);
 
         this.Head2RgtTusk = new ModelRenderer(this, 39, 28);
         this.Head2RgtTusk.addBox(-3.5F, -8F, -6.5F, 1, 2, 1);
-        this.Head2RgtTusk.setRotationPoint(-7F, -13F, 0F);
+        this.Head2RgtTusk.setPos(-7F, -13F, 0F);
         setRotation(this.Head2RgtTusk, 0.1745329F, 0F, 0F);
 
         this.Head2Nose = new ModelRenderer(this, 116, 0);
         this.Head2Nose.addBox(-2F, -7F, -7F, 4, 2, 2);
-        this.Head2Nose.setRotationPoint(-7F, -13F, 0F);
+        this.Head2Nose.setPos(-7F, -13F, 0F);
         setRotation(this.Head2Nose, 0.0872665F, 0F, 0F);
 
         this.Head2NoseBridge = new ModelRenderer(this, 116, 4);
         this.Head2NoseBridge.addBox(-1F, -7F, -8F, 2, 2, 1);
-        this.Head2NoseBridge.setRotationPoint(-7F, -13F, 0F);
+        this.Head2NoseBridge.setPos(-7F, -13F, 0F);
         setRotation(this.Head2NoseBridge, -0.1745329F, 0F, 0F);
 
         this.Head2Brow = new ModelRenderer(this, 80, 24);
         this.Head2Brow.addBox(-4F, -10.5F, -8F, 8, 3, 2);
-        this.Head2Brow.setRotationPoint(-7F, -13F, 0F);
+        this.Head2Brow.setPos(-7F, -13F, 0F);
         setRotation(this.Head2Brow, -0.0872665F, 0F, 0F);
 
         this.Head2RgtHorn = new ModelRenderer(this, 24, 30);
         this.Head2RgtHorn.addBox(-4F, -8F, -15F, 2, 2, 5);
-        this.Head2RgtHorn.setRotationPoint(-7F, -13F, 0F);
+        this.Head2RgtHorn.setPos(-7F, -13F, 0F);
         setRotation(this.Head2RgtHorn, -0.5235988F, 0F, 0F);
 
         this.Head2LftHorn = new ModelRenderer(this, 24, 30);
         this.Head2LftHorn.addBox(2F, -8F, -15F, 2, 2, 5);
-        this.Head2LftHorn.setRotationPoint(-7F, -13F, 0F);
+        this.Head2LftHorn.setPos(-7F, -13F, 0F);
         setRotation(this.Head2LftHorn, -0.5235988F, 0F, 0F);
 
         this.Head2DiamondHorn = new ModelRenderer(this, 120, 46);
         this.Head2DiamondHorn.addBox(-1F, -17F, -6F, 2, 6, 2);
-        this.Head2DiamondHorn.setRotationPoint(-7F, -13F, 0F);
+        this.Head2DiamondHorn.setPos(-7F, -13F, 0F);
         setRotation(this.Head2DiamondHorn, 0.0872665F, 0F, 0F);
     }
 
     @Override
-    public void setRotationAngles(T entity, float v, float v1, float v2, float v3, float v4) {
+    public void setupAnim(T entity, float v, float v1, float v2, float v3, float v4) {
         this.type = ((MoCEntityOgre) entity).getSubType();
         //int leftAttack = entityogre.attackCounterLeft;
         //int rightAttack = entityogre.attackCounterRight;
@@ -602,9 +602,9 @@ public class MoCModelOgre<T extends MoCEntityOgre> extends EntityModel<T> {
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+        model.xRot = x;
+        model.yRot = y;
+        model.zRot = z;
     }
 
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
@@ -618,8 +618,8 @@ public class MoCModelOgre<T extends MoCEntityOgre> extends EntityModel<T> {
         float RLegXRotB = RLegXRot;
         float LLegXRotB = LLegXRot;
 
-        this.RgtThigh.rotateAngleX = RLegXRot;
-        this.LftThigh.rotateAngleX = LLegXRot;
+        this.RgtThigh.xRot = RLegXRot;
+        this.LftThigh.xRot = LLegXRot;
 
         float RLegXRot2 = MathHelper.cos(((f + 0.1F) * 0.6662F) + 3.141593F) * 0.8F * f1;
         float LLegXRot2 = MathHelper.cos((f + 0.1F) * 0.6662F) * 0.8F * f1;
@@ -643,155 +643,155 @@ public class MoCModelOgre<T extends MoCEntityOgre> extends EntityModel<T> {
              */
         }
 
-        this.LftLeg.rotateAngleX = (LLegXRotB);
-        this.RgtLeg.rotateAngleX = (RLegXRotB);
-        this.LoinCloth.rotateAngleX = ClothRot;
-        this.ButtCover.rotateAngleX = ClothRot;
+        this.LftLeg.xRot = (LLegXRotB);
+        this.RgtLeg.xRot = (RLegXRotB);
+        this.LoinCloth.xRot = ClothRot;
+        this.ButtCover.xRot = ClothRot;
 
         float armMov = -(MathHelper.cos((attackCounter) * 0.18F) * 3F);
 
         //leftArm 
         //attacking with left arm
         if (this.armToAnimate == 1 || this.armToAnimate == 3) {
-            this.LftShoulder.rotateAngleX = +armMov;
-            this.LftHand.rotateAngleX = (-45F / this.radianF);
+            this.LftShoulder.xRot = +armMov;
+            this.LftHand.xRot = (-45F / this.radianF);
         } else //normal left arm movement
         {
-            this.LftShoulder.rotateAngleZ = (MathHelper.cos(f2 * 0.09F) * 0.05F) - 0.05F;
-            this.LftShoulder.rotateAngleX = RLegXRot;
-            this.LftHand.rotateAngleX = 0F;
+            this.LftShoulder.zRot = (MathHelper.cos(f2 * 0.09F) * 0.05F) - 0.05F;
+            this.LftShoulder.xRot = RLegXRot;
+            this.LftHand.xRot = 0F;
         }
 
         //rightArm
         //attacking with right arm
         if (this.armToAnimate == 2 || this.armToAnimate == 3) {
-            this.RgtShoulder.rotateAngleX = +armMov;
-            this.RgtHand.rotateAngleX = (-45F / this.radianF);
+            this.RgtShoulder.xRot = +armMov;
+            this.RgtHand.xRot = (-45F / this.radianF);
         } else //normal right arm movement
         {
-            this.RgtShoulder.rotateAngleZ = -(MathHelper.cos(f2 * 0.09F) * 0.05F) + 0.05F;
-            this.RgtShoulder.rotateAngleX = LLegXRot;
-            this.RgtHand.rotateAngleX = 0F;
+            this.RgtShoulder.zRot = -(MathHelper.cos(f2 * 0.09F) * 0.05F) + 0.05F;
+            this.RgtShoulder.xRot = LLegXRot;
+            this.RgtHand.xRot = 0F;
         }
 
         if (headMoving == 2) {
-            this.Head2.rotateAngleX = hRotX;
-            this.Head2.rotateAngleY = hRotY;
+            this.Head2.xRot = hRotX;
+            this.Head2.yRot = hRotY;
         }
 
         if (headMoving == 3) {
-            this.Head3.rotateAngleX = hRotX;
-            this.Head3.rotateAngleY = hRotY;
+            this.Head3.xRot = hRotX;
+            this.Head3.yRot = hRotY;
         }
 
         if (type == 1 || type == 3 || type == 5) {
-            this.Head.rotateAngleX = hRotX;
-            this.Head.rotateAngleY = hRotY;
+            this.Head.xRot = hRotX;
+            this.Head.yRot = hRotY;
 
-            this.Brow.rotateAngleX = this.Head.rotateAngleX;
-            this.NoseBridge.rotateAngleX = this.Head.rotateAngleX;
-            this.Nose.rotateAngleX = this.Head.rotateAngleX;
-            this.RgtTusk.rotateAngleX = this.Head.rotateAngleX;
-            this.RgtTooth.rotateAngleX = this.Head.rotateAngleX;
-            this.LftTooth.rotateAngleX = this.Head.rotateAngleX;
-            this.LftTusk.rotateAngleX = this.Head.rotateAngleX;
-            this.Lip.rotateAngleX = this.Head.rotateAngleX;
-            this.RgtEar.rotateAngleX = this.Head.rotateAngleX;
-            this.RgtRing.rotateAngleX = this.Head.rotateAngleX;
-            this.RgtRingHole.rotateAngleX = this.Head.rotateAngleX;
-            this.LftEar.rotateAngleX = this.Head.rotateAngleX;
-            this.LftRing.rotateAngleX = this.Head.rotateAngleX;
-            this.LftRingHole.rotateAngleX = this.Head.rotateAngleX;
-            this.HairRope.rotateAngleX = 0.6108652F + this.Head.rotateAngleX;
-            this.Hair1.rotateAngleX = 0.6108652F + this.Head.rotateAngleX;
-            this.Hair2.rotateAngleX = 0.2617994F + this.Head.rotateAngleX;
-            this.Hair3.rotateAngleX = this.Head.rotateAngleX;
-            this.DiamondHorn.rotateAngleX = 0.0872665F + this.Head.rotateAngleX;
-            this.RgtHorn.rotateAngleX = this.Head.rotateAngleX;
-            this.RgtHornTip.rotateAngleX = this.Head.rotateAngleX;
-            this.LftHorn.rotateAngleX = this.Head.rotateAngleX;
-            this.LftHornTip.rotateAngleX = this.Head.rotateAngleX;
+            this.Brow.xRot = this.Head.xRot;
+            this.NoseBridge.xRot = this.Head.xRot;
+            this.Nose.xRot = this.Head.xRot;
+            this.RgtTusk.xRot = this.Head.xRot;
+            this.RgtTooth.xRot = this.Head.xRot;
+            this.LftTooth.xRot = this.Head.xRot;
+            this.LftTusk.xRot = this.Head.xRot;
+            this.Lip.xRot = this.Head.xRot;
+            this.RgtEar.xRot = this.Head.xRot;
+            this.RgtRing.xRot = this.Head.xRot;
+            this.RgtRingHole.xRot = this.Head.xRot;
+            this.LftEar.xRot = this.Head.xRot;
+            this.LftRing.xRot = this.Head.xRot;
+            this.LftRingHole.xRot = this.Head.xRot;
+            this.HairRope.xRot = 0.6108652F + this.Head.xRot;
+            this.Hair1.xRot = 0.6108652F + this.Head.xRot;
+            this.Hair2.xRot = 0.2617994F + this.Head.xRot;
+            this.Hair3.xRot = this.Head.xRot;
+            this.DiamondHorn.xRot = 0.0872665F + this.Head.xRot;
+            this.RgtHorn.xRot = this.Head.xRot;
+            this.RgtHornTip.xRot = this.Head.xRot;
+            this.LftHorn.xRot = this.Head.xRot;
+            this.LftHornTip.xRot = this.Head.xRot;
 
-            this.Brow.rotateAngleY = this.Head.rotateAngleY;
-            this.NoseBridge.rotateAngleY = this.Head.rotateAngleY;
-            this.Nose.rotateAngleY = this.Head.rotateAngleY;
-            this.RgtTusk.rotateAngleY = this.Head.rotateAngleY;
-            this.RgtTooth.rotateAngleY = this.Head.rotateAngleY;
-            this.LftTooth.rotateAngleY = this.Head.rotateAngleY;
-            this.LftTusk.rotateAngleY = this.Head.rotateAngleY;
-            this.Lip.rotateAngleY = this.Head.rotateAngleY;
-            this.RgtEar.rotateAngleY = this.Head.rotateAngleY;
-            this.RgtRing.rotateAngleY = this.Head.rotateAngleY;
-            this.RgtRingHole.rotateAngleY = this.Head.rotateAngleY;
-            this.LftEar.rotateAngleY = this.Head.rotateAngleY;
-            this.LftRing.rotateAngleY = this.Head.rotateAngleY;
-            this.LftRingHole.rotateAngleY = this.Head.rotateAngleY;
-            this.HairRope.rotateAngleY = this.Head.rotateAngleY;
-            this.Hair1.rotateAngleY = this.Head.rotateAngleY;
-            this.Hair2.rotateAngleY = this.Head.rotateAngleY;
-            this.Hair3.rotateAngleY = this.Head.rotateAngleY;
-            this.DiamondHorn.rotateAngleY = this.Head.rotateAngleY;
-            this.RgtHorn.rotateAngleY = this.Head.rotateAngleY;
-            this.RgtHornTip.rotateAngleY = this.Head.rotateAngleY;
-            this.LftHorn.rotateAngleY = this.Head.rotateAngleY;
-            this.LftHornTip.rotateAngleY = this.Head.rotateAngleY;
+            this.Brow.yRot = this.Head.yRot;
+            this.NoseBridge.yRot = this.Head.yRot;
+            this.Nose.yRot = this.Head.yRot;
+            this.RgtTusk.yRot = this.Head.yRot;
+            this.RgtTooth.yRot = this.Head.yRot;
+            this.LftTooth.yRot = this.Head.yRot;
+            this.LftTusk.yRot = this.Head.yRot;
+            this.Lip.yRot = this.Head.yRot;
+            this.RgtEar.yRot = this.Head.yRot;
+            this.RgtRing.yRot = this.Head.yRot;
+            this.RgtRingHole.yRot = this.Head.yRot;
+            this.LftEar.yRot = this.Head.yRot;
+            this.LftRing.yRot = this.Head.yRot;
+            this.LftRingHole.yRot = this.Head.yRot;
+            this.HairRope.yRot = this.Head.yRot;
+            this.Hair1.yRot = this.Head.yRot;
+            this.Hair2.yRot = this.Head.yRot;
+            this.Hair3.yRot = this.Head.yRot;
+            this.DiamondHorn.yRot = this.Head.yRot;
+            this.RgtHorn.yRot = this.Head.yRot;
+            this.RgtHornTip.yRot = this.Head.yRot;
+            this.LftHorn.yRot = this.Head.yRot;
+            this.LftHornTip.yRot = this.Head.yRot;
         } else {
 
-            this.Head3RgtEar.rotateAngleX = this.Head3.rotateAngleX;
-            this.Head3LftEar.rotateAngleX = this.Head3.rotateAngleX;
-            this.Head3Eyelid.rotateAngleX = 0.2617994F + this.Head3.rotateAngleX;
-            this.Head3Nose.rotateAngleX = 0.4886922F + this.Head3.rotateAngleX;
-            this.Head3Brow.rotateAngleX = -0.2617994F + this.Head3.rotateAngleX;
-            this.Head3Hair.rotateAngleX = -0.6108652F + this.Head3.rotateAngleX;
-            this.Head3Lip.rotateAngleX = 0.1745329F + this.Head3.rotateAngleX;
-            this.Head3RgtTusk.rotateAngleX = 0.1745329F + this.Head3.rotateAngleX;
-            this.Head3RgtTooth.rotateAngleX = 0.1745329F + this.Head3.rotateAngleX;
-            this.Head3LftTooth.rotateAngleX = 0.1745329F + this.Head3.rotateAngleX;
-            this.Head3LftTusk.rotateAngleX = 0.1745329F + this.Head3.rotateAngleX;
-            this.Head3RingHole.rotateAngleX = this.Head3.rotateAngleX;
-            this.Head3Ring.rotateAngleX = this.Head3.rotateAngleX;
+            this.Head3RgtEar.xRot = this.Head3.xRot;
+            this.Head3LftEar.xRot = this.Head3.xRot;
+            this.Head3Eyelid.xRot = 0.2617994F + this.Head3.xRot;
+            this.Head3Nose.xRot = 0.4886922F + this.Head3.xRot;
+            this.Head3Brow.xRot = -0.2617994F + this.Head3.xRot;
+            this.Head3Hair.xRot = -0.6108652F + this.Head3.xRot;
+            this.Head3Lip.xRot = 0.1745329F + this.Head3.xRot;
+            this.Head3RgtTusk.xRot = 0.1745329F + this.Head3.xRot;
+            this.Head3RgtTooth.xRot = 0.1745329F + this.Head3.xRot;
+            this.Head3LftTooth.xRot = 0.1745329F + this.Head3.xRot;
+            this.Head3LftTusk.xRot = 0.1745329F + this.Head3.xRot;
+            this.Head3RingHole.xRot = this.Head3.xRot;
+            this.Head3Ring.xRot = this.Head3.xRot;
 
-            this.Head3RgtEar.rotateAngleY = this.Head3.rotateAngleY;
-            this.Head3LftEar.rotateAngleY = this.Head3.rotateAngleY;
-            this.Head3Eyelid.rotateAngleY = this.Head3.rotateAngleY;
-            this.Head3Nose.rotateAngleY = this.Head3.rotateAngleY;
-            this.Head3Brow.rotateAngleY = this.Head3.rotateAngleY;
-            this.Head3Hair.rotateAngleY = this.Head3.rotateAngleY;
-            this.Head3Lip.rotateAngleY = this.Head3.rotateAngleY;
-            this.Head3RgtTusk.rotateAngleY = this.Head3.rotateAngleY;
-            this.Head3RgtTooth.rotateAngleY = this.Head3.rotateAngleY;
-            this.Head3LftTooth.rotateAngleY = this.Head3.rotateAngleY;
-            this.Head3LftTusk.rotateAngleY = this.Head3.rotateAngleY;
-            this.Head3RingHole.rotateAngleY = this.Head3.rotateAngleY;
-            this.Head3Ring.rotateAngleY = this.Head3.rotateAngleY;
+            this.Head3RgtEar.yRot = this.Head3.yRot;
+            this.Head3LftEar.yRot = this.Head3.yRot;
+            this.Head3Eyelid.yRot = this.Head3.yRot;
+            this.Head3Nose.yRot = this.Head3.yRot;
+            this.Head3Brow.yRot = this.Head3.yRot;
+            this.Head3Hair.yRot = this.Head3.yRot;
+            this.Head3Lip.yRot = this.Head3.yRot;
+            this.Head3RgtTusk.yRot = this.Head3.yRot;
+            this.Head3RgtTooth.yRot = this.Head3.yRot;
+            this.Head3LftTooth.yRot = this.Head3.yRot;
+            this.Head3LftTusk.yRot = this.Head3.yRot;
+            this.Head3RingHole.yRot = this.Head3.yRot;
+            this.Head3Ring.yRot = this.Head3.yRot;
 
-            this.Head2Chin.rotateAngleX = 0.2617994F + this.Head2.rotateAngleX;
-            this.Head2Lip.rotateAngleX = this.Head2.rotateAngleX;
-            this.Head2LftTusk.rotateAngleX = 0.1745329F + this.Head2.rotateAngleX;
-            this.Head2RgtTusk.rotateAngleX = 0.1745329F + this.Head2.rotateAngleX;
-            this.Head2Nose.rotateAngleX = 0.0872665F + this.Head2.rotateAngleX;
-            this.Head2NoseBridge.rotateAngleX = -0.1745329F + this.Head2.rotateAngleX;
-            this.Head2Brow.rotateAngleX = -0.0872665F + this.Head2.rotateAngleX;
-            this.Head2RgtHorn.rotateAngleX = -0.5235988F + this.Head2.rotateAngleX;
-            this.Head2LftHorn.rotateAngleX = -0.5235988F + this.Head2.rotateAngleX;
-            this.Head2DiamondHorn.rotateAngleX = 0.0872665F + this.Head2.rotateAngleX;
+            this.Head2Chin.xRot = 0.2617994F + this.Head2.xRot;
+            this.Head2Lip.xRot = this.Head2.xRot;
+            this.Head2LftTusk.xRot = 0.1745329F + this.Head2.xRot;
+            this.Head2RgtTusk.xRot = 0.1745329F + this.Head2.xRot;
+            this.Head2Nose.xRot = 0.0872665F + this.Head2.xRot;
+            this.Head2NoseBridge.xRot = -0.1745329F + this.Head2.xRot;
+            this.Head2Brow.xRot = -0.0872665F + this.Head2.xRot;
+            this.Head2RgtHorn.xRot = -0.5235988F + this.Head2.xRot;
+            this.Head2LftHorn.xRot = -0.5235988F + this.Head2.xRot;
+            this.Head2DiamondHorn.xRot = 0.0872665F + this.Head2.xRot;
 
-            this.Head2Chin.rotateAngleY = this.Head2.rotateAngleY;
-            this.Head2Lip.rotateAngleY = this.Head2.rotateAngleY;
-            this.Head2LftTusk.rotateAngleY = this.Head2.rotateAngleY;
-            this.Head2RgtTusk.rotateAngleY = this.Head2.rotateAngleY;
-            this.Head2Nose.rotateAngleY = this.Head2.rotateAngleY;
-            this.Head2NoseBridge.rotateAngleY = this.Head2.rotateAngleY;
-            this.Head2Brow.rotateAngleY = this.Head2.rotateAngleY;
-            this.Head2RgtHorn.rotateAngleY = this.Head2.rotateAngleY;
-            this.Head2LftHorn.rotateAngleY = this.Head2.rotateAngleY;
-            this.Head2DiamondHorn.rotateAngleY = this.Head2.rotateAngleY;
+            this.Head2Chin.yRot = this.Head2.yRot;
+            this.Head2Lip.yRot = this.Head2.yRot;
+            this.Head2LftTusk.yRot = this.Head2.yRot;
+            this.Head2RgtTusk.yRot = this.Head2.yRot;
+            this.Head2Nose.yRot = this.Head2.yRot;
+            this.Head2NoseBridge.yRot = this.Head2.yRot;
+            this.Head2Brow.yRot = this.Head2.yRot;
+            this.Head2RgtHorn.yRot = this.Head2.yRot;
+            this.Head2LftHorn.yRot = this.Head2.yRot;
+            this.Head2DiamondHorn.yRot = this.Head2.yRot;
         }
 
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         if (type == 1) {
             this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             this.Brow.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
@@ -818,7 +818,7 @@ public class MoCModelOgre<T extends MoCEntityOgre> extends EntityModel<T> {
             this.LftHorn.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             this.LftHornTip.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
 
-            this.LftWeaponRoot.showModel = false;
+            this.LftWeaponRoot.visible = false;
         } else {
             this.Head3RgtEar.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             this.Head3LftEar.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
@@ -847,7 +847,7 @@ public class MoCModelOgre<T extends MoCEntityOgre> extends EntityModel<T> {
             this.Head2LftHorn.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
             this.Head2DiamondHorn.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
 
-            this.LftWeaponRoot.showModel = true;
+            this.LftWeaponRoot.visible = true;
         }
 
         this.NeckRest.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);

@@ -144,7 +144,7 @@ public class MoCEntityPanther extends MoCEntityBigCat {
         if (entity instanceof MoCEntityPanther) {
             return false;
         }
-        return entity.getHeight() < 1.5F && entity.getWidth() < 1.5F;
+        return entity.getBbHeight() < 1.5F && entity.getBbWidth() < 1.5F;
     }
     
     @Override

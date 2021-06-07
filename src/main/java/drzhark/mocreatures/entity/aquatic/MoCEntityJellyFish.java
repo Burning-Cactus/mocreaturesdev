@@ -17,11 +17,11 @@ import net.minecraft.world.World;
 public class MoCEntityJellyFish extends MoCEntityTameableAquatic {
 
     private int poisoncounter;
-    private static final DataParameter<Boolean> GLOWS = EntityDataManager.<Boolean>createKey(MoCEntityJellyFish.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> GLOWS = EntityDataManager.<Boolean>defineId(MoCEntityJellyFish.class, DataSerializers.BOOLEAN);
     
     public MoCEntityJellyFish(EntityType<? extends MoCEntityJellyFish> type, World world) {
         super(type, world);
-        setEdad(50 + (this.rand.nextInt(50)));
+        setEdad(50 + (this.random.nextInt(50)));
     }
 
     @Override
@@ -31,33 +31,33 @@ public class MoCEntityJellyFish extends MoCEntityTameableAquatic {
     
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityTameableAquatic.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 6.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.15D);
+                .add(Attributes.MAX_HEALTH, 6.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.15D);
     }
 
     @Override
     public void selectType() {
         if (getSubType() == 0) {
-            setType(this.rand.nextInt(5) + 1);
+            setType(this.random.nextInt(5) + 1);
         }
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(GLOWS, Boolean.valueOf(false));
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(GLOWS, Boolean.valueOf(false));
     }
 
     public void setGlowing(boolean flag) {
-        this.dataManager.set(GLOWS, Boolean.valueOf(flag));
+        this.entityData.set(GLOWS, Boolean.valueOf(flag));
     }
 
     public boolean isGlowing() {
-        return (((Boolean)this.dataManager.get(GLOWS)).booleanValue());
+        return (((Boolean)this.entityData.get(GLOWS)).booleanValue());
     }
 
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         return 0.02F;
     }
 
@@ -95,15 +95,15 @@ public class MoCEntityJellyFish extends MoCEntityTameableAquatic {
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
-        if (!this.world.isRemote) {
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level.isClientSide) {
 
-            if (this.rand.nextInt(200) == 0) {
-                setGlowing(!this.world.isDaytime());
+            if (this.random.nextInt(200) == 0) {
+                setGlowing(!this.level.isDay());
             }
 
-            if (!getIsTamed() && ++this.poisoncounter > 250 && (this.shouldAttackPlayers()) && this.rand.nextInt(30) == 0) {
+            if (!getIsTamed() && ++this.poisoncounter > 250 && (this.shouldAttackPlayers()) && this.random.nextInt(30) == 0) {
                 if (MoCTools.findNearPlayerAndPoison(this, true)) {
                     this.poisoncounter = 0;
                 }
@@ -140,7 +140,7 @@ public class MoCEntityJellyFish extends MoCEntityTameableAquatic {
         float pulseSpeed = 0.08F;
         if (myMoveSpeed > 0F)
             pulseSpeed = 0.5F;
-        float pulseSize = MathHelper.cos(this.ticksExisted * pulseSpeed) * 0.2F;
+        float pulseSize = MathHelper.cos(this.tickCount * pulseSpeed) * 0.2F;
         return getEdad() * 0.01F + (pulseSize / 5);
     }
 

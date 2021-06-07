@@ -27,9 +27,9 @@ public class MoCEntityRaccoon extends MoCEntityTameableAnimal {
     public MoCEntityRaccoon(EntityType<? extends MoCEntityRaccoon> type, World world) {
         super(type, world);
         this.texture = "raccoon.png";
-        setEdad(50 + this.rand.nextInt(15));
+        setEdad(50 + this.random.nextInt(15));
 
-        if (this.rand.nextInt(3) == 0) {
+        if (this.random.nextInt(3) == 0) {
             setAdult(false);
 
         } else {
@@ -52,21 +52,21 @@ public class MoCEntityRaccoon extends MoCEntityTameableAnimal {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityTameableAnimal.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 8.0D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 1.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.3D);
+                .add(Attributes.MAX_HEALTH, 8.0D)
+                .add(Attributes.ATTACK_DAMAGE, 1.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.3D);
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        if (super.attackEntityFrom(damagesource, i)) {
-            Entity entity = damagesource.getTrueSource();
-            if (this.isRidingOrBeingRiddenBy(entity)) {
+    public boolean hurt(DamageSource damagesource, float i) {
+        if (super.hurt(damagesource, i)) {
+            Entity entity = damagesource.getEntity();
+            if (this.hasIndirectPassenger(entity)) {
                 return true;
             }
             if (entity != this && this.isNotScared() && entity instanceof LivingEntity && super.shouldAttackPlayers()) {
-                setAttackTarget((LivingEntity) entity);
-                setRevengeTarget((LivingEntity) entity);
+                setTarget((LivingEntity) entity);
+                setLastHurtByMob((LivingEntity) entity);
                 return true;
             }
         }
@@ -132,12 +132,12 @@ public class MoCEntityRaccoon extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public int getTalkInterval() {
+    public int getAmbientSoundInterval() {
         return 400;
     }
 
     @Override
-    public int getMaxSpawnedInChunk() {
+    public int getMaxSpawnClusterSize() {
         return 2;
     }
 

@@ -17,16 +17,16 @@ public class MoCModelKittyBed2 extends EntityModel<MoCEntityKittyBed> {
         float f = 0.0F;
         this.Sheet = new ModelRenderer(this, 0, 15);
         this.Sheet.addBox(0.0F, 0.0F, 0.0F, 16, 3, 14, f);
-        this.Sheet.setRotationPoint(-8F, 21F, -7F);
+        this.Sheet.setPos(-8F, 21F, -7F);
     }
 
     @Override
-    public void setRotationAngles(MoCEntityKittyBed entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(MoCEntityKittyBed entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         this.Sheet.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
     }
 }

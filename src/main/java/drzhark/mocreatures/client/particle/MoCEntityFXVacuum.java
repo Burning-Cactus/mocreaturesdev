@@ -22,29 +22,29 @@ public class MoCEntityFXVacuum extends SpriteTexturedParticle {
     public MoCEntityFXVacuum(ClientWorld par1World, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
         super(par1World, x, y, z, xSpeed, ySpeed, zSpeed);
 
-        this.particleRed = 1F;
-        this.particleGreen = 1F;
-        this.particleBlue = 1F;
+        this.rCol = 1F;
+        this.gCol = 1F;
+        this.bCol = 1F;
 
-        this.motionX = xSpeed;
-        this.motionY = ySpeed;
-        this.motionZ = zSpeed;
-        this.portalPosX = this.posX = x;
-        this.portalPosY = this.posY = y;// + 0.7D;
-        this.portalPosZ = this.posZ = z;
-        this.portalParticleScale = this.particleScale = this.rand.nextFloat() * 0.2F + 0.5F;
+        this.xd = xSpeed;
+        this.yd = ySpeed;
+        this.zd = zSpeed;
+        this.portalPosX = this.x = x;
+        this.portalPosY = this.y = y;// + 0.7D;
+        this.portalPosZ = this.z = z;
+        this.portalParticleScale = this.quadSize = this.random.nextFloat() * 0.2F + 0.5F;
 //        this.setParticleTextureIndex(partTexture);
-        this.maxAge = (int) (Math.random() * 10.0D) + 30;
+        this.lifetime = (int) (Math.random() * 10.0D) + 30;
     }
 
     @Override
-    public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks) {
-        float var8 = (this.age + partialTicks) / this.maxAge;
+    public void render(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks) {
+        float var8 = (this.age + partialTicks) / this.lifetime;
         var8 = 1.0F - var8;
         var8 *= var8;
         var8 = 1.0F - var8;
-        this.particleScale = this.portalParticleScale * var8;
-        super.renderParticle(buffer, renderInfo, partialTicks);
+        this.quadSize = this.portalParticleScale * var8;
+        super.render(buffer, renderInfo, partialTicks);
     }
 
     @Override
@@ -53,9 +53,9 @@ public class MoCEntityFXVacuum extends SpriteTexturedParticle {
     }
 
     @Override
-    public int getBrightnessForRender(float par1) {
-        int var2 = super.getBrightnessForRender(par1);
-        float var3 = (float) this.age / (float) this.maxAge;
+    public int getLightColor(float par1) {
+        int var2 = super.getLightColor(par1);
+        float var3 = (float) this.age / (float) this.lifetime;
         var3 *= var3;
         var3 *= var3;
         int var4 = var2 & 255;
@@ -82,19 +82,19 @@ public class MoCEntityFXVacuum extends SpriteTexturedParticle {
      */
     @Override
     public void tick() {
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
-        float var1 = (float) this.age / (float) this.maxAge;
+        this.xo = this.x;
+        this.yo = this.y;
+        this.zo = this.z;
+        float var1 = (float) this.age / (float) this.lifetime;
         float var2 = var1;
         var1 = -var1 + var1 * var1 * 2.0F;
         var1 = 1.0F - var1;
-        this.posX = this.portalPosX + this.motionX * var1;
-        this.posY = this.portalPosY + this.motionY * var1 + (1.0F - var2);
-        this.posZ = this.portalPosZ + this.motionZ * var1;
+        this.x = this.portalPosX + this.xd * var1;
+        this.y = this.portalPosY + this.yd * var1 + (1.0F - var2);
+        this.z = this.portalPosZ + this.zd * var1;
 
-        if (this.age++ >= this.maxAge) {
-            this.setExpired();
+        if (this.age++ >= this.lifetime) {
+            this.remove();
         }
     }
 
@@ -107,7 +107,7 @@ public class MoCEntityFXVacuum extends SpriteTexturedParticle {
 
         @Nullable
         @Override
-        public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             MoCEntityFXVacuum vacuumParticle = new MoCEntityFXVacuum(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
             return null;
         }

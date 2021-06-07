@@ -53,9 +53,9 @@ public class MoCreatures {
     public static final MoCTextures MOCTEXTURES = new MoCTextures();
     public static final String ENTITY_TEXTURES = "textures/entity/";
 
-    public static final RegistryKey<DimensionType> WYVERN_LAIR_TYPE = RegistryKey.func_240903_a_(Registry.DIMENSION_TYPE_KEY, new ResourceLocation(MoCConstants.MOD_ID, "wyvern_lair"));
-    public static final RegistryKey<World> WYVERN_LAIR = RegistryKey.func_240903_a_(Registry.WORLD_KEY, new ResourceLocation(MoCConstants.MOD_ID, "wyvern_lair"));
-    public static final RegistryKey<Biome> WYVERN_LAIR_BIOME = RegistryKey.func_240903_a_(Registry.BIOME_KEY, new ResourceLocation(MoCConstants.MOD_ID, "wyvern_biome"));
+    public static final RegistryKey<DimensionType> WYVERN_LAIR_TYPE = RegistryKey.create(Registry.DIMENSION_TYPE_REGISTRY, new ResourceLocation(MoCConstants.MOD_ID, "wyvern_lair"));
+    public static final RegistryKey<World> WYVERN_LAIR = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(MoCConstants.MOD_ID, "wyvern_lair"));
+    public static final RegistryKey<Biome> WYVERN_LAIR_BIOME = RegistryKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(MoCConstants.MOD_ID, "wyvern_biome"));
 
 
     public MoCreatures() {

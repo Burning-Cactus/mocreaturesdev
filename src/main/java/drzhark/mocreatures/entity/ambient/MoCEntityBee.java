@@ -29,33 +29,33 @@ public class MoCEntityBee extends MoCEntityInsect
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
 
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
             if (getIsFlying() && --this.soundCount == -1) {
-                PlayerEntity ep = this.world.getClosestPlayer(this, 5D);
+                PlayerEntity ep = this.level.getNearestPlayer(this, 5D);
                 if (ep != null) {
                     MoCTools.playCustomSound(this, getMySound());
                     this.soundCount = 20;
                 }
             }
 
-            if (getIsFlying() && this.rand.nextInt(500) == 0) {
+            if (getIsFlying() && this.random.nextInt(500) == 0) {
                 setIsFlying(false);
             }
         }
     }
 
     private SoundEvent getMySound() {
-        if (getAttackTarget() != null) {
+        if (getTarget() != null) {
             return MoCSoundEvents.ENTITY_BEE_UPSET;
         }
         return MoCSoundEvents.ENTITY_BEE_AMBIENT;
     }
 
     @Override
-    public int getTalkInterval() {
+    public int getAmbientSoundInterval() {
         return 2000;
     }
 
@@ -65,13 +65,13 @@ public class MoCEntityBee extends MoCEntityInsect
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        if (super.attackEntityFrom(damagesource, i)) {
-            Entity entity = damagesource.getTrueSource();
+    public boolean hurt(DamageSource damagesource, float i) {
+        if (super.hurt(damagesource, i)) {
+            Entity entity = damagesource.getEntity();
             if (entity instanceof LivingEntity) {
                 LivingEntity entityliving = (LivingEntity) entity;
-                if ((entity != this) && (this.world.getDifficulty().getId() > 0)) {
-                    setAttackTarget(entityliving);
+                if ((entity != this) && (this.level.getDifficulty().getId() > 0)) {
+                    setTarget(entityliving);
                 }
                 return true;
             }
@@ -84,12 +84,12 @@ public class MoCEntityBee extends MoCEntityInsect
     @Override
     public boolean isMyFavoriteFood(ItemStack stack) {
         return !stack.isEmpty()
-                && (stack.getItem() == Item.getItemFromBlock(Blocks.POPPY) || stack.getItem() == Item
-                        .getItemFromBlock(Blocks.DANDELION));
+                && (stack.getItem() == Item.byBlock(Blocks.POPPY) || stack.getItem() == Item
+                        .byBlock(Blocks.DANDELION));
     }
 
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         if (getIsFlying()) {
             return 0.15F;
         }

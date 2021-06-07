@@ -18,7 +18,7 @@ public class MoCEntityTiger extends MoCEntityBigCat {
     public void selectType() {
 
         if (getSubType() == 0) {
-            if (this.rand.nextInt(20) == 0) {
+            if (this.random.nextInt(20) == 0) {
                 setType(2);
             } else {
                 setType(1);
@@ -157,7 +157,7 @@ public class MoCEntityTiger extends MoCEntityBigCat {
         if (entity instanceof MoCEntityTiger) {
             return false;
         }
-        return entity.getHeight() < 2F && entity.getWidth() < 2F;
+        return entity.getBbHeight() < 2F && entity.getBbWidth() < 2F;
     }
     
     @Override

@@ -17,7 +17,7 @@ public class MoCRenderSnake extends MoCRenderMoC<MoCEntitySnake, MoCModelSnake<M
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntitySnake par1Entity) {
+    public ResourceLocation getTextureLocation(MoCEntitySnake par1Entity) {
         return par1Entity.getTexture();
     }
 
@@ -26,7 +26,7 @@ public class MoCRenderSnake extends MoCRenderMoC<MoCEntitySnake, MoCModelSnake<M
     }
 
     @Override
-    protected void preRenderCallback(MoCEntitySnake entitysnake, MatrixStack stack, float f) {
+    protected void scale(MoCEntitySnake entitysnake, MatrixStack stack, float f) {
         stretch(entitysnake, stack);
 
         /*
@@ -40,7 +40,7 @@ public class MoCRenderSnake extends MoCRenderMoC<MoCEntitySnake, MoCModelSnake<M
             if (xOff > 0.0F) {
                 xOff = 0.0F;
             }
-            if (entitysnake.world.isRemote) {
+            if (entitysnake.level.isClientSide) {
                 stack.translate(xOff, 0.0F, 0F);
             } else {
                 stack.translate(xOff, 0F, 0.0F);
@@ -58,7 +58,7 @@ public class MoCRenderSnake extends MoCRenderMoC<MoCEntitySnake, MoCModelSnake<M
             adjustHeight(entitysnake, -0.25F);
         }
 
-        super.preRenderCallback(entitysnake, stack, f);
+        super.scale(entitysnake, stack, f);
     }
 
     protected void stretch(MoCEntitySnake entitysnake, MatrixStack stack) {

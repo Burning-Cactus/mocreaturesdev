@@ -25,13 +25,13 @@ public class EntityAIFollowAdult extends Goal {
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean shouldExecute() {
+    public boolean canUse() {
         if ((!(this.childAnimal instanceof IMoCEntity)) || ((IMoCEntity) this.childAnimal).getIsAdult()) {
             return false;
         } else {
             List<LivingEntity> list =
-                    this.childAnimal.world.getEntitiesWithinAABB(this.childAnimal.getClass(),
-                            this.childAnimal.getBoundingBox().expand(8.0D, 4.0D, 8.0D));
+                    this.childAnimal.level.getEntitiesOfClass(this.childAnimal.getClass(),
+                            this.childAnimal.getBoundingBox().expandTowards(8.0D, 4.0D, 8.0D));
             LivingEntity entityliving = null;
             double d0 = Double.MAX_VALUE;
             Iterator<LivingEntity> iterator = list.iterator();
@@ -40,7 +40,7 @@ public class EntityAIFollowAdult extends Goal {
                 LivingEntity entityliving1 = iterator.next();
 
                 if (((IMoCEntity) entityliving1).getIsAdult()) {
-                    double d1 = this.childAnimal.getDistanceSq(entityliving1);
+                    double d1 = this.childAnimal.distanceToSqr(entityliving1);
 
                     if (d1 <= d0) {
                         d0 = d1;
@@ -64,13 +64,13 @@ public class EntityAIFollowAdult extends Goal {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean shouldContinueExecuting() {
+    public boolean canContinueToUse() {
         if (((IMoCEntity) this.childAnimal).getIsAdult()) {
             return false;
         } else if (!this.parentAnimal.isAlive()) {
             return false;
         } else {
-            double d0 = this.childAnimal.getDistanceSq(this.parentAnimal);
+            double d0 = this.childAnimal.distanceToSqr(this.parentAnimal);
             return d0 >= 9.0D && d0 <= 256.0D;
         }
     }
@@ -79,7 +79,7 @@ public class EntityAIFollowAdult extends Goal {
      * Execute a one shot task or start executing a continuous task
      */
     @Override
-    public void startExecuting() {
+    public void start() {
         this.delayCounter = 0;
     }
 
@@ -87,7 +87,7 @@ public class EntityAIFollowAdult extends Goal {
      * Resets the task
      */
     @Override
-    public void resetTask() {
+    public void stop() {
         this.parentAnimal = null;
     }
 
@@ -98,7 +98,7 @@ public class EntityAIFollowAdult extends Goal {
     public void tick() {
         if (--this.delayCounter <= 0) {
             this.delayCounter = 10;
-            ((MobEntity)this.childAnimal).getNavigator().tryMoveToEntityLiving(this.parentAnimal, this.moveSpeed);
+            ((MobEntity)this.childAnimal).getNavigation().moveTo(this.parentAnimal, this.moveSpeed);
         }
     }
 }

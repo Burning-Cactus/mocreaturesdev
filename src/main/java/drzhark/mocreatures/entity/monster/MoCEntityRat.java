@@ -38,15 +38,15 @@ public class MoCEntityRat extends MoCEntityMob {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityMob.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 10.0D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.3D);
+                .add(Attributes.MAX_HEALTH, 10.0D)
+                .add(Attributes.ATTACK_DAMAGE, 3.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.3D);
     }
 
     @Override
     public void selectType() {
         if (getSubType() == 0) {
-            int i = this.rand.nextInt(100);
+            int i = this.random.nextInt(100);
             if (i <= 65) {
                 setType(1);
             } else if (i <= 98) {
@@ -73,36 +73,36 @@ public class MoCEntityRat extends MoCEntityMob {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        Entity entity = damagesource.getTrueSource();
+    public boolean hurt(DamageSource damagesource, float i) {
+        Entity entity = damagesource.getEntity();
 
         if (entity instanceof LivingEntity) {
-            setAttackTarget((LivingEntity) entity);
-            if (!this.world.isRemote) {
+            setTarget((LivingEntity) entity);
+            if (!this.level.isClientSide) {
                 List<MoCEntityRat> list =
-                        this.world.getEntitiesWithinAABB(MoCEntityRat.class,
-                                new AxisAlignedBB(this.getPosX(), this.getPosY(), this.getPosZ(), this.getPosX() + 1.0D, this.getPosY() + 1.0D, this.getPosZ() + 1.0D)
-                                        .expand(16D, 4D, 16D));
+                        this.level.getEntitiesOfClass(MoCEntityRat.class,
+                                new AxisAlignedBB(this.getX(), this.getY(), this.getZ(), this.getX() + 1.0D, this.getY() + 1.0D, this.getZ() + 1.0D)
+                                        .expandTowards(16D, 4D, 16D));
                 for (MoCEntityRat entityrat : list) {
-                    if ((entityrat != null) && (entityrat.getAttackTarget() == null)) {
-                        entityrat.setAttackTarget((LivingEntity) entity);
+                    if ((entityrat != null) && (entityrat.getTarget() == null)) {
+                        entityrat.setTarget((LivingEntity) entity);
                     }
                 }
             }
         }
-        return super.attackEntityFrom(damagesource, i);
+        return super.hurt(damagesource, i);
     }
 
     public boolean climbing() {
-        return !this.onGround && isOnLadder();
+        return !this.onGround && onClimbable();
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
 
-        if ((this.rand.nextInt(100) == 0) && (this.getBrightness() > 0.5F)) {
-            setAttackTarget(null);
+        if ((this.random.nextInt(100) == 0) && (this.getBrightness() > 0.5F)) {
+            setTarget(null);
         }
     }
 
@@ -122,8 +122,8 @@ public class MoCEntityRat extends MoCEntityMob {
     }
 
     @Override
-    public boolean isOnLadder() {
-        return this.collidedHorizontally;
+    public boolean onClimbable() {
+        return this.horizontalCollision;
     }
 
     @Override

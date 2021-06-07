@@ -35,9 +35,9 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
     public int mouthCounter;
     public int armCounter;
     private int transformCounter;
-    private static final DataParameter<Boolean> RIDEABLE = EntityDataManager.createKey(MoCEntityPetScorpion.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HAS_BABIES = EntityDataManager.createKey(MoCEntityPetScorpion.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> IS_SITTING = EntityDataManager.createKey(MoCEntityPetScorpion.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> RIDEABLE = EntityDataManager.defineId(MoCEntityPetScorpion.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> HAS_BABIES = EntityDataManager.defineId(MoCEntityPetScorpion.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_SITTING = EntityDataManager.defineId(MoCEntityPetScorpion.class, DataSerializers.BOOLEAN);
 
     public MoCEntityPetScorpion(EntityType<? extends MoCEntityPetScorpion> type, World world) {
         super(type, world);
@@ -45,7 +45,7 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
         setAdult(false);
         setEdad(20);
         setHasBabies(false);
-        this.stepHeight = 20.0F;
+        this.maxUpStep = 20.0F;
     }
 
     @Override
@@ -61,9 +61,9 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityTameableAnimal.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 40.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.3D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D);
+                .add(Attributes.MAX_HEALTH, 40.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.3D)
+                .add(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     @Override
@@ -123,25 +123,25 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(HAS_BABIES, Boolean.FALSE);
-        this.dataManager.register(IS_SITTING, Boolean.FALSE);
-        this.dataManager.register(RIDEABLE, Boolean.FALSE);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(HAS_BABIES, Boolean.FALSE);
+        this.entityData.define(IS_SITTING, Boolean.FALSE);
+        this.entityData.define(RIDEABLE, Boolean.FALSE);
     }
     
     @Override
     public void setRideable(boolean flag) {
-        this.dataManager.set(RIDEABLE, flag);
+        this.entityData.set(RIDEABLE, flag);
     }
 
     @Override
     public boolean getIsRideable() {
-        return this.dataManager.get(RIDEABLE);
+        return this.entityData.get(RIDEABLE);
     }
     
     public boolean getHasBabies() {
-        return getIsAdult() && this.dataManager.get(HAS_BABIES);
+        return getIsAdult() && this.entityData.get(HAS_BABIES);
     }
 
     public boolean getIsPoisoning() {
@@ -150,15 +150,15 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
 
     @Override
     public boolean getIsSitting() {
-        return this.dataManager.get(IS_SITTING);
+        return this.entityData.get(IS_SITTING);
     }
 
     public void setSitting(boolean flag) {
-        this.dataManager.set(IS_SITTING, flag);
+        this.entityData.set(IS_SITTING, flag);
     }
 
     public void setHasBabies(boolean flag) {
-        this.dataManager.set(HAS_BABIES, flag);
+        this.entityData.set(HAS_BABIES, flag);
     }
 
     public void setPoisoning(boolean flag) {
@@ -188,25 +188,25 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public boolean isOnLadder() {
-        return this.collidedHorizontally;
+    public boolean onClimbable() {
+        return this.horizontalCollision;
     }
 
     public boolean climbing() {
-        return !this.onGround && isOnLadder();
+        return !this.onGround && onClimbable();
     }
 
     @Override
-    public void livingTick() {
-        if (!this.onGround && (this.getRidingEntity() != null)) {
-            this.rotationYaw = this.getRidingEntity().rotationYaw;
+    public void aiStep() {
+        if (!this.onGround && (this.getVehicle() != null)) {
+            this.yRot = this.getVehicle().yRot;
         }
 
         if (this.mouthCounter != 0 && this.mouthCounter++ > 50) {
             this.mouthCounter = 0;
         }
 
-        if (!this.world.isRemote && (this.armCounter == 10 || this.armCounter == 40)) {
+        if (!this.level.isClientSide && (this.armCounter == 10 || this.armCounter == 40)) {
             MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_SCORPION_CLAW);
         }
 
@@ -236,19 +236,19 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
                 selectType();
             }
         }
-        super.livingTick();
+        super.aiStep();
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        if (super.attackEntityFrom(damagesource, i)) {
-            Entity entity = damagesource.getTrueSource();
+    public boolean hurt(DamageSource damagesource, float i) {
+        if (super.hurt(damagesource, i)) {
+            Entity entity = damagesource.getEntity();
             if (!(entity instanceof LivingEntity) || entity instanceof PlayerEntity && getIsTamed()) {
                 return false;
             }
 
             if ((entity != null) && (entity != this) && (super.shouldAttackPlayers()) && getIsAdult()) {
-                setAttackTarget((LivingEntity) entity);
+                setTarget((LivingEntity) entity);
             }
             return true;
         } else {
@@ -257,22 +257,22 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
+    public void doEnchantDamageEffects(LivingEntity entityLivingBaseIn, Entity entityIn) {
         boolean flag = (entityIn instanceof PlayerEntity);
-        if (!getIsPoisoning() && this.rand.nextInt(5) == 0 && entityIn instanceof LivingEntity) {
+        if (!getIsPoisoning() && this.random.nextInt(5) == 0 && entityIn instanceof LivingEntity) {
             setPoisoning(true);
             if (getSubType() <= 2)// regular scorpions
             {
                 if (flag) {
                     MoCreatures.poisonPlayer((PlayerEntity) entityIn);
                 }
-                ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 70, 0));
+                ((LivingEntity) entityIn).addEffect(new EffectInstance(Effects.POISON, 70, 0));
             } else if (getSubType() == 4)// blue scorpions
             {
                 if (flag) {
                     MoCreatures.freezePlayer((PlayerEntity) entityIn);
                 }
-                ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 70, 0));
+                ((LivingEntity) entityIn).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 70, 0));
 
             } else if (getSubType() == 3)// red scorpions
             {
@@ -284,7 +284,7 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
         } else {
             swingArm();
         }
-        super.applyEnchantments(entityLivingBaseIn, entityIn);
+        super.doEnchantDamageEffects(entityLivingBaseIn, entityIn);
     }
 
     public void swingArm() {
@@ -437,15 +437,15 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
     }*/
 
     @Override
-    public void readAdditional(CompoundNBT nbttagcompound) {
-        super.readAdditional(nbttagcompound);
+    public void readAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.readAdditionalSaveData(nbttagcompound);
         setHasBabies(nbttagcompound.getBoolean("Babies"));
         setRideable(nbttagcompound.getBoolean("Saddled"));
     }
 
     @Override
-    public void writeAdditional(CompoundNBT nbttagcompound) {
-        super.writeAdditional(nbttagcompound);
+    public void addAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.addAdditionalSaveData(nbttagcompound);
         nbttagcompound.putBoolean("Babies", getHasBabies());
         nbttagcompound.putBoolean("Saddled", getIsRideable());
     }
@@ -471,13 +471,13 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public int getTalkInterval() {
+    public int getAmbientSoundInterval() {
         return 300;
     }
 
     @Override
-    public boolean canBeCollidedWith() {
-        return !this.isBeingRidden();
+    public boolean isPickable() {
+        return !this.isVehicle();
     }
 
     @Override
@@ -487,19 +487,19 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
 
     @Override
     public boolean isMovementCeased() {
-        return (this.isBeingRidden()) || getIsSitting();
+        return (this.isVehicle()) || getIsSitting();
     }
 
     @Override
     public void dropMyStuff() {
-        MoCTools.dropSaddle(this, this.world);
+        MoCTools.dropSaddle(this, this.level);
     }
 
     /**
      * Get this Entity's EnumCreatureAttribute
      */
     @Override
-    public CreatureAttribute getCreatureAttribute() {
+    public CreatureAttribute getMobType() {
         return CreatureAttribute.ARTHROPOD;
     }
 
@@ -514,29 +514,29 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public double getMountedYOffset() {
-        return (this.getHeight() * 0.75D) - 0.15D;
+    public double getPassengersRidingOffset() {
+        return (this.getBbHeight() * 0.75D) - 0.15D;
     }
 
     @Override
-    public double getYOffset() {
-        if (this.getRidingEntity() instanceof PlayerEntity /*&& this.getRidingEntity() == MoCreatures.proxy.getPlayer()*/ && this.world.isRemote) {
+    public double getMyRidingOffset() {
+        if (this.getVehicle() instanceof PlayerEntity /*&& this.getRidingEntity() == MoCreatures.proxy.getPlayer()*/ && this.level.isClientSide) {
             return 0.1F;
         }
 
-        if ((this.getRidingEntity() instanceof PlayerEntity) && this.world.isRemote) {
-            return (super.getYOffset() + 0.1F);
+        if ((this.getVehicle() instanceof PlayerEntity) && this.level.isClientSide) {
+            return (super.getMyRidingOffset() + 0.1F);
         } else {
-            return super.getYOffset();
+            return super.getMyRidingOffset();
         }
     }
 
     @Override
-    public void updatePassenger(Entity passenger) {
+    public void positionRider(Entity passenger) {
         double dist = (0.2D);
-        double newPosX = this.getPosX() + (dist * Math.sin(this.renderYawOffset / 57.29578F));
-        double newPosZ = this.getPosZ() - (dist * Math.cos(this.renderYawOffset / 57.29578F));
-        passenger.setPosition(newPosX, this.getPosY() + getMountedYOffset() + passenger.getYOffset(), newPosZ);
+        double newPosX = this.getX() + (dist * Math.sin(this.yBodyRot / 57.29578F));
+        double newPosZ = this.getZ() - (dist * Math.cos(this.yBodyRot / 57.29578F));
+        passenger.setPos(newPosX, this.getY() + getPassengersRidingOffset() + passenger.getMyRidingOffset(), newPosZ);
     }
 
     @Override
@@ -559,7 +559,7 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
 
     @Override
     public boolean canAttackTarget(LivingEntity entity) {
-        return !(entity instanceof MoCEntityFox) && entity.getHeight() <= 1D && entity.getWidth() <= 1D;
+        return !(entity instanceof MoCEntityFox) && entity.getBbHeight() <= 1D && entity.getBbWidth() <= 1D;
     }
 
 }

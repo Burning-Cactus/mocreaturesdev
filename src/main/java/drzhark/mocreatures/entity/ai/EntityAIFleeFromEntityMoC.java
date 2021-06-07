@@ -14,12 +14,14 @@ import net.minecraft.util.math.vector.Vector3d;
 import java.util.EnumSet;
 import java.util.List;
 
+import net.minecraft.entity.ai.goal.Goal.Flag;
+
 public class EntityAIFleeFromEntityMoC extends Goal {
 
     public final Predicate<Entity> canBeSeenSelector = new Predicate<Entity>() {
 
         public boolean isApplicable(Entity entityIn) {
-            return entityIn.isAlive() && EntityAIFleeFromEntityMoC.this.entity.getEntitySenses().canSee(entityIn);
+            return entityIn.isAlive() && EntityAIFleeFromEntityMoC.this.entity.getSensing().canSee(entityIn);
         }
 
         @Override
@@ -45,7 +47,7 @@ public class EntityAIFleeFromEntityMoC extends Goal {
         this.avoidDistance = searchDistance;
         this.farSpeed = farSpeedIn;
         this.nearSpeed = nearSpeedIn;
-        this.setMutexFlags(EnumSet.of(Flag.MOVE));
+        this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
     /**
@@ -53,7 +55,7 @@ public class EntityAIFleeFromEntityMoC extends Goal {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public boolean shouldExecute() {
+    public boolean canUse() {
         if (this.entity instanceof IMoCEntity && ((IMoCEntity) this.entity).isNotScared()) {
             return false;
         }
@@ -63,22 +65,22 @@ public class EntityAIFleeFromEntityMoC extends Goal {
         }
 
         List<Entity> list =
-                this.entity.world.getEntitiesInAABBexcluding(this.entity,
-                        this.entity.getBoundingBox().expand((double) this.avoidDistance, 3.0D, (double) this.avoidDistance),
-                        Predicates.and(new Predicate[] {(Predicate) EntityPredicates.NOT_SPECTATING, this.canBeSeenSelector, this.avoidTargetSelector}));
+                this.entity.level.getEntities(this.entity,
+                        this.entity.getBoundingBox().expandTowards((double) this.avoidDistance, 3.0D, (double) this.avoidDistance),
+                        Predicates.and(new Predicate[] {(Predicate) EntityPredicates.NO_SPECTATORS, this.canBeSeenSelector, this.avoidTargetSelector}));
 
         if (list.isEmpty()) {
             return false;
         } else {
             this.closestLivingEntity = list.get(0);
             Vector3d vec3 =
-                    RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.entity, 16, 7, new Vector3d(this.closestLivingEntity.getPosX(),
-                            this.closestLivingEntity.getPosY(), this.closestLivingEntity.getPosZ()));
+                    RandomPositionGenerator.getPosAvoid(this.entity, 16, 7, new Vector3d(this.closestLivingEntity.getX(),
+                            this.closestLivingEntity.getY(), this.closestLivingEntity.getZ()));
 
             if (vec3 == null) {
                 return false;
-            } else if (this.closestLivingEntity.getDistanceSq(vec3.x, vec3.y, vec3.z) < this.closestLivingEntity
-                    .getDistanceSq(this.entity)) {
+            } else if (this.closestLivingEntity.distanceToSqr(vec3.x, vec3.y, vec3.z) < this.closestLivingEntity
+                    .distanceToSqr(this.entity)) {
                 return false;
             } else {
                 this.randPosX = vec3.x;
@@ -93,23 +95,23 @@ public class EntityAIFleeFromEntityMoC extends Goal {
      * Execute a one shot task or start executing a continuous task
      */
     @Override
-    public void startExecuting() {
-        this.entity.getNavigator().tryMoveToXYZ(this.randPosX, this.randPosY, this.randPosZ, this.nearSpeed);
+    public void start() {
+        this.entity.getNavigation().moveTo(this.randPosX, this.randPosY, this.randPosZ, this.nearSpeed);
     }
 
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean shouldContinueExecuting() {
-        return !this.entity.getNavigator().noPath();
+    public boolean canContinueToUse() {
+        return !this.entity.getNavigation().isDone();
     }
 
     /**
      * Resets the task
      */
     @Override
-    public void resetTask() {
+    public void stop() {
         this.closestLivingEntity = null;
     }
 
@@ -118,10 +120,10 @@ public class EntityAIFleeFromEntityMoC extends Goal {
      */
     @Override
     public void tick() {
-        if (this.entity.getDistanceSq(this.closestLivingEntity) < 8.0D) {
-            this.entity.getNavigator().setSpeed(this.nearSpeed);
+        if (this.entity.distanceToSqr(this.closestLivingEntity) < 8.0D) {
+            this.entity.getNavigation().setSpeedModifier(this.nearSpeed);
         } else {
-            this.entity.getNavigator().setSpeed(this.farSpeed);
+            this.entity.getNavigation().setSpeedModifier(this.farSpeed);
         }
     }
 }

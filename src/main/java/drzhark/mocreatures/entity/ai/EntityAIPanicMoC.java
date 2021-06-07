@@ -17,11 +17,11 @@ public class EntityAIPanicMoC extends PanicGoal {
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean shouldExecute() {
+    public boolean canUse() {
         if (this.entityCreature instanceof IMoCEntity && ((IMoCEntity) this.entityCreature).isNotScared()) {
             return false;
         }
-        return super.shouldExecute();
+        return super.canUse();
     }
 
 }

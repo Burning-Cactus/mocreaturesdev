@@ -25,7 +25,7 @@ public class MoCEntityWraith extends MoCEntityMob//MoCEntityFlyerMob
 
     public MoCEntityWraith(EntityType<? extends MoCEntityWraith> type, World world) {
         super(type, world);
-        this.collidedVertically = false;
+        this.verticalCollision = false;
         this.texture = "wraith.png";
     }
 
@@ -40,13 +40,13 @@ public class MoCEntityWraith extends MoCEntityMob//MoCEntityFlyerMob
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
 //        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(this.world.getDifficulty().getId() == 1 ? 2.0D : 3.0D); // setAttackStrength
         return MoCEntityMob.registerAttributes()
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D)
-                .func_233815_a_(Attributes.MAX_HEALTH, 10.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
+                .add(Attributes.ATTACK_DAMAGE, 3.0D)
+                .add(Attributes.MAX_HEALTH, 10.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -71,12 +71,12 @@ public class MoCEntityWraith extends MoCEntityMob//MoCEntityFlyerMob
     }
 
     @Override
-    public boolean canBePushed() {
+    public boolean isPushable() {
         return false;
     }
 
     @Override
-    protected void collideWithEntity(Entity par1Entity) {
+    protected void doPush(Entity par1Entity) {
     }
 
     protected void updateFallState(double y, boolean onGroundIn, Block blockIn, BlockPos pos) {
@@ -91,16 +91,16 @@ public class MoCEntityWraith extends MoCEntityMob//MoCEntityFlyerMob
     }
 
     @Override
-    public boolean attackEntityAsMob(Entity entityIn) {
+    public boolean doHurtTarget(Entity entityIn) {
         startArmSwingAttack();
-        return super.attackEntityAsMob(entityIn);
+        return super.doHurtTarget(entityIn);
     }
 
     /**
      * Starts attack counters and synchronizes animations with clients
      */
     private void startArmSwingAttack() {
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
             this.attackCounter = 1;
 //            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
 //                    new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));

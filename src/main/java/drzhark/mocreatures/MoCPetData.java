@@ -24,7 +24,7 @@ public class MoCPetData {
 
     public MoCPetData(IMoCTameable pet) { //TODO: the thread method isn't a very good way to set the owner ID. It would be best if we can find a way to make a world.isRemote check.
         this.ownerData.put("TamedList", this.tamedList);
-        this.ownerUniqueId = Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER ? pet.getOwnerId() : Minecraft.getInstance().player.getUniqueID();
+        this.ownerUniqueId = Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER ? pet.getOwnerId() : Minecraft.getInstance().player.getUUID();
     }
 
     public MoCPetData(CompoundNBT nbt, UUID owner) {

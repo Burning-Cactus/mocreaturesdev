@@ -27,32 +27,32 @@ public enum MoCItemTier implements IItemTier {
     private final LazyValue<Ingredient> repairMaterial;
 
     @Override
-    public int getMaxUses() {
+    public int getUses() {
         return 0;
     }
 
     @Override
-    public float getEfficiency() {
+    public float getSpeed() {
         return 0;
     }
 
     @Override
-    public float getAttackDamage() {
+    public float getAttackDamageBonus() {
         return 0;
     }
 
     @Override
-    public int getHarvestLevel() {
+    public int getLevel() {
         return 0;
     }
 
     @Override
-    public int getEnchantability() {
+    public int getEnchantmentValue() {
         return 0;
     }
 
     @Override
-    public Ingredient getRepairMaterial() {
+    public Ingredient getRepairIngredient() {
         return null;
     }
 }

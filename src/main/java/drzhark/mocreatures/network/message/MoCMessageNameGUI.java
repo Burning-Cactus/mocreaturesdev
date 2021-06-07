@@ -38,7 +38,7 @@ public class MoCMessageNameGUI implements IMoCMessage {
 //        }
         NetworkEvent.Context context = ctx.get();
         if(context.getDirection().getReceptionSide().isClient()) {
-            Entity entity = Minecraft.getInstance().world.getEntityByID(message.entityId);
+            Entity entity = Minecraft.getInstance().level.getEntity(message.entityId);
 //            Minecraft.getInstance().displayGuiScreen(new MoCGUIEntityNamer(((IMoCEntity) entity), ((IMoCEntity) entity).getPetName()));
             context.setPacketHandled(true);
         }

@@ -18,12 +18,12 @@ public class MoCRenderRat<T extends MoCEntityRat> extends LivingRenderer<T, MoCM
     }
 
     @Override
-    protected float handleRotationFloat(T entityrat, float f) {
-        return entityrat.ticksExisted + f;
+    protected float getBob(T entityrat, float f) {
+        return entityrat.tickCount + f;
     }
 
     @Override
-    protected void preRenderCallback(T entityrat, MatrixStack stack, float f) {
+    protected void scale(T entityrat, MatrixStack stack, float f) {
         if (entityrat.climbing()) {
             rotateAnimal(entityrat, stack);
         }
@@ -31,7 +31,7 @@ public class MoCRenderRat<T extends MoCEntityRat> extends LivingRenderer<T, MoCM
     }
 
     protected void rotateAnimal(T entityrat, MatrixStack stack) {
-        stack.rotate(Vector3f.XN.rotationDegrees(90F));
+        stack.mulPose(Vector3f.XN.rotationDegrees(90F));
     }
 
     protected void stretch(T entityrat, MatrixStack stack) {
@@ -40,7 +40,7 @@ public class MoCRenderRat<T extends MoCEntityRat> extends LivingRenderer<T, MoCM
     }
 
     @Override
-    public ResourceLocation getEntityTexture(T entityrat) {
+    public ResourceLocation getTextureLocation(T entityrat) {
         return entityrat.getTexture();
     }
 }

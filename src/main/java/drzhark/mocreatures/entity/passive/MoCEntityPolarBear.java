@@ -16,7 +16,7 @@ public class MoCEntityPolarBear extends MoCEntityBear{
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -50,7 +50,7 @@ public class MoCEntityPolarBear extends MoCEntityBear{
     
     public double getAttackRange() {
         int factor = 1;
-        if (this.world.getDifficulty().getId() > 1) {
+        if (this.level.getDifficulty().getId() > 1) {
             factor = 2;
         }
         return 8D * factor;
@@ -58,7 +58,7 @@ public class MoCEntityPolarBear extends MoCEntityBear{
     
     @Override
     public int getAttackStrength() {
-        int factor = (this.world.getDifficulty().getId());
+        int factor = (this.level.getDifficulty().getId());
         return 4 * factor;
     }
     

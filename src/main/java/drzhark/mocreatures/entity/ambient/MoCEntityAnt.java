@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class MoCEntityAnt extends MoCEntityInsect {
 
-    private static final DataParameter<Boolean> FOUND_FOOD = EntityDataManager.createKey(MoCEntityAnt.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> FOUND_FOOD = EntityDataManager.defineId(MoCEntityAnt.class, DataSerializers.BOOLEAN);
     
     public MoCEntityAnt(EntityType<? extends MoCEntityAnt> type, World world) {
         super(type, world);
@@ -29,39 +29,39 @@ public class MoCEntityAnt extends MoCEntityInsect {
     }
     
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(FOUND_FOOD, Boolean.FALSE);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(FOUND_FOOD, Boolean.FALSE);
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return MoCEntityInsect.registerAttributes().func_233815_a_(Attributes.MOVEMENT_SPEED, 0.28D);
+        return MoCEntityInsect.registerAttributes().add(Attributes.MOVEMENT_SPEED, 0.28D);
     }
 
     public boolean getHasFood() {
-        return this.dataManager.get(FOUND_FOOD);
+        return this.entityData.get(FOUND_FOOD);
     }
 
     public void setHasFood(boolean flag) {
-        this.dataManager.set(FOUND_FOOD, flag);
+        this.entityData.set(FOUND_FOOD, flag);
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
 
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
             if (!getHasFood()) {
                 ItemEntity entityitem = MoCTools.getClosestFood(this, 8D);
                 if (entityitem == null || !entityitem.isAlive()) {
                     return;
                 }
-                if (entityitem.getRidingEntity() == null) {
-                    float f = entityitem.getDistance(this);
+                if (entityitem.getVehicle() == null) {
+                    float f = entityitem.distanceTo(this);
                     if (f > 1.0F) {
-                        int i = MathHelper.floor(entityitem.getPosX());
-                        int j = MathHelper.floor(entityitem.getPosY());
-                        int k = MathHelper.floor(entityitem.getPosZ());
+                        int i = MathHelper.floor(entityitem.getX());
+                        int j = MathHelper.floor(entityitem.getY());
+                        int k = MathHelper.floor(entityitem.getZ());
                         faceLocation(i, j, k, 30F);
 
                         getMyOwnPath(entityitem, f);
@@ -78,15 +78,15 @@ public class MoCEntityAnt extends MoCEntityInsect {
         }
 
         if (getHasFood()) {
-            if (!this.isBeingRidden()) {
+            if (!this.isVehicle()) {
                 ItemEntity entityitem = MoCTools.getClosestFood(this, 2D);
-                if (entityitem != null && entityitem.getRidingEntity() == null) {
+                if (entityitem != null && entityitem.getVehicle() == null) {
                     entityitem.startRiding(this);
                     return;
 
                 }
 
-                if (!this.isBeingRidden()) {
+                if (!this.isVehicle()) {
                     setHasFood(false);
                 }
             }
@@ -94,10 +94,10 @@ public class MoCEntityAnt extends MoCEntityInsect {
     }
 
     private void exchangeItem(ItemEntity entityitem) {
-        ItemEntity cargo = new ItemEntity(this.world, this.getPosX(), this.getPosY() + 0.2D, this.getPosZ(), entityitem.getItem());
+        ItemEntity cargo = new ItemEntity(this.level, this.getX(), this.getY() + 0.2D, this.getZ(), entityitem.getItem());
         entityitem.remove();
-        if (!this.world.isRemote) {
-            this.world.addEntity(cargo);
+        if (!this.level.isClientSide) {
+            this.level.addFreshEntity(cargo);
         }
     }
 
@@ -117,7 +117,7 @@ public class MoCEntityAnt extends MoCEntityInsect {
     }
 
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         if (getHasFood()) {
             return 0.05F;
         }

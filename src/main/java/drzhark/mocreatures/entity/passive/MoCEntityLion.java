@@ -18,12 +18,12 @@ public class MoCEntityLion extends MoCEntityBigCat {
     public void selectType() {
 
         if (getSubType() == 0) {
-            if (rand.nextInt(20) == 0)
+            if (random.nextInt(20) == 0)
             {
-                setType(rand.nextInt(2)+6);//white lions
+                setType(random.nextInt(2)+6);//white lions
             }else
             {
-            setType(this.rand.nextInt(2) + 1);
+            setType(this.random.nextInt(2) + 1);
         }
         }
         super.selectType();
@@ -127,28 +127,28 @@ public class MoCEntityLion extends MoCEntityBigCat {
         if (mate instanceof MoCEntityLion) {
             int lionMateType = ((MoCEntityLion) mate).getSubType();
             if (this.getSubType() == 1 && lionMateType == 2) {
-                x = this.rand.nextInt(2) + 1;
+                x = this.random.nextInt(2) + 1;
             }
             if (this.getSubType() == 2 && lionMateType == 1) {
-                x = this.rand.nextInt(2) + 1;
+                x = this.random.nextInt(2) + 1;
             }
             if (this.getSubType() == 6 && lionMateType == 7) {
-                x = this.rand.nextInt(2) + 6;
+                x = this.random.nextInt(2) + 6;
             }
             if (this.getSubType() == 7 && lionMateType == 6) {
-                x = this.rand.nextInt(2) + 6;
+                x = this.random.nextInt(2) + 6;
             }
             if (this.getSubType() == 7 && lionMateType == 1) {
-                x = this.rand.nextInt(2) + 1;
+                x = this.random.nextInt(2) + 1;
             }
             if (this.getSubType() == 6 && lionMateType == 2) {
-                x = this.rand.nextInt(2) + 1;
+                x = this.random.nextInt(2) + 1;
             }
             if (this.getSubType() == 1 && lionMateType == 7) {
-                x = this.rand.nextInt(2) + 1;
+                x = this.random.nextInt(2) + 1;
             }
             if (this.getSubType() == 2 && lionMateType == 6) {
-                x = this.rand.nextInt(2) + 1;
+                x = this.random.nextInt(2) + 1;
             }
         }
         return x;
@@ -219,6 +219,6 @@ public class MoCEntityLion extends MoCEntityBigCat {
         if (entity instanceof MoCEntityLion) {
             return false;
         }
-        return entity.getHeight() < 2F && entity.getWidth() < 2F;
+        return entity.getBbHeight() < 2F && entity.getBbWidth() < 2F;
     }
 }

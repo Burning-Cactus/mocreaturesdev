@@ -15,7 +15,7 @@ public class MoCItemHorseSaddle extends MoCItem {
     }
 
     @Override
-    public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
+    public ActionResultType interactLivingEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
         if (target instanceof MoCEntityHorse) {
             MoCEntityHorse entityhorse = (MoCEntityHorse) target;
             if (!entityhorse.getIsRideable() && entityhorse.getIsAdult()) {

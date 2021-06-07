@@ -14,15 +14,15 @@ public class MoCEntityFXUndead extends SpriteTexturedParticle {
 
     public MoCEntityFXUndead(ClientWorld par1World, double x, double y, double z) {
         super(par1World, x, y, z, 0.0D, 0.0D, 0.0D);
-        this.motionX *= 0.8D;
-        this.motionY *= 0.8D;
-        this.motionZ *= 0.8D;
-        this.motionY = this.rand.nextFloat() * 0.4F + 0.05F;
+        this.xd *= 0.8D;
+        this.yd *= 0.8D;
+        this.zd *= 0.8D;
+        this.yd = this.random.nextFloat() * 0.4F + 0.05F;
 
         this.setSize(0.01F, 0.01F);
-        this.particleGravity = 0.06F;
-        this.maxAge = (int) (32.0D / (Math.random() * 0.8D + 0.2D));
-        this.particleScale *= 0.8F;
+        this.gravity = 0.06F;
+        this.lifetime = (int) (32.0D / (Math.random() * 0.8D + 0.2D));
+        this.quadSize *= 0.8F;
     }
 
     /**
@@ -41,24 +41,24 @@ public class MoCEntityFXUndead extends SpriteTexturedParticle {
      */
     @Override
     public void tick() {
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
+        this.xo = this.x;
+        this.yo = this.y;
+        this.zo = this.z;
 
-        this.motionY -= 0.03D;
-        this.move(this.motionX, this.motionY, this.motionZ);
+        this.yd -= 0.03D;
+        this.move(this.xd, this.yd, this.zd);
 
-        this.motionX *= 0.8D;
-        this.motionY *= 0.5D;
-        this.motionZ *= 0.8D;
+        this.xd *= 0.8D;
+        this.yd *= 0.5D;
+        this.zd *= 0.8D;
 
         if (this.onGround) {
-            this.motionX *= 0.7D;
-            this.motionZ *= 0.7D;
+            this.xd *= 0.7D;
+            this.zd *= 0.7D;
         }
 
-        if (this.maxAge-- <= 0) {
-            this.setExpired();
+        if (this.lifetime-- <= 0) {
+            this.remove();
         }
     }
 
@@ -106,9 +106,9 @@ public class MoCEntityFXUndead extends SpriteTexturedParticle {
 
         @Nullable
         @Override
-        public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             MoCEntityFXUndead undeadParticle = new MoCEntityFXUndead(worldIn, x, y, z);
-            undeadParticle.selectSpriteRandomly(spriteSet);
+            undeadParticle.pickSprite(spriteSet);
             return undeadParticle;
         }
     }

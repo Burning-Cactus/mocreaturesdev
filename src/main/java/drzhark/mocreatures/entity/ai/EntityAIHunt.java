@@ -27,7 +27,7 @@ public class EntityAIHunt extends EntityAINearestAttackableTargetMoC {
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean shouldExecute() {
-        return ((MoCEntityAnimal) this.hunter).getIsHunting() && super.shouldExecute();
+    public boolean canUse() {
+        return ((MoCEntityAnimal) this.hunter).getIsHunting() && super.canUse();
     }
 }

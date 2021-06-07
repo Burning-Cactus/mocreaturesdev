@@ -19,7 +19,7 @@ public class MoCSilverSkeletonRenderer extends MobRenderer<MoCEntitySilverSkelet
      * @param entity
      */
     @Override
-    public ResourceLocation getEntityTexture(MoCEntitySilverSkeleton entity) {
+    public ResourceLocation getTextureLocation(MoCEntitySilverSkeleton entity) {
         return TEXTURE;
     }
 }

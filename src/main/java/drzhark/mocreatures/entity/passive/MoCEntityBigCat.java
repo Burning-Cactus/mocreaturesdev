@@ -42,21 +42,21 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
     protected String chestName = "BigCatChest";
     private int tCounter;
     private float fTransparency;
-    private static final DataParameter<Boolean> RIDEABLE = EntityDataManager.createKey(MoCEntityBigCat.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HAS_AMULET = EntityDataManager.createKey(MoCEntityBigCat.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(MoCEntityBigCat.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> GHOST = EntityDataManager.createKey(MoCEntityBigCat.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> CHESTED = EntityDataManager.createKey(MoCEntityBigCat.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> RIDEABLE = EntityDataManager.defineId(MoCEntityBigCat.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> HAS_AMULET = EntityDataManager.defineId(MoCEntityBigCat.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SITTING = EntityDataManager.defineId(MoCEntityBigCat.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> GHOST = EntityDataManager.defineId(MoCEntityBigCat.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> CHESTED = EntityDataManager.defineId(MoCEntityBigCat.class, DataSerializers.BOOLEAN);
 
     public MoCEntityBigCat(EntityType<? extends MoCEntityBigCat> type, World world) {
         super(type, world);
         setEdad(45);
-        if (this.rand.nextInt(4) == 0) {
+        if (this.random.nextInt(4) == 0) {
             setAdult(false);
         } else {
             setAdult(true);
         }
-        this.stepHeight = 1.0F;
+        this.maxUpStep = 1.0F;
     }
     
     @Override
@@ -82,10 +82,10 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityTameableAnimal.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 40D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 5.0D)
-                .func_233815_a_(Attributes.FOLLOW_RANGE, 8.0D);
+                .add(Attributes.MAX_HEALTH, 40D)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D)
+                .add(Attributes.ATTACK_DAMAGE, 5.0D)
+                .add(Attributes.FOLLOW_RANGE, 8.0D);
     }
 
     /**
@@ -128,72 +128,72 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
      * server data to client.
      */
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(RIDEABLE, Boolean.FALSE);
-        this.dataManager.register(SITTING, Boolean.FALSE);
-        this.dataManager.register(GHOST, Boolean.FALSE);
-        this.dataManager.register(HAS_AMULET, Boolean.FALSE);
-        this.dataManager.register(CHESTED, Boolean.FALSE);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(RIDEABLE, Boolean.FALSE);
+        this.entityData.define(SITTING, Boolean.FALSE);
+        this.entityData.define(GHOST, Boolean.FALSE);
+        this.entityData.define(HAS_AMULET, Boolean.FALSE);
+        this.entityData.define(CHESTED, Boolean.FALSE);
     }
 
     public boolean getHasAmulet() {
-        return this.dataManager.get(HAS_AMULET);
+        return this.entityData.get(HAS_AMULET);
     }
 
     @Override
     public boolean getIsSitting() {
-        return this.dataManager.get(SITTING);
+        return this.entityData.get(SITTING);
     }
 
     @Override
     public boolean getIsRideable() {
-        return this.dataManager.get(RIDEABLE);
+        return this.entityData.get(RIDEABLE);
     }
 
     public boolean getIsChested() {
-        return this.dataManager.get(CHESTED);
+        return this.entityData.get(CHESTED);
     }
 
     @Override
     public boolean getIsGhost() {
-        return this.dataManager.get(GHOST);
+        return this.entityData.get(GHOST);
     }
 
     public void setHasAmulet(boolean flag) {
-        this.dataManager.set(HAS_AMULET, flag);
+        this.entityData.set(HAS_AMULET, flag);
     }
 
     public void setSitting(boolean flag) {
-        this.dataManager.set(SITTING, flag);
+        this.entityData.set(SITTING, flag);
     }
 
     public void setIsChested(boolean flag) {
-        this.dataManager.set(CHESTED, flag);
+        this.entityData.set(CHESTED, flag);
     }
 
     public void setRideable(boolean flag) {
-        this.dataManager.set(RIDEABLE, flag);
+        this.entityData.set(RIDEABLE, flag);
     }
 
     public void setIsGhost(boolean flag) {
-        this.dataManager.set(GHOST, flag);
+        this.entityData.set(GHOST, flag);
     }
 
     // Method used for receiving damage from another source
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        Entity entity = damagesource.getTrueSource();
-        if ((this.isBeingRidden()) && (entity == this.getRidingEntity())) {
+    public boolean hurt(DamageSource damagesource, float i) {
+        Entity entity = damagesource.getEntity();
+        if ((this.isVehicle()) && (entity == this.getVehicle())) {
             return false;
         }
 
-        if (super.attackEntityFrom(damagesource, i)) {
+        if (super.hurt(damagesource, i)) {
             if (entity != null && getIsTamed() && entity instanceof PlayerEntity) {
                 return false;
             }
-            if (entity != this && entity instanceof LivingEntity && (this.world.getDifficulty() != Difficulty.PEACEFUL)) {
-                setAttackTarget((LivingEntity) entity);
+            if (entity != this && entity instanceof LivingEntity && (this.level.getDifficulty() != Difficulty.PEACEFUL)) {
+                setTarget((LivingEntity) entity);
             }
             return true;
         } else {
@@ -232,18 +232,18 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void onDeath(DamageSource damagesource) {
-        if (!this.world.isRemote) {
+    public void die(DamageSource damagesource) {
+        if (!this.level.isClientSide) {
             if (getHasAmulet()) {
-                    MoCTools.dropCustomItem(this, this.world, new ItemStack(MoCItems.MEDALLION, 1));
+                    MoCTools.dropCustomItem(this, this.level, new ItemStack(MoCItems.MEDALLION, 1));
                     setHasAmulet(false);
             }
 
-            if (getIsTamed() && !getIsGhost() && this.rand.nextInt(4) == 0) {
+            if (getIsTamed() && !getIsGhost() && this.random.nextInt(4) == 0) {
                 this.spawnGhost();
             }
         }
-        super.onDeath(damagesource);
+        super.die(damagesource);
     }
 
     public void spawnGhost() {
@@ -274,34 +274,34 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void livingTick() {
+    public void aiStep() {
 
-        super.livingTick();
+        super.aiStep();
 
-        if (!this.world.isRemote) {
-            if (this.getAttackTarget() == null) {
+        if (!this.level.isClientSide) {
+            if (this.getTarget() == null) {
                 setSprinting(false);
             } else {
                 setSprinting(true);
             }
         }
         
-        if (this.world.isRemote) //animation counters
+        if (this.level.isClientSide) //animation counters
         {
             if (this.mouthCounter > 0 && ++this.mouthCounter > 30) {
                 this.mouthCounter = 0;
             }
 
-            if (this.rand.nextInt(250) == 0) {
+            if (this.random.nextInt(250) == 0) {
                 moveTail();
             }
 
-            if (this.tailCounter > 0 && ++this.tailCounter > 10 && this.rand.nextInt(15) == 0) {
+            if (this.tailCounter > 0 && ++this.tailCounter > 10 && this.random.nextInt(15) == 0) {
                 this.tailCounter = 0;
             }
         } else //server stuff
         {
-            if (getIsGhost() && getEdad() > 0 && getEdad() < 10 && this.rand.nextInt(5) == 0) {
+            if (getIsGhost() && getEdad() > 0 && getEdad() < 10 && this.random.nextInt(5) == 0) {
                 setEdad(getEdad() + 1);
                 if (getEdad() == 9) {
                     setEdad(getMaxEdad());
@@ -319,13 +319,13 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
             }*/
         }
 
-        if (!this.world.isRemote && isFlyer() && isOnAir()) {
+        if (!this.level.isClientSide && isFlyer() && isOnAir()) {
             float myFlyingSpeed = MoCTools.getMyMovementSpeed(this);
             int wingFlapFreq = (int) (25 - (myFlyingSpeed * 10));
-            if (!this.isBeingRidden() || wingFlapFreq < 5) {
+            if (!this.isVehicle() || wingFlapFreq < 5) {
                 wingFlapFreq = 5;
             }
-            if (this.rand.nextInt(wingFlapFreq) == 0) {
+            if (this.random.nextInt(wingFlapFreq) == 0) {
                 wingFlap();
             }
         }
@@ -334,19 +334,19 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
             if (this.wingFlapCounter > 0 && ++this.wingFlapCounter > 20) {
                 this.wingFlapCounter = 0;
             }
-            if (!this.world.isRemote && this.wingFlapCounter == 5) {
+            if (!this.level.isClientSide && this.wingFlapCounter == 5) {
                 MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_GENERIC_WINGFLAP);
             }
         }
 
-        if ((this.rand.nextInt(300) == 0) && (this.getHealth() <= getMaxHealth()) && (this.deathTime == 0) && !this.world.isRemote) {
+        if ((this.random.nextInt(300) == 0) && (this.getHealth() <= getMaxHealth()) && (this.deathTime == 0) && !this.level.isClientSide) {
             this.setHealth(getHealth() + 1);
         }
 
         if ((this.deathTime == 0) && !isMovementCeased()) {
             ItemEntity entityitem = getClosestItem(this, 12D, Items.PORKCHOP, Items.COD);
             if (entityitem != null) {
-                float f = entityitem.getDistance(this);
+                float f = entityitem.distanceTo(this);
                 if (f > 2.0F) {
                     getMyOwnPath(entityitem, f);
                 }
@@ -366,7 +366,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
     }
 
     public void wingFlap() {
-        if (this.world.isRemote) {
+        if (this.level.isClientSide) {
             return;
         }
 
@@ -388,16 +388,16 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void updatePassenger(Entity passenger) {
+    public void positionRider(Entity passenger) {
         double dist = getSizeFactor() * (0.1D);
-        double newPosX = this.getPosX() + (dist * Math.sin(this.renderYawOffset / 57.29578F));
-        double newPosZ = this.getPosZ() - (dist * Math.cos(this.renderYawOffset / 57.29578F));
-        passenger.setPosition(newPosX, this.getPosY() + getMountedYOffset() + passenger.getYOffset(), newPosZ);
+        double newPosX = this.getX() + (dist * Math.sin(this.yBodyRot / 57.29578F));
+        double newPosZ = this.getZ() - (dist * Math.cos(this.yBodyRot / 57.29578F));
+        passenger.setPos(newPosX, this.getY() + getPassengersRidingOffset() + passenger.getMyRidingOffset(), newPosZ);
     }
 
     @Override
-    public void writeAdditional(CompoundNBT nbttagcompound) {
-        super.writeAdditional(nbttagcompound);
+    public void addAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.addAdditionalSaveData(nbttagcompound);
         nbttagcompound.putBoolean("Saddle", getIsRideable());
         nbttagcompound.putBoolean("Sitting", getIsSitting());
         nbttagcompound.putBoolean("Chested", getIsChested());
@@ -421,8 +421,8 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void readAdditional(CompoundNBT nbttagcompound) {
-        super.readAdditional(nbttagcompound);
+    public void readAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.readAdditionalSaveData(nbttagcompound);
         setRideable(nbttagcompound.getBoolean("Saddle"));
         setSitting(nbttagcompound.getBoolean("Sitting"));
         setIsChested(nbttagcompound.getBoolean("Chested"));
@@ -582,7 +582,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public int getTalkInterval() {
+    public int getAmbientSoundInterval() {
         return 400;
     }
 
@@ -615,13 +615,13 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
 
     @Override
     public void dropMyStuff() {
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
             dropArmor();
-            MoCTools.dropSaddle(this, this.world);
+            MoCTools.dropSaddle(this, this.level);
 
             if (getIsChested()) {
 //                MoCTools.dropInventory(this, this.localchest); TODO: Make chests work
-                MoCTools.dropCustomItem(this, this.world, new ItemStack(Blocks.CHEST, 1));
+                MoCTools.dropCustomItem(this, this.level, new ItemStack(Blocks.CHEST, 1));
                 setIsChested(false);
             }
         }
@@ -632,16 +632,16 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public double getMountedYOffset() {
+    public double getPassengersRidingOffset() {
         double Yfactor = ((0.0833D * this.getEdad()) - 2.5D) / 10D;
-        return this.getHeight() * Yfactor;
+        return this.getBbHeight() * Yfactor;
     }
 
     public float tFloat() {
 
         if (++this.tCounter > 30) {
             this.tCounter = 0;
-            this.fTransparency = (this.rand.nextFloat() * (0.4F - 0.2F) + 0.15F);
+            this.fTransparency = (this.random.nextFloat() * (0.4F - 0.2F) + 0.15F);
         }
 
         if (this.getEdad() < 10) {
@@ -661,7 +661,7 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
     }
     
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         if (isSprinting()) {
             return 0.37F;
         }

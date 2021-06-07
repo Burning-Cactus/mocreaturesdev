@@ -17,17 +17,17 @@ public class MoCEntityFirefly extends MoCEntityInsect {
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
 
-        if (!this.world.isRemote) {
-            PlayerEntity ep = this.world.getClosestPlayer(this, 5D);
+        if (!this.level.isClientSide) {
+            PlayerEntity ep = this.level.getNearestPlayer(this, 5D);
             if (ep != null && getIsFlying() && --this.soundCount == -1) {
                 MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_CRICKET_FLY);
                 this.soundCount = 20;
             }
 
-            if (getIsFlying() && this.rand.nextInt(500) == 0) {
+            if (getIsFlying() && this.random.nextInt(500) == 0) {
                 setIsFlying(false);
             }
         }
@@ -39,7 +39,7 @@ public class MoCEntityFirefly extends MoCEntityInsect {
     }
 
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         if (getIsFlying()) {
             return 0.12F;
         }

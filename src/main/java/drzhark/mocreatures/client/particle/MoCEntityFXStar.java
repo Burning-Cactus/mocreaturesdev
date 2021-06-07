@@ -14,19 +14,19 @@ public class MoCEntityFXStar extends SpriteTexturedParticle {
 
     public MoCEntityFXStar(ClientWorld world, double posX, double posY, double posZ) {
         super(world, posX, posY, posZ, 0.0D, 0.0D, 0.0D);
-        this.motionX *= 0.8D;
-        this.motionY *= 0.8D;
-        this.motionZ *= 0.8D;
-        this.motionY = this.rand.nextFloat() * 0.4F + 0.05F;
+        this.xd *= 0.8D;
+        this.yd *= 0.8D;
+        this.zd *= 0.8D;
+        this.yd = this.random.nextFloat() * 0.4F + 0.05F;
 
-        this.particleRed = 1F;
-        this.particleGreen = 1F;
-        this.particleBlue = 1F;
+        this.rCol = 1F;
+        this.gCol = 1F;
+        this.bCol = 1F;
 
         this.setSize(0.01F, 0.01F);
-        this.particleGravity = 0.06F;
-        this.maxAge = (int) (64.0D / (Math.random() * 0.8D + 0.2D));
-        this.particleScale *= 0.6F; //it was 0.8 for the old star //0.4 if I'm not using the shrinking
+        this.gravity = 0.06F;
+        this.lifetime = (int) (64.0D / (Math.random() * 0.8D + 0.2D));
+        this.quadSize *= 0.6F; //it was 0.8 for the old star //0.4 if I'm not using the shrinking
     }
 
     /**
@@ -42,24 +42,24 @@ public class MoCEntityFXStar extends SpriteTexturedParticle {
      */
     @Override
     public void tick() {
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
-        this.particleScale *= 0.995F; //slowly shrinks it
+        this.xo = this.x;
+        this.yo = this.y;
+        this.zo = this.z;
+        this.quadSize *= 0.995F; //slowly shrinks it
 
-        this.motionY -= 0.03D;
-        this.move(this.motionX, this.motionY, this.motionZ);
-        this.motionX *= 0.9D;
-        this.motionY *= 0.2D;
-        this.motionZ *= 0.9D;
+        this.yd -= 0.03D;
+        this.move(this.xd, this.yd, this.zd);
+        this.xd *= 0.9D;
+        this.yd *= 0.2D;
+        this.zd *= 0.9D;
 
         if (this.onGround) {
-            this.motionX *= 0.7D;
-            this.motionZ *= 0.7D;
+            this.xd *= 0.7D;
+            this.zd *= 0.7D;
         }
 
-        if (this.maxAge-- <= 0) {
-            this.setExpired();
+        if (this.lifetime-- <= 0) {
+            this.remove();
         }
     }
 
@@ -98,9 +98,9 @@ public class MoCEntityFXStar extends SpriteTexturedParticle {
 
         @Nullable
         @Override
-        public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             MoCEntityFXStar starParticle = new MoCEntityFXStar(worldIn, x, y, z);
-            starParticle.selectSpriteRandomly(spriteSet);
+            starParticle.pickSprite(spriteSet);
             return starParticle;
         }
     }

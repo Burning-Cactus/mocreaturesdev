@@ -21,12 +21,12 @@ public class MoCRenderTurtle extends MoCRenderMoC<MoCEntityTurtle, MoCModelTurtl
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityTurtle entityturtle, MatrixStack stack, float f) {
+    protected void scale(MoCEntityTurtle entityturtle, MatrixStack stack, float f) {
         this.turtly.upsidedown = entityturtle.getIsUpsideDown();
-        this.turtly.swingProgress = entityturtle.swingProgress;
+        this.turtly.swingProgress = entityturtle.attackAnim;
         this.turtly.isHiding = entityturtle.getIsHiding();
 
-        if (!entityturtle.world.isRemote && (entityturtle.getRidingEntity() != null)) {
+        if (!entityturtle.level.isClientSide && (entityturtle.getVehicle() != null)) {
 
             stack.translate(0.0F, 1.3F, 0.0F);
 
@@ -48,8 +48,8 @@ public class MoCRenderTurtle extends MoCRenderMoC<MoCEntityTurtle, MoCModelTurtl
         //GL11.glRotatef(180F, -1F, 0.0F, 0.0F); //head up 180
         //GL11.glRotatef(180F, 0.0F, -1.0F, 0.0F); //head around 180
 
-        float f = entityturtle.swingProgress * 10F * entityturtle.getFlipDirection();
-        float f2 = entityturtle.swingProgress / 30 * entityturtle.getFlipDirection();
+        float f = entityturtle.attackAnim * 10F * entityturtle.getFlipDirection();
+        float f2 = entityturtle.attackAnim / 30 * entityturtle.getFlipDirection();
         GL11.glRotatef(180F + f, 0.0F, 0.0F, -1.0F);
         GL11.glTranslatef(0.0F - f2, 0.5F * entityturtle.getEdad() * 0.01F, 0.0F);
     }
@@ -64,7 +64,7 @@ public class MoCRenderTurtle extends MoCRenderMoC<MoCEntityTurtle, MoCModelTurtl
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityTurtle entityturtle) {
+    public ResourceLocation getTextureLocation(MoCEntityTurtle entityturtle) {
         return entityturtle.getTexture();
     }
 }

@@ -24,7 +24,7 @@ public class MoCEntityCrab extends MoCEntityTameableAmbient
 
     public MoCEntityCrab(EntityType<? extends MoCEntityCrab> type, World world) {
         super(type, world);
-        setEdad(50 + this.rand.nextInt(50));
+        setEdad(50 + this.random.nextInt(50));
     }
 
 
@@ -33,7 +33,7 @@ public class MoCEntityCrab extends MoCEntityTameableAmbient
         this.goalSelector.addGoal(2, new EntityAIPanicMoC(this, 1.0D));
         this.goalSelector.addGoal(1, new EntityAIFleeFromEntityMoC(this, new Predicate<Entity>() {
             public boolean apply(Entity entity) {
-                return !(entity instanceof MoCEntityCrab) && (entity.getHeight() > 0.3F || entity.getWidth() > 0.3F);
+                return !(entity instanceof MoCEntityCrab) && (entity.getBbHeight() > 0.3F || entity.getBbWidth() > 0.3F);
             }
         }, 6.0F, 0.6D, 1D));
         this.goalSelector.addGoal(3, new EntityAIFollowOwnerPlayer(this, 0.8D, 6F, 5F));
@@ -42,14 +42,14 @@ public class MoCEntityCrab extends MoCEntityTameableAmbient
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityTameableAmbient.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 6.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.3D);
+                .add(Attributes.MAX_HEALTH, 6.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.3D);
     }
 
     @Override
     public void selectType() {
         if (getSubType() == 0) {
-            setType(this.rand.nextInt(5) + 1);
+            setType(this.random.nextInt(5) + 1);
         }
 
     }
@@ -78,16 +78,16 @@ public class MoCEntityCrab extends MoCEntityTameableAmbient
 //    }
 
     @Override
-    public boolean isOnLadder() {
-        return this.collidedHorizontally;
+    public boolean onClimbable() {
+        return this.horizontalCollision;
     }
 
     public boolean climbing() {
-        return !this.onGround && isOnLadder();
+        return !this.onGround && onClimbable();
     }
 
     @Override
-    public void jump() {
+    public void jumpFromGround() {
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -110,7 +110,7 @@ public class MoCEntityCrab extends MoCEntityTameableAmbient
      * Get this Entity's EnumCreatureAttribute
      */
     @Override
-    public CreatureAttribute getCreatureAttribute() {
+    public CreatureAttribute getMobType() {
         return CreatureAttribute.ARTHROPOD;
     }
 

@@ -5,13 +5,15 @@ import net.minecraft.block.SoundType;
 import net.minecraftforge.common.IForgeShearable;
 
 
+import net.minecraft.block.AbstractBlock;
+
 public class MoCBlockLeaf extends MoCBlock implements IForgeShearable {
 
-    public MoCBlockLeaf(Block.Properties builder) {
+    public MoCBlockLeaf(AbstractBlock.Properties builder) {
         super(builder
-                .sound(SoundType.PLANT)
-                .tickRandomly()
-                .hardnessAndResistance(0.2F)
+                .sound(SoundType.GRASS)
+                .randomTicks()
+                .strength(0.2F)
         );
     }
 

@@ -39,9 +39,9 @@ public class MoCMessageAppear implements IMoCMessage {
         NetworkEvent.Context context = ctx.get();
         if (context.getDirection().getReceptionSide().isClient()) {
             context.enqueueWork(() -> {
-                Iterable<Entity> entList = Minecraft.getInstance().world.getAllEntities();
+                Iterable<Entity> entList = Minecraft.getInstance().level.entitiesForRendering();
                 for (Entity ent : entList) {
-                    if (ent.getEntityId() == message.entityId && ent instanceof MoCEntityHorse) {
+                    if (ent.getId() == message.entityId && ent instanceof MoCEntityHorse) {
                         ((MoCEntityHorse) ent).MaterializeFX();
                         break;
                     }

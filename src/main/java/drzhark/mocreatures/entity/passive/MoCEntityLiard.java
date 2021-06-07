@@ -92,6 +92,6 @@ public class MoCEntityLiard extends MoCEntityBigCat {
         if (entity instanceof MoCEntityLiard) {
             return false;
         }
-        return entity.getHeight() < 2F && entity.getWidth() < 2F;
+        return entity.getBbHeight() < 2F && entity.getBbWidth() < 2F;
     }
 }

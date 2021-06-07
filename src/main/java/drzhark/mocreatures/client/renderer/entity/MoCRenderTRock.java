@@ -16,11 +16,11 @@ public class MoCRenderTRock extends EntityRenderer<MoCEntityThrowableRock> {
 
     public MoCRenderTRock(EntityRendererManager manager) {
         super(manager);
-        this.shadowSize = 0.5F;
+        this.shadowRadius = 0.5F;
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityThrowableRock entity) {
+    public ResourceLocation getTextureLocation(MoCEntityThrowableRock entity) {
         return TEXTURE;//this.getMyTexture((MoCEntityThrowableRock) par1Entity);
     }
 

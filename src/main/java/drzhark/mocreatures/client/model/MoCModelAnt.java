@@ -19,72 +19,72 @@ public class MoCModelAnt<T extends MoCEntityAnt> extends SegmentedModel<T> {
     ModelRenderer RearLegs;
 
     public MoCModelAnt() {
-        this.textureWidth = 32;
-        this.textureHeight = 32;
+        this.texWidth = 32;
+        this.texHeight = 32;
 
         this.Head = new ModelRenderer(this, 0, 11);
         this.Head.addBox(-0.5F, 0F, 0F, 1, 1, 1);
-        this.Head.setRotationPoint(0F, 21.9F, -1.3F);
+        this.Head.setPos(0F, 21.9F, -1.3F);
         setRotation(this.Head, -2.171231F, 0F, 0F);
 
         this.Mouth = new ModelRenderer(this, 8, 10);
         this.Mouth.addBox(0F, 0F, 0F, 2, 1, 0);
-        this.Mouth.setRotationPoint(-1F, 22.3F, -1.9F);
+        this.Mouth.setPos(-1F, 22.3F, -1.9F);
         setRotation(this.Mouth, -0.8286699F, 0F, 0F);
 
         this.RightAntenna = new ModelRenderer(this, 0, 6);
         this.RightAntenna.addBox(-0.5F, 0F, -1F, 1, 0, 1);
-        this.RightAntenna.setRotationPoint(-0.5F, 21.7F, -2.3F);
+        this.RightAntenna.setPos(-0.5F, 21.7F, -2.3F);
         setRotation(this.RightAntenna, -1.041001F, 0.7853982F, 0F);
 
         this.LeftAntenna = new ModelRenderer(this, 4, 6);
         this.LeftAntenna.addBox(-0.5F, 0F, -1F, 1, 0, 1);
-        this.LeftAntenna.setRotationPoint(0.5F, 21.7F, -2.3F);
+        this.LeftAntenna.setPos(0.5F, 21.7F, -2.3F);
         setRotation(this.LeftAntenna, -1.041001F, -0.7853982F, 0F);
 
         this.Thorax = new ModelRenderer(this, 0, 0);
         this.Thorax.addBox(-0.5F, 1.5F, -1F, 1, 1, 2);
-        this.Thorax.setRotationPoint(0F, 20F, -0.5F);
+        this.Thorax.setPos(0F, 20F, -0.5F);
 
         this.Abdomen = new ModelRenderer(this, 8, 1);
         this.Abdomen.addBox(-0.5F, -0.2F, -1F, 1, 2, 1);
-        this.Abdomen.setRotationPoint(0F, 21.5F, 0.3F);
+        this.Abdomen.setPos(0F, 21.5F, 0.3F);
         setRotation(this.Abdomen, 1.706911F, 0F, 0F);
 
         this.MidLegs = new ModelRenderer(this, 4, 8);
         this.MidLegs.addBox(-1F, 0F, 0F, 2, 3, 0);
-        this.MidLegs.setRotationPoint(0F, 22F, -0.7F);
+        this.MidLegs.setPos(0F, 22F, -0.7F);
         setRotation(this.MidLegs, 0.5948578F, 0F, 0F);
 
         this.FrontLegs = new ModelRenderer(this, 0, 8);
         this.FrontLegs.addBox(-1F, 0F, 0F, 2, 3, 0);
-        this.FrontLegs.setRotationPoint(0F, 22F, -0.8F);
+        this.FrontLegs.setPos(0F, 22F, -0.8F);
         setRotation(this.FrontLegs, -0.6192304F, 0F, 0F);
 
         this.RearLegs = new ModelRenderer(this, 0, 8);
         this.RearLegs.addBox(-1F, 0F, 0F, 2, 3, 0);
-        this.RearLegs.setRotationPoint(0F, 22F, 0F);
+        this.RearLegs.setPos(0F, 22F, 0F);
         setRotation(this.RearLegs, 0.9136644F, 0F, 0F);
     }
 
     @Override
-    public void setRotationAngles(T entity, float legMove1, float legMove2, float v2, float pitch, float yaw) {
+    public void setupAnim(T entity, float legMove1, float legMove2, float v2, float pitch, float yaw) {
         float legMov = MathHelper.cos((legMove1) + 3.141593F) * legMove2;
         float legMovB = MathHelper.cos(legMove1) * legMove2;
-        this.FrontLegs.rotateAngleX = -0.6192304F + legMov;
-        this.MidLegs.rotateAngleX = 0.5948578F + legMovB;
-        this.RearLegs.rotateAngleX = 0.9136644F + legMov;
+        this.FrontLegs.xRot = -0.6192304F + legMov;
+        this.MidLegs.xRot = 0.5948578F + legMovB;
+        this.RearLegs.xRot = 0.9136644F + legMov;
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+        model.xRot = x;
+        model.yRot = y;
+        model.zRot = z;
     }
 
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<ModelRenderer> parts() {
         return ImmutableList.of(
                 Head,
                 Mouth,

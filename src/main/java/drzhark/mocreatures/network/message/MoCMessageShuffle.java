@@ -37,9 +37,9 @@ public class MoCMessageShuffle implements IMoCMessage {
 //        MoCMessageHandler.handleMessage(message, ctx);
 //        return true;
         NetworkEvent.Context context = ctx.get();
-        Iterable<Entity> entList = Minecraft.getInstance().world.getAllEntities();
+        Iterable<Entity> entList = Minecraft.getInstance().level.entitiesForRendering();
         for (Entity ent : entList) {
-            if (ent.getEntityId() == message.entityId && ent instanceof MoCEntityHorse) {
+            if (ent.getId() == message.entityId && ent instanceof MoCEntityHorse) {
                 if (message.flag) {
                     //((MoCEntityHorse) ent).shuffle();
                 } else {

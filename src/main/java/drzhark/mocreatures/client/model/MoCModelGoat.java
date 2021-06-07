@@ -49,135 +49,135 @@ public class MoCModelGoat extends EntityModel<MoCEntityGoat> {
     public int eatMov;
 
     public MoCModelGoat() {
-        this.textureWidth = 64;
-        this.textureHeight = 32;
+        this.texWidth = 64;
+        this.texHeight = 32;
 
         this.Leg1 = new ModelRenderer(this, 0, 23);
         this.Leg1.addBox(-1F, 0F, -1F, 2, 7, 2);
-        this.Leg1.setRotationPoint(2F, 17F, -6F);
+        this.Leg1.setPos(2F, 17F, -6F);
 
         // Leg1.mirror = true;
 
         this.Leg2 = new ModelRenderer(this, 0, 23);
         this.Leg2.addBox(-1F, 0F, -1F, 2, 7, 2);
-        this.Leg2.setRotationPoint(-2F, 17F, -6F);
+        this.Leg2.setPos(-2F, 17F, -6F);
 
         // Leg2.mirror = true;
 
         this.Leg3 = new ModelRenderer(this, 0, 23);
         this.Leg3.addBox(-1F, 0F, -1F, 2, 7, 2);
-        this.Leg3.setRotationPoint(-2F, 17F, 6F);
+        this.Leg3.setPos(-2F, 17F, 6F);
 
         // Leg3.mirror = true;
 
         this.Leg4 = new ModelRenderer(this, 0, 23);
         this.Leg4.addBox(-1F, 0F, -1F, 2, 7, 2);
-        this.Leg4.setRotationPoint(2F, 17F, 6F);
+        this.Leg4.setPos(2F, 17F, 6F);
 
         // Leg4.mirror = true;
 
         this.Body = new ModelRenderer(this, 20, 8);
         this.Body.addBox(-3F, -4F, -8F, 6, 8, 16);
-        this.Body.setRotationPoint(0F, 13F, 0F);
+        this.Body.setPos(0F, 13F, 0F);
 
         this.Tail = new ModelRenderer(this, 22, 8);
         this.Tail.addBox(-1.5F, -1F, 0F, 3, 2, 4);
-        this.Tail.setRotationPoint(0F, 10F, 8F);
+        this.Tail.setPos(0F, 10F, 8F);
 
         this.LEar = new ModelRenderer(this, 52, 8);
         this.LEar.addBox(1.5F, -2F, 0F, 2, 1, 1);
-        this.LEar.setRotationPoint(0F, 8F, -12F);
+        this.LEar.setPos(0F, 8F, -12F);
 
         // LEar.mirror = true;
 
         this.REar = new ModelRenderer(this, 52, 8);
         this.REar.addBox(-3.5F, -2F, 0F, 2, 1, 1);
-        this.REar.setRotationPoint(0F, 8F, -12F);
+        this.REar.setPos(0F, 8F, -12F);
 
         // REar.mirror = true;
 
         this.Head = new ModelRenderer(this, 52, 16);
         this.Head.addBox(-1.5F, -2F, -2F, 3, 5, 3);
-        this.Head.setRotationPoint(0F, 8F, -12F);
+        this.Head.setPos(0F, 8F, -12F);
 
         this.Nose = new ModelRenderer(this, 52, 10);
         this.Nose.addBox(-1.5F, -1F, -5F, 3, 3, 3);
-        this.Nose.setRotationPoint(0F, 8F, -12F);
+        this.Nose.setPos(0F, 8F, -12F);
 
         this.Tongue = new ModelRenderer(this, 56, 5);
         this.Tongue.addBox(-0.5F, 2F, -5F, 1, 0, 3);
-        this.Tongue.setRotationPoint(0F, 8F, -12F);
+        this.Tongue.setPos(0F, 8F, -12F);
 
         this.Mouth = new ModelRenderer(this, 54, 0);
         this.Mouth.addBox(-1F, 2F, -5F, 2, 1, 3);
-        this.Mouth.setRotationPoint(0F, 8F, -12F);
+        this.Mouth.setPos(0F, 8F, -12F);
 
         this.RHorn1 = new ModelRenderer(this, 0, 0);
         this.RHorn1.addBox(-1.5F, -3F, -0.7F, 1, 1, 1, 0.1F);
-        this.RHorn1.setRotationPoint(0F, 8F, -12F);
+        this.RHorn1.setPos(0F, 8F, -12F);
 
         this.RHorn2 = new ModelRenderer(this, 0, 0);
         this.RHorn2.addBox(-1.9F, -4F, -0.2F, 1, 1, 1);
-        this.RHorn2.setRotationPoint(0F, 8F, -12F);
+        this.RHorn2.setPos(0F, 8F, -12F);
 
         this.RHorn3 = new ModelRenderer(this, 0, 0);
         this.RHorn3.addBox(-2.1F, -4.8F, 0.5F, 1, 1, 1, -0.05F);
-        this.RHorn3.setRotationPoint(0F, 8F, -12F);
+        this.RHorn3.setPos(0F, 8F, -12F);
 
         this.RHorn4 = new ModelRenderer(this, 0, 0);
         this.RHorn4.addBox(-2.3F, -5.2F, 1.4F, 1, 1, 1, -0.1F);
-        this.RHorn4.setRotationPoint(0F, 8F, -12F);
+        this.RHorn4.setPos(0F, 8F, -12F);
 
         this.RHorn5 = new ModelRenderer(this, 0, 0);
         this.RHorn5.addBox(-2.6F, -4.9F, 2.0F, 1, 1, 1, -0.15F);
-        this.RHorn5.setRotationPoint(0F, 8F, -12F);
+        this.RHorn5.setPos(0F, 8F, -12F);
 
         this.LHorn1 = new ModelRenderer(this, 0, 0);
         this.LHorn1.addBox(0.5F, -3F, -0.7F, 1, 1, 1, 0.1F);
-        this.LHorn1.setRotationPoint(0F, 8F, -12F);
+        this.LHorn1.setPos(0F, 8F, -12F);
 
         this.LHorn2 = new ModelRenderer(this, 0, 0);
         this.LHorn2.addBox(0.9F, -4F, -0.2F, 1, 1, 1);
-        this.LHorn2.setRotationPoint(0F, 8F, -12F);
+        this.LHorn2.setPos(0F, 8F, -12F);
 
         this.LHorn3 = new ModelRenderer(this, 0, 0);
         this.LHorn3.addBox(1.2F, -4.9F, 0.5F, 1, 1, 1, -0.05F);
-        this.LHorn3.setRotationPoint(0F, 8F, -12F);
+        this.LHorn3.setPos(0F, 8F, -12F);
 
         this.LHorn4 = new ModelRenderer(this, 0, 0);
         this.LHorn4.addBox(1.4F, -5.3F, 1.4F, 1, 1, 1, -0.1F);
-        this.LHorn4.setRotationPoint(0F, 8F, -12F);
+        this.LHorn4.setPos(0F, 8F, -12F);
 
         this.LHorn5 = new ModelRenderer(this, 0, 0);
         this.LHorn5.addBox(1.7F, -4.9F, 2.1F, 1, 1, 1, -0.15F);
-        this.LHorn5.setRotationPoint(0F, 8F, -12F);
+        this.LHorn5.setPos(0F, 8F, -12F);
 
         this.Goatie = new ModelRenderer(this, 52, 5);
         this.Goatie.addBox(-0.5F, 3F, -4F, 1, 2, 1);
-        this.Goatie.setRotationPoint(0F, 8F, -12F);
+        this.Goatie.setPos(0F, 8F, -12F);
 
         this.Neck = new ModelRenderer(this, 18, 14);
         this.Neck.addBox(-1.5F, -2.0F, -5F, 3, 4, 6, -0.2F);
-        this.Neck.setRotationPoint(0F, 11F, -8F);
-        this.Neck.rotateAngleX = -24 / 57.29578F;
+        this.Neck.setPos(0F, 11F, -8F);
+        this.Neck.xRot = -24 / 57.29578F;
 
         this.Tits = new ModelRenderer(this, 18, 0);
         this.Tits.addBox(-2.5F, 0F, -2F, 5, 1, 4);
-        this.Tits.setRotationPoint(0F, 17F, 3F);
+        this.Tits.setPos(0F, 17F, 3F);
 
     }
 
     @Override
-    public void setRotationAngles(MoCEntityGoat entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(MoCEntityGoat entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         //super.setRotationAngles(f, f1, f2, f3, f4, f5);
-        this.Leg1.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
-        this.Leg2.rotateAngleX = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.4F * f1;
-        this.Leg3.rotateAngleX = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.4F * f1;
-        this.Leg4.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
+        this.Leg1.xRot = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
+        this.Leg2.xRot = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.4F * f1;
+        this.Leg3.xRot = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.4F * f1;
+        this.Leg4.xRot = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
         float baseAngle = (30 / 57.29578F) + (f4 / 57.29578F);
 
         // neck = -30 to 30
@@ -189,74 +189,74 @@ public class MoCModelGoat extends EntityModel<MoCEntityGoat> {
         if (f3 < -20F) {
             f3 = -20F;
         }
-        this.Head.rotateAngleY = (f3 / 57.29578F);// * 0.6F; //fixes SMP bug
-        this.Neck.rotateAngleX = -30 / 57.29578F;
-        this.Tail.rotateAngleX = this.tailMov / 57.29578F;
+        this.Head.yRot = (f3 / 57.29578F);// * 0.6F; //fixes SMP bug
+        this.Neck.xRot = -30 / 57.29578F;
+        this.Tail.xRot = this.tailMov / 57.29578F;
 
-        this.Head.rotateAngleX = baseAngle;
+        this.Head.xRot = baseAngle;
         if (this.bleat) {
-            this.Head.rotateAngleX = -15 / 57.29578F;
+            this.Head.xRot = -15 / 57.29578F;
         }
         if (this.attacking != 0) {
-            this.Head.rotateAngleX = this.attacking / 57.29578F;
-            this.Neck.rotateAngleX = ((1.33F * this.attacking) - 70) / 57.29578F;
+            this.Head.xRot = this.attacking / 57.29578F;
+            this.Neck.xRot = ((1.33F * this.attacking) - 70) / 57.29578F;
             if (this.legMov != 0) {
-                this.Leg1.rotateAngleX = this.legMov / 57.29578F;
+                this.Leg1.xRot = this.legMov / 57.29578F;
                 // leg -20 to + 30
                 // 0 to -20 normal speed
                 // -20 to 30 fast x2 or x3
             }
         }
 
-        this.LEar.rotateAngleX = this.Head.rotateAngleX;
-        this.REar.rotateAngleX = this.Head.rotateAngleX;
+        this.LEar.xRot = this.Head.xRot;
+        this.REar.xRot = this.Head.xRot;
         if (!this.bleat && this.attacking == 0) {
-            this.LEar.rotateAngleX = baseAngle + (this.earMov / 57.29578F);
-            this.REar.rotateAngleX = baseAngle + (this.earMov / 57.29578F);
+            this.LEar.xRot = baseAngle + (this.earMov / 57.29578F);
+            this.REar.xRot = baseAngle + (this.earMov / 57.29578F);
         }
 
-        this.Nose.rotateAngleX = this.Head.rotateAngleX;
-        this.Mouth.rotateAngleX = this.Head.rotateAngleX;
-        this.Tongue.rotateAngleX = this.Head.rotateAngleX;
-        this.Goatie.rotateAngleX = this.Head.rotateAngleX;
-        this.RHorn1.rotateAngleX = this.Head.rotateAngleX;
-        this.LHorn1.rotateAngleX = this.Head.rotateAngleX;
-        this.RHorn2.rotateAngleX = this.Head.rotateAngleX;
-        this.LHorn2.rotateAngleX = this.Head.rotateAngleX;
-        this.RHorn3.rotateAngleX = this.Head.rotateAngleX;
-        this.LHorn3.rotateAngleX = this.Head.rotateAngleX;
-        this.RHorn4.rotateAngleX = this.Head.rotateAngleX;
-        this.LHorn4.rotateAngleX = this.Head.rotateAngleX;
-        this.RHorn5.rotateAngleX = this.Head.rotateAngleX;
-        this.LHorn5.rotateAngleX = this.Head.rotateAngleX;
+        this.Nose.xRot = this.Head.xRot;
+        this.Mouth.xRot = this.Head.xRot;
+        this.Tongue.xRot = this.Head.xRot;
+        this.Goatie.xRot = this.Head.xRot;
+        this.RHorn1.xRot = this.Head.xRot;
+        this.LHorn1.xRot = this.Head.xRot;
+        this.RHorn2.xRot = this.Head.xRot;
+        this.LHorn2.xRot = this.Head.xRot;
+        this.RHorn3.xRot = this.Head.xRot;
+        this.LHorn3.xRot = this.Head.xRot;
+        this.RHorn4.xRot = this.Head.xRot;
+        this.LHorn4.xRot = this.Head.xRot;
+        this.RHorn5.xRot = this.Head.xRot;
+        this.LHorn5.xRot = this.Head.xRot;
         if (this.bleat)// && !attacking)
         {
-            this.Mouth.rotateAngleX = 0.0F;
-            this.Tongue.rotateAngleX = -5 / 57.29578F;
-            this.Goatie.rotateAngleX = 0.0F;
+            this.Mouth.xRot = 0.0F;
+            this.Tongue.xRot = -5 / 57.29578F;
+            this.Goatie.xRot = 0.0F;
         }
 
-        this.Nose.rotateAngleY = this.Head.rotateAngleY;
-        this.Mouth.rotateAngleY = this.Head.rotateAngleY;
-        this.Tongue.rotateAngleY = this.Head.rotateAngleY;
-        this.LEar.rotateAngleY = this.Head.rotateAngleY;
-        this.REar.rotateAngleY = this.Head.rotateAngleY;
-        this.Goatie.rotateAngleY = this.Head.rotateAngleY;
-        this.RHorn1.rotateAngleY = this.Head.rotateAngleY;
-        this.LHorn1.rotateAngleY = this.Head.rotateAngleY;
-        this.RHorn2.rotateAngleY = this.Head.rotateAngleY;
-        this.LHorn2.rotateAngleY = this.Head.rotateAngleY;
-        this.RHorn3.rotateAngleY = this.Head.rotateAngleY;
-        this.LHorn3.rotateAngleY = this.Head.rotateAngleY;
-        this.RHorn4.rotateAngleY = this.Head.rotateAngleY;
-        this.LHorn4.rotateAngleY = this.Head.rotateAngleY;
-        this.RHorn5.rotateAngleY = this.Head.rotateAngleY;
-        this.LHorn5.rotateAngleY = this.Head.rotateAngleY;
+        this.Nose.yRot = this.Head.yRot;
+        this.Mouth.yRot = this.Head.yRot;
+        this.Tongue.yRot = this.Head.yRot;
+        this.LEar.yRot = this.Head.yRot;
+        this.REar.yRot = this.Head.yRot;
+        this.Goatie.yRot = this.Head.yRot;
+        this.RHorn1.yRot = this.Head.yRot;
+        this.LHorn1.yRot = this.Head.yRot;
+        this.RHorn2.yRot = this.Head.yRot;
+        this.LHorn2.yRot = this.Head.yRot;
+        this.RHorn3.yRot = this.Head.yRot;
+        this.LHorn3.yRot = this.Head.yRot;
+        this.RHorn4.yRot = this.Head.yRot;
+        this.LHorn4.yRot = this.Head.yRot;
+        this.RHorn5.yRot = this.Head.yRot;
+        this.LHorn5.yRot = this.Head.yRot;
 
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         this.Leg1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         this.Leg2.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         this.Leg3.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
@@ -267,7 +267,7 @@ public class MoCModelGoat extends EntityModel<MoCEntityGoat> {
         if (this.typeInt > 1 && this.typeInt < 5) {
             this.Tits.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         }
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
 
         if (this.attacking != 0) {
             // float yOff = f5*((2.0F*attacking)/45F)-1.33333F;
@@ -323,7 +323,7 @@ public class MoCModelGoat extends EntityModel<MoCEntityGoat> {
         this.Tongue.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         this.Mouth.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
 
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
 
     }
 }

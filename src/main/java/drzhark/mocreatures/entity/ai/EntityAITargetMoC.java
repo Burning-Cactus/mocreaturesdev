@@ -85,7 +85,7 @@ public abstract class EntityAITargetMoC extends Goal {
                 if (target == ((IMoCTameable)attacker).getOwner()) {
                     return false;
                 }
-            } else*/ if (target instanceof PlayerEntity && includeInvincibles && ((PlayerEntity) target).abilities.disableDamage) {
+            } else*/ if (target instanceof PlayerEntity && includeInvincibles && ((PlayerEntity) target).abilities.invulnerable) {
                 return false;
             }
 
@@ -98,8 +98,8 @@ public abstract class EntityAITargetMoC extends Goal {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean shouldContinueExecuting() {
-        LivingEntity entitylivingbase = this.taskOwner.getAttackTarget();
+    public boolean canContinueToUse() {
+        LivingEntity entitylivingbase = this.taskOwner.getTarget();
 
         if (entitylivingbase == null) {
             return false;
@@ -114,18 +114,18 @@ public abstract class EntityAITargetMoC extends Goal {
             } else {
                 double d0 = this.getTargetDistance();
 
-                if (this.taskOwner.getDistanceSq(entitylivingbase) > d0 * d0) {
+                if (this.taskOwner.distanceToSqr(entitylivingbase) > d0 * d0) {
                     return false;
                 } else {
                     if (this.shouldCheckSight) {
-                        if (this.taskOwner.getEntitySenses().canSee(entitylivingbase)) {
+                        if (this.taskOwner.getSensing().canSee(entitylivingbase)) {
                             this.targetUnseenTicks = 0;
                         } else if (++this.targetUnseenTicks > 60) {
                             return false;
                         }
                     }
 
-                    return !(entitylivingbase instanceof PlayerEntity) || !((PlayerEntity) entitylivingbase).abilities.disableDamage;
+                    return !(entitylivingbase instanceof PlayerEntity) || !((PlayerEntity) entitylivingbase).abilities.invulnerable;
                 }
             }
         }
@@ -143,7 +143,7 @@ public abstract class EntityAITargetMoC extends Goal {
      * Execute a one shot task or start executing a continuous task
      */
     @Override
-    public void startExecuting() {
+    public void start() {
         this.targetSearchStatus = 0;
         this.targetSearchDelay = 0;
         this.targetUnseenTicks = 0;
@@ -153,8 +153,8 @@ public abstract class EntityAITargetMoC extends Goal {
      * Resets the task
      */
     @Override
-    public void resetTask() {
-        this.taskOwner.setAttackTarget((LivingEntity) null);
+    public void stop() {
+        this.taskOwner.setTarget((LivingEntity) null);
     }
 
     /**
@@ -165,7 +165,7 @@ public abstract class EntityAITargetMoC extends Goal {
         if (!isSuitableTarget(this.taskOwner, target, includeInvincibles, this.shouldCheckSight)) {
             //System.out.println("not suitable target");
             return false;
-        } else if (!this.taskOwner.isWithinHomeDistanceFromPosition(new BlockPos(target.getPositionVec()))) {
+        } else if (!this.taskOwner.isWithinRestriction(new BlockPos(target.position()))) {
             //System.out.println("attacker away from homeposition");
             return false;
         } else {
@@ -191,20 +191,20 @@ public abstract class EntityAITargetMoC extends Goal {
      * Checks to see if this entity can find a short path to the given target.
      */
     private boolean canEasilyReach(LivingEntity target) {
-        this.targetSearchDelay = 10 + this.taskOwner.getRNG().nextInt(5);
-        Path path = this.taskOwner.getNavigator().getPathToEntity(target, 0);
+        this.targetSearchDelay = 10 + this.taskOwner.getRandom().nextInt(5);
+        Path path = this.taskOwner.getNavigation().createPath(target, 0);
 
         if (path == null) {
             //System.out.println("couldn't find path");
             return false;
         } else {
-            PathPoint pathpoint = path.getFinalPathPoint();
+            PathPoint pathpoint = path.getEndNode();
 
             if (pathpoint == null) {
                 return false;
             } else {
-                int i = pathpoint.x - MathHelper.floor(target.getPosX());
-                int j = pathpoint.z - MathHelper.floor(target.getPosZ());
+                int i = pathpoint.x - MathHelper.floor(target.getX());
+                int j = pathpoint.z - MathHelper.floor(target.getZ());
                 return i * i + j * j <= 2.25D;
             }
         }

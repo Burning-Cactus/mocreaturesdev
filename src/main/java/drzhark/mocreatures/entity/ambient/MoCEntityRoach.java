@@ -23,18 +23,18 @@ public class MoCEntityRoach extends MoCEntityInsect
         this.goalSelector.addGoal(3, new EntityAIFleeFromEntityMoC(this, new Predicate<Entity>() {
 
             public boolean apply(Entity entity) {
-                return !(entity instanceof MoCEntityCrab) && (entity.getHeight() > 0.3F || entity.getWidth() > 0.3F);
+                return !(entity instanceof MoCEntityCrab) && (entity.getBbHeight() > 0.3F || entity.getBbWidth() > 0.3F);
             }
         }, 6.0F, 0.8D, 1.3D));
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
 
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
 
-            if (getIsFlying() && this.rand.nextInt(50) == 0) {
+            if (getIsFlying() && this.random.nextInt(50) == 0) {
                 setIsFlying(false);
             }
 
@@ -68,7 +68,7 @@ public class MoCEntityRoach extends MoCEntityInsect
     }
 
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         if (getIsFlying()) {
             return 0.1F;
         }

@@ -19,7 +19,7 @@ public class MoCEntityMediumFish extends MoCEntityTameableAquatic {
 
     public MoCEntityMediumFish(EntityType<? extends MoCEntityMediumFish> type, World world) {
         super(type, world);
-        setEdad(30 + this.rand.nextInt(70));
+        setEdad(30 + this.random.nextInt(70));
     }
 
     public static MoCEntityMediumFish createEntity(World world, int type) {
@@ -41,7 +41,7 @@ public class MoCEntityMediumFish extends MoCEntityTameableAquatic {
         this.goalSelector.addGoal(3, new EntityAIFleeFromEntityMoC(this, new Predicate<Entity>() {
 
             public boolean apply(Entity entity) {
-                return (entity.getHeight() > 0.6F && entity.getWidth() > 0.3F);
+                return (entity.getBbHeight() > 0.6F && entity.getBbWidth() > 0.3F);
             }
         }, 2.0F, 0.6D, 1.5D));
         this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 1.0D, 50));
@@ -49,14 +49,14 @@ public class MoCEntityMediumFish extends MoCEntityTameableAquatic {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityTameableAquatic.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 8.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.5D);
+                .add(Attributes.MAX_HEALTH, 8.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.5D);
     }
 
     @Override
     public void selectType() {
         if (getSubType() == 0) {
-            setType(this.rand.nextInt(fishNames.length) + 1);
+            setType(this.random.nextInt(fishNames.length) + 1);
         }
     }
 
@@ -78,17 +78,17 @@ public class MoCEntityMediumFish extends MoCEntityTameableAquatic {
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
 
-        if (!this.world.isRemote) {
-            if (getIsTamed() && this.rand.nextInt(100) == 0 && getHealth() < getMaxHealth()) {
+        if (!this.level.isClientSide) {
+            if (getIsTamed() && this.random.nextInt(100) == 0 && getHealth() < getMaxHealth()) {
                 this.setHealth(getMaxHealth());
             }
         }
         if (!this.isInWater()) {
-            this.prevRenderYawOffset = this.renderYawOffset = this.rotationYaw = this.prevRotationYaw;
-            this.rotationPitch = this.prevRotationPitch;
+            this.yBodyRotO = this.yBodyRot = this.yRot = this.yRotO;
+            this.xRot = this.xRotO;
         }
     }
 
@@ -156,7 +156,7 @@ public class MoCEntityMediumFish extends MoCEntityTameableAquatic {
     }
 
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         return 0.15F;
     }
 

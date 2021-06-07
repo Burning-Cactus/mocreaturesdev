@@ -42,15 +42,15 @@ public class MoCEntityOgre extends MoCEntityMob {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityMob.registerAttributes()
-//                .func_233815_a_(Attributes.MAX_HEALTH, calculateMaxHealth())
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D);
+//                .add(Attributes.MAX_HEALTH, calculateMaxHealth())
+                .add(Attributes.MOVEMENT_SPEED, 0.25D)
+                .add(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     @Override
     public void selectType() {
         if (getSubType() == 0) {
-            setType(this.rand.nextInt(2) + 1);
+            setType(this.random.nextInt(2) + 1);
         }
     }
 
@@ -59,14 +59,14 @@ public class MoCEntityOgre extends MoCEntityMob {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        if (super.attackEntityFrom(damagesource, i)) {
-            Entity entity = damagesource.getTrueSource();
-            if (this.isRidingOrBeingRiddenBy(entity)) {
+    public boolean hurt(DamageSource damagesource, float i) {
+        if (super.hurt(damagesource, i)) {
+            Entity entity = damagesource.getEntity();
+            if (this.hasIndirectPassenger(entity)) {
                 return true;
             }
-            if ((entity != this) && (this.world.getDifficulty().getId() > 0) && entity instanceof LivingEntity) {
-                setAttackTarget((LivingEntity) entity);
+            if ((entity != this) && (this.level.getDifficulty().getId() > 0) && entity instanceof LivingEntity) {
+                setTarget((LivingEntity) entity);
                 return true;
             } else {
                 return false;
@@ -113,8 +113,8 @@ public class MoCEntityOgre extends MoCEntityMob {
     }
 
     @Override
-    public void livingTick() {
-        if (!this.world.isRemote) {
+    public void aiStep() {
+        if (!this.level.isClientSide) {
             if (this.smashCounter > 0 && ++this.smashCounter > 10) {
                 this.smashCounter = 0;
                 performDestroyBlastAttack();
@@ -122,7 +122,7 @@ public class MoCEntityOgre extends MoCEntityMob {
 //                        new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
             }
 
-            if ((this.getAttackTarget() != null) && (this.rand.nextInt(40) == 0) && this.smashCounter == 0 && this.attackCounter == 0) {
+            if ((this.getTarget() != null) && (this.random.nextInt(40) == 0) && this.smashCounter == 0 && this.attackCounter == 0) {
                 startDestroyBlast();
             }
         }
@@ -139,7 +139,7 @@ public class MoCEntityOgre extends MoCEntityMob {
                 this.armToAnimate = 0;
             }
         }
-        super.livingTick();
+        super.aiStep();
     }
 
     /**
@@ -158,7 +158,7 @@ public class MoCEntityOgre extends MoCEntityMob {
         if (this.deathTime > 0) {
             return;
         }
-        MoCTools.DestroyBlast(this, this.getPosX(), this.getPosY() + 1.0D, this.getPosZ(), getDestroyForce(), isFireStarter());
+        MoCTools.DestroyBlast(this, this.getX(), this.getY() + 1.0D, this.getZ(), getDestroyForce(), isFireStarter());
     }
 
     @Override
@@ -170,11 +170,11 @@ public class MoCEntityOgre extends MoCEntityMob {
      * Starts attack counters and synchronizes animations with clients
      */
     protected void startArmSwingAttack() {
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
             if (this.smashCounter != 0)
                 return;
 
-            boolean leftArmW = (getSubType() == 2 || getSubType() == 4 || getSubType() == 6) && this.rand.nextInt(2) == 0;
+            boolean leftArmW = (getSubType() == 2 || getSubType() == 4 || getSubType() == 6) && this.random.nextInt(2) == 0;
 
             this.attackCounter = 1;
             if (leftArmW) {
@@ -204,15 +204,15 @@ public class MoCEntityOgre extends MoCEntityMob {
             return 1;
         }
 
-        if (this.rand.nextInt(60) == 0) {
-            this.movingHead = this.rand.nextInt(2) + 2; //randomly changes the focus head, returns 2 or 3
+        if (this.random.nextInt(60) == 0) {
+            this.movingHead = this.random.nextInt(2) + 2; //randomly changes the focus head, returns 2 or 3
         }
         return this.movingHead;
     }
 
     @Override
-    public boolean attackEntityAsMob(Entity entityIn) {
+    public boolean doHurtTarget(Entity entityIn) {
         startArmSwingAttack();
-        return super.attackEntityAsMob(entityIn);
+        return super.doHurtTarget(entityIn);
     }
 }

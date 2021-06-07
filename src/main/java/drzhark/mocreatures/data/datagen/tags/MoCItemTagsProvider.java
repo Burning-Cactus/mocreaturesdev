@@ -12,9 +12,9 @@ public class MoCItemTagsProvider extends ItemTagsProvider {
     }
 
     @Override
-    protected void registerTags() {
-        this.func_240521_a_(BlockTags.PLANKS, ItemTags.PLANKS);
-        this.func_240521_a_(BlockTags.LOGS, ItemTags.LOGS);
-        this.func_240521_a_(BlockTags.LEAVES, ItemTags.LEAVES);
+    protected void addTags() {
+        this.copy(BlockTags.PLANKS, ItemTags.PLANKS);
+        this.copy(BlockTags.LOGS, ItemTags.LOGS);
+        this.copy(BlockTags.LEAVES, ItemTags.LEAVES);
     }
 }

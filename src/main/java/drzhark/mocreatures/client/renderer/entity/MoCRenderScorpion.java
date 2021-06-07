@@ -17,7 +17,7 @@ public class MoCRenderScorpion extends MoCRenderMoC<MoCEntityScorpion, MoCModelS
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityScorpion entityscorpion, MatrixStack stack, float f) {
+    protected void scale(MoCEntityScorpion entityscorpion, MatrixStack stack, float f) {
         if (entityscorpion.climbing()) {
             rotateAnimal(entityscorpion, stack);
         }
@@ -33,7 +33,7 @@ public class MoCRenderScorpion extends MoCRenderMoC<MoCEntityScorpion, MoCModelS
     }
 
     protected void upsideDown(MoCEntityScorpion entityscorpion, MatrixStack stack) {
-        stack.rotate(Vector3f.XN.rotationDegrees(-90F));
+        stack.mulPose(Vector3f.XN.rotationDegrees(-90F));
         stack.translate(-1.5F, -0.5F, -2.5F);
     }
 
@@ -42,7 +42,7 @@ public class MoCRenderScorpion extends MoCRenderMoC<MoCEntityScorpion, MoCModelS
     }
 
     protected void rotateAnimal(MoCEntityScorpion entityscorpion, MatrixStack stack) {
-        stack.rotate(Vector3f.XN.rotationDegrees(90F));
+        stack.mulPose(Vector3f.XN.rotationDegrees(90F));
     }
 
     protected void stretch(MoCEntityScorpion entityscorpion, MatrixStack stack) {
@@ -55,7 +55,7 @@ public class MoCRenderScorpion extends MoCRenderMoC<MoCEntityScorpion, MoCModelS
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityScorpion entityscorpion) {
+    public ResourceLocation getTextureLocation(MoCEntityScorpion entityscorpion) {
         return entityscorpion.getTexture();
     }
 }

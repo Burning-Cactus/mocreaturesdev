@@ -27,8 +27,8 @@ public class MoCEntityBoar extends MoCEntityAnimal {
 
     public MoCEntityBoar(EntityType<? extends MoCEntityBoar> type, World world) {
         super(type, world);
-        setEdad(this.rand.nextInt(15) + 45);
-        if (this.rand.nextInt(4) == 0) {
+        setEdad(this.random.nextInt(15) + 45);
+        if (this.random.nextInt(4) == 0) {
             setAdult(false);
 
         } else {
@@ -49,9 +49,9 @@ public class MoCEntityBoar extends MoCEntityAnimal {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityAnimal.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 10.0D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 1.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.3D);
+                .add(Attributes.MAX_HEALTH, 10.0D)
+                .add(Attributes.ATTACK_DAMAGE, 1.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.3D);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class MoCEntityBoar extends MoCEntityAnimal {
     }
 
     @Override
-    public boolean canDespawn(double d) {
+    public boolean removeWhenFarAway(double d) {
         if (MoCConfig.COMMON_CONFIG.GLOBAL.forceDespawns.get()) {
             return !getIsTamed();
         } else {
@@ -73,14 +73,14 @@ public class MoCEntityBoar extends MoCEntityAnimal {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        if (super.attackEntityFrom(damagesource, i)) {
-            Entity entity = damagesource.getTrueSource();
-            if (this.isRidingOrBeingRiddenBy(entity)) {
+    public boolean hurt(DamageSource damagesource, float i) {
+        if (super.hurt(damagesource, i)) {
+            Entity entity = damagesource.getEntity();
+            if (this.hasIndirectPassenger(entity)) {
                 return true;
             }
             if ((entity != this && entity instanceof LivingEntity) && super.shouldAttackPlayers() && getIsAdult()) {
-                setAttackTarget((LivingEntity) entity);
+                setTarget((LivingEntity) entity);
             }
             return true;
         } else {
@@ -105,17 +105,17 @@ public class MoCEntityBoar extends MoCEntityAnimal {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_PIG_AMBIENT;
+        return SoundEvents.PIG_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.ENTITY_PIG_HURT;
+        return SoundEvents.PIG_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_PIG_DEATH;
+        return SoundEvents.PIG_DEATH;
     }
 
     @Override

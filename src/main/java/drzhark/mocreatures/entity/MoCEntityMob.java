@@ -43,32 +43,32 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     protected PathNavigator navigatorFlyer;
     protected EntityAIWanderMoC2 wander;
 
-    protected static final DataParameter<Boolean> ADULT = EntityDataManager.createKey(CreatureEntity.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Integer> TYPE = EntityDataManager.createKey(CreatureEntity.class, DataSerializers.VARINT);
-    protected static final DataParameter<Integer> AGE = EntityDataManager.createKey(CreatureEntity.class, DataSerializers.VARINT);
-    protected static final DataParameter<String> NAME_STR = EntityDataManager.createKey(CreatureEntity.class, DataSerializers.STRING);
+    protected static final DataParameter<Boolean> ADULT = EntityDataManager.defineId(CreatureEntity.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Integer> TYPE = EntityDataManager.defineId(CreatureEntity.class, DataSerializers.INT);
+    protected static final DataParameter<Integer> AGE = EntityDataManager.defineId(CreatureEntity.class, DataSerializers.INT);
+    protected static final DataParameter<String> NAME_STR = EntityDataManager.defineId(CreatureEntity.class, DataSerializers.STRING);
     
     public MoCEntityMob(EntityType<? extends MoCEntityMob> type, World world) {
         super(type, world);
         this.texture = "blank.jpg";
-        this.moveController = new EntityAIMoverHelperMoC(this);
+        this.moveControl = new EntityAIMoverHelperMoC(this);
 //        this.navigatorWater = new SwimmerPathNavigator(this, world);
         this.navigatorFlyer = new PathNavigateFlyerMoC(this, world);
 //        this.goalSelector.addGoal(4, this.wander = new EntityAIWanderMoC2(this, 1.0D, 80));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return MonsterEntity.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 20.0D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 2D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.7F)
-                .func_233815_a_(Attributes.FOLLOW_RANGE, 16.0D);
+        return MonsterEntity.createLivingAttributes()
+                .add(Attributes.MAX_HEALTH, 20.0D)
+                .add(Attributes.ATTACK_DAMAGE, 2D)
+                .add(Attributes.MOVEMENT_SPEED, 0.7F)
+                .add(Attributes.FOLLOW_RANGE, 16.0D);
     }
 
     @Override
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData par1EntityLivingData, CompoundNBT dataTag) {
+    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData par1EntityLivingData, CompoundNBT dataTag) {
         selectType();
-        return super.onInitialSpawn(worldIn, difficulty, reason, par1EntityLivingData, dataTag);
+        return super.finalizeSpawn(worldIn, difficulty, reason, par1EntityLivingData, dataTag);
     }
 
     @Override
@@ -86,22 +86,22 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(ADULT, false);
-        this.dataManager.register(TYPE, 0);
-        this.dataManager.register(AGE, 45);
-        this.dataManager.register(NAME_STR, "");
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(ADULT, false);
+        this.entityData.define(TYPE, 0);
+        this.entityData.define(AGE, 45);
+        this.entityData.define(NAME_STR, "");
     }
 
     @Override
     public void setType(int i) {
-        this.dataManager.set(TYPE, i);
+        this.entityData.set(TYPE, i);
     }
 
     @Override
     public int getSubType() {
-        return this.dataManager.get(TYPE);
+        return this.entityData.get(TYPE);
     }
 
     @Override
@@ -112,12 +112,12 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
 
     @Override
     public boolean getIsAdult() {
-        return this.dataManager.get(ADULT);
+        return this.entityData.get(ADULT);
     }
 
     @Override
     public void setAdult(boolean flag) {
-        this.dataManager.set(ADULT, flag);
+        this.entityData.set(ADULT, flag);
     }
     
     @Override
@@ -127,12 +127,12 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
 
     @Override
     public String getPetName() {
-        return this.dataManager.get(NAME_STR).toString();
+        return this.entityData.get(NAME_STR).toString();
     }
 
     @Override
     public int getEdad() {
-        return this.dataManager.get(AGE);
+        return this.entityData.get(AGE);
     }
 
     @Nullable
@@ -155,25 +155,25 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
 
     @Override
     public void setEdad(int i) {
-        this.dataManager.set(AGE, i);
+        this.entityData.set(AGE, i);
     }
 
     @Override
     public void setPetName(String name) {
-        this.dataManager.set(NAME_STR, name);
+        this.entityData.set(NAME_STR, name);
     }
 
     public boolean getCanSpawnHereLiving() {
-        return this.world.checkNoEntityCollision(this)
-                && this.world.getCollisionShapes(this, this.getBoundingBox()).count() == 0
-                && !this.world.containsAnyLiquid(this.getBoundingBox());
+        return this.level.isUnobstructed(this)
+                && this.level.getBlockCollisions(this, this.getBoundingBox()).count() == 0
+                && !this.level.containsAnyLiquid(this.getBoundingBox());
     }
 
     public boolean getCanSpawnHereCreature() {
-        int i = MathHelper.floor(this.getPosX());
+        int i = MathHelper.floor(this.getX());
         int j = MathHelper.floor(getBoundingBox().minY);
-        int k = MathHelper.floor(this.getPosZ());
-        return getBlockPathWeight(new BlockPos(i, j, k)) >= 0.0F;
+        int k = MathHelper.floor(this.getZ());
+        return getWalkTargetValue(new BlockPos(i, j, k)) >= 0.0F;
     }
 
 //    @Override
@@ -203,15 +203,15 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     protected LivingEntity getClosestEntityLiving(Entity entity, double d) {
         double d1 = -1D;
         LivingEntity entityliving = null;
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(d, d, d));
+        List<Entity> list = this.level.getEntities(this, getBoundingBox().expandTowards(d, d, d));
         for (int i = 0; i < list.size(); i++) {
             Entity entity1 = list.get(i);
 
             if (entitiesToIgnore(entity1)) {
                 continue;
             }
-            double d2 = entity1.getDistanceSq(entity.getPosX(), entity.getPosY(), entity.getPosZ());
-            if (((d < 0.0D) || (d2 < (d * d))) && ((d1 == -1D) || (d2 < d1)) && ((LivingEntity) entity1).canEntityBeSeen(entity)) {
+            double d2 = entity1.distanceToSqr(entity.getX(), entity.getY(), entity.getZ());
+            if (((d < 0.0D) || (d2 < (d * d))) && ((d1 == -1D) || (d2 < d1)) && ((LivingEntity) entity1).canSee(entity)) {
                 d1 = d2;
                 entityliving = (LivingEntity) entity1;
             }
@@ -235,8 +235,8 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     }
 
     @Override
-    public void livingTick() {
-        if (!this.world.isRemote) {
+    public void aiStep() {
+        if (!this.level.isClientSide) {
 
             /*if (forceUpdates() && this.rand.nextInt(1000) == 0) {
                 MoCTools.forceDataSync(this);
@@ -248,30 +248,30 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
 //            }
 
             if (this.isHarmedByDaylight()) {
-                if (this.world.isDaytime()) {
+                if (this.level.isDay()) {
                     float var1 = this.getBrightness();
                     if (var1 > 0.5F
-                            && this.world.canBlockSeeSky(new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosY()),
-                                    MathHelper.floor(this.getPosZ()))) && this.rand.nextFloat() * 30.0F < (var1 - 0.4F) * 2.0F) {
-                        this.setFire(8);
+                            && this.level.canSeeSkyFromBelowWater(new BlockPos(MathHelper.floor(this.getX()), MathHelper.floor(this.getY()),
+                                    MathHelper.floor(this.getZ()))) && this.random.nextFloat() * 30.0F < (var1 - 0.4F) * 2.0F) {
+                        this.setSecondsOnFire(8);
                     }
                 }
             }
             if (getEdad() == 0) setEdad(getMaxEdad() - 10); //fixes tiny creatures spawned by error
-            if (!getIsAdult() && (this.rand.nextInt(300) == 0)) {
+            if (!getIsAdult() && (this.random.nextInt(300) == 0)) {
                 setEdad(getEdad() + 1);
                 if (getEdad() >= getMaxEdad()) {
                     setAdult(true);
                 }
             }
 
-            if (getIsFlying() && this.getNavigator().noPath() && !isMovementCeased() && this.getAttackTarget() == null && this.rand.nextInt(20) == 0) {
+            if (getIsFlying() && this.getNavigation().isDone() && !isMovementCeased() && this.getTarget() == null && this.random.nextInt(20) == 0) {
 //                this.wander.makeUpdate(); TODO: Make wandering code work
             }
         }
 
-        this.getNavigator().tick();
-        super.livingTick();
+        this.getNavigation().tick();
+        super.aiStep();
     }
 
     protected int getMaxEdad() {
@@ -283,12 +283,12 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        if (!this.world.isRemote && getIsTamed()) {
+    public boolean hurt(DamageSource damagesource, float i) {
+        if (!this.level.isClientSide && getIsTamed()) {
 //            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageHealth(this.getEntityId(), this.getHealth()), new TargetPoint(
 //                    this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
-        return super.attackEntityFrom(damagesource, i);
+        return super.hurt(damagesource, i);
     }
 
     /**
@@ -301,8 +301,8 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     }
 
     @Override
-    public void writeAdditional(CompoundNBT nbttagcompound) {
-        super.writeAdditional(nbttagcompound);
+    public void addAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.addAdditionalSaveData(nbttagcompound);
         //nbttagcompound = MoCTools.getEntityData(this);
         nbttagcompound.putBoolean("Adult", getIsAdult());
         nbttagcompound.putInt("Edad", getEdad());
@@ -312,8 +312,8 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     }
 
     @Override
-    public void readAdditional(CompoundNBT nbttagcompound) {
-        super.readAdditional(nbttagcompound);
+    public void readAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.readAdditionalSaveData(nbttagcompound);
         //nbttagcompound = MoCTools.getEntityData(this);
         setAdult(nbttagcompound.getBoolean("Adult"));
         setEdad(nbttagcompound.getInt("Edad"));
@@ -330,11 +330,11 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
 //    }
 
     @Override
-    public boolean isOnLadder() {
+    public boolean onClimbable() {
         if (isFlyer()) {
             return false;
         } else {
-            return super.isOnLadder();
+            return super.onClimbable();
         }
     }
 
@@ -348,11 +348,11 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     }
 
     public void moveEntityWithHeadingFlyer(float strafe, float vertical, float forward) {
-        if (this.isServerWorld()) {
+        if (this.isEffectiveAi()) {
 
             this.moveRelative( 0.1F, new Vector3d(strafe, vertical, forward));
-            this.move(MoverType.SELF, this.getMotion());
-            this.getMotion().scale(0.8999999761581421D);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.getDeltaMovement().scale(0.8999999761581421D);
         } else {
             super.travel(new Vector3d(strafe, vertical, forward));
         }
@@ -378,7 +378,7 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     @Override
     public boolean renderName() {
         return MoCConfig.CLIENT_CONFIG.displayPetName.get() //TODO: Fix name rendering
-                && (getPetName() != null && !getPetName().equals("") && (!this.isBeingRidden()) && (this.getRidingEntity() == null));
+                && (getPetName() != null && !getPetName().equals("") && (!this.isVehicle()) && (this.getVehicle() == null));
 //        return false;
     }
 
@@ -410,14 +410,14 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     }
 
     @Override
-    public boolean canDespawn(double d) {
+    public boolean removeWhenFarAway(double d) {
         return !getIsTamed();
     }
 
     @Override
     public void remove() {
         // Server check required to prevent tamed entities from being duplicated on client-side
-        if (!this.world.isRemote && (getIsTamed()) && (getHealth() > 0)) {
+        if (!this.level.isClientSide && (getIsTamed()) && (getHealth() > 0)) {
             return;
         }
         super.remove();
@@ -511,7 +511,7 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
 
     @Override
     public boolean shouldAttackPlayers() {
-        return this.world.getDifficulty() != Difficulty.PEACEFUL;
+        return this.level.getDifficulty() != Difficulty.PEACEFUL;
     }
 
     @Override
@@ -529,12 +529,12 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     }
 
     @Override
-    public boolean attackEntityAsMob(Entity entityIn) {
+    public boolean doHurtTarget(Entity entityIn) {
         boolean flag =
-                entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), ((int) this.getAttribute(Attributes.ATTACK_DAMAGE)
+                entityIn.hurt(DamageSource.mobAttack(this), ((int) this.getAttribute(Attributes.ATTACK_DAMAGE)
                         .getValue()));
         if (flag) {
-            this.applyEnchantments(this, entityIn);
+            this.doEnchantDamageEffects(this, entityIn);
         }
 
         return flag;
@@ -551,14 +551,14 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     }
 
     @Override
-    public PathNavigator getNavigator() {
+    public PathNavigator getNavigation() {
 //        if (this.isInWater() && this.isAmphibian()) {
 //            return this.navigatorWater;
 //        }
         if (this.isFlyer()) {
             return this.navigatorFlyer;
         }
-        return this.navigator;
+        return this.navigation;
     }
 
     @Override

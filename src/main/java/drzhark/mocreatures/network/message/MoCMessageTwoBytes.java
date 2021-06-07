@@ -38,7 +38,7 @@ public class MoCMessageTwoBytes implements IMoCMessage {
 //        MoCMessageHandler.handleMessage(message, ctx);
 //        return true;
         NetworkEvent.Context context = ctx.get();
-        Entity ent = Minecraft.getInstance().world.getEntityByID(message.entityId);
+        Entity ent = Minecraft.getInstance().level.getEntity(message.entityId);
         if (ent != null && ent instanceof MoCEntityGolem) {
             ((MoCEntityGolem) ent).saveGolemCube(message.slot, message.value);
         }

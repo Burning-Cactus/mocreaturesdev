@@ -31,21 +31,21 @@ public class MoCEntityTurkey extends MoCEntityTameableAnimal {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.4D));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.0D, Ingredient.fromItems(Items.MELON_SEEDS), false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.0D, Ingredient.of(Items.MELON_SEEDS), false));
         this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityTameableAnimal.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 6.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
+                .add(Attributes.MAX_HEALTH, 6.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
     public void selectType() {
         if (getSubType() == 0) {
-            setType(this.rand.nextInt(2) + 1);
+            setType(this.random.nextInt(2) + 1);
         }
     }
 
@@ -102,10 +102,10 @@ public class MoCEntityTurkey extends MoCEntityTameableAnimal {
     }*/
 
     @Override
-    public void livingTick() {
-        super.livingTick();
-        if (!this.onGround && this.getMotion().y < 0.0D) {
-            this.getMotion().mul(1, 0.8D, 1);
+    public void aiStep() {
+        super.aiStep();
+        if (!this.onGround && this.getDeltaMovement().y < 0.0D) {
+            this.getDeltaMovement().multiply(1, 0.8D, 1);
         }
     }
 
@@ -120,12 +120,12 @@ public class MoCEntityTurkey extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public int getTalkInterval() {
+    public int getAmbientSoundInterval() {
         return 400;
     }
 
     @Override
-    public int getMaxSpawnedInChunk() {
+    public int getMaxSpawnClusterSize() {
         return 2;
     }
 }

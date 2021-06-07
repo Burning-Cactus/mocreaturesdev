@@ -18,13 +18,13 @@ public class MoCRenderMouse extends MoCRenderMoC<MoCEntityMouse, MoCModelMouse> 
     }
 
     @Override
-    protected float handleRotationFloat(MoCEntityMouse entitymouse, float f) {
+    protected float getBob(MoCEntityMouse entitymouse, float f) {
         stretch(entitymouse);
-        return entitymouse.ticksExisted + f;
+        return entitymouse.tickCount + f;
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityMouse entitymouse, MatrixStack stack, float f) {
+    protected void scale(MoCEntityMouse entitymouse, MatrixStack stack, float f) {
         if (entitymouse.upsideDown()) {
             upsideDown(entitymouse, stack);
 
@@ -35,7 +35,7 @@ public class MoCRenderMouse extends MoCRenderMoC<MoCEntityMouse, MoCModelMouse> 
     }
 
     protected void rotateAnimal(MoCEntityMouse entitymouse, MatrixStack stack) {
-        stack.rotate(Vector3f.XN.rotationDegrees(90F));
+        stack.mulPose(Vector3f.XN.rotationDegrees(90F));
     }
 
     protected void stretch(MoCEntityMouse entitymouse) {
@@ -44,13 +44,13 @@ public class MoCRenderMouse extends MoCRenderMoC<MoCEntityMouse, MoCModelMouse> 
     }
 
     protected void upsideDown(MoCEntityMouse entitymouse, MatrixStack stack) {
-        stack.rotate(Vector3f.XN.rotationDegrees(-90F));
+        stack.mulPose(Vector3f.XN.rotationDegrees(-90F));
         //GL11.glTranslatef(-0.55F, 0F, -0.7F);
         stack.translate(-0.55F, 0F, 0F);
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityMouse entitymouse) {
+    public ResourceLocation getTextureLocation(MoCEntityMouse entitymouse) {
         return entitymouse.getTexture();
     }
 }

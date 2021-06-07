@@ -20,26 +20,26 @@ public class FlyNodeProcessor extends NodeProcessor {
 
     public PathPoint getStart()
     {
-        return this.openPoint(MathHelper.floor(this.entity.getBoundingBox().minX), MathHelper.floor(this.entity.getBoundingBox().minY + 0.5D), MathHelper.floor(this.entity.getBoundingBox().minZ));
+        return this.getNode(MathHelper.floor(this.mob.getBoundingBox().minX), MathHelper.floor(this.mob.getBoundingBox().minY + 0.5D), MathHelper.floor(this.mob.getBoundingBox().minZ));
     }
 
     @Override
-    public FlaggedPathPoint func_224768_a(double v, double v1, double v2) {
+    public FlaggedPathPoint getGoal(double v, double v1, double v2) {
         return null;
     }
 
     @Override
-    public int func_222859_a(PathPoint[] pathPoints, PathPoint pathPoint) {
+    public int getNeighbors(PathPoint[] pathPoints, PathPoint pathPoint) {
         return 0;
     }
 
     @Override
-    public PathNodeType getPathNodeType(IBlockReader iBlockReader, int i, int i1, int i2, MobEntity mobEntity, int i3, int i4, int i5, boolean b, boolean b1) {
+    public PathNodeType getBlockPathType(IBlockReader iBlockReader, int i, int i1, int i2, MobEntity mobEntity, int i3, int i4, int i5, boolean b, boolean b1) {
         return PathNodeType.OPEN;
     }
 
     @Override
-    public PathNodeType getPathNodeType(IBlockReader iBlockReader, int i, int i1, int i2) {
+    public PathNodeType getBlockPathType(IBlockReader iBlockReader, int i, int i1, int i2) {
         return PathNodeType.OPEN;
     }
 
@@ -48,7 +48,7 @@ public class FlyNodeProcessor extends NodeProcessor {
      */
     public PathPoint getPathPointToCoords(double x, double y, double z)
     {
-        return this.openPoint(MathHelper.floor(x - (double)(this.entity.getWidth() / 2.0F)), MathHelper.floor(y + 0.5D), MathHelper.floor(z - (double)(this.entity.getWidth() / 2.0F)));
+        return this.getNode(MathHelper.floor(x - (double)(this.mob.getBbWidth() / 2.0F)), MathHelper.floor(y + 0.5D), MathHelper.floor(z - (double)(this.mob.getBbWidth() / 2.0F)));
     }
 
 
@@ -58,9 +58,9 @@ public class FlyNodeProcessor extends NodeProcessor {
 
         for (Direction enumfacing : Direction.values())
         {
-            PathPoint pathpoint = this.getSafePoint(currentPoint.x + enumfacing.getXOffset(), currentPoint.y + enumfacing.getYOffset(), currentPoint.z + enumfacing.getZOffset());
+            PathPoint pathpoint = this.getSafePoint(currentPoint.x + enumfacing.getStepX(), currentPoint.y + enumfacing.getStepY(), currentPoint.z + enumfacing.getStepZ());
 
-            if (pathpoint != null && !pathpoint.visited && pathpoint.distanceTo(targetPoint) < maxDistance)
+            if (pathpoint != null && !pathpoint.closed && pathpoint.distanceTo(targetPoint) < maxDistance)
             {
                 pathOptions[i++] = pathpoint;
             }
@@ -73,7 +73,7 @@ public class FlyNodeProcessor extends NodeProcessor {
     private PathPoint getSafePoint(int p_186328_1_, int p_186328_2_, int p_186328_3_)
     {
         PathNodeType pathnodetype = this.isFree(p_186328_1_, p_186328_2_, p_186328_3_);
-        return pathnodetype == PathNodeType.OPEN ? this.openPoint(p_186328_1_, p_186328_2_, p_186328_3_) : null;
+        return pathnodetype == PathNodeType.OPEN ? this.getNode(p_186328_1_, p_186328_2_, p_186328_3_) : null;
     }
 
     
@@ -81,13 +81,13 @@ public class FlyNodeProcessor extends NodeProcessor {
     {
         BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable();
 
-        for (int i = p_186327_1_; i < p_186327_1_ + this.entitySizeX; ++i)
+        for (int i = p_186327_1_; i < p_186327_1_ + this.entityWidth; ++i)
         {
-            for (int j = p_186327_2_; j < p_186327_2_ + this.entitySizeY; ++j)
+            for (int j = p_186327_2_; j < p_186327_2_ + this.entityHeight; ++j)
             {
-                for (int k = p_186327_3_; k < p_186327_3_ + this.entitySizeZ; ++k)
+                for (int k = p_186327_3_; k < p_186327_3_ + this.entityDepth; ++k)
                 {
-                    BlockState iblockstate = this.blockaccess.getBlockState(blockpos$mutableblockpos.setPos(i, j, k));
+                    BlockState iblockstate = this.level.getBlockState(blockpos$mutableblockpos.set(i, j, k));
 
                     if (iblockstate.getMaterial() != Material.AIR)
                     {

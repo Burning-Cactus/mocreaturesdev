@@ -40,10 +40,10 @@ import java.util.UUID;
 
 public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntity {
 
-    protected static final DataParameter<Boolean> ADULT = EntityDataManager.createKey(MoCEntityAmbient.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Integer> TYPE = EntityDataManager.createKey(MoCEntityAmbient.class, DataSerializers.VARINT);
-    protected static final DataParameter<Integer> AGE = EntityDataManager.createKey(MoCEntityAmbient.class, DataSerializers.VARINT);
-    protected static final DataParameter<String> NAME_STR = EntityDataManager.createKey(MoCEntityAmbient.class, DataSerializers.STRING);
+    protected static final DataParameter<Boolean> ADULT = EntityDataManager.defineId(MoCEntityAmbient.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Integer> TYPE = EntityDataManager.defineId(MoCEntityAmbient.class, DataSerializers.INT);
+    protected static final DataParameter<Integer> AGE = EntityDataManager.defineId(MoCEntityAmbient.class, DataSerializers.INT);
+    protected static final DataParameter<String> NAME_STR = EntityDataManager.defineId(MoCEntityAmbient.class, DataSerializers.STRING);
 
     protected String texture;
     protected boolean riderIsDisconnecting;
@@ -62,19 +62,19 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return AnimalEntity.registerAttributes()
-                .func_233815_a_(Attributes.FOLLOW_RANGE, 16.0D);
+        return AnimalEntity.createLivingAttributes()
+                .add(Attributes.FOLLOW_RANGE, 16.0D);
     }
 
     @Override
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData par1EntityLivingData, CompoundNBT dataTag) {
+    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData par1EntityLivingData, CompoundNBT dataTag) {
         selectType();
-        return super.onInitialSpawn(worldIn, difficulty, reason, par1EntityLivingData, dataTag);
+        return super.finalizeSpawn(worldIn, difficulty, reason, par1EntityLivingData, dataTag);
     }
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableEntity getBreedOffspring(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
         return null;
     }
 
@@ -93,22 +93,22 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }*/
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(ADULT, false);
-        this.dataManager.register(TYPE, 0);
-        this.dataManager.register(AGE, 45);
-        this.dataManager.register(NAME_STR, "");
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(ADULT, false);
+        this.entityData.define(TYPE, 0);
+        this.entityData.define(AGE, 45);
+        this.entityData.define(NAME_STR, "");
     }
 
     @Override
     public void setType(int i) {
-        this.dataManager.set(TYPE, i);
+        this.entityData.set(TYPE, i);
     }
 
     @Override
     public int getSubType() {
-        return this.dataManager.get(TYPE);
+        return this.entityData.get(TYPE);
     }
 
     public void setDisplayName(boolean flag) {
@@ -123,32 +123,32 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
 
     @Override
     public boolean getIsAdult() {
-        return this.dataManager.get(ADULT);
+        return this.entityData.get(ADULT);
     }
 
     @Override
     public void setAdult(boolean flag) {
-        this.dataManager.set(ADULT, flag);
+        this.entityData.set(ADULT, flag);
     }
 
     @Override
     public String getPetName() {
-        return this.dataManager.get(NAME_STR);
+        return this.entityData.get(NAME_STR);
     }
 
     @Override
     public void setPetName(String name) {
-        this.dataManager.set(NAME_STR, name);
+        this.entityData.set(NAME_STR, name);
     }
 
     @Override
     public int getEdad() {
-        return this.dataManager.get(AGE);
+        return this.entityData.get(AGE);
     }
 
     @Override
     public void setEdad(int i) {
-        this.dataManager.set(AGE, i);
+        this.entityData.set(AGE, i);
     }
 
     @Override
@@ -171,7 +171,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     @Override
-    public boolean canDespawn(double d) {
+    public boolean removeWhenFarAway(double d) {
         if (MoCConfig.COMMON_CONFIG.GLOBAL.forceDespawns.get()) {
             return !getIsTamed();
         } else {
@@ -192,15 +192,15 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     protected LivingEntity getClosestEntityLiving(Entity entity, double d) {
         double d1 = -1D;
         LivingEntity entityliving = null;
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(d, d, d));
+        List<Entity> list = this.level.getEntities(this, getBoundingBox().expandTowards(d, d, d));
         for (int i = 0; i < list.size(); i++) {
             Entity entity1 = list.get(i);
 
             if (entitiesToIgnore(entity1)) {
                 continue;
             }
-            double d2 = entity1.getDistanceSq(entity.getPosX(), entity.getPosY(), entity.getPosZ());
-            if (((d < 0.0D) || (d2 < (d * d))) && ((d1 == -1D) || (d2 < d1)) && ((LivingEntity) entity1).canEntityBeSeen(entity)) {
+            double d2 = entity1.distanceToSqr(entity.getX(), entity.getY(), entity.getZ());
+            if (((d < 0.0D) || (d2 < (d * d))) && ((d1 == -1D) || (d2 < d1)) && ((LivingEntity) entity1).canSee(entity)) {
                 d1 = d2;
                 entityliving = (LivingEntity) entity1;
             }
@@ -210,14 +210,14 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     @Override
-    public void livingTick() {
-        if (!this.world.isRemote) {
+    public void aiStep() {
+        if (!this.level.isClientSide) {
             if (isMovementCeased()) {
-                this.getNavigator().clearPath();
+                this.getNavigation().stop();
             }
-            this.getNavigator().updatePath();
+            this.getNavigation().recomputePath();
         }
-        super.livingTick();
+        super.aiStep();
     }
 
     public boolean swimmerEntity() {
@@ -268,7 +268,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     public ItemEntity getClosestItem(Entity entity, double d, ItemStack item, ItemStack item1) {
         double d1 = -1D;
         ItemEntity entityitem = null;
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(d, d, d));
+        List<Entity> list = this.level.getEntities(this, getBoundingBox().expandTowards(d, d, d));
         for (int k = 0; k < list.size(); k++) {
             Entity entity1 = list.get(k);
             if (!(entity1 instanceof ItemEntity)) {
@@ -278,7 +278,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
             if ((entityitem1.getItem() != item) && (entityitem1.getItem() != item1)) {
                 continue;
             }
-            double d2 = entityitem1.getDistanceSq(entity.getPosX(), entity.getPosY(), entity.getPosZ());
+            double d2 = entityitem1.distanceToSqr(entity.getX(), entity.getY(), entity.getZ());
             if (((d < 0.0D) || (d2 < (d * d))) && ((d1 == -1D) || (d2 < d1))) {
                 d1 = d2;
                 entityitem = entityitem1;
@@ -291,14 +291,14 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     public ItemEntity getClosestEntityItem(Entity entity, double d) {
         double d1 = -1D;
         ItemEntity entityitem = null;
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(d, d, d));
+        List<Entity> list = this.level.getEntities(this, getBoundingBox().expandTowards(d, d, d));
         for (int k = 0; k < list.size(); k++) {
             Entity entity1 = list.get(k);
             if (!(entity1 instanceof ItemEntity)) {
                 continue;
             }
             ItemEntity entityitem1 = (ItemEntity) entity1;
-            double d2 = entityitem1.getDistanceSq(entity.getPosX(), entity.getPosY(), entity.getPosZ());
+            double d2 = entityitem1.distanceToSqr(entity.getX(), entity.getY(), entity.getZ());
             if (((d < 0.0D) || (d2 < (d * d))) && ((d1 == -1D) || (d2 < d1))) {
                 d1 = d2;
                 entityitem = entityitem1;
@@ -309,14 +309,14 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     public void faceLocation(int i, int j, int k, float f) {
-        double var4 = i + 0.5D - this.getPosX();
-        double var8 = k + 0.5D - this.getPosZ();
-        double var6 = j + 0.5D - this.getPosY();
+        double var4 = i + 0.5D - this.getX();
+        double var8 = k + 0.5D - this.getZ();
+        double var6 = j + 0.5D - this.getY();
         double var14 = MathHelper.sqrt(var4 * var4 + var8 * var8);
         float var12 = (float) (Math.atan2(var8, var4) * 180.0D / Math.PI) - 90.0F;
         float var13 = (float) (-(Math.atan2(var6, var14) * 180.0D / Math.PI));
-        this.rotationPitch = -this.updateRotation(this.rotationPitch, var13, f);
-        this.rotationYaw = this.updateRotation(this.rotationYaw, var12, f);
+        this.xRot = -this.updateRotation(this.xRot, var13, f);
+        this.yRot = this.updateRotation(this.yRot, var12, f);
     }
 
     /**
@@ -345,9 +345,9 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     public void getMyOwnPath(Entity entity, float f) {
-        Path pathentity = this.getNavigator().getPathToEntity(entity, 0);
+        Path pathentity = this.getNavigation().createPath(entity, 0);
         if (pathentity != null) {
-            this.getNavigator().setPath(pathentity, 1D);
+            this.getNavigation().moveTo(pathentity, 1D);
         }
     }
 
@@ -355,27 +355,27 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
      * Called to make ridden entities pass on collision to rider
      */
     public void riding() {
-        if ((this.isBeingRidden()) && (this.getRidingEntity() instanceof PlayerEntity)) {
-            PlayerEntity entityplayer = (PlayerEntity) this.getRidingEntity();
-            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(1.0D, 0.0D, 1.0D));
+        if ((this.isVehicle()) && (this.getVehicle() instanceof PlayerEntity)) {
+            PlayerEntity entityplayer = (PlayerEntity) this.getVehicle();
+            List<Entity> list = this.level.getEntities(this, getBoundingBox().expandTowards(1.0D, 0.0D, 1.0D));
             if (list != null) {
                 for (int i = 0; i < list.size(); i++) {
                     Entity entity = list.get(i);
                     if (!entity.isAlive()) {
                         continue;
                     }
-                    entity.onCollideWithPlayer(entityplayer);
+                    entity.playerTouch(entityplayer);
                     if (!(entity instanceof MobEntity)) {
                         continue;
                     }
-                    float f = getDistance(entity);
-                    if ((f < 2.0F) && (this.rand.nextInt(10) == 0)) {
+                    float f = distanceTo(entity);
+                    if ((f < 2.0F) && (this.random.nextInt(10) == 0)) {
                         
                     }
                 }
             }
             if (entityplayer.isCrouching()) {
-                if (!this.world.isRemote) {
+                if (!this.level.isClientSide) {
                     entityplayer.stopRiding();
                 }
             }
@@ -383,58 +383,58 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     protected void getPathOrWalkableBlock(Entity entity, float f) {
-        Path pathentity = this.navigator.getPathToPos(new BlockPos(entity.getPositionVec()), 0);
+        Path pathentity = this.navigation.createPath(new BlockPos(entity.position()), 0);
         if ((pathentity == null) && (f > 8F)) {
-            int i = MathHelper.floor(entity.getPosX()) - 2;
-            int j = MathHelper.floor(entity.getPosZ()) - 2;
+            int i = MathHelper.floor(entity.getX()) - 2;
+            int j = MathHelper.floor(entity.getZ()) - 2;
             int k = MathHelper.floor(entity.getBoundingBox().minY);
             for (int l = 0; l <= 4; l++) {
                 for (int i1 = 0; i1 <= 4; i1++) {
                     BlockPos pos = new BlockPos(i, j, k);
-                    if (((l < 1) || (i1 < 1) || (l > 3) || (i1 > 3)) && this.world.getBlockState(pos.add(l, -1, i1)).isNormalCube(world, pos)
-                            && !this.world.getBlockState(pos.add(l, 0, i1)).isNormalCube(world, pos)
-                            && !this.world.getBlockState(pos.add(l, 1, i1)).isNormalCube(world, pos)) {
-                        setLocationAndAngles((i + l) + 0.5F, k, (j + i1) + 0.5F, this.rotationYaw, this.rotationPitch);
+                    if (((l < 1) || (i1 < 1) || (l > 3) || (i1 > 3)) && this.level.getBlockState(pos.offset(l, -1, i1)).isRedstoneConductor(level, pos)
+                            && !this.level.getBlockState(pos.offset(l, 0, i1)).isRedstoneConductor(level, pos)
+                            && !this.level.getBlockState(pos.offset(l, 1, i1)).isRedstoneConductor(level, pos)) {
+                        moveTo((i + l) + 0.5F, k, (j + i1) + 0.5F, this.yRot, this.xRot);
                         return;
                     }
                 }
             }
         } else {
-            this.navigator.setPath(pathentity, 16F);
+            this.navigation.moveTo(pathentity, 16F);
         }
     }
 
     public boolean getCanSpawnHereAnimal() {
-        int i = MathHelper.floor(this.getPosX());
+        int i = MathHelper.floor(this.getX());
         int j = MathHelper.floor(getBoundingBox().minY);
-        int k = MathHelper.floor(this.getPosZ());
+        int k = MathHelper.floor(this.getZ());
         BlockPos pos = new BlockPos(i, j, k);
-        return this.world.getBlockState(pos.down()).getBlock() == Blocks.GRASS && this.world.getLight(pos) > 8;
+        return this.level.getBlockState(pos.below()).getBlock() == Blocks.GRASS && this.level.getMaxLocalRawBrightness(pos) > 8;
     }
 
     public boolean getCanSpawnHereCreature() {
-        int i = MathHelper.floor(this.getPosX());
+        int i = MathHelper.floor(this.getX());
         int j = MathHelper.floor(getBoundingBox().minY);
-        int k = MathHelper.floor(this.getPosZ());
-        return getBlockPathWeight(new BlockPos(i, j, k)) >= 0.0F;
+        int k = MathHelper.floor(this.getZ());
+        return getWalkTargetValue(new BlockPos(i, j, k)) >= 0.0F;
     }
 
     public boolean getCanSpawnHereLiving() {
-        return this.world.checkNoEntityCollision(this)
-                && this.world.getCollisionShapes(this, this.getBoundingBox()).count() == 0
-                && !this.world.containsAnyLiquid(this.getBoundingBox());
+        return this.level.isUnobstructed(this)
+                && this.level.getBlockCollisions(this, this.getBoundingBox()).count() == 0
+                && !this.level.containsAnyLiquid(this.getBoundingBox());
     }
 
     public boolean getCanSpawnHereAquatic() {
-        return this.world.checkNoEntityCollision(this);
+        return this.level.isUnobstructed(this);
     }
 
     @Override
-    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
+    public boolean checkSpawnRules(IWorld worldIn, SpawnReason reason) {
         /*if (MoCreatures.entityMap.get(this.getType()).getFrequency() <= 0) {
             return false;
         }*/
-        BlockPos pos = new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(getBoundingBox().minY), this.getPosZ());
+        BlockPos pos = new BlockPos(MathHelper.floor(this.getX()), MathHelper.floor(getBoundingBox().minY), this.getZ());
 
         /*String s = MoCTools.biomeName(this.world, pos); TODO: Biomes have changed, rewrite this.
 
@@ -442,23 +442,23 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
             return getCanSpawnHereJungle();
         }*/
 
-        return super.canSpawn(worldIn, reason);
+        return super.checkSpawnRules(worldIn, reason);
     }
 
     public boolean getCanSpawnHereJungle() {
-        if (this.world.checkNoEntityCollision(this)
-                && this.world.getCollisionShapes(this, this.getBoundingBox()).count() == 0
-                && !this.world.containsAnyLiquid(this.getBoundingBox())) {
-            int var1 = MathHelper.floor(this.getPosX());
+        if (this.level.isUnobstructed(this)
+                && this.level.getBlockCollisions(this, this.getBoundingBox()).count() == 0
+                && !this.level.containsAnyLiquid(this.getBoundingBox())) {
+            int var1 = MathHelper.floor(this.getX());
             int var2 = MathHelper.floor(this.getBoundingBox().minY);
-            int var3 = MathHelper.floor(this.getPosZ());
+            int var3 = MathHelper.floor(this.getZ());
 
             if (var2 < 63) {
                 return false;
             }
 
             BlockPos pos = new BlockPos(var1, var2, var3);
-            BlockState blockstate = this.world.getBlockState(pos.down());
+            BlockState blockstate = this.level.getBlockState(pos.below());
             final Block block = blockstate.getBlock();
 
             //TODO: Use tags instead
@@ -471,8 +471,8 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     @Override
-    public void writeAdditional(CompoundNBT nbttagcompound) {
-        super.writeAdditional(nbttagcompound);
+    public void addAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.addAdditionalSaveData(nbttagcompound);
         nbttagcompound = MoCTools.getEntityData(this);
         nbttagcompound.putBoolean("Adult", getIsAdult());
         nbttagcompound.putInt("Edad", getEdad());
@@ -481,8 +481,8 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     @Override
-    public void readAdditional(CompoundNBT nbttagcompound) {
-        super.readAdditional(nbttagcompound);
+    public void readAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.readAdditionalSaveData(nbttagcompound);
         nbttagcompound = MoCTools.getEntityData(this);
         setAdult(nbttagcompound.getBoolean("Adult"));
         setEdad(nbttagcompound.getInt("Edad"));
@@ -595,27 +595,27 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     public void repelMobs(Entity entity1, Double dist, World world) {
-        List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(entity1, entity1.getBoundingBox().expand(dist, 4D, dist));
+        List<Entity> list = world.getEntities(entity1, entity1.getBoundingBox().expandTowards(dist, 4D, dist));
         for (int i = 0; i < list.size(); i++) {
             Entity entity = list.get(i);
             if (!(entity instanceof MobEntity)) {
                 continue;
             }
             MobEntity entitymob = (MobEntity) entity;
-            entitymob.setAttackTarget(null);
-            entitymob.getNavigator().clearPath();
+            entitymob.setTarget(null);
+            entitymob.getNavigation().stop();
         }
     }
 
     public void faceItem(int i, int j, int k, float f) {
-        double d = i - this.getPosX();
-        double d1 = k - this.getPosZ();
-        double d2 = j - this.getPosY();
+        double d = i - this.getX();
+        double d1 = k - this.getZ();
+        double d2 = j - this.getY();
         double d3 = MathHelper.sqrt((d * d) + (d1 * d1));
         float f1 = (float) ((Math.atan2(d1, d) * 180D) / 3.1415927410125728D) - 90F;
         float f2 = (float) ((Math.atan2(d2, d3) * 180D) / 3.1415927410125728D);
-        this.rotationPitch = -adjustRotation(this.rotationPitch, f2, f);
-        this.rotationYaw = adjustRotation(this.rotationYaw, f1, f);
+        this.xRot = -adjustRotation(this.xRot, f2, f);
+        this.yRot = adjustRotation(this.yRot, f1, f);
     }
 
     public float adjustRotation(float f, float f1, float f2) {
@@ -662,21 +662,21 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
 
     @SuppressWarnings("unused")
     private void followPlayer() {
-        PlayerEntity entityplayer1 = this.world.getClosestPlayer(this, 24D);
+        PlayerEntity entityplayer1 = this.level.getNearestPlayer(this, 24D);
         if (entityplayer1 == null) {
             return;
         }
 
-        ItemStack itemstack1 = entityplayer1.inventory.getCurrentItem();
+        ItemStack itemstack1 = entityplayer1.inventory.getSelected();
         if (isMyFavoriteFood(itemstack1)) {
-            this.getNavigator().tryMoveToEntityLiving(entityplayer1, 1D); 
+            this.getNavigation().moveTo(entityplayer1, 1D); 
             }
     }
 
     public boolean isOnAir() {
-        return (this.world.isAirBlock(new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosY() - 0.2D), MathHelper
-                .floor(this.getPosZ()))) && this.world.isAirBlock(new BlockPos(MathHelper.floor(this.getPosX()), MathHelper
-                .floor(this.getPosY() - 1.2D), MathHelper.floor(this.getPosZ()))));
+        return (this.level.isEmptyBlock(new BlockPos(MathHelper.floor(this.getX()), MathHelper.floor(this.getY() - 0.2D), MathHelper
+                .floor(this.getZ()))) && this.level.isEmptyBlock(new BlockPos(MathHelper.floor(this.getX()), MathHelper
+                .floor(this.getY() - 1.2D), MathHelper.floor(this.getZ()))));
     }
 
     @Override
@@ -702,7 +702,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
                 || (this.getIsTamed() && (entity instanceof MoCEntityAnimal && ((MoCEntityAnimal) entity).getIsTamed()))
                 || ((entity instanceof WolfEntity) && !(MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.attackWolves.get()))
                 || ((entity instanceof MoCEntityHorse) && !(MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.attackHorses.get()))
-                || (entity.getWidth() > this.getWidth() && entity.getHeight() > this.getHeight()) || (entity instanceof MoCEntityEgg));
+                || (entity.getBbWidth() > this.getBbWidth() && entity.getBbHeight() > this.getBbHeight()) || (entity instanceof MoCEntityEgg));
     }
 
     @Override
@@ -717,7 +717,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
      */
     protected LivingEntity getBoogey(double d) {
         LivingEntity entityliving = null;
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(d, 4D, d));
+        List<Entity> list = this.level.getEntities(this, getBoundingBox().expandTowards(d, 4D, d));
         for (int i = 0; i < list.size(); i++) {
             Entity entity = list.get(i);
             if (entitiesToInclude(entity)) {
@@ -734,7 +734,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
      * @return
      */
     public boolean entitiesToInclude(Entity entity) {
-        return ((entity instanceof LivingEntity) && ((entity.getWidth() >= 0.5D) || (entity.getHeight() >= 0.5D)));
+        return ((entity instanceof LivingEntity) && ((entity.getBbWidth() >= 0.5D) || (entity.getBbHeight() >= 0.5D)));
     }
 
     @Override
@@ -772,11 +772,11 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     @Override
-    public boolean canBeLeashedTo(PlayerEntity player) {
-        if (!this.world.isRemote && !MoCTools.isThisPlayerAnOP(player) && this.getIsTamed() && !player.getUniqueID().equals(this.getOwnerId())) {
+    public boolean canBeLeashed(PlayerEntity player) {
+        if (!this.level.isClientSide && !MoCTools.isThisPlayerAnOP(player) && this.getIsTamed() && !player.getUUID().equals(this.getOwnerId())) {
             return false;
         }
-        return super.canBeLeashedTo(player);
+        return super.canBeLeashed(player);
     }
 
     @Override
@@ -796,11 +796,11 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
 
     @Override
     public boolean shouldAttackPlayers() {
-        return this.world.getDifficulty() != Difficulty.PEACEFUL;
+        return this.level.getDifficulty() != Difficulty.PEACEFUL;
     }
 
     @Override
-    protected boolean canTriggerWalking() {
+    protected boolean isMovementNoisy() {
         return false;
     }
 
@@ -820,7 +820,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
 
     @Override
     public void forceEntityJump() {
-        this.jump();
+        this.jumpFromGround();
     }
 
     @Override
@@ -847,11 +847,11 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     public void moveEntityWithHeadingFlying(float strafe, float vertical, float forward) {
-        if (this.isServerWorld()) {
+        if (this.isEffectiveAi()) {
 
             this.moveRelative(0.1F, new Vector3d(strafe, vertical, forward));
-            this.move(MoverType.SELF, this.getMotion());
-            this.getMotion().scale(0.8999999761581421D);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.getDeltaMovement().scale(0.8999999761581421D);
         } else {
             super.travel(new Vector3d(strafe, vertical, forward));
         }
@@ -868,14 +868,14 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
     }
 
     @Override
-    public void setLeashHolder(Entity entityIn, boolean sendAttachNotification) {
+    public void setLeashedTo(Entity entityIn, boolean sendAttachNotification) {
         if (this.getIsTamed() && entityIn instanceof PlayerEntity) {
             PlayerEntity entityplayer = (PlayerEntity) entityIn;
             if (MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get() && this.getOwnerId() != null
-                    && !entityplayer.getUniqueID().equals(this.getOwnerId()) && !MoCTools.isThisPlayerAnOP((entityplayer))) {
+                    && !entityplayer.getUUID().equals(this.getOwnerId()) && !MoCTools.isThisPlayerAnOP((entityplayer))) {
                 return;
             }
         }
-        super.setLeashHolder(entityIn, sendAttachNotification);
+        super.setLeashedTo(entityIn, sendAttachNotification);
     }
 }

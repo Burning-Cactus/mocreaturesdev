@@ -22,11 +22,11 @@ public class WyvernTeleporter implements ITeleporter {
     }
 
     public boolean placeInPortal(Entity par1Entity, float rotationYaw) {
-        int var9 = MathHelper.floor(par1Entity.getPosX());
-        int var10 = MathHelper.floor(par1Entity.getPosY()) - 1;
-        int var11 = MathHelper.floor(par1Entity.getPosZ());
-        par1Entity.setLocationAndAngles(var9, var10, var11, par1Entity.rotationYaw, 0.0F);
-        par1Entity.setMotion(Vector3d.ZERO);
+        int var9 = MathHelper.floor(par1Entity.getX());
+        int var10 = MathHelper.floor(par1Entity.getY()) - 1;
+        int var11 = MathHelper.floor(par1Entity.getZ());
+        par1Entity.moveTo(var9, var10, var11, par1Entity.yRot, 0.0F);
+        par1Entity.setDeltaMovement(Vector3d.ZERO);
         return true;
     }
 
@@ -40,12 +40,12 @@ public class WyvernTeleporter implements ITeleporter {
     }
 
     private boolean buildFrame(ServerWorld worldIn, BlockPos pos) {
-        if (worldIn.getBlockState(pos).getBlock() == Blocks.QUARTZ_BLOCK || worldIn.getBlockState(pos.down()).getBlock() == Blocks.QUARTZ_BLOCK
-                || worldIn.getBlockState(pos.up()).getBlock() == Blocks.QUARTZ_BLOCK) {
+        if (worldIn.getBlockState(pos).getBlock() == Blocks.QUARTZ_BLOCK || worldIn.getBlockState(pos.below()).getBlock() == Blocks.QUARTZ_BLOCK
+                || worldIn.getBlockState(pos.above()).getBlock() == Blocks.QUARTZ_BLOCK) {
             return true;
         }
 
-        if (worldIn.isAirBlock(pos) || !worldIn.isAirBlock(pos.up())) {
+        if (worldIn.isEmptyBlock(pos) || !worldIn.isEmptyBlock(pos.above())) {
             return false;
         }
 
@@ -56,25 +56,25 @@ public class WyvernTeleporter implements ITeleporter {
         for (int nZ = z - 3; nZ < z + 3; nZ = nZ + 5) {
             for (int nX = x - 2; nX < x + 2; nX++) {
 
-                worldIn.setBlockState(new BlockPos(nX, y + 1, nZ), Blocks.QUARTZ_STAIRS.getDefaultState(), 2);
+                worldIn.setBlock(new BlockPos(nX, y + 1, nZ), Blocks.QUARTZ_STAIRS.defaultBlockState(), 2);
             }
         }
 
         for (int nX = x - 2; nX < x + 2; nX++) {
             for (int nZ = z - 2; nZ < z + 2; nZ++) {
-                worldIn.setBlockState(new BlockPos(nX, y + 1, nZ), Blocks.CHISELED_QUARTZ_BLOCK.getDefaultState(), 2);
+                worldIn.setBlock(new BlockPos(nX, y + 1, nZ), Blocks.CHISELED_QUARTZ_BLOCK.defaultBlockState(), 2);
             }
         }
 
         for (int nX = x - 1; nX < x + 1; nX++) {
             for (int nZ = z - 1; nZ < z + 1; nZ++) {
-                worldIn.setBlockState(new BlockPos(nX, y + 1, nZ), Blocks.QUARTZ_BLOCK.getDefaultState(), 2);
+                worldIn.setBlock(new BlockPos(nX, y + 1, nZ), Blocks.QUARTZ_BLOCK.defaultBlockState(), 2);
             }
         }
 
         for (int j = x - 3; j < x + 3; j = j + 5) {
             for (int nZ = z - 3; nZ < z + 3; nZ++) {
-                worldIn.setBlockState(new BlockPos(j, y + 6, nZ), Blocks.CHISELED_QUARTZ_BLOCK.getDefaultState(), 2);
+                worldIn.setBlock(new BlockPos(j, y + 6, nZ), Blocks.CHISELED_QUARTZ_BLOCK.defaultBlockState(), 2);
             }
         }
 
@@ -88,7 +88,7 @@ public class WyvernTeleporter implements ITeleporter {
 
     private void generatePillar(ServerWorld worldIn, BlockPos pos) {
         for(int nY = pos.getY(); nY < pos.getY() + 6; nY++) {
-            worldIn.setBlockState(new BlockPos(pos.getX(), nY, pos.getZ()), Blocks.QUARTZ_PILLAR.getDefaultState(), 2);
+            worldIn.setBlock(new BlockPos(pos.getX(), nY, pos.getZ()), Blocks.QUARTZ_PILLAR.defaultBlockState(), 2);
         }
     }
 

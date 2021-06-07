@@ -17,14 +17,14 @@ public class MoCItemLitterBox extends MoCItem {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        final ItemStack stack = player.getHeldItem(hand);
-        if (!world.isRemote) {
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        final ItemStack stack = player.getItemInHand(hand);
+        if (!world.isClientSide) {
             stack.shrink(1);
             MoCEntityLitterBox entitylitterbox = new MoCEntityLitterBox(MoCEntities.LITTERBOX, world);
-            entitylitterbox.setPosition(player.getPosX(), player.getPosY(), player.getPosZ());
-            player.world.addEntity(entitylitterbox);
-            entitylitterbox.getMotion().add((world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F, world.rand.nextFloat() * 0.05F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F);
+            entitylitterbox.setPos(player.getX(), player.getY(), player.getZ());
+            player.level.addFreshEntity(entitylitterbox);
+            entitylitterbox.getDeltaMovement().add((world.random.nextFloat() - world.random.nextFloat()) * 0.3F, world.random.nextFloat() * 0.05F, (world.random.nextFloat() - world.random.nextFloat()) * 0.3F);
         }
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
     }

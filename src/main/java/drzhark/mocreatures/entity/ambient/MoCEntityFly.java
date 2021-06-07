@@ -19,16 +19,16 @@ public class MoCEntityFly extends MoCEntityInsect {
     private int soundCount;// = 50;
 
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
 
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
 
-            if (getIsFlying() && this.rand.nextInt(200) == 0) {
+            if (getIsFlying() && this.random.nextInt(200) == 0) {
                 setIsFlying(false);
             }
             if (getIsFlying() && --this.soundCount == -1) {
-                PlayerEntity ep = this.world.getClosestPlayer(this, 5D);
+                PlayerEntity ep = this.level.getNearestPlayer(this, 5D);
                 if (ep != null) {
                     MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_FLY_AMBIENT);
                     this.soundCount = 55;
@@ -48,7 +48,7 @@ public class MoCEntityFly extends MoCEntityInsect {
     }
 
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         if (getIsFlying()) {
             return 0.2F;
         }

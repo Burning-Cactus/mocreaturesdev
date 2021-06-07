@@ -57,8 +57,8 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     public MoCEntitySnake(EntityType<? extends MoCEntitySnake> type, World world) {
         super(type, world);
         this.bodyswing = 2F;
-        this.movInt = this.rand.nextInt(10);
-        setEdad(50 + this.rand.nextInt(50));
+        this.movInt = this.random.nextInt(10);
+        setEdad(50 + this.random.nextInt(50));
     }
 
     @Override
@@ -74,9 +74,9 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityTameableAnimal.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 10.0D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 2.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
+                .add(Attributes.MAX_HEALTH, 10.0D)
+                .add(Attributes.ATTACK_DAMAGE, 2.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
         // 8 python (aggressive - non venomous) big - swamp
         // 9 sea snake (aggressive - venomous)
         if (getSubType() == 0) {
-            setType(this.rand.nextInt(8) + 1);
+            setType(this.random.nextInt(8) + 1);
         }
     }
 
@@ -122,21 +122,21 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public boolean isOnLadder() {
-        return this.collidedHorizontally;
+    public boolean onClimbable() {
+        return this.horizontalCollision;
     }
 
     @Override
     // snakes can't jump
             protected
-            void jump() {
+            void jumpFromGround() {
         if (this.isInWater()) {
-            super.jump();
+            super.jumpFromGround();
         }
     }
 
     @Override
-    public boolean canDespawn(double d) {
+    public boolean removeWhenFarAway(double d) {
         if (MoCConfig.COMMON_CONFIG.GLOBAL.forceDespawns.get()) {
             return !getIsTamed();
         } else {
@@ -145,7 +145,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     public boolean pickedUp() {
-        return (this.getRidingEntity() != null);
+        return (this.getVehicle() != null);
     }
 
     /*@Override
@@ -181,11 +181,11 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
      * @return
      */
     public boolean isClimbing() {
-        return isOnLadder() && this.getMotion().y > 0.01F;
+        return onClimbable() && this.getDeltaMovement().y > 0.01F;
     }
 
     public boolean isResting() {
-        return (!getNearPlayer() && this.onGround && (this.getMotion().x < 0.01D && this.getMotion().x > -0.01D) && (this.getMotion().z < 0.01D && this.getMotion().z > -0.01D));
+        return (!getNearPlayer() && this.onGround && (this.getDeltaMovement().x < 0.01D && this.getDeltaMovement().x > -0.01D) && (this.getDeltaMovement().z < 0.01D && this.getDeltaMovement().z > -0.01D));
     }
 
     public boolean getNearPlayer() {
@@ -211,12 +211,12 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public double getYOffset() {
-        if (this.getRidingEntity() instanceof PlayerEntity) {
+    public double getMyRidingOffset() {
+        if (this.getVehicle() instanceof PlayerEntity) {
             return 0.1F;
         }
 
-        return super.getYOffset();
+        return super.getMyRidingOffset();
     }
 
     public float getSizeF() {
@@ -247,7 +247,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     public void tick() {
         super.tick();
 
-        if (this.world.isRemote) {
+        if (this.level.isClientSide) {
             if (getfTongue() != 0.0F) {
                 setfTongue(getfTongue() + 0.2F);
                 if (getfTongue() > 8.0F) {
@@ -278,14 +278,14 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
             /**
              * stick tongue
              */
-            if (this.rand.nextInt(50) == 0 && getfTongue() == 0.0F) {
+            if (this.random.nextInt(50) == 0 && getfTongue() == 0.0F) {
                 setfTongue(0.1F);
             }
 
             /**
              * Open mouth
              */
-            if (this.rand.nextInt(100) == 0 && getfMouth() == 0.0F) {
+            if (this.random.nextInt(100) == 0 && getfMouth() == 0.0F) {
                 setfMouth(0.1F);
             }
             if (getSubType() == 7) {
@@ -296,15 +296,15 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
                     chance = 100;
                 }
 
-                if (this.rand.nextInt(chance) == 0) {
+                if (this.random.nextInt(chance) == 0) {
                     setfRattle(0.1F);
                 }
             }
             /**
              * change in movement pattern
              */
-            if (!isResting() && !pickedUp() && this.rand.nextInt(50) == 0) {
-                this.movInt = this.rand.nextInt(10);
+            if (!isResting() && !pickedUp() && this.random.nextInt(50) == 0) {
+                this.movInt = this.random.nextInt(10);
             }
 
             /**
@@ -329,15 +329,15 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
 
         if (isResting()) {
 
-            this.prevRenderYawOffset = this.renderYawOffset = this.rotationYaw = this.prevRotationYaw;
+            this.yBodyRotO = this.yBodyRot = this.yRot = this.yRotO;
 
         }
 
-        if (!this.onGround && (this.getRidingEntity() != null)) {
-            this.rotationYaw = this.getRidingEntity().rotationYaw;// -90F;
+        if (!this.onGround && (this.getVehicle() != null)) {
+            this.yRot = this.getVehicle().yRot;// -90F;
         }
 
-        if (this.world.getDifficulty().getId() > 0 && getNearPlayer() && !getIsTamed() && isNotScared()) {
+        if (this.level.getDifficulty().getId() > 0 && getNearPlayer() && !getIsTamed() && isNotScared()) {
 
             this.hissCounter++;
 
@@ -351,7 +351,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
                 setfMouth(0.0F);
             }
 
-            if (this.hissCounter > 100 && this.rand.nextInt(50) == 0) {
+            if (this.hissCounter > 100 && this.random.nextInt(50) == 0) {
                 // then randomly get pissed
                 setPissed(true);
                 this.hissCounter = 0;
@@ -394,19 +394,19 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
 
         /**
          * this stops chasing the target randomly
          */
-        if (getAttackTarget() != null && this.rand.nextInt(300) == 0) {
-            setAttackTarget(null);
+        if (getTarget() != null && this.random.nextInt(300) == 0) {
+            setTarget(null);
         }
 
-        PlayerEntity entityplayer1 = this.world.getClosestPlayer(this, 12D);
+        PlayerEntity entityplayer1 = this.level.getNearestPlayer(this, 12D);
         if (entityplayer1 != null) {
-            double distP = MoCTools.getSqDistanceTo(entityplayer1, this.getPosX(), this.getPosY(), this.getPosZ());
+            double distP = MoCTools.getSqDistanceTo(entityplayer1, this.getX(), this.getY(), this.getZ());
             if (isNotScared()) {
                 if (distP < 5D) {
                     setNearPlayer(true);
@@ -431,7 +431,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public boolean attackEntityAsMob(Entity entityIn) {
+    public boolean doHurtTarget(Entity entityIn) {
         if ((getSubType() < 3 || getIsTamed()) && entityIn instanceof PlayerEntity) {
             return false;
         }
@@ -440,7 +440,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
             return false;
         }
         setBiting(true);
-        return super.attackEntityAsMob(entityIn);
+        return super.doHurtTarget(entityIn);
     }
 
     @Override
@@ -469,20 +469,20 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
+    public boolean hurt(DamageSource damagesource, float i) {
 
         if (getSubType() < 3) {
-            return super.attackEntityFrom(damagesource, i);
+            return super.hurt(damagesource, i);
         }
 
-        if (super.attackEntityFrom(damagesource, i)) {
-            Entity entity = damagesource.getTrueSource();
-            if (this.isRidingOrBeingRiddenBy(entity)) {
+        if (super.hurt(damagesource, i)) {
+            Entity entity = damagesource.getEntity();
+            if (this.hasIndirectPassenger(entity)) {
                 return true;
             }
             if ((entity != this) && entity instanceof LivingEntity && (super.shouldAttackPlayers())) {
                 setPissed(true);
-                setAttackTarget((LivingEntity) entity);
+                setTarget((LivingEntity) entity);
             }
             return true;
         } else {
@@ -503,7 +503,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
 
     @Override
     public boolean canAttackTarget(LivingEntity entity) {
-        return !(entity instanceof MoCEntitySnake) && entity.getHeight() < 0.5D && entity.getWidth() < 0.5D;
+        return !(entity instanceof MoCEntitySnake) && entity.getBbHeight() < 0.5D && entity.getBbWidth() < 0.5D;
     }
 
     @Override
@@ -534,7 +534,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
+    public boolean checkSpawnRules(IWorld worldIn, SpawnReason reason) {
         return getCanSpawnHereCreature() && getCanSpawnHereLiving(); //&& checkSpawningBiome()
     }
 
@@ -610,7 +610,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public int getMaxSpawnedInChunk() {
+    public int getMaxSpawnClusterSize() {
         return 2;
     }
 
@@ -620,14 +620,14 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
+    public void doEnchantDamageEffects(LivingEntity entityLivingBaseIn, Entity entityIn) {
         if (isVenomous()) {
             if (entityIn instanceof PlayerEntity) {
                 MoCreatures.poisonPlayer((PlayerEntity) entityIn);
             }
-            ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 150, 2));
+            ((LivingEntity) entityIn).addEffect(new EffectInstance(Effects.POISON, 150, 2));
         }
-        super.applyEnchantments(entityLivingBaseIn, entityIn);
+        super.doEnchantDamageEffects(entityLivingBaseIn, entityIn);
     }
 
     private boolean isVenomous() {
@@ -640,7 +640,7 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public int getTalkInterval() {
+    public int getAmbientSoundInterval() {
         return 400;
     }
 

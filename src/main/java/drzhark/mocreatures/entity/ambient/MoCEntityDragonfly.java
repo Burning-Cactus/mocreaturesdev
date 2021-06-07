@@ -21,7 +21,7 @@ public class MoCEntityDragonfly extends MoCEntityInsect {
     @Override
     public void selectType() {
         if (getSubType() == 0) {
-            setType(this.rand.nextInt(4) + 1);
+            setType(this.random.nextInt(4) + 1);
         }
     }
 
@@ -43,17 +43,17 @@ public class MoCEntityDragonfly extends MoCEntityInsect {
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
 
-        if (!this.world.isRemote) {
-            PlayerEntity ep = this.world.getClosestPlayer(this, 5D);
+        if (!this.level.isClientSide) {
+            PlayerEntity ep = this.level.getNearestPlayer(this, 5D);
             if (ep != null && getIsFlying() && --this.soundCount == -1) {
                 MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_DRAGONFLY_AMBIENT);
                 this.soundCount = 20;
             }
 
-            if (getIsFlying() && this.rand.nextInt(200) == 0) {
+            if (getIsFlying() && this.random.nextInt(200) == 0) {
                 setIsFlying(false);
             }
         }
@@ -65,7 +65,7 @@ public class MoCEntityDragonfly extends MoCEntityInsect {
     }
 
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         if (getIsFlying()) {
             return 0.25F;
         }

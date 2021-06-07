@@ -37,9 +37,9 @@ public class MoCMessageHealth implements IMoCMessage {
 //        MoCMessageHandler.handleMessage(message, ctx);
 //        return true;
         NetworkEvent.Context context = ctx.get();
-        Iterable<Entity> entList = Minecraft.getInstance().world.getAllEntities();
+        Iterable<Entity> entList = Minecraft.getInstance().level.entitiesForRendering();
         for (Entity ent : entList) {
-            if (ent.getEntityId() == message.entityId && ent instanceof LivingEntity) {
+            if (ent.getId() == message.entityId && ent instanceof LivingEntity) {
                 ((LivingEntity) ent).setHealth(message.health);
                 break;
             }

@@ -35,9 +35,9 @@ public class MoCMessageExplode implements IMoCMessage {
 //        return true;
         NetworkEvent.Context context = ctx.get();
         if(context.getDirection().getReceptionSide().isClient()) {
-            Iterable<Entity> entList = Minecraft.getInstance().world.getAllEntities();
+            Iterable<Entity> entList = Minecraft.getInstance().level.entitiesForRendering();
             for(Entity ent : entList) {
-                if(ent.getEntityId() == message.entityId && ent instanceof MoCEntityOgre) {
+                if(ent.getId() == message.entityId && ent instanceof MoCEntityOgre) {
                     ((MoCEntityOgre) ent).performDestroyBlastAttack();
                     break;
                 }

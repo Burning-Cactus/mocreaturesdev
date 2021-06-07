@@ -23,7 +23,7 @@ public class MoCEntityInsect extends MoCEntityAmbient {
     private int climbCounter;
     protected EntityAIWanderMoC2 wander;
 
-    private static final DataParameter<Boolean> IS_FLYING = EntityDataManager.<Boolean>createKey(MoCEntityInsect.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_FLYING = EntityDataManager.<Boolean>defineId(MoCEntityInsect.class, DataSerializers.BOOLEAN);
     
     public MoCEntityInsect(EntityType<? extends MoCEntityInsect> type, World world) {
         super(type, world);
@@ -32,15 +32,15 @@ public class MoCEntityInsect extends MoCEntityAmbient {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityAmbient.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 4.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D)
-                .func_233815_a_(Attributes.FOLLOW_RANGE, 16.0D);
+                .add(Attributes.MAX_HEALTH, 4.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D)
+                .add(Attributes.FOLLOW_RANGE, 16.0D);
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(IS_FLYING, Boolean.valueOf(false));
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(IS_FLYING, Boolean.valueOf(false));
     }
 
     @Override
@@ -54,51 +54,51 @@ public class MoCEntityInsect extends MoCEntityAmbient {
     }
 
     public boolean getIsFlying() {
-        return ((Boolean)this.dataManager.get(IS_FLYING)).booleanValue();
+        return ((Boolean)this.entityData.get(IS_FLYING)).booleanValue();
     }
 
     public void setIsFlying(boolean flag) {
-        this.dataManager.set(IS_FLYING, Boolean.valueOf(flag));
+        this.entityData.set(IS_FLYING, Boolean.valueOf(flag));
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
 
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
 //            if (!getIsFlying() && isOnLadder() && !this.onGround) {
 //                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
 //                        new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
 //            }
 
-            if (isFlyer() && !getIsFlying() && this.rand.nextInt(getFlyingFreq()) == 0) {
-                List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(4D, 4D, 4D));
+            if (isFlyer() && !getIsFlying() && this.random.nextInt(getFlyingFreq()) == 0) {
+                List<Entity> list = this.level.getEntities(this, getBoundingBox().expandTowards(4D, 4D, 4D));
                 for (int i = 0; i < list.size(); i++) {
                     Entity entity1 = list.get(i);
                     if (!(entity1 instanceof LivingEntity)) {
                         continue;
                     }
-                    if (((LivingEntity) entity1).getWidth() >= 0.4F && ((LivingEntity) entity1).getHeight() >= 0.4F && canEntityBeSeen(entity1)) {
+                    if (((LivingEntity) entity1).getBbWidth() >= 0.4F && ((LivingEntity) entity1).getBbHeight() >= 0.4F && canSee(entity1)) {
                         setIsFlying(true);
                         this.wander.makeUpdate();
                     }
                 }
             }
 
-            if (isFlyer() && !getIsFlying() && this.rand.nextInt(200) == 0) {
+            if (isFlyer() && !getIsFlying() && this.random.nextInt(200) == 0) {
                 setIsFlying(true);
                 this.wander.makeUpdate();
             }
 
-            if (isAttractedToLight() && this.rand.nextInt(50) == 0) {
+            if (isAttractedToLight() && this.random.nextInt(50) == 0) {
                 int ai[] = MoCTools.ReturnNearestBlockCoord(this, Blocks.TORCH, 8D);
                 if (ai[0] > -1000) {
-                    this.getNavigator().tryMoveToXYZ(ai[0], ai[1], ai[2], 1.0D);//
+                    this.getNavigation().moveTo(ai[0], ai[1], ai[2], 1.0D);//
                 }
             }
 
             //this makes the flying insect move all the time in the air
-            if (getIsFlying() && this.getNavigator().noPath() && !isMovementCeased() && this.getAttackTarget() == null) {
+            if (getIsFlying() && this.getNavigation().isDone() && !isMovementCeased() && this.getTarget() == null) {
                 this.wander.makeUpdate();
             }
 
@@ -129,7 +129,7 @@ public class MoCEntityInsect extends MoCEntityAmbient {
     }
 
     @Override
-    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
+    public boolean checkSpawnRules(IWorld worldIn, SpawnReason reason) {
         return super.getCanSpawnHereAnimal() && super.getCanSpawnHereCreature();
     }
 
@@ -139,13 +139,13 @@ public class MoCEntityInsect extends MoCEntityAmbient {
     }
 
     @Override
-    public int getMaxSpawnedInChunk() {
+    public int getMaxSpawnClusterSize() {
         return 4;
     }
 
     @Override
-    public boolean isOnLadder() {
-        return this.collidedHorizontally;
+    public boolean onClimbable() {
+        return this.horizontalCollision;
     }
 
     public boolean climbing() {
@@ -153,11 +153,11 @@ public class MoCEntityInsect extends MoCEntityAmbient {
     }
 
     @Override
-    protected void jump() {
+    protected void jumpFromGround() {
     }
 
     @Override
-    protected boolean canTriggerWalking() {
+    protected boolean isMovementNoisy() {
         return false;
     }
 
@@ -174,19 +174,19 @@ public class MoCEntityInsect extends MoCEntityAmbient {
      * Get this Entity's EnumCreatureAttribute
      */
     @Override
-    public CreatureAttribute getCreatureAttribute() {
+    public CreatureAttribute getMobType() {
         return CreatureAttribute.ARTHROPOD;
     }
 
     @Override
-    public PathNavigator getNavigator() {
+    public PathNavigator getNavigation() {
         /*if (this.isInWater() && this.isAmphibian()) {
             return this.navigatorWater;
         }
         */if (this.getIsFlying()) {
             return this.navigatorFlyer;
         }
-        return this.navigator;
+        return this.navigation;
     }
 
     @Override

@@ -13,115 +13,115 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class MoCModelJellyFish extends EntityModel<MoCEntityJellyFish> {
 
     public MoCModelJellyFish() {
-        this.textureWidth = 64;
-        this.textureHeight = 16;
+        this.texWidth = 64;
+        this.texHeight = 16;
 
         this.Top = new ModelRenderer(this, 0, 10);
         this.Top.addBox(-2.5F, 0F, -2.5F, 5, 1, 5);
-        this.Top.setRotationPoint(0F, 11F, 0F);
+        this.Top.setPos(0F, 11F, 0F);
 
         this.Head = new ModelRenderer(this, 0, 0);
         this.Head.addBox(-4F, 0F, -4F, 8, 2, 8);
-        this.Head.setRotationPoint(0F, 12F, 0F);
+        this.Head.setPos(0F, 12F, 0F);
 
         this.HeadSmall = new ModelRenderer(this, 24, 0);
         this.HeadSmall.addBox(-2F, 0F, -2F, 4, 3, 4);
-        this.HeadSmall.setRotationPoint(0F, 12.5F, 0F);
+        this.HeadSmall.setPos(0F, 12.5F, 0F);
 
         this.Body = new ModelRenderer(this, 36, 0);
         this.Body.addBox(-3.5F, 0F, -3.5F, 7, 7, 7);
-        this.Body.setRotationPoint(0F, 13.8F, 0F);
+        this.Body.setPos(0F, 13.8F, 0F);
 
         this.BodyCenter = new ModelRenderer(this, 0, 0);
         this.BodyCenter.addBox(-1F, 0F, -1F, 2, 3, 2);
-        this.BodyCenter.setRotationPoint(0F, 15.5F, 0F);
+        this.BodyCenter.setPos(0F, 15.5F, 0F);
 
         this.BodyBottom = new ModelRenderer(this, 20, 10);
         this.BodyBottom.addBox(-2F, 0F, -2F, 4, 2, 4);
-        this.BodyBottom.setRotationPoint(0F, 18.3F, 0F);
+        this.BodyBottom.setPos(0F, 18.3F, 0F);
 
         this.Side1 = new ModelRenderer(this, 20, 10);
         this.Side1.addBox(-2F, 5F, 0F, 4, 2, 4);
-        this.Side1.setRotationPoint(0F, 12.5F, 0F);
+        this.Side1.setPos(0F, 12.5F, 0F);
         setRotation(this.Side1, -0.7679449F, 0F, 0F);
 
         this.Side2 = new ModelRenderer(this, 20, 10);
         this.Side2.addBox(-4F, 5F, -2F, 4, 2, 4);
-        this.Side2.setRotationPoint(0F, 12.5F, 0F);
+        this.Side2.setPos(0F, 12.5F, 0F);
         setRotation(this.Side2, 0F, 0F, -0.7679449F);
 
         this.Side3 = new ModelRenderer(this, 20, 10);
         this.Side3.addBox(0F, 5F, -2F, 4, 2, 4);
-        this.Side3.setRotationPoint(0F, 12.5F, 0F);
+        this.Side3.setPos(0F, 12.5F, 0F);
         setRotation(this.Side3, 0F, 0F, 0.7679449F);
 
         this.Side4 = new ModelRenderer(this, 20, 10);
         this.Side4.addBox(-2F, 5F, -4F, 4, 2, 4);
-        this.Side4.setRotationPoint(0F, 12.5F, 0F);
+        this.Side4.setPos(0F, 12.5F, 0F);
         setRotation(this.Side4, 0.7679449F, 0F, 0F);
 
         this.LegSmall1 = new ModelRenderer(this, 60, 2);
         this.LegSmall1.addBox(-1F, 0F, -1F, 1, 3, 1);
-        this.LegSmall1.setRotationPoint(0F, 18.5F, 0F);
+        this.LegSmall1.setPos(0F, 18.5F, 0F);
 
         this.LegC1 = new ModelRenderer(this, 15, 10);
         this.LegC1.addBox(-1F, 0F, -1F, 1, 4, 1);
-        this.LegC1.setRotationPoint(-0.5F, 15.5F, -0.5F);
+        this.LegC1.setPos(-0.5F, 15.5F, -0.5F);
         setRotation(this.LegC1, -0.2602503F, 0F, 0.1487144F);
 
         this.LegC2 = new ModelRenderer(this, 15, 10);
         this.LegC2.addBox(-1F, 0F, 0F, 1, 4, 1);
-        this.LegC2.setRotationPoint(0.5F, 15.5F, -0.5F);
+        this.LegC2.setPos(0.5F, 15.5F, -0.5F);
         setRotation(this.LegC2, 0.1487144F, 1.747395F, 0F);
 
         this.LegC3 = new ModelRenderer(this, 15, 10);
         this.LegC3.addBox(-1F, 0F, 0F, 1, 4, 1);
-        this.LegC3.setRotationPoint(-0.5F, 15.5F, 0.5F);
+        this.LegC3.setPos(-0.5F, 15.5F, 0.5F);
         setRotation(this.LegC3, 0.1115358F, 0.3717861F, 0.2230717F);
 
         this.Leg1 = new ModelRenderer(this, 0, 10);
         this.Leg1.addBox(-0.5F, 0F, -0.5F, 1, 4, 1);
-        this.Leg1.setRotationPoint(0F, 20F, 2.5F);
+        this.Leg1.setPos(0F, 20F, 2.5F);
 
         this.Leg2 = new ModelRenderer(this, 0, 10);
         this.Leg2.addBox(-0.5F, 0F, -0.5F, 1, 4, 1);
-        this.Leg2.setRotationPoint(0F, 20F, -2.5F);
+        this.Leg2.setPos(0F, 20F, -2.5F);
 
         this.Leg3 = new ModelRenderer(this, 0, 10);
         this.Leg3.addBox(-0.5F, 0F, -0.5F, 1, 4, 1);
-        this.Leg3.setRotationPoint(2.5F, 20F, 0F);
+        this.Leg3.setPos(2.5F, 20F, 0F);
 
         this.Leg4 = new ModelRenderer(this, 0, 10);
         this.Leg4.addBox(-0.5F, 0F, -0.5F, 1, 4, 1);
-        this.Leg4.setRotationPoint(-2.5F, 20F, 0F);
+        this.Leg4.setPos(-2.5F, 20F, 0F);
 
         this.Leg5 = new ModelRenderer(this, 0, 10);
         this.Leg5.addBox(-0.5F, 0F, -0.5F, 1, 4, 1);
-        this.Leg5.setRotationPoint(2F, 20F, 2F);
+        this.Leg5.setPos(2F, 20F, 2F);
         setRotation(this.Leg5, 0F, 0.7853982F, 0F);
 
         this.Leg6 = new ModelRenderer(this, 0, 10);
         this.Leg6.addBox(-0.5F, 0F, -0.5F, 1, 4, 1);
-        this.Leg6.setRotationPoint(2F, 20F, -2F);
+        this.Leg6.setPos(2F, 20F, -2F);
         setRotation(this.Leg6, 0F, 0.7853982F, 0F);
 
         this.Leg7 = new ModelRenderer(this, 0, 10);
         this.Leg7.addBox(-0.5F, 0F, -0.5F, 1, 4, 1);
-        this.Leg7.setRotationPoint(-2F, 20F, -2F);
+        this.Leg7.setPos(-2F, 20F, -2F);
         setRotation(this.Leg7, 0F, 0.7853982F, 0F);
 
         this.Leg8 = new ModelRenderer(this, 60, 0);
         this.Leg8.addBox(0F, 0F, 0F, 1, 5, 1);
-        this.Leg8.setRotationPoint(0F, 18.5F, 0F);
+        this.Leg8.setPos(0F, 18.5F, 0F);
 
         this.Leg9 = new ModelRenderer(this, 0, 10);
         this.Leg9.addBox(-0.5F, 0F, -0.5F, 1, 4, 1);
-        this.Leg9.setRotationPoint(-2F, 20F, 2F);
+        this.Leg9.setPos(-2F, 20F, 2F);
         setRotation(this.Leg9, 0F, 0.7853982F, 0F);
     }
 
     @Override
-    public void setRotationAngles(MoCEntityJellyFish entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(MoCEntityJellyFish entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
@@ -131,25 +131,25 @@ public class MoCModelJellyFish extends EntityModel<MoCEntityJellyFish> {
             f6 = 1.0F;
         }
 
-        this.LegSmall1.rotateAngleX = f6;
-        this.LegC1.rotateAngleX = f6;
-        this.LegC2.rotateAngleX = f6;
-        this.LegC3.rotateAngleX = f6;
-        this.Leg1.rotateAngleX = f6;
-        this.Leg2.rotateAngleX = f6;
-        this.Leg3.rotateAngleX = f6;
-        this.Leg4.rotateAngleX = f6;
-        this.Leg5.rotateAngleX = f6;
-        this.Leg6.rotateAngleX = f6;
-        this.Leg7.rotateAngleX = f6;
-        this.Leg8.rotateAngleX = f6;
-        this.Leg9.rotateAngleX = f6;
+        this.LegSmall1.xRot = f6;
+        this.LegC1.xRot = f6;
+        this.LegC2.xRot = f6;
+        this.LegC3.xRot = f6;
+        this.Leg1.xRot = f6;
+        this.Leg2.xRot = f6;
+        this.Leg3.xRot = f6;
+        this.Leg4.xRot = f6;
+        this.Leg5.xRot = f6;
+        this.Leg6.xRot = f6;
+        this.Leg7.xRot = f6;
+        this.Leg8.xRot = f6;
+        this.Leg9.xRot = f6;
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+        model.xRot = x;
+        model.yRot = y;
+        model.zRot = z;
     }
 
     ModelRenderer Top;
@@ -177,7 +177,7 @@ public class MoCModelJellyFish extends EntityModel<MoCEntityJellyFish> {
     ModelRenderer Leg9;
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         /* Disable until transparency issues with players are fixed
         MoCEntityJellyFish jellyfish = (MoCEntityJellyFish) entity;
         boolean glowing = jellyfish.isGlowing();

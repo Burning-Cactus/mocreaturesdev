@@ -38,7 +38,7 @@ public class RandomPositionGeneratorMoCFlyer
     @Nullable
     public static Vector3d findRandomTargetBlockTowards(CreatureEntity entitycreatureIn, int xz, int y, Vector3d targetVec3)
     {
-        staticVector = targetVec3.subtract(entitycreatureIn.getPosX(), entitycreatureIn.getPosY(), entitycreatureIn.getPosZ());
+        staticVector = targetVec3.subtract(entitycreatureIn.getX(), entitycreatureIn.getY(), entitycreatureIn.getZ());
         /**
          * searches 10 blocks at random in a within par1(x,z) and par2 (y) distance, ignores those not in the direction
          * of par3Vec3, then points to the tile for which creature.getBlockPathWeight returns the highest number
@@ -52,7 +52,7 @@ public class RandomPositionGeneratorMoCFlyer
     @Nullable
     public static Vector3d findRandomTargetBlockAwayFrom(CreatureEntity entitycreatureIn, int xz, int y, Vector3d targetVec3)
     {
-        staticVector = (new Vector3d(entitycreatureIn.getPosX(), entitycreatureIn.getPosY(), entitycreatureIn.getPosZ())).subtract(targetVec3);
+        staticVector = (new Vector3d(entitycreatureIn.getX(), entitycreatureIn.getY(), entitycreatureIn.getZ())).subtract(targetVec3);
         /**
          * searches 10 blocks at random in a within par1(x,z) and par2 (y) distance, ignores those not in the direction
          * of par3Vec3, then points to the tile for which creature.getBlockPathWeight returns the highest number
@@ -67,8 +67,8 @@ public class RandomPositionGeneratorMoCFlyer
     @Nullable
     private static Vector3d findRandomTargetBlock(CreatureEntity entitycreatureIn, int xz, int y, @Nullable Vector3d targetVec3)
     {
-        PathNavigator pathnavigate = entitycreatureIn.getNavigator();
-        Random random = entitycreatureIn.getRNG();
+        PathNavigator pathnavigate = entitycreatureIn.getNavigation();
+        Random random = entitycreatureIn.getRandom();
         boolean flag = false;
         int i = 0;
         int j = 0;
@@ -78,8 +78,8 @@ public class RandomPositionGeneratorMoCFlyer
 
         if (false/*entitycreatureIn.hasHome()*/)
         {
-            double d0 = entitycreatureIn.getHomePosition().distanceSq(new Vector3i(MathHelper.floor(entitycreatureIn.getPosX()), MathHelper.floor(entitycreatureIn.getPosY()), MathHelper.floor(entitycreatureIn.getPosZ()))) + 4.0D;
-            double d1 = (double)(entitycreatureIn.getMaximumHomeDistance() + (float)xz);
+            double d0 = entitycreatureIn.getRestrictCenter().distSqr(new Vector3i(MathHelper.floor(entitycreatureIn.getX()), MathHelper.floor(entitycreatureIn.getY()), MathHelper.floor(entitycreatureIn.getZ()))) + 4.0D;
+            double d1 = (double)(entitycreatureIn.getRestrictRadius() + (float)xz);
             flag1 = d0 < d1 * d1;
         }
         else
@@ -97,9 +97,9 @@ public class RandomPositionGeneratorMoCFlyer
             {
                 if (false/*entitycreatureIn.hasHome() && xz > 1*/) //TODO: Fix entity AI
                 {
-                    BlockPos blockpos = entitycreatureIn.getHomePosition();
+                    BlockPos blockpos = entitycreatureIn.getRestrictCenter();
 
-                    if (entitycreatureIn.getPosX() > (double)blockpos.getX())
+                    if (entitycreatureIn.getX() > (double)blockpos.getX())
                     {
                         l -= random.nextInt(xz / 2);
                     }
@@ -108,7 +108,7 @@ public class RandomPositionGeneratorMoCFlyer
                         l += random.nextInt(xz / 2);
                     }
 
-                    if (entitycreatureIn.getPosZ() > (double)blockpos.getZ())
+                    if (entitycreatureIn.getZ() > (double)blockpos.getZ())
                     {
                         i1 -= random.nextInt(xz / 2);
                     }
@@ -118,11 +118,11 @@ public class RandomPositionGeneratorMoCFlyer
                     }
                 }
 
-                BlockPos blockpos1 = new BlockPos((double)l + entitycreatureIn.getPosX(), (double)k1 + entitycreatureIn.getPosY(), (double)i1 + entitycreatureIn.getPosZ());
+                BlockPos blockpos1 = new BlockPos((double)l + entitycreatureIn.getX(), (double)k1 + entitycreatureIn.getY(), (double)i1 + entitycreatureIn.getZ());
 
-                if ((!flag1 || entitycreatureIn.isWithinHomeDistanceFromPosition(blockpos1)))// && pathnavigate.canEntityStandOnPos(blockpos1))
+                if ((!flag1 || entitycreatureIn.isWithinRestriction(blockpos1)))// && pathnavigate.canEntityStandOnPos(blockpos1))
                 {
-                    float f1 = entitycreatureIn.getBlockPathWeight(blockpos1);
+                    float f1 = entitycreatureIn.getWalkTargetValue(blockpos1);
 
                     if (f1 > f)
                     {
@@ -138,7 +138,7 @@ public class RandomPositionGeneratorMoCFlyer
 
         if (flag)
         {
-            return new Vector3d((double)i + entitycreatureIn.getPosX(), (double)j + entitycreatureIn.getPosY(), (double)k + entitycreatureIn.getPosZ());
+            return new Vector3d((double)i + entitycreatureIn.getX(), (double)j + entitycreatureIn.getY(), (double)k + entitycreatureIn.getZ());
         }
         else
         {

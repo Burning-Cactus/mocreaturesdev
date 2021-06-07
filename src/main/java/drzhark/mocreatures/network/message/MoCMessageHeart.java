@@ -35,7 +35,7 @@ public class MoCMessageHeart implements IMoCMessage {
         NetworkEvent.Context context = ctx.get();
         Entity entity = null;
         while (entity == null) {
-            entity = Minecraft.getInstance().world.getEntityByID(message.entityId);
+            entity = Minecraft.getInstance().level.getEntity(message.entityId);
             if (entity != null) {
                 if (entity instanceof IMoCTameable) {
                     ((IMoCTameable)entity).spawnHeart();

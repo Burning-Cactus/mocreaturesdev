@@ -18,7 +18,7 @@ public class MoCRenderFirefly extends MoCRenderInsect<MoCEntityFirefly, MoCModel
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityFirefly entityfirefly, MatrixStack stack, float par2) {
+    protected void scale(MoCEntityFirefly entityfirefly, MatrixStack stack, float par2) {
         if (entityfirefly.getIsFlying()) {
             rotateFirefly(entityfirefly, stack);
         } else if (entityfirefly.climbing()) {
@@ -28,11 +28,11 @@ public class MoCRenderFirefly extends MoCRenderInsect<MoCEntityFirefly, MoCModel
     }
 
     protected void rotateFirefly(MoCEntityFirefly entityfirefly, MatrixStack stack) {
-        stack.rotate(Vector3f.XN.rotationDegrees(40F));
+        stack.mulPose(Vector3f.XN.rotationDegrees(40F));
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityFirefly entityfirefly) {
+    public ResourceLocation getTextureLocation(MoCEntityFirefly entityfirefly) {
         return ((MoCEntityFirefly) entityfirefly).getTexture();
     }
     /*

@@ -20,7 +20,7 @@ public class MoCRenderGolem extends MoCRenderMoC<MoCEntityGolem, MoCModelGolem> 
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityGolem par1Entity) {
+    public ResourceLocation getTextureLocation(MoCEntityGolem par1Entity) {
         return ((MoCEntityGolem) par1Entity).getTexture();
     }
 
@@ -46,7 +46,7 @@ public class MoCRenderGolem extends MoCRenderMoC<MoCEntityGolem, MoCModelGolem> 
             if (effectTexture != null) {
 //                GL11.glDepthMask(false);
 
-                float var4 = entitylivingbaseIn.ticksExisted + limbSwingAmount;
+                float var4 = entitylivingbaseIn.tickCount + limbSwingAmount;
 //                bindTexture(effectTexture);
 //                GL11.glMatrixMode(GL11.GL_TEXTURE);
 //                GL11.glLoadIdentity();

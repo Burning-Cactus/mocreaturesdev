@@ -13,290 +13,290 @@ public class MoCModelCrocodile<T extends MoCEntityCrocodile> extends SegmentedMo
     public MoCModelCrocodile() {
         this.LJaw = new ModelRenderer(this, 42, 0);
         this.LJaw.addBox(-2.5F, 1F, -12F, 5, 2, 6);
-        this.LJaw.setRotationPoint(0F, 18F, -8F);
-        this.LJaw.rotateAngleX = 0F;
-        this.LJaw.rotateAngleY = 0F;
-        this.LJaw.rotateAngleZ = 0F;
+        this.LJaw.setPos(0F, 18F, -8F);
+        this.LJaw.xRot = 0F;
+        this.LJaw.yRot = 0F;
+        this.LJaw.zRot = 0F;
 
         this.TailA = new ModelRenderer(this, 0, 0);
         this.TailA.addBox(-4F, -0.5F, 0F, 8, 4, 8);
-        this.TailA.setRotationPoint(0F, 17F, 12F);
-        this.TailA.rotateAngleX = 0F;
-        this.TailA.rotateAngleY = 0F;
-        this.TailA.rotateAngleZ = 0F;
+        this.TailA.setPos(0F, 17F, 12F);
+        this.TailA.xRot = 0F;
+        this.TailA.yRot = 0F;
+        this.TailA.zRot = 0F;
 
         this.TailB = new ModelRenderer(this, 2, 0);
         this.TailB.addBox(-3F, 0F, 8F, 6, 3, 8);
-        this.TailB.setRotationPoint(0F, 17F, 12F);
-        this.TailB.rotateAngleX = 0F;
-        this.TailB.rotateAngleY = 0F;
-        this.TailB.rotateAngleZ = 0F;
+        this.TailB.setPos(0F, 17F, 12F);
+        this.TailB.xRot = 0F;
+        this.TailB.yRot = 0F;
+        this.TailB.zRot = 0F;
 
         this.TailC = new ModelRenderer(this, 6, 2);
         this.TailC.addBox(-2F, 0.5F, 16F, 4, 2, 6);
-        this.TailC.setRotationPoint(0F, 17F, 12F);
-        this.TailC.rotateAngleX = 0F;
-        this.TailC.rotateAngleY = 0F;
-        this.TailC.rotateAngleZ = 0F;
+        this.TailC.setPos(0F, 17F, 12F);
+        this.TailC.xRot = 0F;
+        this.TailC.yRot = 0F;
+        this.TailC.zRot = 0F;
 
         this.TailD = new ModelRenderer(this, 7, 2);
         this.TailD.addBox(-1.5F, 1F, 22F, 3, 1, 6);
-        this.TailD.setRotationPoint(0F, 17F, 12F);
-        this.TailD.rotateAngleX = 0F;
-        this.TailD.rotateAngleY = 0F;
-        this.TailD.rotateAngleZ = 0F;
+        this.TailD.setPos(0F, 17F, 12F);
+        this.TailD.xRot = 0F;
+        this.TailD.yRot = 0F;
+        this.TailD.zRot = 0F;
 
         this.UJaw = new ModelRenderer(this, 44, 8);
         this.UJaw.addBox(-2F, -1F, -12F, 4, 2, 6);
-        this.UJaw.setRotationPoint(0F, 18F, -8F);
-        this.UJaw.rotateAngleX = 0F;
-        this.UJaw.rotateAngleY = 0F;
-        this.UJaw.rotateAngleZ = 0F;
+        this.UJaw.setPos(0F, 18F, -8F);
+        this.UJaw.xRot = 0F;
+        this.UJaw.yRot = 0F;
+        this.UJaw.zRot = 0F;
 
         this.Head = new ModelRenderer(this, 0, 16);
         this.Head.addBox(-3F, -2F, -6F, 6, 5, 6);
-        this.Head.setRotationPoint(0F, 18F, -8F);
-        this.Head.rotateAngleX = 0F;
-        this.Head.rotateAngleY = 0F;
-        this.Head.rotateAngleZ = 0F;
+        this.Head.setPos(0F, 18F, -8F);
+        this.Head.xRot = 0F;
+        this.Head.yRot = 0F;
+        this.Head.zRot = 0F;
 
         this.Body = new ModelRenderer(this, 4, 7);
         this.Body.addBox(0F, 0F, 0F, 10, 5, 20);
-        this.Body.setRotationPoint(-5F, 16F, -8F);
-        this.Body.rotateAngleX = 0F;
-        this.Body.rotateAngleY = 0F;
-        this.Body.rotateAngleZ = 0F;
+        this.Body.setPos(-5F, 16F, -8F);
+        this.Body.xRot = 0F;
+        this.Body.yRot = 0F;
+        this.Body.zRot = 0F;
 
         this.Leg1 = new ModelRenderer(this, 49, 21);
         this.Leg1.addBox(1F, 2F, -3F, 3, 2, 4);
-        this.Leg1.setRotationPoint(5F, 19F, -3F);
+        this.Leg1.setPos(5F, 19F, -3F);
 
-        this.Leg1.rotateAngleX = 0F;
-        this.Leg1.rotateAngleY = 0F;
-        this.Leg1.rotateAngleZ = 0F;
+        this.Leg1.xRot = 0F;
+        this.Leg1.yRot = 0F;
+        this.Leg1.zRot = 0F;
 
         this.Leg3 = new ModelRenderer(this, 48, 20);
         this.Leg3.addBox(1F, 2F, -3F, 3, 2, 5);
-        this.Leg3.setRotationPoint(5F, 19F, 9F);
+        this.Leg3.setPos(5F, 19F, 9F);
 
-        this.Leg3.rotateAngleX = 0F;
-        this.Leg3.rotateAngleY = 0F;
-        this.Leg3.rotateAngleZ = 0F;
+        this.Leg3.xRot = 0F;
+        this.Leg3.yRot = 0F;
+        this.Leg3.zRot = 0F;
 
         this.Leg2 = new ModelRenderer(this, 49, 21);
         this.Leg2.addBox(-4F, 2F, -3F, 3, 2, 4);
-        this.Leg2.setRotationPoint(-5F, 19F, -3F);
+        this.Leg2.setPos(-5F, 19F, -3F);
 
-        this.Leg2.rotateAngleX = 0F;
-        this.Leg2.rotateAngleY = 0F;
-        this.Leg2.rotateAngleZ = 0F;
+        this.Leg2.xRot = 0F;
+        this.Leg2.yRot = 0F;
+        this.Leg2.zRot = 0F;
 
         this.Leg4 = new ModelRenderer(this, 48, 20);
         this.Leg4.addBox(-4F, 2F, -3F, 3, 2, 5);
-        this.Leg4.setRotationPoint(-5F, 19F, 9F);
+        this.Leg4.setPos(-5F, 19F, 9F);
 
-        this.Leg4.rotateAngleX = 0F;
-        this.Leg4.rotateAngleY = 0F;
-        this.Leg4.rotateAngleZ = 0F;
+        this.Leg4.xRot = 0F;
+        this.Leg4.yRot = 0F;
+        this.Leg4.zRot = 0F;
 
         this.Leg1A = new ModelRenderer(this, 7, 9);
         this.Leg1A.addBox(0F, -1F, -2F, 3, 3, 3);
-        this.Leg1A.setRotationPoint(5F, 19F, -3F);
+        this.Leg1A.setPos(5F, 19F, -3F);
 
-        this.Leg1A.rotateAngleX = 0F;
-        this.Leg1A.rotateAngleY = 0F;
-        this.Leg1A.rotateAngleZ = 0F;
+        this.Leg1A.xRot = 0F;
+        this.Leg1A.yRot = 0F;
+        this.Leg1A.zRot = 0F;
 
         this.Leg2A = new ModelRenderer(this, 7, 9);
         this.Leg2A.addBox(-3F, -1F, -2F, 3, 3, 3);
-        this.Leg2A.setRotationPoint(-5F, 19F, -3F);
+        this.Leg2A.setPos(-5F, 19F, -3F);
 
-        this.Leg2A.rotateAngleX = 0F;
-        this.Leg2A.rotateAngleY = 0F;
-        this.Leg2A.rotateAngleZ = 0F;
+        this.Leg2A.xRot = 0F;
+        this.Leg2A.yRot = 0F;
+        this.Leg2A.zRot = 0F;
 
         this.Leg3A = new ModelRenderer(this, 6, 8);
         this.Leg3A.addBox(0F, -1F, -2F, 3, 3, 4);
-        this.Leg3A.setRotationPoint(5F, 19F, 9F);
+        this.Leg3A.setPos(5F, 19F, 9F);
 
-        this.Leg3A.rotateAngleX = 0F;
-        this.Leg3A.rotateAngleY = 0F;
-        this.Leg3A.rotateAngleZ = 0F;
+        this.Leg3A.xRot = 0F;
+        this.Leg3A.yRot = 0F;
+        this.Leg3A.zRot = 0F;
 
         this.Leg4A = new ModelRenderer(this, 6, 8);
         this.Leg4A.addBox(-3F, -1F, -2F, 3, 3, 4);
-        this.Leg4A.setRotationPoint(-5F, 19F, 9F);
+        this.Leg4A.setPos(-5F, 19F, 9F);
 
-        this.Leg4A.rotateAngleX = 0F;
-        this.Leg4A.rotateAngleY = 0F;
-        this.Leg4A.rotateAngleZ = 0F;
+        this.Leg4A.xRot = 0F;
+        this.Leg4A.yRot = 0F;
+        this.Leg4A.zRot = 0F;
 
         this.UJaw2 = new ModelRenderer(this, 37, 0);
         this.UJaw2.addBox(-1.5F, -1F, -16F, 3, 2, 4);
-        this.UJaw2.setRotationPoint(0F, 18F, -8F);
-        this.UJaw2.rotateAngleX = 0F;
-        this.UJaw2.rotateAngleY = 0F;
-        this.UJaw2.rotateAngleZ = 0F;
+        this.UJaw2.setPos(0F, 18F, -8F);
+        this.UJaw2.xRot = 0F;
+        this.UJaw2.yRot = 0F;
+        this.UJaw2.zRot = 0F;
 
         this.LJaw2 = new ModelRenderer(this, 24, 1);
         this.LJaw2.addBox(-2F, 1F, -16F, 4, 2, 4);
-        this.LJaw2.setRotationPoint(0F, 18F, -8F);
-        this.LJaw2.rotateAngleX = 0F;
-        this.LJaw2.rotateAngleY = 0F;
-        this.LJaw2.rotateAngleZ = 0F;
+        this.LJaw2.setPos(0F, 18F, -8F);
+        this.LJaw2.xRot = 0F;
+        this.LJaw2.yRot = 0F;
+        this.LJaw2.zRot = 0F;
 
         this.TeethA = new ModelRenderer(this, 8, 11);
         this.TeethA.addBox(1.6F, 0F, -16F, 0, 1, 4);
-        this.TeethA.setRotationPoint(0F, 18F, -8F);
-        this.TeethA.rotateAngleX = 0F;
-        this.TeethA.rotateAngleY = 0F;
-        this.TeethA.rotateAngleZ = 0F;
+        this.TeethA.setPos(0F, 18F, -8F);
+        this.TeethA.xRot = 0F;
+        this.TeethA.yRot = 0F;
+        this.TeethA.zRot = 0F;
 
         this.TeethB = new ModelRenderer(this, 8, 11);
         this.TeethB.addBox(-1.6F, 0F, -16F, 0, 1, 4);
-        this.TeethB.setRotationPoint(0F, 18F, -8F);
-        this.TeethB.rotateAngleX = 0F;
-        this.TeethB.rotateAngleY = 0F;
-        this.TeethB.rotateAngleZ = 0F;
+        this.TeethB.setPos(0F, 18F, -8F);
+        this.TeethB.xRot = 0F;
+        this.TeethB.yRot = 0F;
+        this.TeethB.zRot = 0F;
 
         this.TeethC = new ModelRenderer(this, 6, 9);
         this.TeethC.addBox(2.1F, 0F, -12F, 0, 1, 6);
-        this.TeethC.setRotationPoint(0F, 18F, -8F);
-        this.TeethC.rotateAngleX = 0F;
-        this.TeethC.rotateAngleY = 0F;
-        this.TeethC.rotateAngleZ = 0F;
+        this.TeethC.setPos(0F, 18F, -8F);
+        this.TeethC.xRot = 0F;
+        this.TeethC.yRot = 0F;
+        this.TeethC.zRot = 0F;
 
         this.TeethD = new ModelRenderer(this, 6, 9);
         this.TeethD.addBox(-2.1F, 0F, -12F, 0, 1, 6);
-        this.TeethD.setRotationPoint(0F, 18F, -8F);
-        this.TeethD.rotateAngleX = 0F;
-        this.TeethD.rotateAngleY = 0F;
-        this.TeethD.rotateAngleZ = 0F;
+        this.TeethD.setPos(0F, 18F, -8F);
+        this.TeethD.xRot = 0F;
+        this.TeethD.yRot = 0F;
+        this.TeethD.zRot = 0F;
 
-        this.Leg1A.rotateAngleX = 0F;
-        this.Leg1A.rotateAngleY = 0F;
-        this.Leg1A.rotateAngleZ = 0F;
+        this.Leg1A.xRot = 0F;
+        this.Leg1A.yRot = 0F;
+        this.Leg1A.zRot = 0F;
 
-        this.Leg2A.rotateAngleX = 0F;
-        this.Leg2A.rotateAngleY = 0F;
-        this.Leg2A.rotateAngleZ = 0F;
+        this.Leg2A.xRot = 0F;
+        this.Leg2A.yRot = 0F;
+        this.Leg2A.zRot = 0F;
 
-        this.Leg3A.rotateAngleX = 0F;
-        this.Leg3A.rotateAngleY = 0F;
-        this.Leg3A.rotateAngleZ = 0F;
+        this.Leg3A.xRot = 0F;
+        this.Leg3A.yRot = 0F;
+        this.Leg3A.zRot = 0F;
 
-        this.Leg4A.rotateAngleX = 0F;
-        this.Leg4A.rotateAngleY = 0F;
-        this.Leg4A.rotateAngleZ = 0F;
+        this.Leg4A.xRot = 0F;
+        this.Leg4A.yRot = 0F;
+        this.Leg4A.zRot = 0F;
 
         this.TeethF = new ModelRenderer(this, 19, 21);
         this.TeethF.addBox(-1F, 0F, -16.1F, 2, 1, 0);
-        this.TeethF.setRotationPoint(0F, 18F, -8F);
+        this.TeethF.setPos(0F, 18F, -8F);
 
         this.Spike0 = new ModelRenderer(this, 44, 16);
         this.Spike0.addBox(-1F, -1F, 23F, 0, 2, 4);
-        this.Spike0.setRotationPoint(0F, 17F, 12F);
+        this.Spike0.setPos(0F, 17F, 12F);
 
         this.Spike1 = new ModelRenderer(this, 44, 16);
         this.Spike1.addBox(1F, -1F, 23F, 0, 2, 4);
-        this.Spike1.setRotationPoint(0F, 17F, 12F);
+        this.Spike1.setPos(0F, 17F, 12F);
 
         this.Spike2 = new ModelRenderer(this, 44, 16);
         this.Spike2.addBox(-1.5F, -1.5F, 17F, 0, 2, 4);
-        this.Spike2.setRotationPoint(0F, 17F, 12F);
+        this.Spike2.setPos(0F, 17F, 12F);
 
         this.Spike3 = new ModelRenderer(this, 44, 16);
         this.Spike3.addBox(1.5F, -1.5F, 17F, 0, 2, 4);
-        this.Spike3.setRotationPoint(0F, 17F, 12F);
+        this.Spike3.setPos(0F, 17F, 12F);
 
         this.Spike4 = new ModelRenderer(this, 44, 16);
         this.Spike4.addBox(-2F, -2F, 12F, 0, 2, 4);
-        this.Spike4.setRotationPoint(0F, 17F, 12F);
+        this.Spike4.setPos(0F, 17F, 12F);
 
         this.Spike5 = new ModelRenderer(this, 44, 16);
         this.Spike5.addBox(2F, -2F, 12F, 0, 2, 4);
-        this.Spike5.setRotationPoint(0F, 17F, 12F);
+        this.Spike5.setPos(0F, 17F, 12F);
 
         this.Spike6 = new ModelRenderer(this, 44, 16);
         this.Spike6.addBox(-2.5F, -2F, 8F, 0, 2, 4);
-        this.Spike6.setRotationPoint(0F, 17F, 12F);
+        this.Spike6.setPos(0F, 17F, 12F);
 
         this.Spike7 = new ModelRenderer(this, 44, 16);
         this.Spike7.addBox(2.5F, -2F, 8F, 0, 2, 4);
-        this.Spike7.setRotationPoint(0F, 17F, 12F);
+        this.Spike7.setPos(0F, 17F, 12F);
 
         this.Spike8 = new ModelRenderer(this, 44, 16);
         this.Spike8.addBox(-3F, -2.5F, 4F, 0, 2, 4);
-        this.Spike8.setRotationPoint(0F, 17F, 12F);
+        this.Spike8.setPos(0F, 17F, 12F);
 
         this.Spike9 = new ModelRenderer(this, 44, 16);
         this.Spike9.addBox(3F, -2.5F, 4F, 0, 2, 4);
-        this.Spike9.setRotationPoint(0F, 17F, 12F);
+        this.Spike9.setPos(0F, 17F, 12F);
 
         this.Spike10 = new ModelRenderer(this, 44, 16);
         this.Spike10.addBox(3.5F, -2.5F, 0F, 0, 2, 4);
-        this.Spike10.setRotationPoint(0F, 17F, 12F);
+        this.Spike10.setPos(0F, 17F, 12F);
 
         this.Spike11 = new ModelRenderer(this, 44, 16);
         this.Spike11.addBox(-3.5F, -2.5F, 0F, 0, 2, 4);
-        this.Spike11.setRotationPoint(0F, 17F, 12F);
+        this.Spike11.setPos(0F, 17F, 12F);
 
         this.SpikeBack0 = new ModelRenderer(this, 44, 10);
         this.SpikeBack0.addBox(0F, 0F, 0F, 0, 2, 8);
-        this.SpikeBack0.setRotationPoint(0F, 14F, 3F);
+        this.SpikeBack0.setPos(0F, 14F, 3F);
 
         this.SpikeBack1 = new ModelRenderer(this, 44, 10);
         this.SpikeBack1.addBox(0F, 0F, 0F, 0, 2, 8);
-        this.SpikeBack1.setRotationPoint(0F, 14F, -6F);
+        this.SpikeBack1.setPos(0F, 14F, -6F);
 
         this.SpikeBack2 = new ModelRenderer(this, 44, 10);
         this.SpikeBack2.addBox(0F, 0F, 0F, 0, 2, 8);
-        this.SpikeBack2.setRotationPoint(4F, 14F, -8F);
+        this.SpikeBack2.setPos(4F, 14F, -8F);
 
         this.SpikeBack3 = new ModelRenderer(this, 44, 10);
         this.SpikeBack3.addBox(0F, 0F, 0F, 0, 2, 8);
-        this.SpikeBack3.setRotationPoint(-4F, 14F, -8F);
+        this.SpikeBack3.setPos(-4F, 14F, -8F);
 
         this.SpikeBack4 = new ModelRenderer(this, 44, 10);
         this.SpikeBack4.addBox(0F, 0F, 0F, 0, 2, 8);
-        this.SpikeBack4.setRotationPoint(-4F, 14F, 1F);
+        this.SpikeBack4.setPos(-4F, 14F, 1F);
 
         this.SpikeBack5 = new ModelRenderer(this, 44, 10);
         this.SpikeBack5.addBox(0F, 0F, 0F, 0, 2, 8);
-        this.SpikeBack5.setRotationPoint(4F, 14F, 1F);
+        this.SpikeBack5.setPos(4F, 14F, 1F);
 
         this.SpikeEye = new ModelRenderer(this, 44, 14);
         this.SpikeEye.addBox(-3F, -3F, -6F, 0, 1, 2);
-        this.SpikeEye.setRotationPoint(0F, 18F, -8F);
+        this.SpikeEye.setPos(0F, 18F, -8F);
 
         this.SpikeEye1 = new ModelRenderer(this, 44, 14);
         this.SpikeEye1.addBox(3F, -3F, -6F, 0, 1, 2);
-        this.SpikeEye1.setRotationPoint(0F, 18F, -8F);
+        this.SpikeEye1.setPos(0F, 18F, -8F);
 
         this.TeethA1 = new ModelRenderer(this, 52, 12);
         this.TeethA1.addBox(1.4F, 1F, -16.4F, 0, 1, 4);
-        this.TeethA1.setRotationPoint(0F, 18F, -8F);
+        this.TeethA1.setPos(0F, 18F, -8F);
 
         this.TeethB1 = new ModelRenderer(this, 52, 12);
         this.TeethB1.addBox(-1.4F, 1F, -16.4F, 0, 1, 4);
-        this.TeethB1.setRotationPoint(0F, 18F, -8F);
+        this.TeethB1.setPos(0F, 18F, -8F);
 
         this.TeethC1 = new ModelRenderer(this, 50, 10);
         this.TeethC1.addBox(1.9F, 1F, -12.5F, 0, 1, 6);
-        this.TeethC1.setRotationPoint(0F, 18F, -8F);
+        this.TeethC1.setPos(0F, 18F, -8F);
 
         this.TeethD1 = new ModelRenderer(this, 50, 10);
         this.TeethD1.addBox(-1.9F, 1F, -12.5F, 0, 1, 6);
-        this.TeethD1.setRotationPoint(0F, 18F, -8F);
+        this.TeethD1.setPos(0F, 18F, -8F);
     }
 
     @Override
-    public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float time, float pitch, float yaw) {
+    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float time, float pitch, float yaw) {
         setRotationAngles(limbSwing, limbSwingAmount, time, pitch, yaw);
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<ModelRenderer> parts() {
         return null;
     }
 
@@ -306,205 +306,205 @@ public class MoCModelCrocodile<T extends MoCEntityCrocodile> extends SegmentedMo
 
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4) {
         //super.setRotationAngles(f, f1, f2, f3, f4, f5);
-        this.Head.rotateAngleX = f4 / 57.29578F;
-        this.Head.rotateAngleY = f3 / 57.29578F;
-        this.SpikeEye.rotateAngleX = this.Head.rotateAngleX;
-        this.SpikeEye.rotateAngleY = this.Head.rotateAngleY;
-        this.SpikeEye1.rotateAngleX = this.Head.rotateAngleX;
-        this.SpikeEye1.rotateAngleY = this.Head.rotateAngleY;
+        this.Head.xRot = f4 / 57.29578F;
+        this.Head.yRot = f3 / 57.29578F;
+        this.SpikeEye.xRot = this.Head.xRot;
+        this.SpikeEye.yRot = this.Head.yRot;
+        this.SpikeEye1.xRot = this.Head.xRot;
+        this.SpikeEye1.yRot = this.Head.yRot;
 
         //LJaw.rotateAngleX = Head.rotateAngleX;
-        this.LJaw.rotateAngleY = this.Head.rotateAngleY;
-        this.LJaw2.rotateAngleY = this.Head.rotateAngleY;
+        this.LJaw.yRot = this.Head.yRot;
+        this.LJaw2.yRot = this.Head.yRot;
         //UJaw.rotateAngleX = Head.rotateAngleX;
-        this.UJaw.rotateAngleY = this.Head.rotateAngleY;
-        this.UJaw2.rotateAngleY = this.Head.rotateAngleY;
+        this.UJaw.yRot = this.Head.yRot;
+        this.UJaw2.yRot = this.Head.yRot;
         if (this.swimming) {
             //Leg1.setRotationPoint(9F, 18F, 0F);
-            this.Leg1.rotationPointX = 9F;
-            this.Leg1.rotationPointY = 18F;
-            this.Leg1.rotationPointZ = 0F;
-            this.Leg1.rotateAngleX = 0F;
-            this.Leg1.rotateAngleY = -3.14159F;
+            this.Leg1.x = 9F;
+            this.Leg1.y = 18F;
+            this.Leg1.z = 0F;
+            this.Leg1.xRot = 0F;
+            this.Leg1.yRot = -3.14159F;
             //Leg2.setRotationPoint(-9F, 18F, 0F);
-            this.Leg2.rotationPointX = -9F;
-            this.Leg2.rotationPointY = 18F;
-            this.Leg2.rotationPointZ = 0F;
-            this.Leg2.rotateAngleX = 0F;
-            this.Leg2.rotateAngleY = -3.14159F;
+            this.Leg2.x = -9F;
+            this.Leg2.y = 18F;
+            this.Leg2.z = 0F;
+            this.Leg2.xRot = 0F;
+            this.Leg2.yRot = -3.14159F;
             //Leg3.setRotationPoint(8F, 18F, 12F);
-            this.Leg3.rotationPointX = 8F;
-            this.Leg3.rotationPointY = 18F;
-            this.Leg3.rotationPointZ = 12F;
-            this.Leg3.rotateAngleX = 0F;
-            this.Leg3.rotateAngleY = -3.14159F;
+            this.Leg3.x = 8F;
+            this.Leg3.y = 18F;
+            this.Leg3.z = 12F;
+            this.Leg3.xRot = 0F;
+            this.Leg3.yRot = -3.14159F;
             //Leg4.setRotationPoint(-8F, 18F, 12F);
-            this.Leg4.rotationPointX = -8F;
-            this.Leg4.rotationPointY = 18F;
-            this.Leg4.rotationPointZ = 12F;
-            this.Leg4.rotateAngleX = 0F;
-            this.Leg4.rotateAngleY = -3.14159F;
+            this.Leg4.x = -8F;
+            this.Leg4.y = 18F;
+            this.Leg4.z = 12F;
+            this.Leg4.xRot = 0F;
+            this.Leg4.yRot = -3.14159F;
 
             //Leg1A.setRotationPoint(5F, 19F, -3F);
-            this.Leg1A.rotateAngleX = 1.5708F;
-            this.Leg1A.rotationPointX = 5F;
-            this.Leg1A.rotationPointY = 19F;
-            this.Leg1A.rotationPointZ = -3F;
+            this.Leg1A.xRot = 1.5708F;
+            this.Leg1A.x = 5F;
+            this.Leg1A.y = 19F;
+            this.Leg1A.z = -3F;
 
             //Leg2A.setRotationPoint(-5F, 19F, -3F);
-            this.Leg2A.rotateAngleX = 1.5708F;
-            this.Leg2A.rotationPointX = -5F;
-            this.Leg2A.rotationPointY = 19F;
-            this.Leg2A.rotationPointZ = -3F;
+            this.Leg2A.xRot = 1.5708F;
+            this.Leg2A.x = -5F;
+            this.Leg2A.y = 19F;
+            this.Leg2A.z = -3F;
 
             //Leg3A.setRotationPoint(5F, 19F, 9F);
-            this.Leg3A.rotateAngleX = 1.5708F;
-            this.Leg3A.rotationPointX = 5F;
-            this.Leg3A.rotationPointY = 19F;
-            this.Leg3A.rotationPointZ = 9F;
+            this.Leg3A.xRot = 1.5708F;
+            this.Leg3A.x = 5F;
+            this.Leg3A.y = 19F;
+            this.Leg3A.z = 9F;
 
             //Leg4A.setRotationPoint(-5F, 19F, 9F);
-            this.Leg4A.rotateAngleX = 1.5708F;
-            this.Leg4A.rotationPointX = -5F;
-            this.Leg4A.rotationPointY = 19F;
-            this.Leg4A.rotationPointZ = 9F;
+            this.Leg4A.xRot = 1.5708F;
+            this.Leg4A.x = -5F;
+            this.Leg4A.y = 19F;
+            this.Leg4A.z = 9F;
 
-            this.Leg1.rotateAngleZ = 0F;
-            this.Leg1A.rotateAngleZ = 0F;
-            this.Leg3.rotateAngleZ = 0F;
-            this.Leg3A.rotateAngleZ = 0F;
+            this.Leg1.zRot = 0F;
+            this.Leg1A.zRot = 0F;
+            this.Leg3.zRot = 0F;
+            this.Leg3A.zRot = 0F;
 
-            this.Leg2.rotateAngleZ = 0F;
-            this.Leg2A.rotateAngleZ = 0F;
-            this.Leg4.rotateAngleZ = 0F;
-            this.Leg4A.rotateAngleZ = 0F;
+            this.Leg2.zRot = 0F;
+            this.Leg2A.zRot = 0F;
+            this.Leg4.zRot = 0F;
+            this.Leg4A.zRot = 0F;
 
         } else if (this.resting) {
             //Leg1.setRotationPoint(6F, 17F, -6F);
-            this.Leg1.rotationPointX = 6F;
-            this.Leg1.rotationPointY = 17F;
-            this.Leg1.rotationPointZ = -6F;
-            this.Leg1.rotateAngleX = 0F;
-            this.Leg1.rotateAngleY = -0.7854F;
+            this.Leg1.x = 6F;
+            this.Leg1.y = 17F;
+            this.Leg1.z = -6F;
+            this.Leg1.xRot = 0F;
+            this.Leg1.yRot = -0.7854F;
 
             //Leg2.setRotationPoint(-6F, 17F, -6F);
-            this.Leg2.rotateAngleY = 0.7854F;
-            this.Leg2.rotationPointX = -6F;
-            this.Leg2.rotationPointY = 17F;
-            this.Leg2.rotationPointZ = -6F;
-            this.Leg2.rotateAngleX = 0F;
+            this.Leg2.yRot = 0.7854F;
+            this.Leg2.x = -6F;
+            this.Leg2.y = 17F;
+            this.Leg2.z = -6F;
+            this.Leg2.xRot = 0F;
 
             //Leg3.setRotationPoint(7F, 17F, 7F);
-            this.Leg3.rotateAngleY = -0.7854F;
-            this.Leg3.rotationPointX = 7F;
-            this.Leg3.rotationPointY = 17F;
-            this.Leg3.rotationPointZ = 7F;
-            this.Leg3.rotateAngleX = 0F;
+            this.Leg3.yRot = -0.7854F;
+            this.Leg3.x = 7F;
+            this.Leg3.y = 17F;
+            this.Leg3.z = 7F;
+            this.Leg3.xRot = 0F;
 
-            this.Leg4.setRotationPoint(-7F, 17F, 7F);
-            this.Leg4.rotateAngleY = 0.7854F;
-            this.Leg4.rotationPointX = -7F;
-            this.Leg4.rotationPointY = 17F;
-            this.Leg4.rotationPointZ = 7F;
-            this.Leg4.rotateAngleX = 0F;
+            this.Leg4.setPos(-7F, 17F, 7F);
+            this.Leg4.yRot = 0.7854F;
+            this.Leg4.x = -7F;
+            this.Leg4.y = 17F;
+            this.Leg4.z = 7F;
+            this.Leg4.xRot = 0F;
 
             //Leg1A.setRotationPoint(5F, 17F, -3F);
-            this.Leg1A.rotationPointX = 5F;
-            this.Leg1A.rotationPointY = 17F;
-            this.Leg1A.rotationPointZ = -3F;
-            this.Leg1A.rotateAngleX = 0F;
+            this.Leg1A.x = 5F;
+            this.Leg1A.y = 17F;
+            this.Leg1A.z = -3F;
+            this.Leg1A.xRot = 0F;
 
             //Leg2A.setRotationPoint(-5F, 17F, -3F);
-            this.Leg2A.rotationPointX = -5F;
-            this.Leg2A.rotationPointY = 17F;
-            this.Leg2A.rotationPointZ = -3F;
-            this.Leg2A.rotateAngleX = 0F;
+            this.Leg2A.x = -5F;
+            this.Leg2A.y = 17F;
+            this.Leg2A.z = -3F;
+            this.Leg2A.xRot = 0F;
 
             //Leg3A.setRotationPoint(5F, 17F, 9F);
-            this.Leg3A.rotationPointX = 5F;
-            this.Leg3A.rotationPointY = 17F;
-            this.Leg3A.rotationPointZ = 9F;
-            this.Leg3A.rotateAngleX = 0F;
+            this.Leg3A.x = 5F;
+            this.Leg3A.y = 17F;
+            this.Leg3A.z = 9F;
+            this.Leg3A.xRot = 0F;
 
             //Leg4A.setRotationPoint(-5F, 17F, 9F);
-            this.Leg4A.rotationPointX = -5F;
-            this.Leg4A.rotationPointY = 17F;
-            this.Leg4A.rotationPointZ = 9F;
-            this.Leg4A.rotateAngleX = 0F;
+            this.Leg4A.x = -5F;
+            this.Leg4A.y = 17F;
+            this.Leg4A.z = 9F;
+            this.Leg4A.xRot = 0F;
 
-            this.Leg1.rotateAngleZ = 0F;
-            this.Leg1A.rotateAngleZ = 0F;
-            this.Leg3.rotateAngleZ = 0F;
-            this.Leg3A.rotateAngleZ = 0F;
+            this.Leg1.zRot = 0F;
+            this.Leg1A.zRot = 0F;
+            this.Leg3.zRot = 0F;
+            this.Leg3A.zRot = 0F;
 
-            this.Leg2.rotateAngleZ = 0F;
-            this.Leg2A.rotateAngleZ = 0F;
-            this.Leg4.rotateAngleZ = 0F;
-            this.Leg4A.rotateAngleZ = 0F;
+            this.Leg2.zRot = 0F;
+            this.Leg2A.zRot = 0F;
+            this.Leg4.zRot = 0F;
+            this.Leg4A.zRot = 0F;
         } else {
             //Leg1.setRotationPoint(5F, 19F, -3F);
-            this.Leg1.rotationPointX = 5F;
-            this.Leg1.rotationPointY = 19F;
-            this.Leg1.rotationPointZ = -3F;
+            this.Leg1.x = 5F;
+            this.Leg1.y = 19F;
+            this.Leg1.z = -3F;
             //Leg2.setRotationPoint(-5F, 19F, -3F);
-            this.Leg2.rotationPointX = -5F;
-            this.Leg2.rotationPointY = 19F;
-            this.Leg2.rotationPointZ = -3F;
+            this.Leg2.x = -5F;
+            this.Leg2.y = 19F;
+            this.Leg2.z = -3F;
             //Leg3.setRotationPoint(5F, 19F, 9F);
-            this.Leg3.rotationPointX = 5F;
-            this.Leg3.rotationPointY = 19F;
-            this.Leg3.rotationPointZ = 9F;
+            this.Leg3.x = 5F;
+            this.Leg3.y = 19F;
+            this.Leg3.z = 9F;
             //Leg4.setRotationPoint(-5F, 19F, 9F);
-            this.Leg4.rotationPointX = -5F;
-            this.Leg4.rotationPointY = 19F;
-            this.Leg4.rotationPointZ = 9F;
+            this.Leg4.x = -5F;
+            this.Leg4.y = 19F;
+            this.Leg4.z = 9F;
 
             //Leg1A.setRotationPoint(5F, 19F, -3F);
-            this.Leg1A.rotationPointX = 5F;
-            this.Leg1A.rotationPointY = 19F;
-            this.Leg1A.rotationPointZ = -3F;
+            this.Leg1A.x = 5F;
+            this.Leg1A.y = 19F;
+            this.Leg1A.z = -3F;
 
             //Leg2A.setRotationPoint(-5F, 19F, -3F);
-            this.Leg2A.rotationPointX = -5F;
-            this.Leg2A.rotationPointY = 19F;
-            this.Leg2A.rotationPointZ = -3F;
+            this.Leg2A.x = -5F;
+            this.Leg2A.y = 19F;
+            this.Leg2A.z = -3F;
 
             //Leg3A.setRotationPoint(5F, 19F, 9F);
-            this.Leg3A.rotationPointX = 5F;
-            this.Leg3A.rotationPointY = 19F;
-            this.Leg3A.rotationPointZ = 9F;
+            this.Leg3A.x = 5F;
+            this.Leg3A.y = 19F;
+            this.Leg3A.z = 9F;
 
             //Leg4A.setRotationPoint(-5F, 19F, 9F);
-            this.Leg4A.rotationPointX = -5F;
-            this.Leg4A.rotationPointY = 19F;
-            this.Leg4A.rotationPointZ = 9F;
+            this.Leg4A.x = -5F;
+            this.Leg4A.y = 19F;
+            this.Leg4A.z = 9F;
 
-            this.Leg1.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
-            this.Leg2.rotateAngleX = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.4F * f1;
-            this.Leg3.rotateAngleX = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.4F * f1;
-            this.Leg4.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
+            this.Leg1.xRot = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
+            this.Leg2.xRot = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.4F * f1;
+            this.Leg3.xRot = MathHelper.cos((f * 0.6662F) + 3.141593F) * 1.4F * f1;
+            this.Leg4.xRot = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
 
-            this.Leg1.rotateAngleY = 0F;
-            this.Leg2.rotateAngleY = 0F;
-            this.Leg3.rotateAngleY = 0F;
-            this.Leg4.rotateAngleY = 0F;
+            this.Leg1.yRot = 0F;
+            this.Leg2.yRot = 0F;
+            this.Leg3.yRot = 0F;
+            this.Leg4.yRot = 0F;
 
-            this.Leg1A.rotateAngleX = this.Leg1.rotateAngleX;
-            this.Leg2A.rotateAngleX = this.Leg2.rotateAngleX;
-            this.Leg3A.rotateAngleX = this.Leg3.rotateAngleX;
-            this.Leg4A.rotateAngleX = this.Leg4.rotateAngleX;
+            this.Leg1A.xRot = this.Leg1.xRot;
+            this.Leg2A.xRot = this.Leg2.xRot;
+            this.Leg3A.xRot = this.Leg3.xRot;
+            this.Leg4A.xRot = this.Leg4.xRot;
 
             float latrot = MathHelper.cos(f / (1.919107651F * 1)) * 0.261799387799149F * f1 * 5;
-            this.Leg1.rotateAngleZ = latrot;
-            this.Leg1A.rotateAngleZ = latrot;
-            this.Leg4.rotateAngleZ = -latrot;
-            this.Leg4A.rotateAngleZ = -latrot;
+            this.Leg1.zRot = latrot;
+            this.Leg1A.zRot = latrot;
+            this.Leg4.zRot = -latrot;
+            this.Leg4A.zRot = -latrot;
 
-            this.Leg3.rotateAngleZ = latrot;
-            this.Leg3A.rotateAngleZ = latrot;
+            this.Leg3.zRot = latrot;
+            this.Leg3A.zRot = latrot;
 
-            this.Leg2.rotateAngleZ = -latrot;
-            this.Leg2A.rotateAngleZ = -latrot;
+            this.Leg2.zRot = -latrot;
+            this.Leg2A.zRot = -latrot;
 
             //Leg1.rotateAngleZ = MathHelper.cos(f / (1.919107651F * 1 )) * 0.261799387799149F * f1 *10;
             //Leg1A.rotateAngleZ = MathHelper.cos(f / (1.919107651F * 1 )) * 0.261799387799149F * f1 *10;
@@ -512,49 +512,49 @@ public class MoCModelCrocodile<T extends MoCEntityCrocodile> extends SegmentedMo
             //LArm.rotateAngleY = MathHelper.cos(f / (1.919107651F * 1 )) * -0.349065850398866F * f1 + 0.785398163397448F ;
 
         }
-        this.TailA.rotateAngleY = MathHelper.cos(f * 0.6662F) * 0.7F * f1;
-        this.TailB.rotateAngleY = this.TailA.rotateAngleY;
-        this.TailC.rotateAngleY = this.TailA.rotateAngleY;
-        this.TailD.rotateAngleY = this.TailA.rotateAngleY;
-        this.Spike0.rotateAngleY = this.TailA.rotateAngleY;
-        this.Spike1.rotateAngleY = this.TailA.rotateAngleY;
-        this.Spike2.rotateAngleY = this.TailA.rotateAngleY;
-        this.Spike3.rotateAngleY = this.TailA.rotateAngleY;
-        this.Spike4.rotateAngleY = this.TailA.rotateAngleY;
-        this.Spike5.rotateAngleY = this.TailA.rotateAngleY;
-        this.Spike6.rotateAngleY = this.TailA.rotateAngleY;
-        this.Spike7.rotateAngleY = this.TailA.rotateAngleY;
-        this.Spike8.rotateAngleY = this.TailA.rotateAngleY;
-        this.Spike9.rotateAngleY = this.TailA.rotateAngleY;
-        this.Spike10.rotateAngleY = this.TailA.rotateAngleY;
-        this.Spike11.rotateAngleY = this.TailA.rotateAngleY;
+        this.TailA.yRot = MathHelper.cos(f * 0.6662F) * 0.7F * f1;
+        this.TailB.yRot = this.TailA.yRot;
+        this.TailC.yRot = this.TailA.yRot;
+        this.TailD.yRot = this.TailA.yRot;
+        this.Spike0.yRot = this.TailA.yRot;
+        this.Spike1.yRot = this.TailA.yRot;
+        this.Spike2.yRot = this.TailA.yRot;
+        this.Spike3.yRot = this.TailA.yRot;
+        this.Spike4.yRot = this.TailA.yRot;
+        this.Spike5.yRot = this.TailA.yRot;
+        this.Spike6.yRot = this.TailA.yRot;
+        this.Spike7.yRot = this.TailA.yRot;
+        this.Spike8.yRot = this.TailA.yRot;
+        this.Spike9.yRot = this.TailA.yRot;
+        this.Spike10.yRot = this.TailA.yRot;
+        this.Spike11.yRot = this.TailA.yRot;
         float f25 = this.biteProgress;
         float f26 = f25;
         if (f25 >= 0.5F) {
             f26 = (0.5F - (f25 - 0.5F));
         }
-        this.UJaw.rotateAngleX = this.Head.rotateAngleX - f26;
-        this.UJaw2.rotateAngleX = this.UJaw.rotateAngleX;
-        this.LJaw.rotateAngleX = this.Head.rotateAngleX + (f26 / 2);
-        this.LJaw2.rotateAngleX = this.LJaw.rotateAngleX;
-        this.TeethA.rotateAngleX = this.LJaw.rotateAngleX;
-        this.TeethB.rotateAngleX = this.LJaw.rotateAngleX;
-        this.TeethC.rotateAngleX = this.LJaw.rotateAngleX;
-        this.TeethD.rotateAngleX = this.LJaw.rotateAngleX;
-        this.TeethF.rotateAngleX = this.LJaw.rotateAngleX;
-        this.TeethA.rotateAngleY = this.LJaw.rotateAngleY;
-        this.TeethB.rotateAngleY = this.LJaw.rotateAngleY;
-        this.TeethC.rotateAngleY = this.LJaw.rotateAngleY;
-        this.TeethD.rotateAngleY = this.LJaw.rotateAngleY;
-        this.TeethF.rotateAngleY = this.LJaw.rotateAngleY;
-        this.TeethA1.rotateAngleX = this.UJaw.rotateAngleX;
-        this.TeethB1.rotateAngleX = this.UJaw.rotateAngleX;
-        this.TeethC1.rotateAngleX = this.UJaw.rotateAngleX;
-        this.TeethD1.rotateAngleX = this.UJaw.rotateAngleX;
-        this.TeethA1.rotateAngleY = this.UJaw.rotateAngleY;
-        this.TeethB1.rotateAngleY = this.UJaw.rotateAngleY;
-        this.TeethC1.rotateAngleY = this.UJaw.rotateAngleY;
-        this.TeethD1.rotateAngleY = this.UJaw.rotateAngleY;
+        this.UJaw.xRot = this.Head.xRot - f26;
+        this.UJaw2.xRot = this.UJaw.xRot;
+        this.LJaw.xRot = this.Head.xRot + (f26 / 2);
+        this.LJaw2.xRot = this.LJaw.xRot;
+        this.TeethA.xRot = this.LJaw.xRot;
+        this.TeethB.xRot = this.LJaw.xRot;
+        this.TeethC.xRot = this.LJaw.xRot;
+        this.TeethD.xRot = this.LJaw.xRot;
+        this.TeethF.xRot = this.LJaw.xRot;
+        this.TeethA.yRot = this.LJaw.yRot;
+        this.TeethB.yRot = this.LJaw.yRot;
+        this.TeethC.yRot = this.LJaw.yRot;
+        this.TeethD.yRot = this.LJaw.yRot;
+        this.TeethF.yRot = this.LJaw.yRot;
+        this.TeethA1.xRot = this.UJaw.xRot;
+        this.TeethB1.xRot = this.UJaw.xRot;
+        this.TeethC1.xRot = this.UJaw.xRot;
+        this.TeethD1.xRot = this.UJaw.xRot;
+        this.TeethA1.yRot = this.UJaw.yRot;
+        this.TeethB1.yRot = this.UJaw.yRot;
+        this.TeethC1.yRot = this.UJaw.yRot;
+        this.TeethD1.yRot = this.UJaw.yRot;
 
     }
 

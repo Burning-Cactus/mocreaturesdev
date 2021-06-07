@@ -6,15 +6,17 @@ import net.minecraftforge.common.ToolType;
 
 import java.util.Random;
 
+import net.minecraft.block.AbstractBlock;
+
 public class MoCBlockGrass extends MoCBlock {
 
-    public MoCBlockGrass(Block.Properties builder) {
+    public MoCBlockGrass(AbstractBlock.Properties builder) {
         super(builder
-                .sound(SoundType.PLANT)
-                .hardnessAndResistance(0.5F)
+                .sound(SoundType.GRASS)
+                .strength(0.5F)
                 .harvestTool(ToolType.SHOVEL)
                 .harvestLevel(0)
-                .tickRandomly()
+                .randomTicks()
         );
     }
 

@@ -33,8 +33,8 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     private boolean transforming;
     private int tcounter;
     private int textCounter;
-    private static final DataParameter<Boolean> IS_HUMAN = EntityDataManager.createKey(MoCEntityWerewolf.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> IS_HUNCHED = EntityDataManager.createKey(MoCEntityWerewolf.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_HUMAN = EntityDataManager.defineId(MoCEntityWerewolf.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_HUNCHED = EntityDataManager.defineId(MoCEntityWerewolf.class, DataSerializers.BOOLEAN);
     
     public MoCEntityWerewolf(EntityType<? extends MoCEntityWerewolf> type, World world) {
         super(type, world);
@@ -54,16 +54,16 @@ public class MoCEntityWerewolf extends MoCEntityMob {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityMob.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 40.0D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 2.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
+                .add(Attributes.MAX_HEALTH, 40.0D)
+                .add(Attributes.ATTACK_DAMAGE, 2.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(IS_HUMAN, Boolean.valueOf(false));
-        this.dataManager.register(IS_HUNCHED, Boolean.valueOf(false));
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(IS_HUMAN, Boolean.valueOf(false));
+        this.entityData.define(IS_HUNCHED, Boolean.valueOf(false));
     }
 
     @Override
@@ -77,7 +77,7 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     @Override
     public void selectType() {
         if (getSubType() == 0) {
-            int k = this.rand.nextInt(100);
+            int k = this.random.nextInt(100);
             if (k <= 28) {
                 setType(1);
             } else if (k <= 56) {
@@ -127,39 +127,39 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     }
 
     public boolean getIsHumanForm() {
-        return this.dataManager.get(IS_HUMAN);
+        return this.entityData.get(IS_HUMAN);
     }
 
     public void setHumanForm(boolean flag) {
-        this.dataManager.set(IS_HUMAN, flag);
+        this.entityData.set(IS_HUMAN, flag);
     }
 
     public boolean getIsHunched() {
-        return this.dataManager.get(IS_HUNCHED);
+        return this.entityData.get(IS_HUNCHED);
     }
 
     public void setHunched(boolean flag) {
-        this.dataManager.set(IS_HUNCHED, flag);
+        this.entityData.set(IS_HUNCHED, flag);
     }
 
     @Override
-    public boolean attackEntityAsMob(Entity entityIn) {
+    public boolean doHurtTarget(Entity entityIn) {
         if (getIsHumanForm()) {
-            setAttackTarget(null);
+            setTarget(null);
             return false;
         }
         if (this.getSubType() == 4 && entityIn instanceof LivingEntity) {
-            ((LivingEntity) entityIn).setFire(10);
+            ((LivingEntity) entityIn).setSecondsOnFire(10);
         }
-        return super.attackEntityAsMob(entityIn);
+        return super.doHurtTarget(entityIn);
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        Entity entity = damagesource.getTrueSource();
+    public boolean hurt(DamageSource damagesource, float i) {
+        Entity entity = damagesource.getEntity();
         if (!getIsHumanForm() && (entity instanceof PlayerEntity)) {
             PlayerEntity entityplayer = (PlayerEntity) entity;
-            ItemStack stack = entityplayer.getHeldItemMainhand();
+            ItemStack stack = entityplayer.getMainHandItem();
             if (!stack.isEmpty()) {
                 i = 1F;
                 if (stack.getItem() == MoCItems.SILVERSWORD) {
@@ -167,22 +167,22 @@ public class MoCEntityWerewolf extends MoCEntityMob {
                 }
                 if (stack.getItem() instanceof SwordItem) {
                     String swordMaterial = ((SwordItem) stack.getItem()).getTier().toString(); //TODO: Figure out if this material check works
-                    String swordName = ((SwordItem) stack.getItem()).getName().toString();
+                    String swordName = ((SwordItem) stack.getItem()).getDescription().toString();
                     if (swordMaterial.toLowerCase().contains("silver") || swordName.toLowerCase().contains("silver")) {
-                        i = ((SwordItem) stack.getItem()).getAttackDamage() * 3F;
+                        i = ((SwordItem) stack.getItem()).getDamage() * 3F;
                     }
                 } else if (stack.getItem() instanceof ToolItem) {
                     String toolMaterial = ((ToolItem) stack.getItem()).getTier().toString();
-                    String toolName = ((ToolItem) stack.getItem()).getName().toString();
+                    String toolName = ((ToolItem) stack.getItem()).getDescription().toString();
                     if (toolMaterial.toLowerCase().contains("silver") || toolName.toLowerCase().contains("silver")) {
-                        i = ((SwordItem) stack.getItem()).getAttackDamage() * 2F;
+                        i = ((SwordItem) stack.getItem()).getDamage() * 2F;
                     }
-                } else if (stack.getItem().getName().toString().toLowerCase().contains("silver")) {
+                } else if (stack.getItem().getDescription().toString().toLowerCase().contains("silver")) {
                     i = 6F;
                 }
             }
         }
-        return super.attackEntityFrom(damagesource, i);
+        return super.hurt(damagesource, i);
     }
 
     @Override
@@ -276,32 +276,32 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     }
 
     public boolean IsNight() {
-        return !this.world.isDaytime();
+        return !this.level.isDay();
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
-        if (!this.world.isRemote) {
-            if (((IsNight() && getIsHumanForm()) || (!IsNight() && !getIsHumanForm())) && (this.rand.nextInt(250) == 0)) {
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level.isClientSide) {
+            if (((IsNight() && getIsHumanForm()) || (!IsNight() && !getIsHumanForm())) && (this.random.nextInt(250) == 0)) {
                 this.transforming = true;
             }
-            if (getIsHumanForm() && (this.getAttackTarget() != null)) {
-                setAttackTarget(null);
+            if (getIsHumanForm() && (this.getTarget() != null)) {
+                setTarget(null);
             }
-            if (this.getAttackTarget() != null && !getIsHumanForm()) {
-                boolean hunch = (this.getDistanceSq(this.getAttackTarget()) > 12D);
+            if (this.getTarget() != null && !getIsHumanForm()) {
+                boolean hunch = (this.distanceToSqr(this.getTarget()) > 12D);
                 setHunched(hunch);
             }
 
-            if (this.transforming && (this.rand.nextInt(3) == 0)) {
+            if (this.transforming && (this.random.nextInt(3) == 0)) {
                 this.tcounter++;
                 if ((this.tcounter % 2) == 0) {
-                    this.setPosition(this.getPosX()+0.3D, this.getPosY() + (this.tcounter/30), this.getPosZ());
-                    attackEntityFrom(DamageSource.causeMobDamage(this), 1);
+                    this.setPos(this.getX()+0.3D, this.getY() + (this.tcounter/30), this.getZ());
+                    hurt(DamageSource.mobAttack(this), 1);
                 }
                 if ((this.tcounter % 2) != 0) {
-                    this.setPosition(this.getPosX()-0.3D, this.getPosY(), this.getPosZ());
+                    this.setPos(this.getX()-0.3D, this.getY(), this.getZ());
                 }
                 if (this.tcounter == 10) {
                     MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_WEREWOLF_TRANSFORM);
@@ -313,10 +313,10 @@ public class MoCEntityWerewolf extends MoCEntityMob {
                 }
             }
             //so entity doesn't despawn that often
-            if (this.rand.nextInt(300) == 0) {
-                this.idleTime -= 100 * this.world.getDifficulty().getId();
-                if (this.idleTime  < 0) {
-                    this.idleTime  = 0;
+            if (this.random.nextInt(300) == 0) {
+                this.noActionTime -= 100 * this.level.getDifficulty().getId();
+                if (this.noActionTime  < 0) {
+                    this.noActionTime  = 0;
                 }
             }
         }
@@ -326,14 +326,14 @@ public class MoCEntityWerewolf extends MoCEntityMob {
         if (this.deathTime > 0) {
             return;
         }
-        int i = MathHelper.floor(this.getPosX());
+        int i = MathHelper.floor(this.getX());
         int j = MathHelper.floor(getBoundingBox().minY) + 1;
-        int k = MathHelper.floor(this.getPosZ());
+        int k = MathHelper.floor(this.getZ());
         float f = 0.1F;
         for (int l = 0; l < 30; l++) {
-            double d = i + this.world.rand.nextFloat();
-            double d1 = j + this.world.rand.nextFloat();
-            double d2 = k + this.world.rand.nextFloat();
+            double d = i + this.level.random.nextFloat();
+            double d1 = j + this.level.random.nextFloat();
+            double d2 = k + this.level.random.nextFloat();
             double d3 = d - i;
             double d4 = d1 - j;
             double d5 = d2 - k;
@@ -342,11 +342,11 @@ public class MoCEntityWerewolf extends MoCEntityMob {
             d4 /= d6;
             d5 /= d6;
             double d7 = 0.5D / ((d6 / f) + 0.1D);
-            d7 *= (this.world.rand.nextFloat() * this.world.rand.nextFloat()) + 0.3F;
+            d7 *= (this.level.random.nextFloat() * this.level.random.nextFloat()) + 0.3F;
             d3 *= d7;
             d4 *= d7;
             d5 *= d7;
-            this.world.addParticle(ParticleTypes.EXPLOSION, (d + (i * 1.0D)) / 2D, (d1 + (j * 1.0D)) / 2D, (d2 + (k * 1.0D)) / 2D,
+            this.level.addParticle(ParticleTypes.EXPLOSION, (d + (i * 1.0D)) / 2D, (d1 + (j * 1.0D)) / 2D, (d2 + (k * 1.0D)) / 2D,
                     d3, d4, d5);
         }
 
@@ -364,19 +364,19 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     }
 
     @Override
-    public void readAdditional(CompoundNBT nbttagcompound) {
-        super.readAdditional(nbttagcompound);
+    public void readAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.readAdditionalSaveData(nbttagcompound);
         setHumanForm(nbttagcompound.getBoolean("HumanForm"));
     }
 
     @Override
-    public void writeAdditional(CompoundNBT nbttagcompound) {
-        super.writeAdditional(nbttagcompound);
+    public void addAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.addAdditionalSaveData(nbttagcompound);
         nbttagcompound.putBoolean("HumanForm", getIsHumanForm());
     }
 
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         if (getIsHumanForm()) {
             return 0.1F;
         }
@@ -387,10 +387,10 @@ public class MoCEntityWerewolf extends MoCEntityMob {
     }
 
     @Override
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         if (getSubType() == 4) {
 //            this.isImmuneToFire = true; TODO: Fire immunity
         }
-        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 }

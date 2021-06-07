@@ -34,7 +34,7 @@ public class MoCRenderKittyBed extends LivingRenderer<MoCEntityKittyBed, MoCMode
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityKittyBed entitykittybed, MatrixStack stack, float f) {
+    protected void scale(MoCEntityKittyBed entitykittybed, MatrixStack stack, float f) {
         this.mycolor = entitykittybed.getSheetColor();
         this.kittybed.hasMilk = entitykittybed.getHasMilk();
         this.kittybed.hasFood = entitykittybed.getHasFood();
@@ -43,7 +43,7 @@ public class MoCRenderKittyBed extends LivingRenderer<MoCEntityKittyBed, MoCMode
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityKittyBed entitykittybed) {
+    public ResourceLocation getTextureLocation(MoCEntityKittyBed entitykittybed) {
         return entitykittybed.getTexture();
     }
 
@@ -71,10 +71,10 @@ public class MoCRenderKittyBed extends LivingRenderer<MoCEntityKittyBed, MoCMode
             float f8 = 0.35F;
             int j = this.mocRenderer.mycolor;
 //            GL11.glColor3f(f8 * fleeceColorTable[j][0], f8 * fleeceColorTable[j][1], f8 * fleeceColorTable[j][2]);
-            IVertexBuilder builder = bufferIn.getBuffer(RenderType.getEntityCutout(mocRenderer.getEntityTexture(entitylivingbaseIn)));
+            IVertexBuilder builder = bufferIn.getBuffer(RenderType.entityCutout(mocRenderer.getTextureLocation(entitylivingbaseIn)));
 //            this.mocModel.setModelAttributes(this.mocRenderer.getEntityModel());
-            this.mocModel.setLivingAnimations(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks);
-            this.mocModel.render(matrixStackIn, builder, packedLightIn, getPackedOverlay(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+            this.mocModel.prepareMobModel(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks);
+            this.mocModel.renderToBuffer(matrixStackIn, builder, packedLightIn, getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 }

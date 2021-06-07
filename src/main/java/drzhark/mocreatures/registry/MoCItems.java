@@ -264,215 +264,215 @@ public class MoCItems {
         @SubscribeEvent
         public static void registerItems(final RegistryEvent.Register<Item> event) {
             List<Item> items = new ArrayList<>(Arrays.asList(
-                    new MoCItemHorseSaddle(new Item.Properties().group(MoCItemGroup.TABMOC).maxStackSize(32)).setRegistryName("horsesaddle"),                    //HORSESADLLE
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("sharkteeth"),           //SHARKTEETH
-                    new MoCItemHayStack(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("haystack"),     //HAYSTACK
-                    new MoCItemSugarLump(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("sugarlump"),   //SUGARLUMP
-                    new MoCItemEgg(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("mocegg"),            //MOCEGG
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("bigcatclaw"),           //BIGCATCLAW
-                    new MoCItemWhip(new Item.Properties().group(MoCItemGroup.TABMOC).maxStackSize(1).maxDamage(24)).setRegistryName("whip"),                                  //WHIP
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("medallion"),            //MEDALLION
-                    new MoCItemLitterBox(new Item.Properties().group(MoCItemGroup.TABMOC).maxStackSize(16)).setRegistryName("litterbox"),                        //LITTERBOX
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("woolball"),             //WOOLBALL
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("petfood"),              //PETFOOD
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("hidecroc"),             //HIDECROC
-                    new MoCItemArmor(MoCArmorMaterial.CROCARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("platecroc"),
-                    new MoCItemArmor(MoCArmorMaterial.CROCARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("helmetcroc"),
-                    new MoCItemArmor(MoCArmorMaterial.CROCARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("legscroc"),
-                    new MoCItemArmor(MoCArmorMaterial.CROCARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("bootscroc"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("fur"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC).food(MoCFoods.OMELET)).setRegistryName("omelet"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC).food(MoCFoods.TURTLE_RAW)).setRegistryName("turtle_raw"),
-                    new MoCItemTurtleSoup(new Item.Properties().group(MoCItemGroup.TABMOC).food(MoCFoods.TURTLE_SOUP)).setRegistryName("turtle_soup"),
-                    new ItemStaffPortal(new Item.Properties().group(MoCItemGroup.TABMOC).maxStackSize(1).maxDamage(3)).setRegistryName("staffportal"),                       //STAFFPORTAL
-                    new ItemStaffTeleport(new Item.Properties().group(MoCItemGroup.TABMOC).maxStackSize(1).maxDamage(128)).setRegistryName("staffteleport"),                   //STAFFTELEPORT
-                    new ItemBuilderHammer(new Item.Properties().group(MoCItemGroup.TABMOC).maxStackSize(1).maxDamage(2048)).setRegistryName("builderhammer"),                   //BUILDERHAMMER
+                    new MoCItemHorseSaddle(new Item.Properties().tab(MoCItemGroup.TABMOC).stacksTo(32)).setRegistryName("horsesaddle"),                    //HORSESADLLE
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("sharkteeth"),           //SHARKTEETH
+                    new MoCItemHayStack(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("haystack"),     //HAYSTACK
+                    new MoCItemSugarLump(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("sugarlump"),   //SUGARLUMP
+                    new MoCItemEgg(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("mocegg"),            //MOCEGG
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("bigcatclaw"),           //BIGCATCLAW
+                    new MoCItemWhip(new Item.Properties().tab(MoCItemGroup.TABMOC).stacksTo(1).durability(24)).setRegistryName("whip"),                                  //WHIP
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("medallion"),            //MEDALLION
+                    new MoCItemLitterBox(new Item.Properties().tab(MoCItemGroup.TABMOC).stacksTo(16)).setRegistryName("litterbox"),                        //LITTERBOX
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("woolball"),             //WOOLBALL
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("petfood"),              //PETFOOD
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("hidecroc"),             //HIDECROC
+                    new MoCItemArmor(MoCArmorMaterial.CROCARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("platecroc"),
+                    new MoCItemArmor(MoCArmorMaterial.CROCARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("helmetcroc"),
+                    new MoCItemArmor(MoCArmorMaterial.CROCARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("legscroc"),
+                    new MoCItemArmor(MoCArmorMaterial.CROCARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("bootscroc"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("fur"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC).food(MoCFoods.OMELET)).setRegistryName("omelet"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC).food(MoCFoods.TURTLE_RAW)).setRegistryName("turtle_raw"),
+                    new MoCItemTurtleSoup(new Item.Properties().tab(MoCItemGroup.TABMOC).food(MoCFoods.TURTLE_SOUP)).setRegistryName("turtle_soup"),
+                    new ItemStaffPortal(new Item.Properties().tab(MoCItemGroup.TABMOC).stacksTo(1).durability(3)).setRegistryName("staffportal"),                       //STAFFPORTAL
+                    new ItemStaffTeleport(new Item.Properties().tab(MoCItemGroup.TABMOC).stacksTo(1).durability(128)).setRegistryName("staffteleport"),                   //STAFFTELEPORT
+                    new ItemBuilderHammer(new Item.Properties().tab(MoCItemGroup.TABMOC).stacksTo(1).durability(2048)).setRegistryName("builderhammer"),                   //BUILDERHAMMER
 
-                    new MoCItemSword(ItemTier.IRON, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("nunchaku"),
-                    new MoCItemSword(ItemTier.IRON, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("sai"),
-                    new MoCItemSword(ItemTier.IRON, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("bo"),
-                    new MoCItemSword(ItemTier.IRON, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("katana"),
-                    new MoCItemSword(ItemTier.IRON, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("sharksword"),
-                    new MoCItemSword(MoCItemTier.SILVER, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("silversword"),
+                    new MoCItemSword(ItemTier.IRON, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("nunchaku"),
+                    new MoCItemSword(ItemTier.IRON, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("sai"),
+                    new MoCItemSword(ItemTier.IRON, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("bo"),
+                    new MoCItemSword(ItemTier.IRON, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("katana"),
+                    new MoCItemSword(ItemTier.IRON, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("sharksword"),
+                    new MoCItemSword(MoCItemTier.SILVER, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("silversword"),
 
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("essencedarkness"),      //ESSENCEDARKNESS
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("essencefire"),          //ESSENCEFIRE
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("essenceundead"),        //ESSENCEUNDEAD
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("essencelight"),         //ESSENCELIGHT
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("essencedarkness"),      //ESSENCEDARKNESS
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("essencefire"),          //ESSENCEFIRE
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("essenceundead"),        //ESSENCEUNDEAD
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("essencelight"),         //ESSENCELIGHT
 
-                    new MoCItemHorseAmulet(new Item.Properties().group(MoCItemGroup.TABMOC).maxStackSize(1)).setRegistryName("amuletbone"),                     //AMULETBONE
-                    new MoCItemHorseAmulet(new Item.Properties().group(MoCItemGroup.TABMOC).maxStackSize(1)).setRegistryName("amuletbonefull"),
-                    new MoCItemHorseAmulet(new Item.Properties().group(MoCItemGroup.TABMOC).maxStackSize(1)).setRegistryName("amuletghost"),
-                    new MoCItemHorseAmulet(new Item.Properties().group(MoCItemGroup.TABMOC).maxStackSize(1)).setRegistryName("amuletghostfull"),
-                    new MoCItemHorseAmulet(new Item.Properties().group(MoCItemGroup.TABMOC).maxStackSize(1)).setRegistryName("amuletfairy"),
-                    new MoCItemHorseAmulet(new Item.Properties().group(MoCItemGroup.TABMOC).maxStackSize(1)).setRegistryName("amuletfairyfull"),
-                    new MoCItemHorseAmulet(new Item.Properties().group(MoCItemGroup.TABMOC).maxStackSize(1)).setRegistryName("amuletpegasus"),
-                    new MoCItemHorseAmulet(new Item.Properties().group(MoCItemGroup.TABMOC).maxStackSize(1)).setRegistryName("amuletpegasusfull"),
-                    new MoCItemPetAmulet(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("fishnet"),
-                    new MoCItemPetAmulet(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("fishnetfull"),
-                    new MoCItemPetAmulet(new Item.Properties().group(MoCItemGroup.TABMOC), 1).setRegistryName("petamulet"),
-                    new MoCItemPetAmulet(new Item.Properties().group(MoCItemGroup.TABMOC), 1).setRegistryName("petamuletfull"),
+                    new MoCItemHorseAmulet(new Item.Properties().tab(MoCItemGroup.TABMOC).stacksTo(1)).setRegistryName("amuletbone"),                     //AMULETBONE
+                    new MoCItemHorseAmulet(new Item.Properties().tab(MoCItemGroup.TABMOC).stacksTo(1)).setRegistryName("amuletbonefull"),
+                    new MoCItemHorseAmulet(new Item.Properties().tab(MoCItemGroup.TABMOC).stacksTo(1)).setRegistryName("amuletghost"),
+                    new MoCItemHorseAmulet(new Item.Properties().tab(MoCItemGroup.TABMOC).stacksTo(1)).setRegistryName("amuletghostfull"),
+                    new MoCItemHorseAmulet(new Item.Properties().tab(MoCItemGroup.TABMOC).stacksTo(1)).setRegistryName("amuletfairy"),
+                    new MoCItemHorseAmulet(new Item.Properties().tab(MoCItemGroup.TABMOC).stacksTo(1)).setRegistryName("amuletfairyfull"),
+                    new MoCItemHorseAmulet(new Item.Properties().tab(MoCItemGroup.TABMOC).stacksTo(1)).setRegistryName("amuletpegasus"),
+                    new MoCItemHorseAmulet(new Item.Properties().tab(MoCItemGroup.TABMOC).stacksTo(1)).setRegistryName("amuletpegasusfull"),
+                    new MoCItemPetAmulet(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("fishnet"),
+                    new MoCItemPetAmulet(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("fishnetfull"),
+                    new MoCItemPetAmulet(new Item.Properties().tab(MoCItemGroup.TABMOC), 1).setRegistryName("petamulet"),
+                    new MoCItemPetAmulet(new Item.Properties().tab(MoCItemGroup.TABMOC), 1).setRegistryName("petamuletfull"),
 
-                    new MoCItemArmor(MoCArmorMaterial.FURARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("chestfur"),
-                    new MoCItemArmor(MoCArmorMaterial.FURARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("helmetfur"),
-                    new MoCItemArmor(MoCArmorMaterial.FURARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("legsfur"),
-                    new MoCItemArmor(MoCArmorMaterial.FURARMOR, 4, EquipmentSlotType.FEET, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("bootsfur"),
+                    new MoCItemArmor(MoCArmorMaterial.FURARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("chestfur"),
+                    new MoCItemArmor(MoCArmorMaterial.FURARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("helmetfur"),
+                    new MoCItemArmor(MoCArmorMaterial.FURARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("legsfur"),
+                    new MoCItemArmor(MoCArmorMaterial.FURARMOR, 4, EquipmentSlotType.FEET, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("bootsfur"),
 
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("heartdarkness"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("heartfire"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("heartundead"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("unicornhorn"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC).food(MoCFoods.OSTRICH_RAW)).setRegistryName("ostrich_raw"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC).food(MoCFoods.OSTRICH_COOKED)).setRegistryName("ostrich_cooked"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("horsearmorcrystal"),
-                    new MoCItemRecord(0,  MoCSoundEvents.ITEM_RECORD_SHUFFLING, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("recordshuffle"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("heartdarkness"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("heartfire"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("heartundead"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("unicornhorn"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC).food(MoCFoods.OSTRICH_RAW)).setRegistryName("ostrich_raw"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC).food(MoCFoods.OSTRICH_COOKED)).setRegistryName("ostrich_cooked"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("horsearmorcrystal"),
+                    new MoCItemRecord(0,  MoCSoundEvents.ITEM_RECORD_SHUFFLING, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("recordshuffle"),
 
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("animalhide"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC).food(MoCFoods.TURKEY_RAW)).setRegistryName("turkey_raw"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC).food(MoCFoods.TURKEY_COOKED)).setRegistryName("turkey_cooked"),
-                    new MoCItemArmor(MoCArmorMaterial.HIDEARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("chesthide"),
-                    new MoCItemArmor(MoCArmorMaterial.HIDEARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("helmethide"),
-                    new MoCItemArmor(MoCArmorMaterial.HIDEARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("legshide"),
-                    new MoCItemArmor(MoCArmorMaterial.HIDEARMOR, 4, EquipmentSlotType.FEET, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("bootshide"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC).food(MoCFoods.RAT_RAW)).setRegistryName("rat_raw"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC).food(MoCFoods.RAT_COOKED)).setRegistryName("rat_cooked"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC).food(MoCFoods.RAT_BURGER)).setRegistryName("rat_burger"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("animalhide"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC).food(MoCFoods.TURKEY_RAW)).setRegistryName("turkey_raw"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC).food(MoCFoods.TURKEY_COOKED)).setRegistryName("turkey_cooked"),
+                    new MoCItemArmor(MoCArmorMaterial.HIDEARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("chesthide"),
+                    new MoCItemArmor(MoCArmorMaterial.HIDEARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("helmethide"),
+                    new MoCItemArmor(MoCArmorMaterial.HIDEARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("legshide"),
+                    new MoCItemArmor(MoCArmorMaterial.HIDEARMOR, 4, EquipmentSlotType.FEET, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("bootshide"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC).food(MoCFoods.RAT_RAW)).setRegistryName("rat_raw"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC).food(MoCFoods.RAT_COOKED)).setRegistryName("rat_cooked"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC).food(MoCFoods.RAT_BURGER)).setRegistryName("rat_burger"),
 
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("chitincave"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("chitinfrost"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("chitinnether"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("chitin"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("chitincave"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("chitinfrost"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("chitinnether"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("chitin"),
 
-                    new MoCItemSword(ItemTier.IRON, 0, 0, 1, false, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorpsworddirt"),
-                    new MoCItemSword(ItemTier.IRON, 0, 0, 2, false, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorpswordfrost"),
-                    new MoCItemSword(ItemTier.IRON, 0, 0, 3, false, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorpswordnether"),
-                    new MoCItemSword(ItemTier.IRON, 0, 0, 4, false, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorpswordcave"),
+                    new MoCItemSword(ItemTier.IRON, 0, 0, 1, false, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorpsworddirt"),
+                    new MoCItemSword(ItemTier.IRON, 0, 0, 2, false, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorpswordfrost"),
+                    new MoCItemSword(ItemTier.IRON, 0, 0, 3, false, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorpswordnether"),
+                    new MoCItemSword(ItemTier.IRON, 0, 0, 4, false, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorpswordcave"),
 
-                    new MoCItemArmor(MoCArmorMaterial.SCORPDARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorpplatedirt"),
-                    new MoCItemArmor(MoCArmorMaterial.SCORPDARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorphelmetdirt"),
-                    new MoCItemArmor(MoCArmorMaterial.SCORPDARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorplegsdirt"),
-                    new MoCItemArmor(MoCArmorMaterial.SCORPDARMOR, 4, EquipmentSlotType.FEET, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorpbootsdirt"),
+                    new MoCItemArmor(MoCArmorMaterial.SCORPDARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorpplatedirt"),
+                    new MoCItemArmor(MoCArmorMaterial.SCORPDARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorphelmetdirt"),
+                    new MoCItemArmor(MoCArmorMaterial.SCORPDARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorplegsdirt"),
+                    new MoCItemArmor(MoCArmorMaterial.SCORPDARMOR, 4, EquipmentSlotType.FEET, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorpbootsdirt"),
 
-                    new MoCItemArmor(MoCArmorMaterial.SCORPFARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorphelmetfrost"),
-                    new MoCItemArmor(MoCArmorMaterial.SCORPFARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorpplatefrost"),
-                    new MoCItemArmor(MoCArmorMaterial.SCORPFARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorplegsfrost"),
-                    new MoCItemArmor(MoCArmorMaterial.SCORPFARMOR, 4, EquipmentSlotType.FEET, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorpbootsfrost"),
+                    new MoCItemArmor(MoCArmorMaterial.SCORPFARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorphelmetfrost"),
+                    new MoCItemArmor(MoCArmorMaterial.SCORPFARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorpplatefrost"),
+                    new MoCItemArmor(MoCArmorMaterial.SCORPFARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorplegsfrost"),
+                    new MoCItemArmor(MoCArmorMaterial.SCORPFARMOR, 4, EquipmentSlotType.FEET, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorpbootsfrost"),
 
-                    new MoCItemArmor(MoCArmorMaterial.SCORPNARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorphelmetnether"),
-                    new MoCItemArmor(MoCArmorMaterial.SCORPNARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorpplatenether"),
-                    new MoCItemArmor(MoCArmorMaterial.SCORPNARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorplegsnether"),
-                    new MoCItemArmor(MoCArmorMaterial.SCORPNARMOR, 4, EquipmentSlotType.FEET, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorpbootsnether"),
+                    new MoCItemArmor(MoCArmorMaterial.SCORPNARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorphelmetnether"),
+                    new MoCItemArmor(MoCArmorMaterial.SCORPNARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorpplatenether"),
+                    new MoCItemArmor(MoCArmorMaterial.SCORPNARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorplegsnether"),
+                    new MoCItemArmor(MoCArmorMaterial.SCORPNARMOR, 4, EquipmentSlotType.FEET, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorpbootsnether"),
 
-                    new MoCItemArmor(MoCArmorMaterial.SCORPCARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorphelmetcave"),
-                    new MoCItemArmor(MoCArmorMaterial.SCORPCARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorpplatecave"),
-                    new MoCItemArmor(MoCArmorMaterial.SCORPCARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorplegscave"),
-                    new MoCItemArmor(MoCArmorMaterial.SCORPCARMOR, 4, EquipmentSlotType.FEET, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorpbootscave"),
+                    new MoCItemArmor(MoCArmorMaterial.SCORPCARMOR, 4, EquipmentSlotType.HEAD, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorphelmetcave"),
+                    new MoCItemArmor(MoCArmorMaterial.SCORPCARMOR, 4, EquipmentSlotType.CHEST, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorpplatecave"),
+                    new MoCItemArmor(MoCArmorMaterial.SCORPCARMOR, 4, EquipmentSlotType.LEGS, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorplegscave"),
+                    new MoCItemArmor(MoCArmorMaterial.SCORPCARMOR, 4, EquipmentSlotType.FEET, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorpbootscave"),
 
-                    new MoCItemWeapon(ItemTier.GOLD, 1, true, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorpstingdirt"),
-                    new MoCItemWeapon(ItemTier.GOLD, 2, true, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorpstingfrost"),
-                    new MoCItemWeapon(ItemTier.GOLD, 3, true, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorpstingnether"),
-                    new MoCItemWeapon(ItemTier.GOLD, 4, true, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scorpstingcave"),
+                    new MoCItemWeapon(ItemTier.GOLD, 1, true, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorpstingdirt"),
+                    new MoCItemWeapon(ItemTier.GOLD, 2, true, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorpstingfrost"),
+                    new MoCItemWeapon(ItemTier.GOLD, 3, true, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorpstingnether"),
+                    new MoCItemWeapon(ItemTier.GOLD, 4, true, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scorpstingcave"),
 
-                    new MoCItemWeapon(ItemTier.WOOD, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("tuskswood"),
-                    new MoCItemWeapon(ItemTier.IRON, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("tusksiron"),
-                    new MoCItemWeapon(ItemTier.DIAMOND, new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("tusksdiamond"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("elephantchest"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("elephantgarment"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("elephantharness"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("elephanthowdah"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("mammothplatform"),
+                    new MoCItemWeapon(ItemTier.WOOD, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("tuskswood"),
+                    new MoCItemWeapon(ItemTier.IRON, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("tusksiron"),
+                    new MoCItemWeapon(ItemTier.DIAMOND, new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("tusksdiamond"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("elephantchest"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("elephantgarment"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("elephantharness"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("elephanthowdah"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("mammothplatform"),
 
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scrolloffreedom"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scrollofsale"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC)).setRegistryName("scrollofowner"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC).food(MoCFoods.CRAB_RAW)).setRegistryName("crab_raw"),
-                    new MoCItem(new Item.Properties().group(MoCItemGroup.TABMOC).food(MoCFoods.CRAB_COOKED)).setRegistryName("crab_cooked")
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scrolloffreedom"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scrollofsale"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC)).setRegistryName("scrollofowner"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC).food(MoCFoods.CRAB_RAW)).setRegistryName("crab_raw"),
+                    new MoCItem(new Item.Properties().tab(MoCItemGroup.TABMOC).food(MoCFoods.CRAB_COOKED)).setRegistryName("crab_cooked")
             ));
 
             Item[] spawnEggs = {
-                    new SpawnEggItem(MoCEntities.BIRD, 14020607, 14020607, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("bird_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.BLACK_BEAR, 10, 1, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("black_bear_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.BOAR, 14772545, 9141102, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("boar_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.BUNNY, 12623485, 9141102, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("bunny_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.CROCODILE, 16711680, 65407, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("crocodile_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.DEER, 14021607, 33023, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("deer_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.DUCK, 14021607, 15656192, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("duck_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.ELEPHANT, 14772545, 23423, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("elephant_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.ENT, 12623485, 16711680, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("ent_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.FOX, 14772545, 5253242, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("fox_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.GOAT, 7434694, 6053069, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("goat_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.GRIZZLY_BEAR, 14772545, 1, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("grizzly_bear_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.KITTY, 12623485, 5253242, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("kitty_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.KOMODO_DRAGON, 16711680, 23423, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("komodo_dragon_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.LEOGER, 14772545, 14772545, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("leoger_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.LEOPARD, 13749760, 10, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("leopard_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.LIARD, 15313474, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("liard_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.LION, 15313474, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("lion_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.LIGER, 15313474, 12623485, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("liger_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.LITHER, 15313474, 14772545, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("lither_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.BIRD, 14020607, 14020607, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("bird_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.BLACK_BEAR, 10, 1, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("black_bear_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.BOAR, 14772545, 9141102, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("boar_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.BUNNY, 12623485, 9141102, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("bunny_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.CROCODILE, 16711680, 65407, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("crocodile_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.DEER, 14021607, 33023, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("deer_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.DUCK, 14021607, 15656192, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("duck_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.ELEPHANT, 14772545, 23423, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("elephant_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.ENT, 12623485, 16711680, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("ent_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.FOX, 14772545, 5253242, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("fox_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.GOAT, 7434694, 6053069, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("goat_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.GRIZZLY_BEAR, 14772545, 1, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("grizzly_bear_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.KITTY, 12623485, 5253242, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("kitty_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.KOMODO_DRAGON, 16711680, 23423, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("komodo_dragon_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.LEOGER, 14772545, 14772545, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("leoger_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.LEOPARD, 13749760, 10, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("leopard_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.LIARD, 15313474, 13749760, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("liard_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.LION, 15313474, 13749760, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("lion_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.LIGER, 15313474, 12623485, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("liger_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.LITHER, 15313474, 14772545, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("lither_spawn_egg"),
                     //Manticore pet spawn egg
-                    new SpawnEggItem(MoCEntities.MOLE, 14020607, 16711680, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("mole_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.MOUSE, 14772545, 0, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("mouse_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.OSTRICH, 14020607, 9639167, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("ostrich_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.PANDA_BEAR, 10, 9141102, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("panda_bear_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.PANTHARD, 10, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("panthard_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.PANTHER, 10, 205, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("panther_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.PANTHGER, 10, 14772545, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("panthger_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.MOLE, 14020607, 16711680, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("mole_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.MOUSE, 14772545, 0, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("mouse_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.OSTRICH, 14020607, 9639167, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("ostrich_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.PANDA_BEAR, 10, 9141102, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("panda_bear_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.PANTHARD, 10, 13749760, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("panthard_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.PANTHER, 10, 205, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("panther_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.PANTHGER, 10, 14772545, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("panthger_spawn_egg"),
                     //Pet scorpion spawn egg
-                    new SpawnEggItem(MoCEntities.POLAR_BEAR, 14020607, 9141102, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("polar_bear_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.RACCOON, 14772545, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("raccoon_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.SNAKE, 14020607, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("snake_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.TIGER, 14772545, 0, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("tiger_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.TURTLE, 14772545, 9320590, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("turtle_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.TURKEY, 14020607, 16711680, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("turkey_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.WILDHORSE, 12623485, 15656192, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("wildhorse_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.WYVERN, 14772545, 65407, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("wyvern_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.POLAR_BEAR, 14020607, 9141102, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("polar_bear_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.RACCOON, 14772545, 13749760, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("raccoon_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.SNAKE, 14020607, 13749760, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("snake_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.TIGER, 14772545, 0, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("tiger_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.TURTLE, 14772545, 9320590, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("turtle_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.TURKEY, 14020607, 16711680, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("turkey_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.WILDHORSE, 12623485, 15656192, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("wildhorse_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.WYVERN, 14772545, 65407, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("wyvern_spawn_egg"),
 
-                    new SpawnEggItem(MoCEntities.BIG_GOLEM, 16711680, 16622, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("big_golem_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.CAVE_OGRE, 16711680, 33023, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("cave_ogre_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.FIRE_OGRE, 16711680, 9320595, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("fire_ogre_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.GREEN_OGRE, 16711680, 65407, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("green_ogre_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.FLAME_WRAITH, 16711680, 12623485, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("flame_wraith_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.HORSEMOB, 16711680, 9320590, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("horsemob_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.HELLRAT, 16711680, 14772545, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("hellrat_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.MANTICORE, 16711680, 0, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("manticore_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.MINI_GOLEM, 16711680, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("mini_golem_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.RAT, 16711680, 9141102, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("rat_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.SILVER_SKELETON, 16711680, 33023, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("silver_skeleton_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.SCORPION, 16711680, 6053069, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("scorpion_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.WEREWOLF, 16711680, 7434694, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("werewolf_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.WRAITH, 16711680, 0, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("wraith_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.WWOLF, 16711680, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("wwolf_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.BIG_GOLEM, 16711680, 16622, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("big_golem_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.CAVE_OGRE, 16711680, 33023, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("cave_ogre_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.FIRE_OGRE, 16711680, 9320595, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("fire_ogre_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.GREEN_OGRE, 16711680, 65407, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("green_ogre_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.FLAME_WRAITH, 16711680, 12623485, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("flame_wraith_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.HORSEMOB, 16711680, 9320590, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("horsemob_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.HELLRAT, 16711680, 14772545, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("hellrat_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.MANTICORE, 16711680, 0, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("manticore_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.MINI_GOLEM, 16711680, 13749760, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("mini_golem_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.RAT, 16711680, 9141102, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("rat_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.SILVER_SKELETON, 16711680, 33023, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("silver_skeleton_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.SCORPION, 16711680, 6053069, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("scorpion_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.WEREWOLF, 16711680, 7434694, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("werewolf_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.WRAITH, 16711680, 0, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("wraith_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.WWOLF, 16711680, 13749760, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("wwolf_spawn_egg"),
 
-                    new SpawnEggItem(MoCEntities.ANCHOVY, 5665535, 205, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("anchovy_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.ANGELFISH, 5665535, 7434694, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("angelfish_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.ANGLER, 5665535, 10, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("angler_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.BASS, 33023, 2372490, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("bass_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.CLOWNFISH, 5665535, 14772545, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("clownfish_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.COD, 33023, 16622, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("cod_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.DOLPHIN, 33023, 15631086, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("dolphin_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.FISHY, 5665535, 65407, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("fishy_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.GOLDFISH, 5665535, 15656192, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("goldfish_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.HIPPOTANG, 5665535, 2037680, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("hippotang_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.JELLYFISH, 33023, 14772545, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("jellyfish_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.MANDERIN, 5665535, 12623485, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("manderin_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.PIRANHA, 33023, 16711680, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("piranha_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.SALMON, 33023, 12623485, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("salmon_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.MANTARAY, 33023, 9141102, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("mantaray_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.SHARK, 33023, 9013643, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("shark_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.STINGRAY, 33023, 6053069, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("stingray_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.ANCHOVY, 5665535, 205, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("anchovy_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.ANGELFISH, 5665535, 7434694, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("angelfish_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.ANGLER, 5665535, 10, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("angler_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.BASS, 33023, 2372490, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("bass_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.CLOWNFISH, 5665535, 14772545, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("clownfish_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.COD, 33023, 16622, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("cod_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.DOLPHIN, 33023, 15631086, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("dolphin_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.FISHY, 5665535, 65407, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("fishy_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.GOLDFISH, 5665535, 15656192, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("goldfish_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.HIPPOTANG, 5665535, 2037680, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("hippotang_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.JELLYFISH, 33023, 14772545, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("jellyfish_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.MANDERIN, 5665535, 12623485, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("manderin_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.PIRANHA, 33023, 16711680, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("piranha_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.SALMON, 33023, 12623485, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("salmon_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.MANTARAY, 33023, 9141102, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("mantaray_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.SHARK, 33023, 9013643, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("shark_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.STINGRAY, 33023, 6053069, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("stingray_spawn_egg"),
 
-                    new SpawnEggItem(MoCEntities.ANT, 65407, 12623485, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("ant_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.BEE, 65407, 15656192, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("bee_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.BUTTERFLY, 65407, 7434694, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("butterfly_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.CRAB, 65407, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("crab_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.CRICKET, 65407, 16622, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("cricket_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.DRAGONFLY, 65407, 14020607, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("dragonfly_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.FIREFLY, 65407, 9320590, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("firefly_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.FLY, 65407, 1, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("fly_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.MAGGOT, 65407, 9141102, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("maggot_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.SNAIL, 65407, 14772545, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("snail_spawn_egg"),
-                    new SpawnEggItem(MoCEntities.ROACH, 65407, 13749760, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("roach_spawn_egg")
+                    new SpawnEggItem(MoCEntities.ANT, 65407, 12623485, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("ant_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.BEE, 65407, 15656192, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("bee_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.BUTTERFLY, 65407, 7434694, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("butterfly_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.CRAB, 65407, 13749760, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("crab_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.CRICKET, 65407, 16622, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("cricket_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.DRAGONFLY, 65407, 14020607, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("dragonfly_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.FIREFLY, 65407, 9320590, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("firefly_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.FLY, 65407, 1, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("fly_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.MAGGOT, 65407, 9141102, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("maggot_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.SNAIL, 65407, 14772545, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("snail_spawn_egg"),
+                    new SpawnEggItem(MoCEntities.ROACH, 65407, 13749760, new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName("roach_spawn_egg")
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();
@@ -494,16 +494,16 @@ public class MoCItems {
             /**
              * Dispense the specified stack
              */
-            public ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-                Direction direction = source.getBlockState().get(DispenserBlock.FACING);
+            public ItemStack execute(IBlockSource source, ItemStack stack) {
+                Direction direction = source.getBlockState().getValue(DispenserBlock.FACING);
                 EntityType<?> entitytype = ((SpawnEggItem)stack.getItem()).getType(stack.getTag());
-                entitytype.spawn(source.getWorld(), stack, (PlayerEntity)null, source.getBlockPos().offset(direction), SpawnReason.DISPENSER, direction != Direction.UP, false);
+                entitytype.spawn(source.getLevel(), stack, (PlayerEntity)null, source.getPos().relative(direction), SpawnReason.DISPENSER, direction != Direction.UP, false);
                 stack.shrink(1);
                 return stack;
             }
         };
         for(SpawnEggItem spawneggitem : RegistrationHandler.SPAWN_EGGS) {
-            DispenserBlock.registerDispenseBehavior(spawneggitem, defaultdispenseitembehavior);
+            DispenserBlock.registerBehavior(spawneggitem, defaultdispenseitembehavior);
         }
     }
 }

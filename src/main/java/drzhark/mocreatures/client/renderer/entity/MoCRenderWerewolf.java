@@ -35,7 +35,7 @@ public class MoCRenderWerewolf extends LivingRenderer<MoCEntityWerewolf, MoCMode
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityWerewolf entitywerewolf) {
+    public ResourceLocation getTextureLocation(MoCEntityWerewolf entitywerewolf) {
         return entitywerewolf.getTexture();
     }
 
@@ -82,10 +82,10 @@ public class MoCRenderWerewolf extends LivingRenderer<MoCEntityWerewolf, MoCMode
 
             }
 
-            this.mocModel.setModelAttributes(mocModel);
-            this.mocModel.setLivingAnimations(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks);
-            IVertexBuilder builder = bufferIn.getBuffer(RenderType.getEntityCutout(texture));
-            this.mocModel.render(matrixStackIn, builder, packedLightIn, getPackedOverlay(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+            this.mocModel.copyPropertiesTo(mocModel);
+            this.mocModel.prepareMobModel(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks);
+            IVertexBuilder builder = bufferIn.getBuffer(RenderType.entityCutout(texture));
+            this.mocModel.renderToBuffer(matrixStackIn, builder, packedLightIn, getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 }

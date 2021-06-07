@@ -300,6 +300,6 @@ public class MoCEnUSLangProvider extends MoCLangProvider {
         add(MoCItems.SNAIL_SPAWN_EGG, "Snail Spawn Egg");
         add(MoCItems.ROACH_SPAWN_EGG, "Roach Spawn Egg");
 
-        add(MoCItemGroup.TABMOC.func_242392_c().getString(), "Mo' Creatures");
+        add(MoCItemGroup.TABMOC.getDisplayName().getString(), "Mo' Creatures");
     }
 }

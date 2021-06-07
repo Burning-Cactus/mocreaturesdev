@@ -31,8 +31,8 @@ public class MoCEntityPiranha extends MoCEntitySmallFish {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntitySmallFish.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 6.0D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 2.0D);
+                .add(Attributes.MAX_HEALTH, 6.0D)
+                .add(Attributes.ATTACK_DAMAGE, 2.0D);
     }
 
     @Override
@@ -56,15 +56,15 @@ public class MoCEntityPiranha extends MoCEntitySmallFish {
      }*/
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        if (super.attackEntityFrom(damagesource, i) && (this.world.getDifficulty().getId() > 0)) {
-            Entity entity = damagesource.getTrueSource();
+    public boolean hurt(DamageSource damagesource, float i) {
+        if (super.hurt(damagesource, i) && (this.level.getDifficulty().getId() > 0)) {
+            Entity entity = damagesource.getEntity();
             if (entity instanceof LivingEntity) {
-                if (this.isRidingOrBeingRiddenBy(entity)) {
+                if (this.hasIndirectPassenger(entity)) {
                     return true;
                 }
                 if (entity != this) {
-                    this.setAttackTarget((LivingEntity) entity);
+                    this.setTarget((LivingEntity) entity);
                 }
                 return true;
             }

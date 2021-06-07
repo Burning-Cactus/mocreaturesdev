@@ -20,17 +20,17 @@ public class MoCEntityFXVanish extends SpriteTexturedParticle {
     public MoCEntityFXVanish(ClientWorld par1World, double par2, double par4, double par6, double par8, double par10, double par12) {
         super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
 
-        this.particleRed = 1F;
-        this.particleGreen = 1F;
-        this.particleBlue = 1F;
-        this.motionX = par8;
-        this.motionY = par10 * 5D;
-        this.motionZ = par12;
-        this.portalPosX = this.posX = par2;
-        this.portalPosY = this.posY = par4;// + 0.7D;
-        this.portalPosZ = this.posZ = par6;
+        this.rCol = 1F;
+        this.gCol = 1F;
+        this.bCol = 1F;
+        this.xd = par8;
+        this.yd = par10 * 5D;
+        this.zd = par12;
+        this.portalPosX = this.x = par2;
+        this.portalPosY = this.y = par4;// + 0.7D;
+        this.portalPosZ = this.z = par6;
         this.implode = false;
-        this.maxAge = (int) (Math.random() * 10.0D) + 70;
+        this.lifetime = (int) (Math.random() * 10.0D) + 70;
     }
 
     /**
@@ -38,27 +38,27 @@ public class MoCEntityFXVanish extends SpriteTexturedParticle {
      */
     @Override
     public void tick() {
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
+        this.xo = this.x;
+        this.yo = this.y;
+        this.zo = this.z;
 
         int speeder = 0;
         float sizeExp = 2.0F;
         if (this.implode) {
-            speeder = (this.maxAge / 2);
+            speeder = (this.lifetime / 2);
             sizeExp = 5.0F;
         }
 
-        float var1 = (float) (this.age + speeder) / (float) this.maxAge;
+        float var1 = (float) (this.age + speeder) / (float) this.lifetime;
         float var2 = var1;
         var1 = -var1 + var1 * var1 * sizeExp;//5 insteaf of 2 makes an explosion
         var1 = 1.0F - var1;
-        this.posX = this.portalPosX + this.motionX * var1;
-        this.posY = this.portalPosY + this.motionY * var1 + (1.0F - var2);
-        this.posZ = this.portalPosZ + this.motionZ * var1;
+        this.x = this.portalPosX + this.xd * var1;
+        this.y = this.portalPosY + this.yd * var1 + (1.0F - var2);
+        this.z = this.portalPosZ + this.zd * var1;
 
-        if (this.age++ >= this.maxAge) {
-            this.setExpired();
+        if (this.age++ >= this.lifetime) {
+            this.remove();
         }
     }
 
@@ -93,9 +93,9 @@ public class MoCEntityFXVanish extends SpriteTexturedParticle {
 
         @Nullable
         @Override
-        public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             MoCEntityFXVanish vanishEffect = new MoCEntityFXVanish(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
-            vanishEffect.selectSpriteRandomly(spriteSet);
+            vanishEffect.pickSprite(spriteSet);
             return vanishEffect;
         }
     }

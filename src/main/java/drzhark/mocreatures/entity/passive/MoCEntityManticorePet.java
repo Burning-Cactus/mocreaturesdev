@@ -20,7 +20,7 @@ public class MoCEntityManticorePet extends MoCEntityBigCat {
     public void selectType() {
 
         if (getSubType() == 0) {
-            setType(this.rand.nextInt(4) + 1);
+            setType(this.random.nextInt(4) + 1);
         }
         super.selectType();
     }

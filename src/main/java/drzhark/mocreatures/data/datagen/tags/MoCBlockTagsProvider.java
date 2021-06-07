@@ -11,9 +11,9 @@ public class MoCBlockTagsProvider extends BlockTagsProvider {
     }
 
     @Override
-    protected void registerTags() {
-        this.func_240522_a_(BlockTags.PLANKS).func_240534_a_(MoCBlocks.WYVERN_PLANKS, MoCBlocks.OGRE_PLANKS);
-        this.func_240522_a_(BlockTags.LOGS).func_240534_a_(MoCBlocks.WYVERN_LOG, MoCBlocks.OGRE_LOG);
-        this.func_240522_a_(BlockTags.LEAVES).func_240534_a_(MoCBlocks.WYVERN_LEAVES, MoCBlocks.OGRE_LEAVES);
+    protected void addTags() {
+        this.tag(BlockTags.PLANKS).add(MoCBlocks.WYVERN_PLANKS, MoCBlocks.OGRE_PLANKS);
+        this.tag(BlockTags.LOGS).add(MoCBlocks.WYVERN_LOG, MoCBlocks.OGRE_LOG);
+        this.tag(BlockTags.LEAVES).add(MoCBlocks.WYVERN_LEAVES, MoCBlocks.OGRE_LEAVES);
     }
 }

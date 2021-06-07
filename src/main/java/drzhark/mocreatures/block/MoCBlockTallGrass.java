@@ -18,18 +18,18 @@ public class MoCBlockTallGrass extends BushBlock implements IForgeShearable, IGr
 
 //    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.8D, 0.9D);
 //    protected static final VoxelShape SHAPE = VoxelShapes.create(AABB);
-protected static final VoxelShape SHAPE = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 13.0D, 14.0D);
-    public MoCBlockTallGrass(Block.Properties builder) {
+protected static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 13.0D, 14.0D);
+    public MoCBlockTallGrass(AbstractBlock.Properties builder) {
         super(builder
-                .sound(SoundType.PLANT)
-                .setLightLevel((f) -> {
+                .sound(SoundType.GRASS)
+                .lightLevel((f) -> {
                     return 1;
                 }));
     }
 
     @Override
-    protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return state.isIn(MoCBlocks.WYVERN_GRASS) || state.isIn(MoCBlocks.WYVERN_DIRT) || state.isIn(MoCBlocks.OGRE_GRASS) || state.isIn(MoCBlocks.OGRE_DIRT);
+    protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return state.is(MoCBlocks.WYVERN_GRASS) || state.is(MoCBlocks.WYVERN_DIRT) || state.is(MoCBlocks.OGRE_GRASS) || state.is(MoCBlocks.OGRE_DIRT);
     }
 
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
@@ -37,17 +37,17 @@ protected static final VoxelShape SHAPE = Block.makeCuboidShape(2.0D, 0.0D, 2.0D
     }
 
     @Override
-    public boolean canGrow(IBlockReader iBlockReader, BlockPos blockPos, BlockState blockState, boolean b) {
+    public boolean isValidBonemealTarget(IBlockReader iBlockReader, BlockPos blockPos, BlockState blockState, boolean b) {
         return true;
     }
 
     @Override
-    public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, BlockState blockState) {
+    public boolean isBonemealSuccess(World world, Random random, BlockPos blockPos, BlockState blockState) {
         return true;
     }
 
     @Override
-    public void grow(ServerWorld serverWorld, Random random, BlockPos blockPos, BlockState blockState) {
+    public void performBonemeal(ServerWorld serverWorld, Random random, BlockPos blockPos, BlockState blockState) {
 
     }
 }

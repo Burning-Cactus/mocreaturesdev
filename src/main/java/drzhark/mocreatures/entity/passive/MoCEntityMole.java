@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 
 public class MoCEntityMole extends MoCEntityTameableAnimal {
 
-    private static final DataParameter<Integer> MOLE_STATE = EntityDataManager.createKey(MoCEntityMole.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> MOLE_STATE = EntityDataManager.defineId(MoCEntityMole.class, DataSerializers.INT);
 
     public MoCEntityMole(EntityType<? extends MoCEntityMole> type, World world) {
         super(type, world);
@@ -42,8 +42,8 @@ public class MoCEntityMole extends MoCEntityTameableAnimal {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityTameableAnimal.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 10.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.2D);
+                .add(Attributes.MAX_HEALTH, 10.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.2D);
     }
 
     @Override
@@ -52,18 +52,18 @@ public class MoCEntityMole extends MoCEntityTameableAnimal {
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(MOLE_STATE, Integer.valueOf(0)); // state - 0 outside / 1 digging / 2 underground / 3 pick-a-boo
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(MOLE_STATE, Integer.valueOf(0)); // state - 0 outside / 1 digging / 2 underground / 3 pick-a-boo
 
     }
 
     public boolean isOnDirt() {
         BlockState block =
-                this.world.getBlockState(
-                        new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getBoundingBox().minY - 0.5D), MathHelper
-                                .floor(this.getPosZ())));
-        return isDiggableBlock(Block.getStateId(block));//(j == 2 | j == 3 | j == 12);
+                this.level.getBlockState(
+                        new BlockPos(MathHelper.floor(this.getX()), MathHelper.floor(this.getBoundingBox().minY - 0.5D), MathHelper
+                                .floor(this.getZ())));
+        return isDiggableBlock(Block.getId(block));//(j == 2 | j == 3 | j == 12);
     }
 
     private boolean isDiggableBlock(int i) {
@@ -75,20 +75,20 @@ public class MoCEntityMole extends MoCEntityTameableAnimal {
      */
     @SuppressWarnings("unused")
     private void digForward() {
-        double coordY = this.getPosY();
-        double coordZ = this.getPosZ();
-        double coordX = this.getPosX();
+        double coordY = this.getY();
+        double coordZ = this.getZ();
+        double coordX = this.getX();
         int x = 1;
-        double newPosY = coordY - Math.cos((this.rotationPitch - 90F) / 57.29578F) * x;
+        double newPosY = coordY - Math.cos((this.xRot - 90F) / 57.29578F) * x;
         double newPosX =
-                coordX + Math.cos((MoCTools.realAngle(this.rotationYaw - 90F) / 57.29578F)) * (Math.sin((this.rotationPitch - 90F) / 57.29578F) * x);
+                coordX + Math.cos((MoCTools.realAngle(this.yRot - 90F) / 57.29578F)) * (Math.sin((this.xRot - 90F) / 57.29578F) * x);
         double newPosZ =
-                coordZ + Math.sin((MoCTools.realAngle(this.rotationYaw - 90F) / 57.29578F)) * (Math.sin((this.rotationPitch - 90F) / 57.29578F) * x);
+                coordZ + Math.sin((MoCTools.realAngle(this.yRot - 90F) / 57.29578F)) * (Math.sin((this.xRot - 90F) / 57.29578F) * x);
         BlockState block =
-                this.world.getBlockState(
+                this.level.getBlockState(
                         new BlockPos(MathHelper.floor(newPosX), MathHelper.floor(newPosY), MathHelper.floor(newPosZ)));
-        if (isDiggableBlock(Block.getStateId(block))) {
-            this.setPosition(newPosX, newPosY, newPosZ);
+        if (isDiggableBlock(Block.getId(block))) {
+            this.setPos(newPosX, newPosY, newPosZ);
         }
     }
 
@@ -98,7 +98,7 @@ public class MoCEntityMole extends MoCEntityTameableAnimal {
      * @return 0 outside / 1 digging / 2 underground / 3 pick-a-boo
      */
     public int getState() {
-        return ((Integer)this.dataManager.get(MOLE_STATE)).intValue();
+        return ((Integer)this.entityData.get(MOLE_STATE)).intValue();
     }
 
     /**
@@ -107,7 +107,7 @@ public class MoCEntityMole extends MoCEntityTameableAnimal {
      * @param i - 0 outside / 1 digging / 2 underground / 3 pick-a-boo
      */
     public void setState(int i) {
-        this.dataManager.set(MOLE_STATE, Integer.valueOf(i));
+        this.entityData.set(MOLE_STATE, Integer.valueOf(i));
     }
 
     @Override
@@ -146,26 +146,26 @@ public class MoCEntityMole extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
 
-        if (!this.world.isRemote) {
-            if (this.rand.nextInt(10) == 0 && getState() == 1) {
+        if (!this.level.isClientSide) {
+            if (this.random.nextInt(10) == 0 && getState() == 1) {
                 setState(2);
             }
 
             if (getState() != 2 && getState() != 1 && isOnDirt()) {
                 LivingEntity entityliving = getBoogey(4D);
-                if ((entityliving != null) && canEntityBeSeen(entityliving)) {
+                if ((entityliving != null) && canSee(entityliving)) {
                     setState(1);
-                    this.getNavigator().clearPath();
+                    this.getNavigation().stop();
                 }
             }
 
             //if underground and no enemies: pick a boo
-            if (this.rand.nextInt(20) == 0 && getState() == 2 && (getBoogey(4D) == null)) {
+            if (this.random.nextInt(20) == 0 && getState() == 2 && (getBoogey(4D) == null)) {
                 setState(3);
-                this.getNavigator().clearPath();
+                this.getNavigation().stop();
             }
 
             //if not on dirt, get out!
@@ -173,7 +173,7 @@ public class MoCEntityMole extends MoCEntityTameableAnimal {
                 setState(0);
             }
 
-            if (this.rand.nextInt(30) == 0 && getState() == 3) {
+            if (this.random.nextInt(30) == 0 && getState() == 3) {
                 setState(2);
             }
 
@@ -196,42 +196,42 @@ public class MoCEntityMole extends MoCEntityTameableAnimal {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
+    public boolean hurt(DamageSource damagesource, float i) {
         if (getState() != 2) {
-            return super.attackEntityFrom(damagesource, i);
+            return super.hurt(damagesource, i);
         }
         return false;
     }
 
     @Override
-    public boolean canBeCollidedWith() {
+    public boolean isPickable() {
         return (getState() != 2);
     }
 
     @Override
-    public boolean canBePushed() {
+    public boolean isPushable() {
         return (getState() != 2);
     }
 
     @Override
-    protected void collideWithEntity(Entity par1Entity) {
+    protected void doPush(Entity par1Entity) {
         if (getState() != 2) {
-            super.collideWithEntity(par1Entity);
+            super.doPush(par1Entity);
             //            par1Entity.applyEntityCollision(this);
         }
     }
 
     @Override
-    public boolean isEntityInsideOpaqueBlock() {
+    public boolean isInWall() {
         if (getState() == 2) {
             return false;
         }
-        return super.isEntityInsideOpaqueBlock();
+        return super.isInWall();
     }
 
     @Override
-    public void onDeath(DamageSource damagesource) {
-        super.onDeath(damagesource);
+    public void die(DamageSource damagesource) {
+        super.die(damagesource);
     }
 
     @Override

@@ -26,8 +26,8 @@ public class MoCKeyHandler {
     private Screen localScreen;
     //static KeyBinding jumpBinding = new KeyBinding("jumpBind", Keyboard.KEY_F);
     //static KeyBinding jumpBinding = new KeyBinding("MoCreatures Jump", MoCClientProxy.mc.gameSettings.keyBindJump.getKeyCode(), "key.categories.movement");
-    static KeyBinding diveBinding = new KeyBinding("key.mocreaturesdive", KeyConflictContext.IN_GAME, InputMappings.INPUT_INVALID, "key.categories.movement");
-    static KeyBinding guiBinding = new KeyBinding("key.mocreaturesgui", KeyConflictContext.IN_GAME, InputMappings.INPUT_INVALID, "key.categories.misc"); //TODO fix bug that crashes game when invoking GUI
+    static KeyBinding diveBinding = new KeyBinding("key.mocreaturesdive", KeyConflictContext.IN_GAME, InputMappings.UNKNOWN, "key.categories.movement");
+    static KeyBinding guiBinding = new KeyBinding("key.mocreaturesgui", KeyConflictContext.IN_GAME, InputMappings.UNKNOWN, "key.categories.misc"); //TODO fix bug that crashes game when invoking GUI
 
     public static void initKeys() {
         ClientRegistry.registerKeyBinding(diveBinding);

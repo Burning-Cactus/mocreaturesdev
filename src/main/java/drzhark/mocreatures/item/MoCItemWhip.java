@@ -46,22 +46,22 @@ public class MoCItemWhip extends MoCItem {
 
     @Override
     public ActionResultType
-            onItemUse(ItemUseContext context /*PlayerEntity player, World worldIn, BlockPos pos, Hand hand, EnumFacing side, float hitX, float hitY, float hitZ*/) {
+            useOn(ItemUseContext context /*PlayerEntity player, World worldIn, BlockPos pos, Hand hand, EnumFacing side, float hitX, float hitY, float hitZ*/) {
 
         PlayerEntity player = context.getPlayer();
-        World worldIn = context.getWorld();
+        World worldIn = context.getLevel();
         Hand hand = context.getHand();
-        BlockPos pos = context.getPos();
-        Direction side = context.getFace();
-        final ItemStack stack = player.getHeldItem(hand);
+        BlockPos pos = context.getClickedPos();
+        Direction side = context.getClickedFace();
+        final ItemStack stack = player.getItemInHand(hand);
         int i1 = 0;
         Block block = worldIn.getBlockState(pos).getBlock();
-        Block block1 = worldIn.getBlockState(pos.up()).getBlock();
+        Block block1 = worldIn.getBlockState(pos.above()).getBlock();
         if (side != Direction.DOWN && (block1 == Blocks.AIR) && (block != Blocks.AIR) && ((block != Blocks.SPRUCE_SIGN)||(block != Blocks.ACACIA_SIGN)||(block != Blocks.BIRCH_SIGN)||(block != Blocks.DARK_OAK_SIGN)||(block != Blocks.JUNGLE_SIGN)||(block != Blocks.OAK_SIGN))) {
             whipFX(worldIn, pos);
             worldIn.playSound(player, pos, MoCSoundEvents.ENTITY_GENERIC_WHIP, SoundCategory.PLAYERS, 0.5F, 0.4F / ((random.nextFloat() * 0.4F) + 0.8F)); //TODO: What range is the itemRand set to?
-            stack.damageItem(1, player, d -> d.sendBreakAnimation(hand));
-            List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(player, player.getBoundingBox().expand(12D, 12D, 12D));
+            stack.hurtAndBreak(1, player, d -> d.broadcastBreakEvent(hand));
+            List<Entity> list = worldIn.getEntities(player, player.getBoundingBox().expandTowards(12D, 12D, 12D));
             for (int l1 = 0; l1 < list.size(); l1++) {
                 Entity entity = list.get(l1);
 
@@ -79,13 +79,13 @@ public class MoCItemWhip extends MoCItem {
                         entitybigcat.setSitting(!entitybigcat.getIsSitting());
                         i1++;
                     } else if ((worldIn.getDifficulty().getId() > 0) && entitybigcat.getIsAdult()) {
-                        entitybigcat.setAttackTarget(player);
+                        entitybigcat.setTarget(player);
                     }
                 }
                 if (entity instanceof MoCEntityHorse) {
                     MoCEntityHorse entityhorse = (MoCEntityHorse) entity;
                     if (entityhorse.getIsTamed()) {
-                        if (entityhorse.getRidingEntity() == null) {
+                        if (entityhorse.getVehicle() == null) {
                             entityhorse.setSitting(!entityhorse.getIsSitting());
                         } else if (entityhorse.isNightmare()) {
                             entityhorse.setNightmareInt(100);
@@ -104,14 +104,14 @@ public class MoCItemWhip extends MoCItem {
 
                 if ((entity instanceof MoCEntityWyvern)) {
                     MoCEntityWyvern entitywyvern = (MoCEntityWyvern) entity;
-                    if (entitywyvern.getIsTamed() && entitywyvern.getRidingEntity() == null && !entitywyvern.isOnAir()) {
+                    if (entitywyvern.getIsTamed() && entitywyvern.getVehicle() == null && !entitywyvern.isOnAir()) {
                         entitywyvern.setSitting(!entitywyvern.getIsSitting());
                     }
                 }
 
                 if ((entity instanceof MoCEntityPetScorpion)) {
                     MoCEntityPetScorpion petscorpion = (MoCEntityPetScorpion) entity;
-                    if (petscorpion.getIsTamed() && petscorpion.getRidingEntity() == null) {
+                    if (petscorpion.getIsTamed() && petscorpion.getVehicle() == null) {
                         petscorpion.setSitting(!petscorpion.getIsSitting());
                     }
                 }
@@ -120,12 +120,12 @@ public class MoCItemWhip extends MoCItem {
                     MoCEntityOstrich entityostrich = (MoCEntityOstrich) entity;
 
                     //makes ridden ostrich sprint
-                    if (entityostrich.isBeingRidden() && entityostrich.sprintCounter == 0) {
+                    if (entityostrich.isVehicle() && entityostrich.sprintCounter == 0) {
                         entityostrich.sprintCounter = 1;
                     }
 
                     //toggles hiding of tamed ostriches
-                    if (entityostrich.getIsTamed() && entityostrich.getRidingEntity() == null) {
+                    if (entityostrich.getIsTamed() && entityostrich.getVehicle() == null) {
                         entityostrich.setHiding(!entityostrich.getHiding());
                     }
                 }
@@ -133,7 +133,7 @@ public class MoCItemWhip extends MoCItem {
                     MoCEntityElephant entityelephant = (MoCEntityElephant) entity;
 
                     //makes elephants charge
-                    if (entityelephant.isBeingRidden() && entityelephant.sprintCounter == 0) {
+                    if (entityelephant.isVehicle() && entityelephant.sprintCounter == 0) {
                         entityelephant.sprintCounter = 1;
                     }
                 }

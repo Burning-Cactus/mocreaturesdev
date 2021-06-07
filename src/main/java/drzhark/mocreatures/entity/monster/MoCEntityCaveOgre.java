@@ -38,9 +38,9 @@ public class MoCEntityCaveOgre extends MoCEntityOgre{
     }
     
     @Override
-    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
-        return (!this.world.canBlockSeeSky(new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosY()), MathHelper
-                .floor(this.getPosZ())))) && (this.getPosY() < 50D) && super.canSpawn(worldIn, reason);
+    public boolean checkSpawnRules(IWorld worldIn, SpawnReason reason) {
+        return (!this.level.canSeeSkyFromBelowWater(new BlockPos(MathHelper.floor(this.getX()), MathHelper.floor(this.getY()), MathHelper
+                .floor(this.getZ())))) && (this.getY() < 50D) && super.checkSpawnRules(worldIn, reason);
     }
     
     @Override

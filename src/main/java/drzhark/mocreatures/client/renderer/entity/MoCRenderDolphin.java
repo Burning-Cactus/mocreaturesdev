@@ -153,9 +153,9 @@ public class MoCRenderDolphin<T extends MoCEntityDolphin, M extends MoCModelDolp
 //    }
 
     @Override
-    protected float handleRotationFloat(MoCEntityDolphin entitydolphin, float f) {
+    protected float getBob(MoCEntityDolphin entitydolphin, float f) {
 //        stretch(entitydolphin);
-        return entitydolphin.ticksExisted + f;
+        return entitydolphin.tickCount + f;
     }
 
     protected void stretch(MoCEntityDolphin entitydolphin, MatrixStack stack) {
@@ -163,7 +163,7 @@ public class MoCRenderDolphin<T extends MoCEntityDolphin, M extends MoCModelDolp
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityDolphin entitydolphin) {
+    public ResourceLocation getTextureLocation(MoCEntityDolphin entitydolphin) {
         return entitydolphin.getTexture();
     }
 }

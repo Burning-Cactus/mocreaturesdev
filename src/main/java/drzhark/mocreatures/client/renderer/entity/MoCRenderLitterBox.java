@@ -20,12 +20,12 @@ public class MoCRenderLitterBox extends LivingRenderer<MoCEntityLitterBox, MoCMo
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityLitterBox entitylitterbox, MatrixStack stack, float f) {
+    protected void scale(MoCEntityLitterBox entitylitterbox, MatrixStack stack, float f) {
         this.litterbox.usedlitter = entitylitterbox.getUsedLitter();
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityLitterBox entitylitterbox) {
+    public ResourceLocation getTextureLocation(MoCEntityLitterBox entitylitterbox) {
         return entitylitterbox.getTexture();
     }
 }

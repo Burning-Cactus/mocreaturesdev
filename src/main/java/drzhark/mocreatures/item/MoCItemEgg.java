@@ -13,23 +13,23 @@ import net.minecraft.world.World;
 public class MoCItemEgg extends MoCItem {
 
     public MoCItemEgg(Item.Properties builder) {
-        super(builder.maxStackSize(16));
+        super(builder.stacksTo(16));
 //        setHasSubtypes(true);
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        final ItemStack stack = player.getHeldItem(hand);
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        final ItemStack stack = player.getItemInHand(hand);
         stack.shrink(1);
-        if (!world.isRemote && !player.isAirBorne) {
-            int i = stack.getDamage();
+        if (!world.isClientSide && !player.hasImpulse) {
+            int i = stack.getDamageValue();
             if (i == 30) {
                 i = 31; //for ostrich eggs. placed eggs become stolen eggs.
             }
             MoCEntityEgg entityegg = new MoCEntityEgg(MoCEntities.EGG, world, i);
-            entityegg.setPosition(player.getPosX(), player.getPosY(), player.getPosZ());
-            player.world.addEntity(entityegg);
-            entityegg.getMotion().add((world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F, world.rand.nextFloat() * 0.05F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F);
+            entityegg.setPos(player.getX(), player.getY(), player.getZ());
+            player.level.addFreshEntity(entityegg);
+            entityegg.getDeltaMovement().add((world.random.nextFloat() - world.random.nextFloat()) * 0.3F, world.random.nextFloat() * 0.05F, (world.random.nextFloat() - world.random.nextFloat()) * 0.3F);
         }
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
     }

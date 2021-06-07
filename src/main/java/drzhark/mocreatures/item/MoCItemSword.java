@@ -36,28 +36,28 @@ public class MoCItemSword extends SwordItem {
      * @param attacker the attacking entity
      */
     @Override
-    public boolean hitEntity(ItemStack par1ItemStack, LivingEntity target, LivingEntity attacker) {
+    public boolean hurtEnemy(ItemStack par1ItemStack, LivingEntity target, LivingEntity attacker) {
         int i = 1;
         if (this.breakable) {
             i = 10;
         }
-        par1ItemStack.damageItem(i, attacker, d -> d.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+        par1ItemStack.hurtAndBreak(i, attacker, d -> d.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
         int potionTime = 100;
         switch (this.specialWeaponType) {
             case 1: //poison
-                target.addPotionEffect(new EffectInstance(Effects.POISON, potionTime, 0));
+                target.addEffect(new EffectInstance(Effects.POISON, potionTime, 0));
                 break;
             case 2: //frost slowdown
-                target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, potionTime, 0));
+                target.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, potionTime, 0));
                 break;
             case 3: //fire
-                target.setFire(10);
+                target.setSecondsOnFire(10);
                 break;
             case 4: //confusion
-                target.addPotionEffect(new EffectInstance(Effects.NAUSEA, potionTime, 0));
+                target.addEffect(new EffectInstance(Effects.CONFUSION, potionTime, 0));
                 break;
             case 5: //blindness
-                target.addPotionEffect(new EffectInstance(Effects.BLINDNESS, potionTime, 0));
+                target.addEffect(new EffectInstance(Effects.BLINDNESS, potionTime, 0));
                 break;
             default:
                 break;

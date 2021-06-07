@@ -20,14 +20,14 @@ import java.util.List;
 public class MoCItemCreaturePedia extends MoCItem {
 
     public MoCItemCreaturePedia(String name) {
-        super(new Item.Properties().maxStackSize(1));
+        super(new Item.Properties().stacksTo(1));
     }
 
     /**
      * Called when a player right clicks a entity with a item.
      */
     public void itemInteractionForEntity2(ItemStack par1ItemStack, LivingEntity entityliving) {
-        if (entityliving.world.isRemote) {
+        if (entityliving.level.isClientSide) {
             return;
         }
 
@@ -53,26 +53,26 @@ public class MoCItemCreaturePedia extends MoCItem {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        final ItemStack stack = player.getHeldItem(hand);
-        if (!world.isRemote) {
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        final ItemStack stack = player.getItemInHand(hand);
+        if (!world.isClientSide) {
             double dist = 5D;
             double d1 = -1D;
             LivingEntity entityliving = null;
-            List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(player, player.getBoundingBox().expand(dist, dist, dist));
+            List<Entity> list = world.getEntities(player, player.getBoundingBox().expandTowards(dist, dist, dist));
             for (int i = 0; i < list.size(); i++) {
                 Entity entity1 = list.get(i);
                 if (entity1 == null || !(entity1 instanceof LivingEntity)) {
                     continue;
                 }
 
-                if (!(player.canEntityBeSeen(entity1))) {
+                if (!(player.canSee(entity1))) {
                     continue;
                 }
 
-                double d2 = entity1.getDistanceSq(player.getPosX(), player.getPosY(), player.getPosZ());
+                double d2 = entity1.distanceToSqr(player.getX(), player.getY(), player.getZ());
                 if (((dist < 0.0D) || (d2 < (dist * dist))) && ((d1 == -1D) || (d2 < d1))
-                        && ((LivingEntity) entity1).canEntityBeSeen(player)) {
+                        && ((LivingEntity) entity1).canSee(player)) {
                     d1 = d2;
                     entityliving = (LivingEntity) entity1;
                 }

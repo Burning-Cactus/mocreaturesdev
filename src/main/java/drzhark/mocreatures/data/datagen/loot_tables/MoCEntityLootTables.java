@@ -25,8 +25,8 @@ public class MoCEntityLootTables extends EntityLootTables { //TODO: Complex loot
     }
 
     @Override
-    protected void registerLootTable(@Nonnull EntityType<?> type, @Nonnull LootTable.Builder table) {
-        super.registerLootTable(type, table);
+    protected void add(@Nonnull EntityType<?> type, @Nonnull LootTable.Builder table) {
+        super.add(type, table);
         lootTables.add(type);
     }
 
@@ -35,10 +35,10 @@ public class MoCEntityLootTables extends EntityLootTables { //TODO: Complex loot
         //Creatures
         //Bird
         //Bear
-        LootTable.Builder boarTable = LootTable.builder();
+        LootTable.Builder boarTable = LootTable.lootTable();
         this.addItemDrop(boarTable, MoCItems.ANIMALHIDE, 0.0F, 1.0F);
         this.addItemDrop(boarTable, Items.PORKCHOP, 0.0F, 2.0F);
-        this.registerLootTable(MoCEntities.BOAR, boarTable);
+        this.add(MoCEntities.BOAR, boarTable);
         this.singleItemConstantDrop(MoCEntities.CROCODILE, MoCItems.HIDECROC);
         this.singleItemConstantDrop(MoCEntities.DUCK, Items.FEATHER);
         this.singleItemConstantDrop(MoCEntities.DEER, MoCItems.FUR);
@@ -126,19 +126,19 @@ public class MoCEntityLootTables extends EntityLootTables { //TODO: Complex loot
     }
 
     private LootTable.Builder addItemDrop(LootTable.Builder table, IItemProvider provider, float min, float max) {
-        return table.addLootPool(LootPool.builder()
-                .rolls(ConstantRange.of(1))
-                .addEntry(ItemLootEntry.builder(provider)
-                        .acceptFunction(SetCount.builder(RandomValueRange.of(min, max)
+        return table.withPool(LootPool.lootPool()
+                .setRolls(ConstantRange.exactly(1))
+                .add(ItemLootEntry.lootTableItem(provider)
+                        .apply(SetCount.setCount(RandomValueRange.between(min, max)
                         ))));
     }
 
     private void singleItemConstantDrop(EntityType<?> entity, IItemProvider item) {
-        this.registerLootTable(entity, LootTable.builder()
-                .addLootPool(LootPool.builder()
-                        .rolls(ConstantRange.of(1))
-                        .addEntry(ItemLootEntry.builder(item))
-                        .acceptFunction(SetCount.builder(ConstantRange.of(1)
+        this.add(entity, LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantRange.exactly(1))
+                        .add(ItemLootEntry.lootTableItem(item))
+                        .apply(SetCount.setCount(ConstantRange.exactly(1)
                         ))));
     }
 }

@@ -17,9 +17,9 @@ public class MoCRenderBear<T extends MoCEntityBear, M extends MoCModelBear<T>> e
     }
 
     @Override
-    protected void preRenderCallback(T entitybear, MatrixStack matrixStackIn,  float f) {
+    protected void scale(T entitybear, MatrixStack matrixStackIn,  float f) {
         stretch(entitybear, matrixStackIn);
-        super.preRenderCallback(entitybear, matrixStackIn, f);
+        super.scale(entitybear, matrixStackIn, f);
 
     }
 
@@ -33,7 +33,7 @@ public class MoCRenderBear<T extends MoCEntityBear, M extends MoCModelBear<T>> e
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityBear entitybear) {
+    public ResourceLocation getTextureLocation(MoCEntityBear entitybear) {
         return entitybear.getTexture();
     }
 }

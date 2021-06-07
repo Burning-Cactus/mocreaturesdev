@@ -29,11 +29,11 @@ public class MoCItemWeapon extends MoCItem {
     private final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
     public MoCItemWeapon(IItemTier materialIn, Item.Properties builder) {
-        super(builder.maxDamage(materialIn.getMaxUses()));
+        super(builder.durability(materialIn.getUses()));
         this.material = materialIn;
-        this.attackDamage = 4F + materialIn.getAttackDamage();
+        this.attackDamage = 4F + materialIn.getAttackDamageBonus();
         ImmutableMultimap.Builder<Attribute, AttributeModifier> attributeBuilder = ImmutableMultimap.builder();
-        attributeBuilder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)this.attackDamage, AttributeModifier.Operation.ADDITION));
+        attributeBuilder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", (double)this.attackDamage, AttributeModifier.Operation.ADDITION));
         this.attributeModifiers = attributeBuilder.build();
     }
 
@@ -54,7 +54,7 @@ public class MoCItemWeapon extends MoCItem {
      * Returns the amount of damage this item will deal. One heart of damage is equal to 2 damage points.
      */
     public float getAttackDamage() {
-        return this.material.getAttackDamage();
+        return this.material.getAttackDamageBonus();
     }
 
     public float getStrVsBlock(ItemStack stack, BlockState state) {
@@ -62,8 +62,8 @@ public class MoCItemWeapon extends MoCItem {
             return 15.0F;
         } else {
             Material material = state.getMaterial();
-            return material != Material.PLANTS && material != Material.CORAL && material != Material.LEAVES
-                    && material != Material.GOURD ? 1.0F : 1.5F;
+            return material != Material.PLANT && material != Material.CORAL && material != Material.LEAVES
+                    && material != Material.VEGETABLE ? 1.0F : 1.5F;
         }
     }
 
@@ -75,28 +75,28 @@ public class MoCItemWeapon extends MoCItem {
      * @param attacker the attacking entity
      */
     @Override
-    public boolean hitEntity(ItemStack par1ItemStack, LivingEntity target, LivingEntity attacker) {
+    public boolean hurtEnemy(ItemStack par1ItemStack, LivingEntity target, LivingEntity attacker) {
         int i = 1;
         if (this.breakable) {
             i = 10;
         }
-        par1ItemStack.damageItem(i, attacker, d -> d.sendBreakAnimation(EquipmentSlotType.MAINHAND)); //TODO: Add lambda function the way vanilla does it to send break animation
+        par1ItemStack.hurtAndBreak(i, attacker, d -> d.broadcastBreakEvent(EquipmentSlotType.MAINHAND)); //TODO: Add lambda function the way vanilla does it to send break animation
         int potionTime = 100;
         switch (this.specialWeaponType) {
             case 1: //poison
-                target.addPotionEffect(new EffectInstance(Effects.POISON, potionTime, 0));
+                target.addEffect(new EffectInstance(Effects.POISON, potionTime, 0));
                 break;
             case 2: //frost slowdown
-                target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, potionTime, 0));
+                target.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, potionTime, 0));
                 break;
             case 3: //fire
-                target.setFire(10);
+                target.setSecondsOnFire(10);
                 break;
             case 4: //confusion
-                target.addPotionEffect(new EffectInstance(Effects.NAUSEA, potionTime, 0));
+                target.addEffect(new EffectInstance(Effects.CONFUSION, potionTime, 0));
                 break;
             case 5: //blindness
-                target.addPotionEffect(new EffectInstance(Effects.BLINDNESS, potionTime, 0));
+                target.addEffect(new EffectInstance(Effects.BLINDNESS, potionTime, 0));
                 break;
             default:
                 break;
@@ -106,7 +106,7 @@ public class MoCItemWeapon extends MoCItem {
     }
 
     public boolean onBlockDestroyed(ItemStack par1ItemStack, int par2, int par3, int par4, int par5, LivingEntity par6EntityLiving) {
-        par1ItemStack.damageItem(2, par6EntityLiving, d -> d.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+        par1ItemStack.hurtAndBreak(2, par6EntityLiving, d -> d.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
         return true;
     }
 
@@ -124,7 +124,7 @@ public class MoCItemWeapon extends MoCItem {
      * is being used
      */
     @Override
-    public UseAction getUseAction(ItemStack par1ItemStack) {
+    public UseAction getUseAnimation(ItemStack par1ItemStack) {
         return UseAction.BLOCK;
     }
 
@@ -141,9 +141,9 @@ public class MoCItemWeapon extends MoCItem {
      * pressed. Args: itemStack, world, entityPlayer
      */
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand) {
-        final ItemStack stack = player.getHeldItem(hand);
-        player.setActiveHand(hand);
+    public ActionResult<ItemStack> use(World worldIn, PlayerEntity player, Hand hand) {
+        final ItemStack stack = player.getItemInHand(hand);
+        player.startUsingItem(hand);
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
     }
 
@@ -151,7 +151,7 @@ public class MoCItemWeapon extends MoCItem {
      * Returns if the item (tool) can harvest results from the block type.
      */
     @Override
-    public boolean canHarvestBlock(BlockState state) {
+    public boolean isCorrectToolForDrops(BlockState state) {
         return state.getBlock() == Blocks.COBWEB;
     }
 
@@ -160,16 +160,16 @@ public class MoCItemWeapon extends MoCItem {
      * on material.
      */
     @Override
-    public int getItemEnchantability() {
-        return this.material.getEnchantability();
+    public int getEnchantmentValue() {
+        return this.material.getEnchantmentValue();
     }
 
     /**
      * Called when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
      */
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity playerIn) {
-        if ((double) state.getBlockHardness(worldIn, pos) != 0.0D) {
-            stack.damageItem(2, playerIn, d -> d.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+    public boolean mineBlock(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity playerIn) {
+        if ((double) state.getDestroySpeed(worldIn, pos) != 0.0D) {
+            stack.hurtAndBreak(2, playerIn, d -> d.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
         }
 
         return true;
@@ -201,7 +201,7 @@ public class MoCItemWeapon extends MoCItem {
      */
     @SuppressWarnings("deprecation")
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
-        return equipmentSlot == EquipmentSlotType.MAINHAND ? this.attributeModifiers : super.getAttributeModifiers(equipmentSlot);
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlotType equipmentSlot) {
+        return equipmentSlot == EquipmentSlotType.MAINHAND ? this.attributeModifiers : super.getDefaultAttributeModifiers(equipmentSlot);
     }
 }

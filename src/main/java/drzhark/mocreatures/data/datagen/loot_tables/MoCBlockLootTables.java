@@ -14,23 +14,23 @@ public class MoCBlockLootTables extends BlockLootTables {
     private final Set<Block> blocks = new HashSet<>();
 
     @Override
-    protected void registerLootTable(@Nonnull Block blockIn, @Nonnull LootTable.Builder table) {
-        super.registerLootTable(blockIn, table);
+    protected void add(@Nonnull Block blockIn, @Nonnull LootTable.Builder table) {
+        super.add(blockIn, table);
         this.blocks.add(blockIn);
     }
 
     @Override
     protected void addTables() {
-        registerDropSelfLootTable(MoCBlocks.WYVERN_DIRT);
-        registerDropSelfLootTable(MoCBlocks.WYVERN_GRASS);
-        registerDropSelfLootTable(MoCBlocks.WYVERN_LOG);
-        registerDropSelfLootTable(MoCBlocks.WYVERN_STONE);
-        registerDropSelfLootTable(MoCBlocks.WYVERN_PLANKS);
-        registerDropSelfLootTable(MoCBlocks.OGRE_DIRT);
-        registerDropSelfLootTable(MoCBlocks.OGRE_GRASS);
-        registerDropSelfLootTable(MoCBlocks.OGRE_LOG);
-        registerDropSelfLootTable(MoCBlocks.OGRE_STONE);
-        registerDropSelfLootTable(MoCBlocks.OGRE_PLANKS);
+        dropSelf(MoCBlocks.WYVERN_DIRT);
+        dropSelf(MoCBlocks.WYVERN_GRASS);
+        dropSelf(MoCBlocks.WYVERN_LOG);
+        dropSelf(MoCBlocks.WYVERN_STONE);
+        dropSelf(MoCBlocks.WYVERN_PLANKS);
+        dropSelf(MoCBlocks.OGRE_DIRT);
+        dropSelf(MoCBlocks.OGRE_GRASS);
+        dropSelf(MoCBlocks.OGRE_LOG);
+        dropSelf(MoCBlocks.OGRE_STONE);
+        dropSelf(MoCBlocks.OGRE_PLANKS);
     }
 
     @Override

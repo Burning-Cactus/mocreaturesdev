@@ -17,7 +17,7 @@ public class MoCRenderOstrich extends MoCRenderMoC<MoCEntityOstrich, MoCModelOst
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityOstrich entityostrich) {
+    public ResourceLocation getTextureLocation(MoCEntityOstrich entityostrich) {
         return entityostrich.getTexture();
     }
 
@@ -26,13 +26,13 @@ public class MoCRenderOstrich extends MoCRenderMoC<MoCEntityOstrich, MoCModelOst
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityOstrich entityliving, MatrixStack stack, float f) {
+    protected void scale(MoCEntityOstrich entityliving, MatrixStack stack, float f) {
         MoCEntityOstrich entityostrich = (MoCEntityOstrich) entityliving;
         if (entityostrich.getSubType() == 1) {
             stretch(entityostrich, stack);
         }
 
-        super.preRenderCallback(entityliving, stack, f);
+        super.scale(entityliving, stack, f);
 
     }
 

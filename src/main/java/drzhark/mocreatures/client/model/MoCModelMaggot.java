@@ -14,39 +14,39 @@ public class MoCModelMaggot extends EntityModel<MoCEntityMaggot> {
     ModelRenderer Tailtip;
 
     public MoCModelMaggot() {
-        this.textureWidth = 32;
-        this.textureHeight = 32;
+        this.texWidth = 32;
+        this.texHeight = 32;
 
         this.Head = new ModelRenderer(this, 0, 11);
         this.Head.addBox(-1F, -1F, -2F, 2, 2, 2);
-        this.Head.setRotationPoint(0F, 23F, -2F);
+        this.Head.setPos(0F, 23F, -2F);
 
         this.Body = new ModelRenderer(this, 0, 0);
         this.Body.addBox(-1.5F, -2F, 0F, 3, 3, 4);
-        this.Body.setRotationPoint(0F, 23F, -2F);
+        this.Body.setPos(0F, 23F, -2F);
 
         this.Tail = new ModelRenderer(this, 0, 7);
         this.Tail.addBox(-1F, -1F, 0F, 2, 2, 2);
-        this.Tail.setRotationPoint(0F, 23F, 2F);
+        this.Tail.setPos(0F, 23F, 2F);
 
         this.Tailtip = new ModelRenderer(this, 8, 7);
         this.Tailtip.addBox(-0.5F, 0F, 0F, 1, 1, 1);
-        this.Tailtip.setRotationPoint(0F, 23F, 4F);
+        this.Tailtip.setPos(0F, 23F, 4F);
     }
 
     @Override
-    public void setRotationAngles(MoCEntityMaggot entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(MoCEntityMaggot entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     }
 
     @SuppressWarnings("unused")
     private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+        model.xRot = x;
+        model.yRot = y;
+        model.zRot = z;
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         //super.render(entity, f, f1, f2, f3, f4, f5);
 
         //f1 = movement speed!
@@ -65,11 +65,11 @@ public class MoCModelMaggot extends EntityModel<MoCEntityMaggot> {
 //        GL11.glDisable(3042/* GL_BLEND */);
 //        GL11.glPopMatrix();
 
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
         this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         this.Body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         this.Tail.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         this.Tailtip.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
     }
 }

@@ -16,7 +16,7 @@ public class MoCEntityHellRat extends MoCEntityRat {
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return MoCEntityRat.registerAttributes().func_233815_a_(Attributes.MAX_HEALTH, 20.0D);
+        return MoCEntityRat.registerAttributes().add(Attributes.MAX_HEALTH, 20.0D);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class MoCEntityHellRat extends MoCEntityRat {
 
     @Override
     public ResourceLocation getTexture() {
-        if (this.rand.nextInt(2) == 0) {
+        if (this.random.nextInt(2) == 0) {
             this.textCounter++;
         }
         if (this.textCounter < 10) {

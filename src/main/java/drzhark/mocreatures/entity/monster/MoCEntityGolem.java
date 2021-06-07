@@ -49,7 +49,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
     private byte golemCubes[];
     private int dCounter = 0;
     private int sCounter;
-    private static final DataParameter<Integer> GOLEM_STATE = EntityDataManager.<Integer>createKey(MoCEntityGolem.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> GOLEM_STATE = EntityDataManager.<Integer>defineId(MoCEntityGolem.class, DataSerializers.INT);
 
     public MoCEntityGolem(EntityType<? extends MoCEntityGolem> type, World world) {
         super(type, world);
@@ -66,9 +66,9 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityMob.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 50.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 2.0D);
+                .add(Attributes.MAX_HEALTH, 50.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D)
+                .add(Attributes.ATTACK_DAMAGE, 2.0D);
     }
 
     @Override
@@ -86,28 +86,28 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
+    protected void defineSynchedData() {
+        super.defineSynchedData();
         initGolemCubes();
-        this.dataManager.register(GOLEM_STATE, 0); // 0 spawned / 1 summoning rocks /2 has enemy /3 half life (harder) /4 dying
+        this.entityData.define(GOLEM_STATE, 0); // 0 spawned / 1 summoning rocks /2 has enemy /3 half life (harder) /4 dying
     }
 
     public int getGolemState() {
-        return this.dataManager.get(GOLEM_STATE);
+        return this.entityData.get(GOLEM_STATE);
     }
 
     public void setGolemState(int i) {
-        this.dataManager.set(GOLEM_STATE, i);
+        this.entityData.set(GOLEM_STATE, i);
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
 
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
             if (getGolemState() == 0) //just spawned
             {
-                PlayerEntity entityplayer1 = this.world.getClosestPlayer(this, 8D);
+                PlayerEntity entityplayer1 = this.level.getNearestPlayer(this, 8D);
                 if (entityplayer1 != null) {
                     setGolemState(1); //activated
                 }
@@ -118,11 +118,11 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
                 setGolemState(2); //is complete
             }
 
-            if (getGolemState() > 2 && getGolemState() != 4 && this.getAttackTarget() == null) {
+            if (getGolemState() > 2 && getGolemState() != 4 && this.getTarget() == null) {
                 setGolemState(1);
             }
 
-            if (getGolemState() > 1 && this.getAttackTarget() != null && this.rand.nextInt(20) == 0) {
+            if (getGolemState() > 1 && this.getTarget() != null && this.random.nextInt(20) == 0) {
                 if (getHealth() >= 30) {
                     setGolemState(2);
                 }
@@ -136,20 +136,20 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
 
             if (getGolemState() != 0 && getGolemState() != 4 && isMissingCubes()) {
 
-                int freq = 21 - (getGolemState() * this.world.getDifficulty().getId());
+                int freq = 21 - (getGolemState() * this.level.getDifficulty().getId());
                 if (getGolemState() == 1) {
                     freq = 10;
                 }
-                if (this.rand.nextInt(freq) == 0) {
+                if (this.random.nextInt(freq) == 0) {
                     acquireRock(2);
                 }
             }
 
             if (getGolemState() == 4) {
-                this.getNavigator().clearPath();
+                this.getNavigation().stop();
                 this.dCounter++;
 
-                if (this.dCounter < 80 && this.rand.nextInt(3) == 0) {
+                if (this.dCounter < 80 && this.random.nextInt(3) == 0) {
                     acquireRock(4);
                 }
 
@@ -166,8 +166,8 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
             }
         }
 
-        if (this.tcounter == 0 && this.getAttackTarget() != null && this.canShoot()) {
-            float distanceToTarget = this.getDistance(this.getAttackTarget());
+        if (this.tcounter == 0 && this.getTarget() != null && this.canShoot()) {
+            float distanceToTarget = this.distanceTo(this.getTarget());
             if (distanceToTarget > 6F) {
                 this.tcounter = 1;
 //                MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
@@ -176,9 +176,9 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
 
         }
         if (this.tcounter != 0) {
-            if (this.tcounter++ == 70 && this.getAttackTarget() != null && this.canShoot() && this.getAttackTarget().isAlive()
-                    && this.canEntityBeSeen(this.getAttackTarget())) {
-                shootBlock(this.getAttackTarget());
+            if (this.tcounter++ == 70 && this.getTarget() != null && this.canShoot() && this.getTarget().isAlive()
+                    && this.canSee(this.getTarget())) {
+                shootBlock(this.getTarget());
             } else if (this.tcounter > 90) {
                 this.tcounter = 0;
             }
@@ -187,20 +187,20 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
 
         if (/*MoCreatures.proxy.getParticleFX() > 0 &&*/ getGolemState() == 4 && this.sCounter > 0) {
             for (int i = 0; i < 10; i++) {
-                this.world.addParticle(ParticleTypes.EXPLOSION, this.getPosX(), this.getPosY(), this.getPosZ(), this.rand.nextGaussian(),
-                        this.rand.nextGaussian(), this.rand.nextGaussian());
+                this.level.addParticle(ParticleTypes.EXPLOSION, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian(),
+                        this.random.nextGaussian(), this.random.nextGaussian());
             }
         }
     }
 
     private void destroyGolem() {
         List<Integer> usedBlocks = usedCubes();
-        if ((!usedBlocks.isEmpty()) && (MoCTools.mobGriefing(this.world)) && (MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.golemDestroyBlocks.get())) {
+        if ((!usedBlocks.isEmpty()) && (MoCTools.mobGriefing(this.level)) && (MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.golemDestroyBlocks.get())) {
             for (Integer usedBlock : usedBlocks) {
-                Block block = Block.getStateById(generateBlock(this.golemCubes[usedBlock])).getBlock();
-                ItemEntity entityitem = new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), new ItemStack(block, 1));
-                entityitem.setPickupDelay(10);
-                this.world.addEntity(entityitem);
+                Block block = Block.stateById(generateBlock(this.golemCubes[usedBlock])).getBlock();
+                ItemEntity entityitem = new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(block, 1));
+                entityitem.setPickUpDelay(10);
+                this.level.addFreshEntity(entityitem);
             }
         }
         this.remove();
@@ -216,20 +216,20 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
         //looks for a random rock around it
         BlockPos myTRockPos = MoCTools.getRandomBlockPos(this, 24D);
 
-        boolean canDestroyBlocks = MoCTools.mobGriefing(this.world) && MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.golemDestroyBlocks.get();
-        BlockState blockstate = this.world.getBlockState(myTRockPos);
-        if (Block.getStateId(blockstate) == 0) {
+        boolean canDestroyBlocks = MoCTools.mobGriefing(this.level) && MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.golemDestroyBlocks.get();
+        BlockState blockstate = this.level.getBlockState(myTRockPos);
+        if (Block.getId(blockstate) == 0) {
             return;
         } //air blocks
         BlockEvent.BreakEvent event = null;
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
             event =
-                    new BlockEvent.BreakEvent(this.world, myTRockPos, blockstate, FakePlayerFactory.get((ServerWorld) this.world,
+                    new BlockEvent.BreakEvent(this.level, myTRockPos, blockstate, FakePlayerFactory.get((ServerWorld) this.level,
                             MoCreatures.MOCFAKEPLAYER));
         }
         if (canDestroyBlocks && event != null && !event.isCanceled()) {
             //destroys the original rock
-            this.world.setBlockState(myTRockPos, Blocks.AIR.getDefaultState());
+            this.level.setBlockAndUpdate(myTRockPos, Blocks.AIR.defaultBlockState());
         } else {
             //couldn't destroy the original rock
             canDestroyBlocks = false;
@@ -237,15 +237,15 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
 
         if (!canDestroyBlocks) //make cheap rocks
         {
-            blockstate = Block.getStateById(returnRandomCheapBlock());
+            blockstate = Block.stateById(returnRandomCheapBlock());
         }
 
-        MoCEntityThrowableRock trock = new MoCEntityThrowableRock(this.world, this, myTRockPos.getX(), myTRockPos.getY() + 1, myTRockPos.getZ());//, false, true);
+        MoCEntityThrowableRock trock = new MoCEntityThrowableRock(this.level, this, myTRockPos.getX(), myTRockPos.getY() + 1, myTRockPos.getZ());//, false, true);
         trock.setState(blockstate);
         trock.setBehavior(type);//so the rock: 2 follows the EntityGolem  or 3 - gets around the golem
 
         //spawns the new TRock
-        this.world.addEntity(trock);
+        this.level.addFreshEntity(trock);
     }
 
     /**
@@ -254,7 +254,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
      * @return
      */
     private int returnRandomCheapBlock() {
-        int i = this.rand.nextInt(4);
+        int i = this.random.nextInt(4);
         switch (i) {
             case 0:
                 return 3; //dirt
@@ -274,12 +274,12 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
      * @param state - Blockstate
      */
     public void receiveRock(BlockState state) {
-        if (!this.world.isRemote) {
-            byte myBlock = translateOre(Block.getStateId(state));
+        if (!this.level.isClientSide) {
+            byte myBlock = translateOre(Block.getId(state));
             byte slot = (byte) getRandomCubeAdj();
             if ((slot != -1) && (slot < 23) && (myBlock != -1) && getGolemState() != 4) {
                 MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_GOLEM_ATTACH, 3F);
-                int h = this.world.getDifficulty().getId();
+                int h = this.level.getDifficulty().getId();
                 this.setHealth(getHealth() + h);
                 if (getHealth() > getMaxHealth()) {
                     this.setHealth(getMaxHealth());
@@ -287,10 +287,10 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
                 saveGolemCube(slot, myBlock);
             } else {
                 MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_TURTLE_HURT, 2F);
-                if ((MoCTools.mobGriefing(this.world)) && (MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.golemDestroyBlocks.get())) {
+                if ((MoCTools.mobGriefing(this.level)) && (MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.golemDestroyBlocks.get())) {
                     ItemEntity entityitem =
-                            new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), new ItemStack(state.getBlock(), 1 /*, state.getBlock()*/));
-                    entityitem.setPickupDelay(10);
+                            new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(state.getBlock(), 1 /*, state.getBlock()*/));
+                    entityitem.setPickUpDelay(10);
 //                    entityitem.setAgeToCreativeDespawnTime(); // 4800
                 }
             }
@@ -328,7 +328,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
             return;
         }
 
-        int j = this.rand.nextInt(armBlocks.size());
+        int j = this.random.nextInt(armBlocks.size());
         int i = armBlocks.get(j);
         int x = i;
 
@@ -346,7 +346,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
             }
         }
         MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_GOLEM_SHOOT, 3F);
-        MoCTools.throwStone(this, entity, Block.getStateById(generateBlock(this.golemCubes[x])), 10D, 0.4D);
+        MoCTools.throwStone(this, entity, Block.stateById(generateBlock(this.golemCubes[x])), 10D, 0.4D);
         saveGolemCube((byte) x, (byte) 30);
         this.tcounter = 0;
     }
@@ -362,7 +362,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
+    public boolean hurt(DamageSource damagesource, float i) {
         if (getGolemState() == 4) {
             return false;
         }
@@ -370,16 +370,16 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
         List<Integer> missingChestBlocks = missingChestCubes();
         boolean uncoveredChest = (missingChestBlocks.size() == 4);
         if (!openChest() && !uncoveredChest && getGolemState() != 1) {
-            int j = this.world.getDifficulty().getId();
-            if (!this.world.isRemote && this.rand.nextInt(j) == 0) {
+            int j = this.level.getDifficulty().getId();
+            if (!this.level.isClientSide && this.random.nextInt(j) == 0) {
                 destroyRandomGolemCube();
             } else {
                 MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_TURTLE_HURT, 2F);
             }
 
-            Entity entity = damagesource.getTrueSource();
-            if ((entity != this) && (this.world.getDifficulty().getId() > 0) && entity instanceof LivingEntity) {
-                this.setAttackTarget((LivingEntity) entity);
+            Entity entity = damagesource.getEntity();
+            if ((entity != this) && (this.level.getDifficulty().getId() > 0) && entity instanceof LivingEntity) {
+                this.setTarget((LivingEntity) entity);
                 return true;
             } else {
                 return false;
@@ -388,19 +388,19 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
         if (i > 5) {
             i = 5; //so you can't hit a Golem too hard
         }
-        if (getGolemState() != 1 && super.attackEntityFrom(damagesource, i)) {
-            Entity entity = damagesource.getTrueSource();
-            if ((entity != this) && (this.world.getDifficulty().getId() > 0) && entity instanceof LivingEntity) {
-                this.setAttackTarget((LivingEntity) entity);
+        if (getGolemState() != 1 && super.hurt(damagesource, i)) {
+            Entity entity = damagesource.getEntity();
+            if ((entity != this) && (this.level.getDifficulty().getId() > 0) && entity instanceof LivingEntity) {
+                this.setTarget((LivingEntity) entity);
                 return true;
             } else {
                 return false;
             }
         }
         if (getGolemState() == 1) {
-            Entity entity = damagesource.getTrueSource();
-            if ((entity != this) && (this.world.getDifficulty().getId() > 0) && entity instanceof LivingEntity) {
-                this.setAttackTarget((LivingEntity) entity);
+            Entity entity = damagesource.getEntity();
+            if ((entity != this) && (this.level.getDifficulty().getId() > 0) && entity instanceof LivingEntity) {
+                this.setTarget((LivingEntity) entity);
                 return true;
             } else {
                 return false;
@@ -438,13 +438,13 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
         }
 
         if (x != -1 && this.golemCubes[x] != 30) {
-            Block block = Block.getStateById(generateBlock(this.golemCubes[x])).getBlock();
+            Block block = Block.stateById(generateBlock(this.golemCubes[x])).getBlock();
             saveGolemCube((byte) x, (byte) 30);
             MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_GOLEM_HURT, 3F);
-            if ((MoCTools.mobGriefing(this.world)) && (MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.golemDestroyBlocks.get())) {
-                ItemEntity entityitem = new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), new ItemStack(block, 1/*, 0*/));
-                entityitem.setPickupDelay(10);
-                this.world.addEntity(entityitem);
+            if ((MoCTools.mobGriefing(this.level)) && (MoCConfig.COMMON_CONFIG.GENERAL.monsterSettings.golemDestroyBlocks.get())) {
+                ItemEntity entityitem = new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(block, 1/*, 0*/));
+                entityitem.setPickUpDelay(10);
+                this.level.addFreshEntity(entityitem);
             }
         }
     }
@@ -489,8 +489,8 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
     }
 
     @Override
-    public void writeAdditional(CompoundNBT nbttagcompound) {
-        super.writeAdditional(nbttagcompound);
+    public void addAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.addAdditionalSaveData(nbttagcompound);
         nbttagcompound.putInt("golemState", getGolemState());
         ListNBT cubeLists = new ListNBT();
 
@@ -503,8 +503,8 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
     }
 
     @Override
-    public void readAdditional(CompoundNBT nbttagcompound) {
-        super.readAdditional(nbttagcompound);
+    public void readAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.readAdditionalSaveData(nbttagcompound);
         setGolemState(nbttagcompound.getInt("golemState"));
         ListNBT nbttaglist = nbttagcompound.getList("GolemBlocks", 10);
         for (int i = 0; i < 23; i++) {
@@ -523,7 +523,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
             this.golemCubes[i] = 30;
         }
 
-        int j = this.rand.nextInt(4);
+        int j = this.random.nextInt(4);
         switch (j) {
             case 0:
                 j = 7;
@@ -624,7 +624,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
         if (usedBlocks.isEmpty()) {
             return -1;
         }
-        int randomEmptyBlock = this.rand.nextInt(usedBlocks.size());
+        int randomEmptyBlock = this.random.nextInt(usedBlocks.size());
         return usedBlocks.get(randomEmptyBlock);
     }
 
@@ -637,7 +637,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
         //first it makes sure it has the four chest cubes
         List<Integer> emptyChestBlocks = missingChestCubes();
         if (!emptyChestBlocks.isEmpty()) {
-            int randomEmptyBlock = this.rand.nextInt(emptyChestBlocks.size());
+            int randomEmptyBlock = this.random.nextInt(emptyChestBlocks.size());
             return emptyChestBlocks.get(randomEmptyBlock);
         }
 
@@ -646,7 +646,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
         if (emptyBlocks.isEmpty()) {
             return -1;
         }
-        int randomEmptyBlock = this.rand.nextInt(emptyBlocks.size());
+        int randomEmptyBlock = this.random.nextInt(emptyBlocks.size());
         return emptyBlocks.get(randomEmptyBlock);
     }
 
@@ -717,7 +717,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
      */
     public boolean openChest() {
         if (isMissingCubes()) {
-            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(2D, 2D, 2D));
+            List<Entity> list = this.level.getEntities(this, getBoundingBox().expandTowards(2D, 2D, 2D));
 
 //            for (int i = 0; i < list.size(); i++) {
 //                Entity entity1 = list.get(i);
@@ -896,7 +896,7 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
     }
 
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         return 0.15F * (countLegBlocks() / 6F);
     }
 
@@ -986,9 +986,9 @@ public class MoCEntityGolem extends MoCEntityMob implements IEntityAdditionalSpa
     }
 
     @Override
-    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
-        return (super.canSpawn(worldIn, reason)
-                && this.world.canBlockSeeSky(new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosY()), MathHelper
-                        .floor(this.getPosZ()))) && (this.getPosY() > 50D));
+    public boolean checkSpawnRules(IWorld worldIn, SpawnReason reason) {
+        return (super.checkSpawnRules(worldIn, reason)
+                && this.level.canSeeSkyFromBelowWater(new BlockPos(MathHelper.floor(this.getX()), MathHelper.floor(this.getY()), MathHelper
+                        .floor(this.getZ()))) && (this.getY() > 50D));
     }
 }

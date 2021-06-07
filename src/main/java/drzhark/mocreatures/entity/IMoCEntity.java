@@ -32,8 +32,6 @@ public interface IMoCEntity {
 
     boolean checkSpawningBiome();
 
-    boolean canSpawn(IWorld worldIn, SpawnReason reason);
-
     void performAnimation(int i);
 
     boolean renderName();

@@ -35,8 +35,8 @@ public class MoCEntityScorpion extends MoCEntityMob {
     public int mouthCounter;
     public int armCounter;
 
-    private static final DataParameter<Boolean> IS_PICKED = EntityDataManager.createKey(MoCEntityScorpion.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HAS_BABIES = EntityDataManager.createKey(MoCEntityScorpion.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_PICKED = EntityDataManager.defineId(MoCEntityScorpion.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> HAS_BABIES = EntityDataManager.defineId(MoCEntityScorpion.class, DataSerializers.BOOLEAN);
     
     public MoCEntityScorpion(EntityType<? extends MoCEntityScorpion> type, World world) {
         super(type, world);
@@ -44,8 +44,8 @@ public class MoCEntityScorpion extends MoCEntityMob {
         setAdult(true);
         setEdad(20);
 
-        if (!this.world.isRemote) {
-            if (this.rand.nextInt(4) == 0) {
+        if (!this.level.isClientSide) {
+            if (this.random.nextInt(4) == 0) {
                 setHasBabies(true);
             } else {
                 setHasBabies(false);
@@ -67,9 +67,9 @@ public class MoCEntityScorpion extends MoCEntityMob {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityMob.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 18.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.3D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D);
+                .add(Attributes.MAX_HEALTH, 18.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.3D)
+                .add(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     @Override
@@ -98,18 +98,18 @@ public class MoCEntityScorpion extends MoCEntityMob {
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(IS_PICKED, Boolean.FALSE);
-        this.dataManager.register(HAS_BABIES, Boolean.FALSE);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(IS_PICKED, Boolean.FALSE);
+        this.entityData.define(HAS_BABIES, Boolean.FALSE);
     }
 
     public boolean getHasBabies() {
-        return this.dataManager.get(HAS_BABIES);
+        return this.entityData.get(HAS_BABIES);
     }
 
     public boolean getIsPicked() {
-        return this.dataManager.get(IS_PICKED);
+        return this.entityData.get(IS_PICKED);
     }
 
     public boolean getIsPoisoning() {
@@ -117,15 +117,15 @@ public class MoCEntityScorpion extends MoCEntityMob {
     }
 
     public void setHasBabies(boolean flag) {
-        this.dataManager.set(HAS_BABIES, flag);
+        this.entityData.set(HAS_BABIES, flag);
     }
 
     public void setPicked(boolean flag) {
-        this.dataManager.set(IS_PICKED, flag);
+        this.entityData.set(IS_PICKED, flag);
     }
 
     public void setPoisoning(boolean flag) {
-        if (flag && !this.world.isRemote) {
+        if (flag && !this.level.isClientSide) {
 //            MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 0),
 //                    new TargetPoint(this.world.getDimension().getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
         }
@@ -148,26 +148,26 @@ public class MoCEntityScorpion extends MoCEntityMob {
     }
 
     @Override
-    public boolean isOnLadder() {
-        return this.collidedHorizontally;
+    public boolean onClimbable() {
+        return this.horizontalCollision;
     }
 
     public boolean climbing() {
-        return !this.onGround && isOnLadder();
+        return !this.onGround && onClimbable();
     }
 
     @Override
-    public void livingTick() {
+    public void aiStep() {
 
-        if (!this.onGround && (this.getRidingEntity() != null)) {
-            this.rotationYaw = this.getRidingEntity().rotationYaw;
+        if (!this.onGround && (this.getVehicle() != null)) {
+            this.yRot = this.getVehicle().yRot;
         }
 
         if (this.mouthCounter != 0 && this.mouthCounter++ > 50) {
             this.mouthCounter = 0;
         }
 
-        if (!this.world.isRemote && (this.armCounter == 10 || this.armCounter == 40)) {
+        if (!this.level.isClientSide && (this.armCounter == 10 || this.armCounter == 40)) {
             MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_SCORPION_CLAW);
         }
 
@@ -175,7 +175,7 @@ public class MoCEntityScorpion extends MoCEntityMob {
             this.armCounter = 0;
         }
 
-        if (!this.world.isRemote && !this.isBeingRidden() && this.getIsAdult() && !this.getHasBabies() && this.rand.nextInt(100) == 0) {
+        if (!this.level.isClientSide && !this.isVehicle() && this.getIsAdult() && !this.getHasBabies() && this.random.nextInt(100) == 0) {
             MoCTools.findMobRider(this);
             /*List list = this.world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().expand(4D, 2D, 4D));
             for (int i = 0; i < list.size(); i++) {
@@ -202,16 +202,16 @@ public class MoCEntityScorpion extends MoCEntityMob {
                 setPoisoning(false);
             }
         }
-        super.livingTick();
+        super.aiStep();
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        if (super.attackEntityFrom(damagesource, i)) {
-            Entity entity = damagesource.getTrueSource();
+    public boolean hurt(DamageSource damagesource, float i) {
+        if (super.hurt(damagesource, i)) {
+            Entity entity = damagesource.getEntity();
 
             if ((entity != this && entity instanceof LivingEntity) && this.shouldAttackPlayers() && getIsAdult()) {
-                setAttackTarget((LivingEntity) entity);
+                setTarget((LivingEntity) entity);
             }
             return true;
         } else {
@@ -226,34 +226,34 @@ public class MoCEntityScorpion extends MoCEntityMob {
     }
 
     @Override
-    public void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
+    public void doEnchantDamageEffects(LivingEntity entityLivingBaseIn, Entity entityIn) {
         boolean flag = (entityIn instanceof PlayerEntity);
-        if (!getIsPoisoning() && this.rand.nextInt(5) == 0 && entityIn instanceof LivingEntity) {
+        if (!getIsPoisoning() && this.random.nextInt(5) == 0 && entityIn instanceof LivingEntity) {
             setPoisoning(true);
             if (getSubType() <= 2)// regular scorpions
             {
                 if (flag) {
                     MoCreatures.poisonPlayer((PlayerEntity) entityIn);
                 }
-                ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 70, 0));
+                ((LivingEntity) entityIn).addEffect(new EffectInstance(Effects.POISON, 70, 0));
             } else if (getSubType() == 4)// blue scorpions
             {
                 if (flag) {
                     MoCreatures.freezePlayer((PlayerEntity) entityIn);
                 }
-                ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 70, 0));
+                ((LivingEntity) entityIn).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 70, 0));
 
             } else if (getSubType() == 3)// red scorpions
             {
-                if (!this.world.isRemote && flag /*&& !this.world.dimension.doesWaterVaporize()*/) {
+                if (!this.level.isClientSide && flag /*&& !this.world.dimension.doesWaterVaporize()*/) {
                     MoCreatures.burnPlayer((PlayerEntity) entityIn);
-                    ((LivingEntity) entityIn).setFire(15);
+                    ((LivingEntity) entityIn).setSecondsOnFire(15);
                 }
             }
         } else {
             swingArm();
         }
-        super.applyEnchantments(entityLivingBaseIn, entityIn);
+        super.doEnchantDamageEffects(entityLivingBaseIn, entityIn);
     }
 
     public void swingArm() {
@@ -273,18 +273,18 @@ public class MoCEntityScorpion extends MoCEntityMob {
     }
 
     @Override
-    public void onDeath(DamageSource damagesource) {
-        super.onDeath(damagesource);
-        if (!this.world.isRemote && getIsAdult() && getHasBabies()) {
-            int k = this.rand.nextInt(5);
+    public void die(DamageSource damagesource) {
+        super.die(damagesource);
+        if (!this.level.isClientSide && getIsAdult() && getHasBabies()) {
+            int k = this.random.nextInt(5);
             for (int i = 0; i < k; i++) {
-                MoCEntityPetScorpion entityscorpy = new MoCEntityPetScorpion(MoCEntities.PET_SCORPION, this.world);
-                entityscorpy.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
+                MoCEntityPetScorpion entityscorpy = new MoCEntityPetScorpion(MoCEntities.PET_SCORPION, this.level);
+                entityscorpy.setPos(this.getX(), this.getY(), this.getZ());
                 entityscorpy.setAdult(false);
                 entityscorpy.setEdad(20);
                 entityscorpy.setType(getSubType());
-                this.world.addEntity(entityscorpy);
-                MoCTools.playCustomSound(entityscorpy, SoundEvents.ENTITY_CHICKEN_EGG);
+                this.level.addFreshEntity(entityscorpy);
+                MoCTools.playCustomSound(entityscorpy, SoundEvents.CHICKEN_EGG);
             }
         }
     }
@@ -371,12 +371,12 @@ public class MoCEntityScorpion extends MoCEntityMob {
             return true;
         }
 
-        int i = MathHelper.floor(this.getPosX());
+        int i = MathHelper.floor(this.getX());
         int j = MathHelper.floor(getBoundingBox().minY);
-        int k = MathHelper.floor(this.getPosZ());
+        int k = MathHelper.floor(this.getZ());
         BlockPos pos = new BlockPos(i, j, k);
 
-        Biome currentbiome = MoCTools.Biomekind(this.world, pos);
+        Biome currentbiome = MoCTools.Biomekind(this.level, pos);
 
         /*if (BiomeDictionary.hasType(currentbiome, Type.SNOWY)) {
             setType(4);
@@ -389,19 +389,19 @@ public class MoCEntityScorpion extends MoCEntityMob {
     }
 
     @Override
-    public void readAdditional(CompoundNBT nbttagcompound) {
-        super.readAdditional(nbttagcompound);
+    public void readAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.readAdditionalSaveData(nbttagcompound);
         setHasBabies(nbttagcompound.getBoolean("Babies"));
     }
 
     @Override
-    public void writeAdditional(CompoundNBT nbttagcompound) {
-        super.writeAdditional(nbttagcompound);
+    public void addAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.addAdditionalSaveData(nbttagcompound);
         nbttagcompound.putBoolean("Babies", getHasBabies());
     }
 
     @Override
-    public int getTalkInterval() {
+    public int getAmbientSoundInterval() {
         return 300;
     }
 
@@ -409,7 +409,7 @@ public class MoCEntityScorpion extends MoCEntityMob {
      * Get this Entity's EnumCreatureAttribute
      */
     @Override
-    public CreatureAttribute getCreatureAttribute() {
+    public CreatureAttribute getMobType() {
         return CreatureAttribute.ARTHROPOD;
     }
 
@@ -429,16 +429,16 @@ public class MoCEntityScorpion extends MoCEntityMob {
     }
 
     @Override
-    public double getMountedYOffset() {
-        return (this.getHeight() * 0.75D) - 0.15D;
+    public double getPassengersRidingOffset() {
+        return (this.getBbHeight() * 0.75D) - 0.15D;
     }
 
     @Override
-    public void updatePassenger(Entity passenger) {
+    public void positionRider(Entity passenger) {
         double dist = (0.2D);
-        double newPosX = this.getPosX() + (dist * Math.sin(this.renderYawOffset / 57.29578F));
-        double newPosZ = this.getPosZ() - (dist * Math.cos(this.renderYawOffset / 57.29578F));
-        passenger.setPosition(newPosX, this.getPosY() + getMountedYOffset() + passenger.getYOffset(), newPosZ);
-        passenger.rotationYaw = this.rotationYaw;
+        double newPosX = this.getX() + (dist * Math.sin(this.yBodyRot / 57.29578F));
+        double newPosZ = this.getZ() - (dist * Math.cos(this.yBodyRot / 57.29578F));
+        passenger.setPos(newPosX, this.getY() + getPassengersRidingOffset() + passenger.getMyRidingOffset(), newPosZ);
+        passenger.yRot = this.yRot;
     }
 }

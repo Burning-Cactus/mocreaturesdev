@@ -11,6 +11,8 @@ import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.EnumSet;
 
+import net.minecraft.entity.ai.goal.Goal.Flag;
+
 public class EntityAIWanderMoC2 extends Goal {
 
     private CreatureEntity entity;
@@ -29,28 +31,28 @@ public class EntityAIWanderMoC2 extends Goal {
         this.entity = creatureIn;
         this.speed = speedIn;
         this.executionChance = chance;
-        this.setMutexFlags(EnumSet.of(Flag.MOVE));
+        this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean shouldExecute() {
+    public boolean canUse() {
         if (this.entity instanceof IMoCEntity && ((IMoCEntity) this.entity).isMovementCeased()) {
             return false;
         }
-        if (this.entity.isBeingRidden() && !(this.entity instanceof MoCEntityAnt || this.entity instanceof MoCEntityMob)) {
+        if (this.entity.isVehicle() && !(this.entity instanceof MoCEntityAnt || this.entity instanceof MoCEntityMob)) {
             return false;
         }
 
         if (!this.mustUpdate) {
-            if (this.entity.getIdleTime() >= 100) {
+            if (this.entity.getNoActionTime() >= 100) {
                 //System.out.println("exiting path finder !mustUpdate + Age > 100" + this.entity);
                 return false;
             }
 
-            if (this.entity.getRNG().nextInt(this.executionChance) != 0) {
+            if (this.entity.getRandom().nextInt(this.executionChance) != 0) {
                 //System.out.println(this.entity + "exiting due executionChance, age = " + this.entity.getIdleTime() + ", executionChance = " + this.executionChance );
                 return false;
             }
@@ -58,9 +60,9 @@ public class EntityAIWanderMoC2 extends Goal {
 
         Vector3d vec3 = RandomPositionGeneratorMoCFlyer.findRandomTarget(this.entity, 10, 12);
 
-        if (vec3 != null && this.entity instanceof IMoCEntity && this.entity.getNavigator() instanceof PathNavigateFlyerMoC) {
+        if (vec3 != null && this.entity instanceof IMoCEntity && this.entity.getNavigation() instanceof PathNavigateFlyerMoC) {
             int distToFloor = MoCTools.distanceToFloor(this.entity);
-            int finalYHeight = distToFloor + MathHelper.floor(vec3.y - this.entity.getPosY());
+            int finalYHeight = distToFloor + MathHelper.floor(vec3.y - this.entity.getY());
             if ((finalYHeight < ((IMoCEntity) this.entity).minFlyingHeight())) {
                 //System.out.println("vector height " + finalYHeight + " smaller than min flying height " + ((IMoCEntity) this.entity).minFlyingHeight());
                 return false;
@@ -89,17 +91,17 @@ public class EntityAIWanderMoC2 extends Goal {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean shouldContinueExecuting() {
-        return !this.entity.getNavigator().noPath() && !entity.isBeingRidden();
+    public boolean canContinueToUse() {
+        return !this.entity.getNavigation().isDone() && !entity.isVehicle();
     }
 
     /**
      * Execute a one shot task or start executing a continuous task
      */
     @Override
-    public void startExecuting() {
+    public void start() {
         //System.out.println(this.entity + "moving to " + this.xPosition + ", " + this.yPosition + ", " + this.zPosition);
-        this.entity.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
+        this.entity.getNavigation().moveTo(this.xPosition, this.yPosition, this.zPosition, this.speed);
     }
 
     /**

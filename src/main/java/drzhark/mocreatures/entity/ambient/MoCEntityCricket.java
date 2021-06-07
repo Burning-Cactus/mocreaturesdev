@@ -24,7 +24,7 @@ public class MoCEntityCricket extends MoCEntityInsect
     @Override
     public void selectType() {
         if (getSubType() == 0) {
-            int i = this.rand.nextInt(100);
+            int i = this.random.nextInt(100);
             if (i <= 50) {
                 setType(1);
             } else {
@@ -43,21 +43,21 @@ public class MoCEntityCricket extends MoCEntityInsect
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
-        if (!this.world.isRemote) {
-            if (getIsFlying() && this.rand.nextInt(50) == 0) {
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level.isClientSide) {
+            if (getIsFlying() && this.random.nextInt(50) == 0) {
                 setIsFlying(false);
             }
 
             if (getIsFlying() || !this.onGround) {
-                PlayerEntity ep = this.world.getClosestPlayer(this, 5D);
+                PlayerEntity ep = this.level.getNearestPlayer(this, 5D);
                 if (ep != null && --this.soundCounter == -1) {
                     MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_CRICKET_FLY);
                     this.soundCounter = 10;
                 }
-            } else if (!world.isDaytime()) { //TODO: Formerly was Dimensionmanager.getWorld(), check if this still works!
-                PlayerEntity ep = this.world.getClosestPlayer(this, 12D);
+            } else if (!level.isDay()) { //TODO: Formerly was Dimensionmanager.getWorld(), check if this still works!
+                PlayerEntity ep = this.level.getNearestPlayer(this, 12D);
                 if (ep != null && --this.soundCounter == -1) {
                     MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_CRICKET_AMBIENT);
                     this.soundCounter = 20;
@@ -73,18 +73,18 @@ public class MoCEntityCricket extends MoCEntityInsect
     @Override
     public void tick() {
         super.tick();
-        if (!this.world.isRemote) {
-            if (onGround && ((getMotion().x > 0.05D) || (getMotion().z > 0.05D) || (getMotion().x < -0.05D) || (getMotion().z < -0.05D)))
+        if (!this.level.isClientSide) {
+            if (onGround && ((getDeltaMovement().x > 0.05D) || (getDeltaMovement().z > 0.05D) || (getDeltaMovement().x < -0.05D) || (getDeltaMovement().z < -0.05D)))
                 if (this.jumpCounter == 0 && this.onGround
-                        && ((this.getMotion().x > 0.05D) || (this.getMotion().z > 0.05D) || (this.getMotion().x < -0.05D) || (this.getMotion().z < -0.05D))) {
-                    this.setMotion(this.getMotion().x*5D, 0.45D, this.getMotion().z*5D);
+                        && ((this.getDeltaMovement().x > 0.05D) || (this.getDeltaMovement().z > 0.05D) || (this.getDeltaMovement().x < -0.05D) || (this.getDeltaMovement().z < -0.05D))) {
+                    this.setDeltaMovement(this.getDeltaMovement().x*5D, 0.45D, this.getDeltaMovement().z*5D);
                     this.jumpCounter = 1;
                 }
         }
     }
 
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         if (getIsFlying()) {
             return 0.12F;
         }

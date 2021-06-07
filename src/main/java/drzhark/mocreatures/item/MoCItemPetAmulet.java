@@ -30,7 +30,7 @@ public class MoCItemPetAmulet extends MoCItem {
     private int PetId;
 
     public MoCItemPetAmulet(Item.Properties builder) {
-        super(builder.maxStackSize(1));
+        super(builder.stacksTo(1));
 //        setHasSubtypes(true);
     }
 
@@ -176,8 +176,8 @@ public class MoCItemPetAmulet extends MoCItem {
         this.spawnClass = nbt.getString("SpawnClass");
         this.adult = nbt.getBoolean("Adult");
         this.ownerName = nbt.getString("OwnerName");
-        if (nbt.hasUniqueId("OwnerUUID")) {
-            this.ownerUniqueId = nbt.getUniqueId("OwnerUUID");
+        if (nbt.hasUUID("OwnerUUID")) {
+            this.ownerUniqueId = nbt.getUUID("OwnerUUID");
         }
     }
 
@@ -191,7 +191,7 @@ public class MoCItemPetAmulet extends MoCItem {
         nbt.putBoolean("Adult", this.adult);
         nbt.putString("OwnerName", this.ownerName);
         if (this.ownerUniqueId != null) {
-            nbt.putUniqueId("OwnerUUID", ownerUniqueId);
+            nbt.putUUID("OwnerUUID", ownerUniqueId);
         }
     }
 
@@ -200,7 +200,7 @@ public class MoCItemPetAmulet extends MoCItem {
      * allows items to add custom lines of information to the mouseover description
      */
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         initAndReadNBT(stack);
         if (this.spawnClass != "") {
             tooltip.add(new StringTextComponent(TextFormatting.AQUA + this.spawnClass));

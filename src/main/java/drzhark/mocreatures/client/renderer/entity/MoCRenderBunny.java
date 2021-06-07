@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class MoCRenderBunny<T extends MoCEntityBunny, M extends MoCModelBunny<T>> extends MoCRenderMoC<T, M> {
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityBunny entitybunny) {
+    public ResourceLocation getTextureLocation(MoCEntityBunny entitybunny) {
         return ((MoCEntityBunny) entitybunny).getTexture();
     }
 
@@ -22,12 +22,12 @@ public class MoCRenderBunny<T extends MoCEntityBunny, M extends MoCModelBunny<T>
     }
 
     @Override
-    protected float handleRotationFloat(MoCEntityBunny entitybunny, float f) {
-        return entitybunny.ticksExisted + f;
+    protected float getBob(MoCEntityBunny entitybunny, float f) {
+        return entitybunny.tickCount + f;
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityBunny entitybunny, MatrixStack matrixStack, float f) {
+    protected void scale(MoCEntityBunny entitybunny, MatrixStack matrixStack, float f) {
         if (!entitybunny.getIsAdult()) {
             stretch(entitybunny, matrixStack);
         }
@@ -36,13 +36,13 @@ public class MoCRenderBunny<T extends MoCEntityBunny, M extends MoCModelBunny<T>
     }
 
     protected void rotBunny(MoCEntityBunny entitybunny, MatrixStack stack) {
-        if (entitybunny.isAirBorne && (entitybunny.getRidingEntity() == null)) {
-            if (entitybunny.getMotion().y > 0.5D) {
-                stack.rotate(Vector3f.XN.rotationDegrees(35F));
-            } else if (entitybunny.getMotion().y < -0.5D) {
-                stack.rotate(Vector3f.XN.rotationDegrees(-35F));
+        if (entitybunny.hasImpulse && (entitybunny.getVehicle() == null)) {
+            if (entitybunny.getDeltaMovement().y > 0.5D) {
+                stack.mulPose(Vector3f.XN.rotationDegrees(35F));
+            } else if (entitybunny.getDeltaMovement().y < -0.5D) {
+                stack.mulPose(Vector3f.XN.rotationDegrees(-35F));
             } else {
-                stack.rotate(Vector3f.XN.rotationDegrees((float) (entitybunny.getMotion().y * 70D)));
+                stack.mulPose(Vector3f.XN.rotationDegrees((float) (entitybunny.getDeltaMovement().y * 70D)));
             }
         }
     }

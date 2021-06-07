@@ -61,8 +61,8 @@ public class MoCEntityRay extends MoCEntityTameableAquatic {
     }
 
     @Override
-    public double getMountedYOffset() {
-        return this.getHeight() * 0.15D * getSizeFactor();
+    public double getPassengersRidingOffset() {
+        return this.getBbHeight() * 0.15D * getSizeFactor();
     }
 
     @Override
@@ -80,7 +80,7 @@ public class MoCEntityRay extends MoCEntityTameableAquatic {
     }
 
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         return 0.06F;
     }
 

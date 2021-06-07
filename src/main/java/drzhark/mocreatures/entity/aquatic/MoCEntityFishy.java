@@ -27,11 +27,11 @@ public class MoCEntityFishy extends MoCEntityTameableAquatic {
     public int gestationtime;
 
     public static final String fishNames[] = {"Blue", "Orange", "Cyan", "Greeny", "Green", "Purple", "Yellow", "Striped", "Yellowy", "Red"};
-    private static final DataParameter<Boolean> HAS_EATEN = EntityDataManager.<Boolean>createKey(MoCEntityFishy.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> HAS_EATEN = EntityDataManager.<Boolean>defineId(MoCEntityFishy.class, DataSerializers.BOOLEAN);
     
     public MoCEntityFishy(EntityType<? extends MoCEntityFishy> type, World world) {
         super(type, world);
-        setEdad(50 + this.rand.nextInt(50));
+        setEdad(50 + this.random.nextInt(50));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class MoCEntityFishy extends MoCEntityTameableAquatic {
         this.goalSelector.addGoal(3, new EntityAIFleeFromEntityMoC(this, new Predicate<Entity>() {
 
             public boolean apply(Entity entity) {
-                return (entity.getHeight() > 0.3F || entity.getWidth() > 0.3F);
+                return (entity.getBbHeight() > 0.3F || entity.getBbWidth() > 0.3F);
             }
         }, 2.0F, 0.6D, 1.5D));
         this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 1.0D, 80));
@@ -48,14 +48,14 @@ public class MoCEntityFishy extends MoCEntityTameableAquatic {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityTameableAquatic.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 6.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.5D);
+                .add(Attributes.MAX_HEALTH, 6.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.5D);
     }
 
     @Override
     public void selectType() {
         if (getSubType() == 0) {
-            setType(this.rand.nextInt(fishNames.length) + 1);
+            setType(this.random.nextInt(fishNames.length) + 1);
         }
     }
 
@@ -88,17 +88,17 @@ public class MoCEntityFishy extends MoCEntityTameableAquatic {
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(HAS_EATEN, Boolean.valueOf(false));
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(HAS_EATEN, Boolean.valueOf(false));
     }
 
     public boolean getHasEaten() {
-        return ((Boolean)this.dataManager.get(HAS_EATEN)).booleanValue();
+        return ((Boolean)this.entityData.get(HAS_EATEN)).booleanValue();
     }
 
     public void setHasEaten(boolean flag) {
-        this.dataManager.set(HAS_EATEN, Boolean.valueOf(flag));
+        this.entityData.set(HAS_EATEN, Boolean.valueOf(flag));
     }
     
 //    @Override //TODO: Fishy loot table
@@ -116,17 +116,17 @@ public class MoCEntityFishy extends MoCEntityTameableAquatic {
 //    }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
 
         if (!this.isInWater()) {
-            this.prevRenderYawOffset = this.renderYawOffset = this.rotationYaw = this.prevRotationYaw;
-            this.rotationPitch = this.prevRotationPitch;
+            this.yBodyRotO = this.yBodyRot = this.yRot = this.yRotO;
+            this.xRot = this.xRotO;
         }
 
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
 
-            if (getIsTamed() && this.rand.nextInt(100) == 0 && getHealth() < getMaxHealth()) {
+            if (getIsTamed() && this.random.nextInt(100) == 0 && getHealth() < getMaxHealth()) {
                 this.setHealth(getMaxHealth());
             }
 
@@ -134,7 +134,7 @@ public class MoCEntityFishy extends MoCEntityTameableAquatic {
                 return;
             }
             int i = 0;
-            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(4D, 3D, 4D));
+            List<Entity> list = this.level.getEntities(this, getBoundingBox().expandTowards(4D, 3D, 4D));
             for (int j = 0; j < list.size(); j++) {
                 Entity entity = list.get(j);
                 if (entity instanceof MoCEntityFishy) {
@@ -145,7 +145,7 @@ public class MoCEntityFishy extends MoCEntityTameableAquatic {
             if (i > 1) {
                 return;
             }
-            List<Entity> list1 = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(4D, 2D, 4D));
+            List<Entity> list1 = this.level.getEntities(this, getBoundingBox().expandTowards(4D, 2D, 4D));
             for (int k = 0; k < list.size(); k++) {
                 Entity entity1 = list1.get(k);
                 if (!(entity1 instanceof MoCEntityFishy) || (entity1 == this)) {
@@ -155,7 +155,7 @@ public class MoCEntityFishy extends MoCEntityTameableAquatic {
                 if (!ReadyforParenting(this) || !ReadyforParenting(entityfishy) || (this.getType() != entityfishy.getType())) {
                     continue;
                 }
-                if (this.rand.nextInt(100) == 0) {
+                if (this.random.nextInt(100) == 0) {
                     this.gestationtime++;
                 }
                 if (this.gestationtime % 3 == 0) {
@@ -165,18 +165,18 @@ public class MoCEntityFishy extends MoCEntityTameableAquatic {
                 if (this.gestationtime <= 50) {
                     continue;
                 }
-                int l = this.rand.nextInt(3) + 1;
+                int l = this.random.nextInt(3) + 1;
                 for (int i1 = 0; i1 < l; i1++) {
-                    MoCEntityFishy entityfishy1 = new MoCEntityFishy(MoCEntities.FISHY, this.world);
-                    entityfishy1.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
-                    this.world.addEntity(entityfishy1);
-                    MoCTools.playCustomSound(this, SoundEvents.ENTITY_CHICKEN_EGG);
+                    MoCEntityFishy entityfishy1 = new MoCEntityFishy(MoCEntities.FISHY, this.level);
+                    entityfishy1.setPos(this.getX(), this.getY(), this.getZ());
+                    this.level.addFreshEntity(entityfishy1);
+                    MoCTools.playCustomSound(this, SoundEvents.CHICKEN_EGG);
                     setHasEaten(false);
                     entityfishy.setHasEaten(false);
                     this.gestationtime = 0;
                     entityfishy.gestationtime = 0;
 
-                    PlayerEntity entityplayer = this.world.getClosestPlayer(this, 24D);
+                    PlayerEntity entityplayer = this.level.getNearestPlayer(this, 24D);
                     if (entityplayer != null) {
                         MoCTools.tameWithName(entityplayer, entityfishy1);
                     }
@@ -225,7 +225,7 @@ public class MoCEntityFishy extends MoCEntityTameableAquatic {
     }
 
     @Override
-    public float getAIMoveSpeed() {
+    public float getSpeed() {
         return 0.10F;
     }
 

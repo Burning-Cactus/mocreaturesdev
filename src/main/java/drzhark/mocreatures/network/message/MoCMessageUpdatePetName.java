@@ -36,14 +36,14 @@ public class MoCMessageUpdatePetName implements IMoCMessage {
     public void encode(PacketBuffer buffer) {
 //        ByteBufUtils.writeUTF8String(buffer, this.name);
 //        ByteBufUtils.writeVarInt(buffer, this.entityId, 5);
-        buffer.writeString(name);
+        buffer.writeUtf(name);
         buffer.writeVarInt(entityId);
     } //TODO: Figure out how to update from ByteBufUtils
 
     public static MoCMessageUpdatePetName decode(PacketBuffer buffer) {
 //        this.name = ByteBufUtils.readUTF8String(buffer);
 //        this.entityId = ByteBufUtils.readVarInt(buffer, 5);
-        return new MoCMessageUpdatePetName(buffer.readString(), buffer.readVarInt());
+        return new MoCMessageUpdatePetName(buffer.readUtf(), buffer.readVarInt());
     }
 
     public static boolean onMessage(MoCMessageUpdatePetName message, Supplier<NetworkEvent.Context> ctx) {

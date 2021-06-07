@@ -7,7 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 public class EntityAITools {
 
     protected static boolean IsNearPlayer(LivingEntity entityliving, double d) {
-        PlayerEntity entityplayer1 = entityliving.world.getClosestPlayer(entityliving, d);
+        PlayerEntity entityplayer1 = entityliving.level.getNearestPlayer(entityliving, d);
         if (entityplayer1 != null) {
             return true;
         }
@@ -19,10 +19,10 @@ public class EntityAITools {
             return null;
         }
 
-        for (int i = 0; i < ((LivingEntity) pet).world.getPlayers().size(); ++i) {
-            PlayerEntity entityplayer = (PlayerEntity) ((LivingEntity) pet).world.getPlayers().get(i);
+        for (int i = 0; i < ((LivingEntity) pet).level.players().size(); ++i) {
+            PlayerEntity entityplayer = (PlayerEntity) ((LivingEntity) pet).level.players().get(i);
 
-            if (pet.getOwnerId().equals(entityplayer.getUniqueID())) {
+            if (pet.getOwnerId().equals(entityplayer.getUUID())) {
                 return entityplayer;
             }
         }

@@ -26,7 +26,7 @@ public class MoCRenderWraith extends LivingRenderer<MoCEntityWraith, MoCModelWra
         //boolean flag = wraith.isGlowing();
         boolean flag = false;
 
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
 //        GL11.glEnable(3042 /* GL_BLEND */);
 //        if (!flag) {
 //            float transparency = 0.6F;
@@ -37,11 +37,11 @@ public class MoCRenderWraith extends LivingRenderer<MoCEntityWraith, MoCModelWra
 //        }
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 //        GL11.glDisable(3042/* GL_BLEND */);
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityWraith entitywraith) {
+    public ResourceLocation getTextureLocation(MoCEntityWraith entitywraith) {
         return TEXTURE;
     }
 }

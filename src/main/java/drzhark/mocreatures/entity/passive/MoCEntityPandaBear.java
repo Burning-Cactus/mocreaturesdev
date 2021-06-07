@@ -19,7 +19,7 @@ public class MoCEntityPandaBear extends MoCEntityBear{
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -62,8 +62,8 @@ public class MoCEntityPandaBear extends MoCEntityBear{
     }
     
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        if (super.attackEntityFrom(damagesource, i)) {
+    public boolean hurt(DamageSource damagesource, float i) {
+        if (super.hurt(damagesource, i)) {
             return true;
         } else {
             return false;
@@ -133,12 +133,12 @@ public class MoCEntityPandaBear extends MoCEntityBear{
     }*/
     
     @Override
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
         /**
          * panda bears and cubs will sit down every now and then
          */
-        if (!this.world.isRemote && !getIsTamed() && this.rand.nextInt(300) == 0) {
+        if (!this.level.isClientSide && !getIsTamed() && this.random.nextInt(300) == 0) {
             setBearState(2);
         }
     }

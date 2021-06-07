@@ -50,20 +50,20 @@ public class MoCEntityWWolf extends MoCEntityMob {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityMob.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 15.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.3D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D);
+                .add(Attributes.MAX_HEALTH, 15.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.3D)
+                .add(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
     public void selectType() {
         if (getSubType() == 0) {
-            setType(this.rand.nextInt(4) + 1);
+            setType(this.random.nextInt(4) + 1);
         }
     }
 
@@ -98,7 +98,7 @@ public class MoCEntityWWolf extends MoCEntityMob {
     public void tick() {
         super.tick();
 
-        if (this.rand.nextInt(200) == 0) {
+        if (this.random.nextInt(200) == 0) {
             moveTail();
         }
 
@@ -126,27 +126,27 @@ public class MoCEntityWWolf extends MoCEntityMob {
     }*/
 
     @Override
-    public boolean canSpawn(IWorld worldIn, SpawnReason reason) {
+    public boolean checkSpawnRules(IWorld worldIn, SpawnReason reason) {
         return checkSpawningBiome()
-                && this.world.canBlockSeeSky(new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosY()), MathHelper
-                        .floor(this.getPosZ()))) && super.canSpawn(worldIn, reason);
+                && this.level.canSeeSkyFromBelowWater(new BlockPos(MathHelper.floor(this.getX()), MathHelper.floor(this.getY()), MathHelper
+                        .floor(this.getZ()))) && super.checkSpawnRules(worldIn, reason);
     }
 
     //TODO move this
     public LivingEntity getClosestTarget(Entity entity, double d) {
         double d1 = -1D;
         LivingEntity entityliving = null;
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(d, d, d));
+        List<Entity> list = this.level.getEntities(this, getBoundingBox().expandTowards(d, d, d));
         for (Entity entity1 : list) {
-            if (!(entity1 instanceof LivingEntity) || (entity1 == entity) || (entity1 == entity.getRidingEntity())
-                    || (entity1 == entity.getRidingEntity()) || (entity1 instanceof PlayerEntity) || (entity1 instanceof MobEntity)
+            if (!(entity1 instanceof LivingEntity) || (entity1 == entity) || (entity1 == entity.getVehicle())
+                    || (entity1 == entity.getVehicle()) || (entity1 instanceof PlayerEntity) || (entity1 instanceof MobEntity)
                     || (entity1 instanceof MoCEntityBigCat) || (entity1 instanceof MoCEntityBear) || (entity1 instanceof CowEntity)
                     || ((entity1 instanceof WolfEntity) && !(MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.attackWolves.get()))
                     || ((entity1 instanceof MoCEntityHorse) && !(MoCConfig.COMMON_CONFIG.GENERAL.creatureSettings.attackHorses.get()))) {
                 continue;
             }
-            double d2 = entity1.getDistanceSq(entity.getPosX(), entity.getPosY(), entity.getPosZ());
-            if (((d < 0.0D) || (d2 < (d * d))) && ((d1 == -1D) || (d2 < d1)) && ((LivingEntity) entity1).canEntityBeSeen(entity)) {
+            double d2 = entity1.distanceToSqr(entity.getX(), entity.getY(), entity.getZ());
+            if (((d < 0.0D) || (d2 < (d * d))) && ((d1 == -1D) || (d2 < d1)) && ((LivingEntity) entity1).canSee(entity)) {
                 d1 = d2;
                 entityliving = (LivingEntity) entity1;
             }
@@ -173,30 +173,30 @@ public class MoCEntityWWolf extends MoCEntityMob {
     }
 
     @Override
-    public void updatePassenger(Entity passenger) {
+    public void positionRider(Entity passenger) {
         double dist = (0.1D);
-        double newPosX = this.getPosX() + (dist * Math.sin(this.renderYawOffset / 57.29578F));
-        double newPosZ = this.getPosZ() - (dist * Math.cos(this.renderYawOffset / 57.29578F));
-        passenger.setPosition(newPosX, this.getPosY() + getMountedYOffset() + passenger.getYOffset(), newPosZ);
-        passenger.rotationYaw = this.rotationYaw;
+        double newPosX = this.getX() + (dist * Math.sin(this.yBodyRot / 57.29578F));
+        double newPosZ = this.getZ() - (dist * Math.cos(this.yBodyRot / 57.29578F));
+        passenger.setPos(newPosX, this.getY() + getPassengersRidingOffset() + passenger.getMyRidingOffset(), newPosZ);
+        passenger.yRot = this.yRot;
     }
 
     @Override
-    public double getMountedYOffset() {
-        return (this.getHeight() * 0.75D) - 0.1D;
+    public double getPassengersRidingOffset() {
+        return (this.getBbHeight() * 0.75D) - 0.1D;
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
-        if (!this.world.isRemote && !this.isBeingRidden() && this.rand.nextInt(100) == 0) {
-            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(4D, 2D, 4D));
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level.isClientSide && !this.isVehicle() && this.random.nextInt(100) == 0) {
+            List<Entity> list = this.level.getEntities(this, getBoundingBox().expandTowards(4D, 2D, 4D));
             for (Entity entity : list) {
                 if (!(entity instanceof MobEntity)) {
                     continue;
                 }
                 MobEntity entitymob = (MobEntity) entity;
-                if (entitymob.getRidingEntity() == null
+                if (entitymob.getVehicle() == null
                         && (entitymob instanceof SkeletonEntity || entitymob instanceof ZombieEntity || entitymob instanceof MoCEntitySilverSkeleton)) {
                     entitymob.startRiding(this);
                     break;

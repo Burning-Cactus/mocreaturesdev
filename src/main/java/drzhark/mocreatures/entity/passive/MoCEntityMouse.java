@@ -32,8 +32,8 @@ public class MoCEntityMouse extends MoCEntityAnimal {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityAnimal.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 4.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.35D);
+                .add(Attributes.MAX_HEALTH, 4.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.35D);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class MoCEntityMouse extends MoCEntityAnimal {
         checkSpawningBiome();
 
         if (getSubType() == 0) {
-            setType(this.rand.nextInt(3) + 1);
+            setType(this.random.nextInt(3) + 1);
         }
     }
 
@@ -73,11 +73,11 @@ public class MoCEntityMouse extends MoCEntityAnimal {
     }*/
 
     public boolean getIsPicked() {
-        return this.getRidingEntity() != null;
+        return this.getVehicle() != null;
     }
 
     public boolean climbing() {
-        return !this.onGround && isOnLadder();
+        return !this.onGround && onClimbable();
     }
 
     /*@Override
@@ -109,15 +109,15 @@ public class MoCEntityMouse extends MoCEntityAnimal {
     }
 
     @Override
-    public double getYOffset() {
-        if (this.getRidingEntity() instanceof PlayerEntity /*&& this.getRidingEntity() == MoCreatures.proxy.getPlayer()*/ && this.world.isRemote) {
-            return (super.getYOffset() - 0.7F);
+    public double getMyRidingOffset() {
+        if (this.getVehicle() instanceof PlayerEntity /*&& this.getRidingEntity() == MoCreatures.proxy.getPlayer()*/ && this.level.isClientSide) {
+            return (super.getMyRidingOffset() - 0.7F);
         }
 
-        if ((this.getRidingEntity() instanceof PlayerEntity) && this.world.isRemote) {
-            return (super.getYOffset() - 0.1F);
+        if ((this.getVehicle() instanceof PlayerEntity) && this.level.isClientSide) {
+            return (super.getMyRidingOffset() - 0.1F);
         } else {
-            return super.getYOffset();
+            return super.getMyRidingOffset();
         }
     }
 
@@ -135,15 +135,15 @@ public class MoCEntityMouse extends MoCEntityAnimal {
     }*/
 
     @Override
-    public boolean isOnLadder() {
-        return this.collidedHorizontally;
+    public boolean onClimbable() {
+        return this.horizontalCollision;
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
-        if (!this.onGround && (this.getRidingEntity() != null)) {
-            this.rotationYaw = this.getRidingEntity().rotationYaw;
+    public void aiStep() {
+        super.aiStep();
+        if (!this.onGround && (this.getVehicle() != null)) {
+            this.yRot = this.getVehicle().yRot;
         }
         
     }

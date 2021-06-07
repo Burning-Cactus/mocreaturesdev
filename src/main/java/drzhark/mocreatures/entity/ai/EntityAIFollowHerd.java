@@ -35,22 +35,22 @@ public class EntityAIFollowHerd extends Goal {
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean shouldExecute() {
+    public boolean canUse() {
 
-        if (this.theAnimal.getRNG().nextInt(this.executionChance) != 0) {
+        if (this.theAnimal.getRandom().nextInt(this.executionChance) != 0) {
             return false;
         }
 
         List<LivingEntity> list =
-                this.theAnimal.world.getEntitiesWithinAABB(this.theAnimal.getClass(),
-                        this.theAnimal.getBoundingBox().expand(this.maxRange, 4.0D, this.maxRange));
+                this.theAnimal.level.getEntitiesOfClass(this.theAnimal.getClass(),
+                        this.theAnimal.getBoundingBox().expandTowards(this.maxRange, 4.0D, this.maxRange));
         LivingEntity entityliving = null;
         double d0 = Double.MAX_VALUE;
         Iterator<LivingEntity> iterator = list.iterator();
 
         while (iterator.hasNext()) {
             LivingEntity entityliving1 = iterator.next();
-            double d1 = this.theAnimal.getDistanceSq(entityliving1);
+            double d1 = this.theAnimal.distanceToSqr(entityliving1);
             if (d1 >= this.minRange && this.theAnimal != entityliving1) {
                 d0 = d1;
                 entityliving = entityliving1;
@@ -77,13 +77,13 @@ public class EntityAIFollowHerd extends Goal {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean shouldContinueExecuting() {
+    public boolean canContinueToUse() {
         if (this.theAnimal instanceof IMoCEntity && ((IMoCEntity) this.theAnimal).isMovementCeased()) { //System.out.println("returning, movement ceased");
             return false;
         } else if (!this.herdAnimal.isAlive()) {
             return false;
         } else {
-            double d0 = this.theAnimal.getDistanceSq(this.herdAnimal);
+            double d0 = this.theAnimal.distanceToSqr(this.herdAnimal);
             return d0 >= this.minRange && d0 <= this.maxRange;
         }
     }
@@ -92,7 +92,7 @@ public class EntityAIFollowHerd extends Goal {
      * Execute a one shot task or start executing a continuous task
      */
     @Override
-    public void startExecuting() {
+    public void start() {
         this.delayCounter = 0;
     }
 
@@ -100,7 +100,7 @@ public class EntityAIFollowHerd extends Goal {
      * Resets the task
      */
     @Override
-    public void resetTask() {
+    public void stop() {
         this.herdAnimal = null;
     }
 
@@ -112,7 +112,7 @@ public class EntityAIFollowHerd extends Goal {
         if (--this.delayCounter <= 0) {
             this.delayCounter = 20;
             //System.out.println("moving " + this + " to " + this.herdAnimal);
-            ((MobEntity)this.theAnimal).getNavigator().tryMoveToEntityLiving(this.herdAnimal, this.moveSpeed);
+            ((MobEntity)this.theAnimal).getNavigation().moveTo(this.herdAnimal, this.moveSpeed);
         }
     }
 

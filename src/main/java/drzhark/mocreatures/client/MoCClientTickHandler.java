@@ -22,7 +22,7 @@ public class MoCClientTickHandler {
     @SubscribeEvent
     public void tickEnd(TickEvent.ClientTickEvent event) {
         if (event.type.equals(TickEvent.Type.CLIENT)) {
-            Screen curScreen = Minecraft.getInstance().currentScreen;
+            Screen curScreen = Minecraft.getInstance().screen;
             if (curScreen != null) {
                 onTickInGui(curScreen);
             } else {

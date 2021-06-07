@@ -18,11 +18,11 @@ public class MoCEntityStingRay extends MoCEntityRay {
 
     public MoCEntityStingRay(EntityType<? extends MoCEntityStingRay> type, World world) {
         super(type, world);
-        setEdad(50 + (this.rand.nextInt(40)));
+        setEdad(50 + (this.random.nextInt(40)));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return MoCEntityRay.registerAttributes().func_233815_a_(Attributes.MAX_HEALTH, 10D);
+        return MoCEntityRay.registerAttributes().add(Attributes.MAX_HEALTH, 10D);
     }
 
     @Override
@@ -36,10 +36,10 @@ public class MoCEntityStingRay extends MoCEntityRay {
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
-        if (!this.world.isRemote) {
-            if (!getIsTamed() && ++this.poisoncounter > 250 && (this.world.getDifficulty().getId() > 0) && this.rand.nextInt(30) == 0) {
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level.isClientSide) {
+            if (!getIsTamed() && ++this.poisoncounter > 250 && (this.level.getDifficulty().getId() > 0) && this.random.nextInt(30) == 0) {
                 if (MoCTools.findNearPlayerAndPoison(this, true)) {
 //                    MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAnimation(this.getEntityId(), 1),
 //                            new TargetPoint(this.world.dimension.getType().getId(), this.getPosX(), this.getPosY(), this.getPosZ(), 64));
@@ -63,15 +63,15 @@ public class MoCEntityStingRay extends MoCEntityRay {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        if (super.attackEntityFrom(damagesource, i)) {
-            if ((this.world.getDifficulty().getId() == 0)) {
+    public boolean hurt(DamageSource damagesource, float i) {
+        if (super.hurt(damagesource, i)) {
+            if ((this.level.getDifficulty().getId() == 0)) {
                 return true;
             }
-            Entity entity = damagesource.getTrueSource();
+            Entity entity = damagesource.getEntity();
             if (entity instanceof LivingEntity) {
                 if (entity != this) {
-                    setAttackTarget((LivingEntity) entity);
+                    setTarget((LivingEntity) entity);
                 }
                 return true;
             }

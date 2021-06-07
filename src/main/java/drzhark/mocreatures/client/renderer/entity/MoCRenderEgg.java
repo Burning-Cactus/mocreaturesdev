@@ -18,9 +18,9 @@ public class MoCRenderEgg<T extends MoCEntityEgg, M extends MoCModelEgg<T>> exte
     }
 
     @Override
-    protected void preRenderCallback(T entityegg, MatrixStack matrixStack, float f) {
+    protected void scale(T entityegg, MatrixStack matrixStack, float f) {
         stretch(entityegg);
-        super.preRenderCallback(entityegg, matrixStack, f);
+        super.scale(entityegg, matrixStack, f);
 
     }
 
@@ -30,7 +30,7 @@ public class MoCRenderEgg<T extends MoCEntityEgg, M extends MoCModelEgg<T>> exte
     }
 
     @Override
-    public ResourceLocation getEntityTexture(T entityegg) {
+    public ResourceLocation getTextureLocation(T entityegg) {
         return entityegg.getTexture();
     }
 }

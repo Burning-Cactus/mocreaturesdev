@@ -124,10 +124,10 @@ public class MoCClientRegistry {
      */
     @SubscribeEvent
     public static void registerParticles(ParticleFactoryRegisterEvent event) {
-        ParticleManager manager = Minecraft.getInstance().particles;
-        manager.registerFactory(MoCParticleTypes.STAR_FX, MoCEntityFXStar.Factory::new);
-        manager.registerFactory(MoCParticleTypes.UNDEAD_FX, MoCEntityFXUndead.Factory::new);
-        manager.registerFactory(MoCParticleTypes.VACUUM_FX, MoCEntityFXVacuum.Factory::new);
-        manager.registerFactory(MoCParticleTypes.VANISH_FX, MoCEntityFXVanish.Factory::new);
+        ParticleManager manager = Minecraft.getInstance().particleEngine;
+        manager.register(MoCParticleTypes.STAR_FX, MoCEntityFXStar.Factory::new);
+        manager.register(MoCParticleTypes.UNDEAD_FX, MoCEntityFXUndead.Factory::new);
+        manager.register(MoCParticleTypes.VACUUM_FX, MoCEntityFXVacuum.Factory::new);
+        manager.register(MoCParticleTypes.VANISH_FX, MoCEntityFXVanish.Factory::new);
     }
 }

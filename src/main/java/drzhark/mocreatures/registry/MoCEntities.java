@@ -72,7 +72,7 @@ public class MoCEntities {
     public static List<EntityType<?>> SPAWN_ENTITIES = new ArrayList<>();
 
     private static<T extends Entity> EntityType.Builder<T> makeBuilder(EntityType.IFactory<T> factory, EntityClassification classification, float size1, float size2) {
-        return EntityType.Builder.create(factory, classification).size(size1, size2);
+        return EntityType.Builder.of(factory, classification).sized(size1, size2);
     }
 
     private static<T extends Entity> EntityType<T> buildType(String id, EntityType.IFactory<T> factory, EntityClassification classification, float size1, float size2) {
@@ -82,7 +82,7 @@ public class MoCEntities {
     private static<T extends Entity> EntityType<T> buildType(String id, EntityType.IFactory<T> factory, EntityClassification classification, float size1, float size2, boolean fireImmune) {
         EntityType.Builder<T> builder = makeBuilder(factory, classification, size1, size2);
         if(fireImmune)
-            builder.immuneToFire();
+            builder.fireImmune();
         EntityType<T> type = builder.build(MOD_PREFIX + id);
         type.setRegistryName(id);
         ENTITIES.add(type);
@@ -499,88 +499,88 @@ public class MoCEntities {
     }
 
     public static void registerEntitySpawns() {
-        EntitySpawnPlacementRegistry.register(BIRD, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityBird::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(BLACK_BEAR, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityBlackBear::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(BOAR, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityBoar::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(BUNNY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityBunny::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(CROCODILE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityCrocodile::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(DEER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityDeer::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(DUCK, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityDuck::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(ELEPHANT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityElephant::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(ENT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityEnt::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(FOX, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityFox::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(GOAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityGoat::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(GRIZZLY_BEAR, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityGrizzlyBear::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(KITTY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityKitty::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(KOMODO_DRAGON, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityKomodo::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(LEOGER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityLeoger::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(LEOPARD, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityLeopard::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(LIARD, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityLiard::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(LION, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityLion::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(LIGER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityLiger::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(LITHER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityLither::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(MANTICORE_PET, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityManticorePet::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(MOLE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityMole::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(MOUSE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityMouse::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(OSTRICH, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityOstrich::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(PANDA_BEAR, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityPandaBear::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(PANTHARD, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityPanthard::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(PANTHER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityPanther::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(PANTHGER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityPanthger::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(PET_SCORPION, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityPetScorpion::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(POLAR_BEAR, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityPolarBear::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(RACCOON, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityRaccoon::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(SNAKE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntitySnake::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(TIGER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityTiger::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(TURTLE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityTurtle::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(TURKEY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityTurkey::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(WILDHORSE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityHorse::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(WYVERN, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityWyvern::canAnimalSpawn);
+        EntitySpawnPlacementRegistry.register(BIRD, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityBird::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(BLACK_BEAR, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityBlackBear::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(BOAR, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityBoar::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(BUNNY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityBunny::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(CROCODILE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityCrocodile::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(DEER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityDeer::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(DUCK, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityDuck::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(ELEPHANT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityElephant::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(ENT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityEnt::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(FOX, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityFox::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(GOAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityGoat::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(GRIZZLY_BEAR, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityGrizzlyBear::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(KITTY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityKitty::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(KOMODO_DRAGON, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityKomodo::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(LEOGER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityLeoger::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(LEOPARD, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityLeopard::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(LIARD, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityLiard::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(LION, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityLion::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(LIGER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityLiger::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(LITHER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityLither::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(MANTICORE_PET, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityManticorePet::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(MOLE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityMole::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(MOUSE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityMouse::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(OSTRICH, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityOstrich::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(PANDA_BEAR, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityPandaBear::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(PANTHARD, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityPanthard::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(PANTHER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityPanther::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(PANTHGER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityPanthger::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(PET_SCORPION, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityPetScorpion::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(POLAR_BEAR, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityPolarBear::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(RACCOON, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityRaccoon::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(SNAKE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntitySnake::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(TIGER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityTiger::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(TURTLE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityTurtle::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(TURKEY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityTurkey::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(WILDHORSE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityHorse::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(WYVERN, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityWyvern::checkAnimalSpawnRules);
 
-        EntitySpawnPlacementRegistry.register(BIG_GOLEM, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityGolem::canMonsterSpawnInLight);
-        EntitySpawnPlacementRegistry.register(CAVE_OGRE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityCaveOgre::canMonsterSpawnInLight);
-        EntitySpawnPlacementRegistry.register(FIRE_OGRE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityFireOgre::canMonsterSpawnInLight);
-        EntitySpawnPlacementRegistry.register(FLAME_WRAITH, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityFlameWraith::canMonsterSpawnInLight);
-        EntitySpawnPlacementRegistry.register(GREEN_OGRE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityGreenOgre::canMonsterSpawnInLight);
-        EntitySpawnPlacementRegistry.register(HORSEMOB, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityHorseMob::canMonsterSpawnInLight);
-        EntitySpawnPlacementRegistry.register(HELLRAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityHellRat::canMonsterSpawnInLight);
-        EntitySpawnPlacementRegistry.register(MANTICORE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityManticore::canMonsterSpawnInLight);
-        EntitySpawnPlacementRegistry.register(MINI_GOLEM, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityMiniGolem::canMonsterSpawnInLight);
-        EntitySpawnPlacementRegistry.register(RAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityRat::canMonsterSpawnInLight);
-        EntitySpawnPlacementRegistry.register(SILVER_SKELETON, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntitySilverSkeleton::canMonsterSpawnInLight);
-        EntitySpawnPlacementRegistry.register(SCORPION, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityScorpion::canMonsterSpawnInLight);
-        EntitySpawnPlacementRegistry.register(WEREWOLF, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityWerewolf::canMonsterSpawnInLight);
-        EntitySpawnPlacementRegistry.register(WRAITH, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityWraith::canMonsterSpawnInLight);
-        EntitySpawnPlacementRegistry.register(WWOLF, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityWWolf::canMonsterSpawnInLight);
+        EntitySpawnPlacementRegistry.register(BIG_GOLEM, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityGolem::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(CAVE_OGRE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityCaveOgre::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(FIRE_OGRE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityFireOgre::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(FLAME_WRAITH, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityFlameWraith::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(GREEN_OGRE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityGreenOgre::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(HORSEMOB, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityHorseMob::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(HELLRAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityHellRat::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(MANTICORE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityManticore::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(MINI_GOLEM, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityMiniGolem::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(RAT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityRat::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(SILVER_SKELETON, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntitySilverSkeleton::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(SCORPION, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityScorpion::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(WEREWOLF, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityWerewolf::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(WRAITH, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityWraith::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(WWOLF, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityWWolf::checkMonsterSpawnRules);
 
-        EntitySpawnPlacementRegistry.register(ANCHOVY, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityAnchovy::canSpawnOn);
-        EntitySpawnPlacementRegistry.register(ANGELFISH, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityAngelFish::canSpawnOn);
-        EntitySpawnPlacementRegistry.register(ANGLER, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityAngler::canSpawnOn);
-        EntitySpawnPlacementRegistry.register(BASS, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityBass::canSpawnOn);
-        EntitySpawnPlacementRegistry.register(CLOWNFISH, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityClownFish::canSpawnOn);
-        EntitySpawnPlacementRegistry.register(COD, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityCod::canSpawnOn);
-        EntitySpawnPlacementRegistry.register(DOLPHIN, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityDolphin::canSpawnOn);
-        EntitySpawnPlacementRegistry.register(FISHY, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityFishy::canSpawnOn);
-        EntitySpawnPlacementRegistry.register(GOLDFISH, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityGoldFish::canSpawnOn);
-        EntitySpawnPlacementRegistry.register(HIPPOTANG, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityHippoTang::canSpawnOn);
-        EntitySpawnPlacementRegistry.register(JELLYFISH, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityJellyFish::canSpawnOn);
-        EntitySpawnPlacementRegistry.register(MANDERIN, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityManderin::canSpawnOn);
-        EntitySpawnPlacementRegistry.register(PIRANHA, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityPiranha::canSpawnOn);
-        EntitySpawnPlacementRegistry.register(SALMON, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntitySalmon::canSpawnOn);
-        EntitySpawnPlacementRegistry.register(MANTARAY, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityMantaRay::canSpawnOn);
-        EntitySpawnPlacementRegistry.register(SHARK, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityShark::canSpawnOn);
-        EntitySpawnPlacementRegistry.register(STINGRAY, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityStingRay::canSpawnOn);
+        EntitySpawnPlacementRegistry.register(ANCHOVY, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityAnchovy::checkMobSpawnRules);
+        EntitySpawnPlacementRegistry.register(ANGELFISH, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityAngelFish::checkMobSpawnRules);
+        EntitySpawnPlacementRegistry.register(ANGLER, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityAngler::checkMobSpawnRules);
+        EntitySpawnPlacementRegistry.register(BASS, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityBass::checkMobSpawnRules);
+        EntitySpawnPlacementRegistry.register(CLOWNFISH, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityClownFish::checkMobSpawnRules);
+        EntitySpawnPlacementRegistry.register(COD, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityCod::checkMobSpawnRules);
+        EntitySpawnPlacementRegistry.register(DOLPHIN, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityDolphin::checkMobSpawnRules);
+        EntitySpawnPlacementRegistry.register(FISHY, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityFishy::checkMobSpawnRules);
+        EntitySpawnPlacementRegistry.register(GOLDFISH, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityGoldFish::checkMobSpawnRules);
+        EntitySpawnPlacementRegistry.register(HIPPOTANG, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityHippoTang::checkMobSpawnRules);
+        EntitySpawnPlacementRegistry.register(JELLYFISH, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityJellyFish::checkMobSpawnRules);
+        EntitySpawnPlacementRegistry.register(MANDERIN, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityManderin::checkMobSpawnRules);
+        EntitySpawnPlacementRegistry.register(PIRANHA, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityPiranha::checkMobSpawnRules);
+        EntitySpawnPlacementRegistry.register(SALMON, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntitySalmon::checkMobSpawnRules);
+        EntitySpawnPlacementRegistry.register(MANTARAY, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityMantaRay::checkMobSpawnRules);
+        EntitySpawnPlacementRegistry.register(SHARK, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityShark::checkMobSpawnRules);
+        EntitySpawnPlacementRegistry.register(STINGRAY, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityStingRay::checkMobSpawnRules);
 
-        EntitySpawnPlacementRegistry.register(ANT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityAnt::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(BEE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityBee::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(BUTTERFLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityButterfly::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(CRAB, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityCrab::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(CRICKET, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityCricket::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(DRAGONFLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityDragonfly::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(FIREFLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityFirefly::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(FLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityFly::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(MAGGOT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityMaggot::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(SNAIL, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntitySnail::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(ROACH, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityRoach::canAnimalSpawn);
+        EntitySpawnPlacementRegistry.register(ANT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityAnt::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(BEE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityBee::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(BUTTERFLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityButterfly::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(CRAB, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityCrab::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(CRICKET, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityCricket::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(DRAGONFLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityDragonfly::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(FIREFLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityFirefly::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(FLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityFly::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(MAGGOT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityMaggot::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(SNAIL, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntitySnail::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(ROACH, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityRoach::checkAnimalSpawnRules);
     }
 }

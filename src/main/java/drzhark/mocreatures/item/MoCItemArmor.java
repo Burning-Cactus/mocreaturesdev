@@ -90,8 +90,8 @@ public class MoCItemArmor extends ArmorItem {
      */
     @Override
     public void onArmorTick(ItemStack itemStack, World world, PlayerEntity player) {
-        if (world.rand.nextInt(50) == 0 && player.getItemStackFromSlot(EquipmentSlotType.FEET) != null) {
-            ItemStack stack = player.getItemStackFromSlot(EquipmentSlotType.FEET);
+        if (world.random.nextInt(50) == 0 && player.getItemBySlot(EquipmentSlotType.FEET) != null) {
+            ItemStack stack = player.getItemBySlot(EquipmentSlotType.FEET);
             if (!stack.isEmpty() && stack.getItem() instanceof MoCItemArmor) {
                 MoCTools.updatePlayerArmorEffects(player);
             }

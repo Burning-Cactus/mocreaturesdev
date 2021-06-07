@@ -9,6 +9,8 @@ import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.EnumSet;
 
+import net.minecraft.entity.ai.goal.Goal.Flag;
+
 public class EntityAIFleeFromPlayer extends Goal {
 
     private CreatureEntity entityCreature;
@@ -22,14 +24,14 @@ public class EntityAIFleeFromPlayer extends Goal {
         this.entityCreature = creature;
         this.distance = distanceToCheck;
         this.speed = speedIn;
-        this.setMutexFlags(EnumSet.of(Flag.MOVE));
+        this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean shouldExecute() {
+    public boolean canUse() {
 
         if (this.entityCreature instanceof IMoCEntity) {
             if (((IMoCEntity) this.entityCreature).isNotScared()) {
@@ -40,7 +42,7 @@ public class EntityAIFleeFromPlayer extends Goal {
         if (!this.IsNearPlayer(this.distance)) {
             return false;
         } else {
-            Vector3d vec3 = RandomPositionGenerator.findRandomTarget(this.entityCreature, 5, 4);
+            Vector3d vec3 = RandomPositionGenerator.getPos(this.entityCreature, 5, 4);
 
             if (vec3 == null) {
                 return false;
@@ -54,7 +56,7 @@ public class EntityAIFleeFromPlayer extends Goal {
     }
 
     protected boolean IsNearPlayer(double d) {
-        PlayerEntity entityplayer1 = this.entityCreature.world.getClosestPlayer(this.entityCreature, d);
+        PlayerEntity entityplayer1 = this.entityCreature.level.getNearestPlayer(this.entityCreature, d);
         if (entityplayer1 != null) {
             return true;
         }
@@ -65,15 +67,15 @@ public class EntityAIFleeFromPlayer extends Goal {
      * Execute a one shot task or start executing a continuous task
      */
     @Override
-    public void startExecuting() {
-        this.entityCreature.getNavigator().tryMoveToXYZ(this.randPosX, this.randPosY, this.randPosZ, this.speed);
+    public void start() {
+        this.entityCreature.getNavigation().moveTo(this.randPosX, this.randPosY, this.randPosZ, this.speed);
     }
 
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean shouldContinueExecuting() {
-        return !this.entityCreature.getNavigator().noPath();
+    public boolean canContinueToUse() {
+        return !this.entityCreature.getNavigation().isDone();
     }
 }

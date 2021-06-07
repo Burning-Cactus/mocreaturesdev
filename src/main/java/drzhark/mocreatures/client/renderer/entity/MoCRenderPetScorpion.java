@@ -19,7 +19,7 @@ public class MoCRenderPetScorpion extends MoCRenderMoC<MoCEntityPetScorpion, MoC
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityPetScorpion entityscorpion, MatrixStack stack, float f) {
+    protected void scale(MoCEntityPetScorpion entityscorpion, MatrixStack stack, float f) {
         boolean sitting = entityscorpion.getIsSitting();
         if (entityscorpion.climbing()) {
             rotateAnimal(entityscorpion);
@@ -30,7 +30,7 @@ public class MoCRenderPetScorpion extends MoCRenderMoC<MoCEntityPetScorpion, MoC
         }
         if (!entityscorpion.getIsAdult()) {
             stretch(entityscorpion, stack);
-            if (entityscorpion.getRidingEntity() != null) {
+            if (entityscorpion.getVehicle() != null) {
                 upsideDown(entityscorpion, stack);
             }
         } else {
@@ -61,7 +61,7 @@ public class MoCRenderPetScorpion extends MoCRenderMoC<MoCEntityPetScorpion, MoC
     }
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityPetScorpion entityscorpion) {
+    public ResourceLocation getTextureLocation(MoCEntityPetScorpion entityscorpion) {
         return entityscorpion.getTexture();
     }
 }

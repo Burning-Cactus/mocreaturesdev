@@ -22,7 +22,7 @@ public class MoCRenderCrocodile<T extends MoCEntityCrocodile, M extends MoCModel
     }
 
     @Override
-    public ResourceLocation getEntityTexture(T entitycrocodile) {
+    public ResourceLocation getTextureLocation(T entitycrocodile) {
         return (entitycrocodile).getTexture();
     }
 
@@ -32,12 +32,12 @@ public class MoCRenderCrocodile<T extends MoCEntityCrocodile, M extends MoCModel
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityCrocodile entitycrocodile, MatrixStack matrixStack, float f) {
+    protected void scale(MoCEntityCrocodile entitycrocodile, MatrixStack matrixStack, float f) {
         this.croc.biteProgress = entitycrocodile.biteProgress;
         this.croc.swimming = entitycrocodile.isSwimming();
         this.croc.resting = entitycrocodile.getIsSitting();
         if (entitycrocodile.isSpinning()) {
-            spinCroc(entitycrocodile, (LivingEntity) entitycrocodile.getRidingEntity());
+            spinCroc(entitycrocodile, (LivingEntity) entitycrocodile.getVehicle());
         }
         stretch(entitycrocodile);
         if (entitycrocodile.getIsSitting()) {

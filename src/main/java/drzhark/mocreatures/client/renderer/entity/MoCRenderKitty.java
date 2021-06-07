@@ -15,7 +15,7 @@ public class MoCRenderKitty extends MoCRenderMoC<MoCEntityKitty, MoCModelKitty> 
     public MoCModelKitty pussy1;
 
     @Override
-    public ResourceLocation getEntityTexture(MoCEntityKitty entitykitty) {
+    public ResourceLocation getTextureLocation(MoCEntityKitty entitykitty) {
         return entitykitty.getTexture();
     }
 
@@ -73,13 +73,13 @@ public class MoCRenderKitty extends MoCRenderMoC<MoCEntityKitty, MoCModelKitty> 
 //    }
 
     @Override
-    protected float handleRotationFloat(MoCEntityKitty entitykitty, float f) {
-        return entitykitty.ticksExisted + f;
+    protected float getBob(MoCEntityKitty entitykitty, float f) {
+        return entitykitty.tickCount + f;
     }
 
     protected void onMaBack(MoCEntityKitty entitykitty, MatrixStack stack) {
-        stack.rotate(Vector3f.ZN.rotationDegrees(90F));
-        if (!entitykitty.world.isRemote && (entitykitty.getRidingEntity() != null)) {
+        stack.mulPose(Vector3f.ZN.rotationDegrees(90F));
+        if (!entitykitty.level.isClientSide && (entitykitty.getVehicle() != null)) {
             stack.translate(-1.5F, 0.2F, -0.2F);
         } else {
             stack.translate(0.1F, 0.2F, -0.2F);
@@ -88,15 +88,15 @@ public class MoCRenderKitty extends MoCRenderMoC<MoCEntityKitty, MoCModelKitty> 
     }
 
     protected void onTheSide(MoCEntityKitty entityliving, MatrixStack stack) {
-        stack.rotate(Vector3f.ZN.rotationDegrees(90F));
+        stack.mulPose(Vector3f.ZN.rotationDegrees(90F));
         stack.translate(0.2F, 0.0F, -0.2F);
     }
 
     @Override
-    protected void preRenderCallback(MoCEntityKitty entitykitty, MatrixStack stack, float f) {
+    protected void scale(MoCEntityKitty entitykitty, MatrixStack stack, float f) {
         this.pussy1.isSitting = entitykitty.getIsSitting();
         this.pussy1.isSwinging = entitykitty.getIsSwinging();
-        this.pussy1.swingProgress = entitykitty.swingProgress;
+        this.pussy1.swingProgress = entitykitty.attackAnim;
         this.pussy1.kittystate = entitykitty.getKittyState();
         if (!entitykitty.getIsAdult()) {
             stretch(entitykitty, stack);
@@ -116,8 +116,8 @@ public class MoCRenderKitty extends MoCRenderMoC<MoCEntityKitty, MoCModelKitty> 
     }
 
     protected void rotateAnimal(MoCEntityKitty entitykitty, MatrixStack stack) {
-        if (entitykitty.isAirBorne) {
-            stack.rotate(Vector3f.XN.rotationDegrees(90F));
+        if (entitykitty.hasImpulse) {
+            stack.mulPose(Vector3f.XN.rotationDegrees(90F));
         }
     }
 
@@ -126,7 +126,7 @@ public class MoCRenderKitty extends MoCRenderMoC<MoCEntityKitty, MoCModelKitty> 
     }
 
     protected void upsideDown(MoCEntityKitty entitykitty, MatrixStack stack) {
-        stack.rotate(Vector3f.ZN.rotationDegrees(180F));
+        stack.mulPose(Vector3f.ZN.rotationDegrees(180F));
         stack.translate(-0.35F, 0F, -0.55F);
     }
 }

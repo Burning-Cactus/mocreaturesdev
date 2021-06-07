@@ -45,9 +45,9 @@ public class MoCEntityManticore extends MoCEntityMob {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MoCEntityMob.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 40.0D)
-                .func_233815_a_(Attributes.MOVEMENT_SPEED, 0.4D)
-                .func_233815_a_(Attributes.ATTACK_DAMAGE, 6.0D);
+                .add(Attributes.MAX_HEALTH, 40.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.4D)
+                .add(Attributes.ATTACK_DAMAGE, 6.0D);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class MoCEntityManticore extends MoCEntityMob {
         checkSpawningBiome();
 
         if (getSubType() == 0) {
-            setType((this.rand.nextInt(2) * 2) + 2);
+            setType((this.random.nextInt(2) * 2) + 2);
         }
     }
 
@@ -67,12 +67,12 @@ public class MoCEntityManticore extends MoCEntityMob {
             return true;
         }
 
-        int i = MathHelper.floor(this.getPosX());
+        int i = MathHelper.floor(this.getX());
         int j = MathHelper.floor(getBoundingBox().minY);
-        int k = MathHelper.floor(this.getPosZ());
+        int k = MathHelper.floor(this.getZ());
         BlockPos pos = new BlockPos(i, j, k);
 
-        Biome currentbiome = MoCTools.Biomekind(this.world, pos);
+        Biome currentbiome = MoCTools.Biomekind(this.level, pos);
 
         /*if (BiomeDictionary.hasType(currentbiome, Type.SNOWY)) {
             setType(3);
@@ -106,9 +106,9 @@ public class MoCEntityManticore extends MoCEntityMob {
     }*/
 
     @Override
-    public boolean attackEntityAsMob(Entity entityIn) {
+    public boolean doHurtTarget(Entity entityIn) {
         //startArmSwingAttack();
-        return super.attackEntityAsMob(entityIn);
+        return super.doHurtTarget(entityIn);
     }
 
     public boolean getIsRideable() {
@@ -131,17 +131,17 @@ public class MoCEntityManticore extends MoCEntityMob {
     }
 
     @Override
-    public void updatePassenger(Entity passenger) {
+    public void positionRider(Entity passenger) {
         double dist = (-0.1D);
-        double newPosX = this.getPosX() + (dist * Math.sin(this.renderYawOffset / 57.29578F));
-        double newPosZ = this.getPosZ() - (dist * Math.cos(this.renderYawOffset / 57.29578F));
-        passenger.setPosition(newPosX, this.getPosY() + getMountedYOffset() + passenger.getYOffset(), newPosZ);
-        passenger.rotationYaw = this.rotationYaw;
+        double newPosX = this.getX() + (dist * Math.sin(this.yBodyRot / 57.29578F));
+        double newPosZ = this.getZ() - (dist * Math.cos(this.yBodyRot / 57.29578F));
+        passenger.setPos(newPosX, this.getY() + getPassengersRidingOffset() + passenger.getMyRidingOffset(), newPosZ);
+        passenger.yRot = this.yRot;
     }
 
     @Override
-    public double getMountedYOffset() {
-        return (this.getHeight() * 0.75D) - 0.1D;
+    public double getPassengersRidingOffset() {
+        return (this.getBbHeight() * 0.75D) - 0.1D;
     }
 
     /*@Override
@@ -166,8 +166,8 @@ public class MoCEntityManticore extends MoCEntityMob {
     }
 
     public boolean isOnAir() {
-        return this.world.isAirBlock(new BlockPos(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosY() - 0.2D), MathHelper
-                .floor(this.getPosZ())));
+        return this.level.isEmptyBlock(new BlockPos(MathHelper.floor(this.getX()), MathHelper.floor(this.getY() - 0.2D), MathHelper
+                .floor(this.getZ())));
     }
 
     @Override
@@ -188,9 +188,9 @@ public class MoCEntityManticore extends MoCEntityMob {
     }
 
     @Override
-    public void livingTick() {
+    public void aiStep() {
         //if (true) return;
-        super.livingTick();
+        super.aiStep();
 
         /**
          * slow falling
@@ -199,21 +199,21 @@ public class MoCEntityManticore extends MoCEntityMob {
             this.motionY *= 0.6D;
         }*/
 
-        if (isOnAir() && isFlyer() && this.rand.nextInt(5) == 0) {
+        if (isOnAir() && isFlyer() && this.random.nextInt(5) == 0) {
             this.wingFlapCounter = 1;
         }
 
-        if (this.rand.nextInt(200) == 0) {
+        if (this.random.nextInt(200) == 0) {
             moveTail();
         }
 
-        if (!this.world.isRemote && isFlyer() && isOnAir()) {
+        if (!this.level.isClientSide && isFlyer() && isOnAir()) {
             float myFlyingSpeed = MoCTools.getMyMovementSpeed(this);
             int wingFlapFreq = (int) (25 - (myFlyingSpeed * 10));
-            if (!this.isBeingRidden() || wingFlapFreq < 5) {
+            if (!this.isVehicle() || wingFlapFreq < 5) {
                 wingFlapFreq = 5;
             }
-            if (this.rand.nextInt(wingFlapFreq) == 0) {
+            if (this.random.nextInt(wingFlapFreq) == 0) {
                 wingFlap();
             }
         }
@@ -225,7 +225,7 @@ public class MoCEntityManticore extends MoCEntityMob {
             /*if (this.wingFlapCounter != 0 && this.wingFlapCounter % 5 == 0 && this.world.isRemote) {
                 StarFX();
             }*/
-            if (this.wingFlapCounter == 5 && !this.world.isRemote) {
+            if (this.wingFlapCounter == 5 && !this.level.isClientSide) {
                 //System.out.println("playing sound");
                 MoCTools.playCustomSound(this, MoCSoundEvents.ENTITY_GENERIC_WINGFLAP);
             }
@@ -241,12 +241,12 @@ public class MoCEntityManticore extends MoCEntityMob {
                 setPoisoning(false);
             }
         }
-        if (!this.world.isRemote) {
-            if (isFlyer() && this.rand.nextInt(500) == 0) {
+        if (!this.level.isClientSide) {
+            if (isFlyer() && this.random.nextInt(500) == 0) {
                 wingFlap();
             }
 
-            if (!this.isBeingRidden() && this.rand.nextInt(200) == 0) {
+            if (!this.isVehicle() && this.random.nextInt(200) == 0) {
                 MoCTools.findMobRider(this);
             }
         }
@@ -297,12 +297,12 @@ public class MoCEntityManticore extends MoCEntityMob {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
-        if (super.attackEntityFrom(damagesource, i)) {
-            Entity entity = damagesource.getTrueSource();
+    public boolean hurt(DamageSource damagesource, float i) {
+        if (super.hurt(damagesource, i)) {
+            Entity entity = damagesource.getEntity();
 
             if (entity != this && entity instanceof LivingEntity && this.shouldAttackPlayers() && getIsAdult()) {
-                setAttackTarget((LivingEntity) entity);
+                setTarget((LivingEntity) entity);
             }
             return true;
         } else {
@@ -311,34 +311,34 @@ public class MoCEntityManticore extends MoCEntityMob {
     }
 
     @Override
-    public void applyEnchantments(LivingEntity entityLivingBaseIn, Entity entityIn) {
+    public void doEnchantDamageEffects(LivingEntity entityLivingBaseIn, Entity entityIn) {
         boolean flag = (entityIn instanceof PlayerEntity);
-        if (!getIsPoisoning() && this.rand.nextInt(5) == 0 && entityIn instanceof LivingEntity) {
+        if (!getIsPoisoning() && this.random.nextInt(5) == 0 && entityIn instanceof LivingEntity) {
             setPoisoning(true);
             if (getSubType() == 4 || getSubType() == 2)// regular
             {
                 if (flag) {
                     MoCreatures.poisonPlayer((PlayerEntity) entityIn);
                 }
-                ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 70, 0));
+                ((LivingEntity) entityIn).addEffect(new EffectInstance(Effects.POISON, 70, 0));
             } else if (getSubType() == 3)// blue
             {
                 if (flag) {
                     MoCreatures.freezePlayer((PlayerEntity) entityIn);
                 }
-                ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 70, 0));
+                ((LivingEntity) entityIn).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 70, 0));
 
             } else if (getSubType() == 1)// red
             {
-                if (flag && !this.world.isRemote /*&& !this.world.dimension.doesWaterVaporize()*/) {
+                if (flag && !this.level.isClientSide /*&& !this.world.dimension.doesWaterVaporize()*/) {
                     MoCreatures.burnPlayer((PlayerEntity) entityIn);
-                    entityIn.setFire(15);
+                    entityIn.setSecondsOnFire(15);
                 }
             }
         } else {
             openMouth();
         }
-        super.applyEnchantments(entityLivingBaseIn, entityIn);
+        super.doEnchantDamageEffects(entityLivingBaseIn, entityIn);
     }
 
     public boolean swingingTail() {

@@ -18,6 +18,8 @@ import net.minecraft.world.World;
 import java.util.EnumSet;
 import java.util.UUID;
 
+import net.minecraft.entity.ai.goal.Goal.Flag;
+
 public class EntityAIFollowOwnerPlayer extends Goal {
 
     private LivingEntity thePet;
@@ -31,12 +33,12 @@ public class EntityAIFollowOwnerPlayer extends Goal {
 
     public EntityAIFollowOwnerPlayer(LivingEntity thePetIn, double speedIn, float minDistIn, float maxDistIn) {
         this.thePet = thePetIn;
-        this.world = thePetIn.world;
+        this.world = thePetIn.level;
         this.speed = speedIn;
-        this.petPathfinder = ((MobEntity)thePetIn).getNavigator();
+        this.petPathfinder = ((MobEntity)thePetIn).getNavigation();
         this.minDist = minDistIn;
         this.maxDist = maxDistIn;
-        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 
         //if (!(thePetIn.getNavigator() instanceof PathNavigateGround)) {
         //System.out.println("exiting due to first illegal argument");
@@ -48,7 +50,7 @@ public class EntityAIFollowOwnerPlayer extends Goal {
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean shouldExecute() {
+    public boolean canUse() {
         if (((IMoCEntity) this.thePet).getIsSitting()) {
             return false;
         }
@@ -64,8 +66,8 @@ public class EntityAIFollowOwnerPlayer extends Goal {
             return false;
         }
 
-        else if (this.thePet.getDistanceSq(entityplayer) < this.minDist * this.minDist
-                || this.thePet.getDistanceSq(entityplayer) > this.maxDist * this.maxDist) {
+        else if (this.thePet.distanceToSqr(entityplayer) < this.minDist * this.minDist
+                || this.thePet.distanceToSqr(entityplayer) > this.maxDist * this.maxDist) {
             return false;
         } else {
             this.theOwner = entityplayer;
@@ -77,8 +79,8 @@ public class EntityAIFollowOwnerPlayer extends Goal {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean shouldContinueExecuting() {
-        return !this.petPathfinder.noPath() && this.thePet.getDistanceSq(this.theOwner) > this.maxDist * this.maxDist
+    public boolean canContinueToUse() {
+        return !this.petPathfinder.isDone() && this.thePet.distanceToSqr(this.theOwner) > this.maxDist * this.maxDist
                 && !((IMoCEntity) this.thePet).getIsSitting();
     }
 
@@ -86,7 +88,7 @@ public class EntityAIFollowOwnerPlayer extends Goal {
      * Execute a one shot task or start executing a continuous task
      */
     @Override
-    public void startExecuting() {
+    public void start() {
         this.delayCounter = 0;
         //this.flag = ((PathNavigateGround) this.thePet.getNavigator()).getAvoidsWater();
         //((PathNavigateGround) this.thePet.getNavigator()).setAvoidsWater(false);
@@ -96,16 +98,16 @@ public class EntityAIFollowOwnerPlayer extends Goal {
      * Resets the task
      */
     @Override
-    public void resetTask() {
+    public void stop() {
         this.theOwner = null;
-        this.petPathfinder.clearPath();
+        this.petPathfinder.stop();
         //((PathNavigateGround) this.thePet.getNavigator()).setAvoidsWater(true); //TODO
     }
 
     private boolean isEmptyBlock(BlockPos pos)
     {
         BlockState iblockstate = this.world.getBlockState(pos);
-        return iblockstate.getMaterial() == Material.AIR || !iblockstate.isNormalCube(world, pos);
+        return iblockstate.getMaterial() == Material.AIR || !iblockstate.isRedstoneConductor(world, pos);
     }
 
     @Override

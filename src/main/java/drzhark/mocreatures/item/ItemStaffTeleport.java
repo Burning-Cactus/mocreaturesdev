@@ -42,50 +42,50 @@ public class ItemStaffTeleport extends MoCItem {
      * pressed. Args: itemStack, world, entityPlayer
      */
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand) {
-        final ItemStack stack = player.getHeldItem(hand);
-        if (player.getRidingEntity() != null || player.isBeingRidden()) {
-            return ActionResult.resultPass(stack);
+    public ActionResult<ItemStack> use(World worldIn, PlayerEntity player, Hand hand) {
+        final ItemStack stack = player.getItemInHand(hand);
+        if (player.getVehicle() != null || player.isVehicle()) {
+            return ActionResult.pass(stack);
         }
 
-        double coordY = player.getPosY() + player.getEyeHeight();
-        double coordZ = player.getPosZ();
-        double coordX = player.getPosX();
+        double coordY = player.getY() + player.getEyeHeight();
+        double coordZ = player.getZ();
+        double coordX = player.getX();
         for (int x = 4; x < 128; x++) {
-            double newPosY = coordY - Math.cos((player.rotationPitch - 90F) / 57.29578F) * x;
+            double newPosY = coordY - Math.cos((player.xRot - 90F) / 57.29578F) * x;
             double newPosX =
-                    coordX + Math.cos((MoCTools.realAngle(player.rotationYaw - 90F) / 57.29578F))
-                            * (Math.sin((player.rotationPitch - 90F) / 57.29578F) * x);
+                    coordX + Math.cos((MoCTools.realAngle(player.yRot - 90F) / 57.29578F))
+                            * (Math.sin((player.xRot - 90F) / 57.29578F) * x);
             double newPosZ =
-                    coordZ + Math.sin((MoCTools.realAngle(player.rotationYaw - 90F) / 57.29578F))
-                            * (Math.sin((player.rotationPitch - 90F) / 57.29578F) * x);
+                    coordZ + Math.sin((MoCTools.realAngle(player.yRot - 90F) / 57.29578F))
+                            * (Math.sin((player.xRot - 90F) / 57.29578F) * x);
             BlockPos pos = new BlockPos(MathHelper.floor(newPosX), MathHelper.floor(newPosY), MathHelper.floor(newPosZ));
-            BlockState blockstate = player.world.getBlockState(pos);
+            BlockState blockstate = player.level.getBlockState(pos);
             if (blockstate.getBlock() != Blocks.AIR) {
-                newPosY = coordY - Math.cos((player.rotationPitch - 90F) / 57.29578F) * (x - 1);
+                newPosY = coordY - Math.cos((player.xRot - 90F) / 57.29578F) * (x - 1);
                 newPosX =
-                        coordX + Math.cos((MoCTools.realAngle(player.rotationYaw - 90F) / 57.29578F))
-                                * (Math.sin((player.rotationPitch - 90F) / 57.29578F) * (x - 1));
+                        coordX + Math.cos((MoCTools.realAngle(player.yRot - 90F) / 57.29578F))
+                                * (Math.sin((player.xRot - 90F) / 57.29578F) * (x - 1));
                 newPosZ =
-                        coordZ + Math.sin((MoCTools.realAngle(player.rotationYaw - 90F) / 57.29578F))
-                                * (Math.sin((player.rotationPitch - 90F) / 57.29578F) * (x - 1));
+                        coordZ + Math.sin((MoCTools.realAngle(player.yRot - 90F) / 57.29578F))
+                                * (Math.sin((player.xRot - 90F) / 57.29578F) * (x - 1));
 
-                if (!worldIn.isRemote) {
+                if (!worldIn.isClientSide) {
                     ServerPlayerEntity playerMP = (ServerPlayerEntity) player;
-                    playerMP.connection.setPlayerLocation(newPosX, newPosY, newPosZ, player.rotationYaw,
-                            player.rotationPitch);
+                    playerMP.connection.teleport(newPosX, newPosY, newPosZ, player.yRot,
+                            player.xRot);
                     MoCTools.playCustomSound(player, MoCSoundEvents.ENTITY_GENERIC_MAGIC_APPEAR);
                 }
 //                MoCreatures.proxy.teleportFX(player);
                // player.setItemInUse(stack, 200);
-                stack.damageItem(1, player, d -> d.sendBreakAnimation(hand));
+                stack.hurtAndBreak(1, player, d -> d.broadcastBreakEvent(hand));
 
-                return ActionResult.resultSuccess(stack);
+                return ActionResult.success(stack);
             }
         }
 
         //player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
-        return ActionResult.resultSuccess(stack);
+        return ActionResult.success(stack);
     }
 
     public int getMaxItemUseDuration(ItemStack stack)

@@ -39,8 +39,8 @@ public class MoCMessageAttachedEntity implements IMoCMessage {
         NetworkEvent.Context context = ctx.get();
         if(context.getDirection().getReceptionSide().isClient()) {
             context.enqueueWork(() -> {
-                Object var2 = Minecraft.getInstance().world.getEntityByID(message.sourceEntityId);
-                Entity var3 = Minecraft.getInstance().world.getEntityByID(message.targetEntityId);
+                Object var2 = Minecraft.getInstance().level.getEntity(message.sourceEntityId);
+                Entity var3 = Minecraft.getInstance().level.getEntity(message.targetEntityId);
                 if (var2 != null) {
                     ((Entity) var2).startRiding(var3);
                 }

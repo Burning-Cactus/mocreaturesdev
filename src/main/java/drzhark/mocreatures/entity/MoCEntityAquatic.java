@@ -54,10 +54,10 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     private double divingDepth;
     protected int temper;
 
-    protected static final DataParameter<Boolean> ADULT = EntityDataManager.createKey(MoCEntityAquatic.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Integer> TYPE = EntityDataManager.createKey(MoCEntityAquatic.class, DataSerializers.VARINT);
-    protected static final DataParameter<Integer> AGE = EntityDataManager.createKey(MoCEntityAquatic.class, DataSerializers.VARINT);
-    protected static final DataParameter<String> NAME_STR = EntityDataManager.createKey(MoCEntityAquatic.class, DataSerializers.STRING);
+    protected static final DataParameter<Boolean> ADULT = EntityDataManager.defineId(MoCEntityAquatic.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Integer> TYPE = EntityDataManager.defineId(MoCEntityAquatic.class, DataSerializers.INT);
+    protected static final DataParameter<Integer> AGE = EntityDataManager.defineId(MoCEntityAquatic.class, DataSerializers.INT);
+    protected static final DataParameter<String> NAME_STR = EntityDataManager.defineId(MoCEntityAquatic.class, DataSerializers.STRING);
 
     public MoCEntityAquatic(EntityType<? extends MoCEntityAquatic> type, World world) {
         super(type, world);
@@ -67,14 +67,14 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
         this.riderIsDisconnecting = false;
         this.texture = "blank.jpg";
         this.navigatorWater = new SwimmerPathNavigator(this, world);
-        this.moveController = new EntityAIMoverHelperMoC(this);
+        this.moveControl = new EntityAIMoverHelperMoC(this);
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return CreatureEntity.registerAttributes()
-                .func_233815_a_(Attributes.MAX_HEALTH, 6.0D)
-                .func_233815_a_(Attributes.FOLLOW_RANGE, 16.0D);
-//                .func_233815_a_(Attributes.MOVEMENT_SPEED, getMoveSpeed());
+        return CreatureEntity.createLivingAttributes()
+                .add(Attributes.MAX_HEALTH, 6.0D)
+                .add(Attributes.FOLLOW_RANGE, 16.0D);
+//                .add(Attributes.MOVEMENT_SPEED, getMoveSpeed());
     }
 
     @Override
@@ -83,9 +83,9 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     }
 
     @Override
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData par1EntityLivingData, CompoundNBT dataTag) {
+    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, ILivingEntityData par1EntityLivingData, CompoundNBT dataTag) {
         selectType();
-        return super.onInitialSpawn(worldIn, difficulty, reason, par1EntityLivingData, dataTag);
+        return super.finalizeSpawn(worldIn, difficulty, reason, par1EntityLivingData, dataTag);
     }
 
     @Override
@@ -94,22 +94,22 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(ADULT, false);
-        this.dataManager.register(TYPE, 0);
-        this.dataManager.register(AGE, 45);
-        this.dataManager.register(NAME_STR, "");
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(ADULT, false);
+        this.entityData.define(TYPE, 0);
+        this.entityData.define(AGE, 45);
+        this.entityData.define(NAME_STR, "");
     }
 
     @Override
     public void setType(int i) {
-        this.dataManager.set(TYPE, i);
+        this.entityData.set(TYPE, i);
     }
 
     @Override
     public int getSubType() {
-        return this.dataManager.get(TYPE);
+        return this.entityData.get(TYPE);
     }
 
     @Override
@@ -133,32 +133,32 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
 
     @Override
     public boolean getIsAdult() {
-        return this.dataManager.get(ADULT);
+        return this.entityData.get(ADULT);
     }
 
     @Override
     public void setAdult(boolean flag) {
-        this.dataManager.set(ADULT, flag);
+        this.entityData.set(ADULT, flag);
     }
 
     @Override
     public String getPetName() {
-        return this.dataManager.get(NAME_STR);
+        return this.entityData.get(NAME_STR);
     }
 
     @Override
     public int getEdad() {
-        return this.dataManager.get(AGE);
+        return this.entityData.get(AGE);
     }
 
     @Override
     public void setEdad(int i) {
-        this.dataManager.set(AGE, i);
+        this.entityData.set(AGE, i);
     }
 
     @Override
     public void setPetName(String name) {
-        this.dataManager.set(NAME_STR, name);
+        this.entityData.set(NAME_STR, name);
     }
 
     public int getTemper() {
@@ -193,18 +193,18 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     }
 
     public void faceItem(int i, int j, int k, float f) {
-        double d = i - this.getPosX();
-        double d1 = k - this.getPosZ();
-        double d2 = j - this.getPosY();
+        double d = i - this.getX();
+        double d1 = k - this.getZ();
+        double d2 = j - this.getY();
         double d3 = MathHelper.sqrt((d * d) + (d1 * d1));
         float f1 = (float) ((Math.atan2(d1, d) * 180D) / 3.1415927410125728D) - 90F;
         float f2 = (float) ((Math.atan2(d2, d3) * 180D) / 3.1415927410125728D);
-        this.rotationPitch = -b(this.rotationPitch, f2, f);
-        this.rotationYaw = b(this.rotationYaw, f1, f);
+        this.xRot = -b(this.xRot, f2, f);
+        this.yRot = b(this.yRot, f1, f);
     }
 
     @Override
-    public boolean canDespawn(double d) {
+    public boolean removeWhenFarAway(double d) {
         if (MoCConfig.COMMON_CONFIG.GLOBAL.forceDespawns.get()) {
             return !getIsTamed();
         } else {
@@ -228,7 +228,7 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     public ItemEntity getClosestFish(Entity entity, double d) {
         double d1 = -1D;
         ItemEntity entityitem = null;
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(d, d, d));
+        List<Entity> list = this.level.getEntities(this, getBoundingBox().expandTowards(d, d, d));
         for (int i = 0; i < list.size(); i++) {
             Entity entity1 = list.get(i);
             if (!(entity1 instanceof ItemEntity)) {
@@ -238,7 +238,7 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
             if ((entityitem1.getItem().getItem() != Items.COD) || entityitem1.getItem().getItem() != Items.SALMON || !entityitem1.isInWater()) {
                 continue;
             }
-            double d2 = entityitem1.getDistanceSq(entity.getPosX(), entity.getPosY(), entity.getPosZ());
+            double d2 = entityitem1.distanceToSqr(entity.getX(), entity.getY(), entity.getZ());
             if (((d < 0.0D) || (d2 < (d * d))) && ((d1 == -1D) || (d2 < d1))) {
                 d1 = d2;
                 entityitem = entityitem1;
@@ -254,10 +254,10 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     }
 
     public boolean gettingOutOfWater() {
-        int i = (int) this.getPosX();
-        int j = (int) this.getPosY();
-        int k = (int) this.getPosZ();
-        return this.world.isAirBlock(new BlockPos(i, j + 1, k));
+        int i = (int) this.getX();
+        int j = (int) this.getY();
+        int k = (int) this.getZ();
+        return this.level.isEmptyBlock(new BlockPos(i, j + 1, k));
     }
 
     /**
@@ -291,30 +291,30 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
 
     protected boolean MoveToNextEntity(Entity entity) {
         if (entity != null) {
-            int i = MathHelper.floor(entity.getPosX());
-            int j = MathHelper.floor(entity.getPosY());
-            int k = MathHelper.floor(entity.getPosZ());
+            int i = MathHelper.floor(entity.getX());
+            int j = MathHelper.floor(entity.getY());
+            int k = MathHelper.floor(entity.getZ());
             faceItem(i, j, k, 30F);
-            if (this.getPosX() < i) {
-                double d = entity.getPosX() - this.getPosX();
+            if (this.getX() < i) {
+                double d = entity.getX() - this.getX();
                 if (d > 0.5D) {
-                    this.getMotion().add(0.050000000000000003D, 0, 0);
+                    this.getDeltaMovement().add(0.050000000000000003D, 0, 0);
                 }
             } else {
-                double d1 = this.getPosX() - entity.getPosX();
+                double d1 = this.getX() - entity.getX();
                 if (d1 > 0.5D) {
-                    this.getMotion().subtract(0.050000000000000003D, 0, 0);
+                    this.getDeltaMovement().subtract(0.050000000000000003D, 0, 0);
                 }
             }
-            if (this.getPosZ() < k) {
-                double d2 = entity.getPosZ() - this.getPosZ();
+            if (this.getZ() < k) {
+                double d2 = entity.getZ() - this.getZ();
                 if (d2 > 0.5D) {
-                    this.getMotion().add(0, 0, 0.050000000000000003D);
+                    this.getDeltaMovement().add(0, 0, 0.050000000000000003D);
                 }
             } else {
-                double d3 = this.getPosZ() - entity.getPosZ();
+                double d3 = this.getZ() - entity.getZ();
                 if (d3 > 0.5D) {
-                    this.getMotion().subtract(0, 0, 0.050000000000000003D);
+                    this.getDeltaMovement().subtract(0, 0, 0.050000000000000003D);
                 }
             }
             return true;
@@ -348,26 +348,26 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     }
 
     @Override
-    protected void jump() {
+    protected void jumpFromGround() {
 
     }
 
     // used to pick up objects while riding an entity
     public void Riding() {
-        if ((this.isBeingRidden()) && (this.getRidingEntity() instanceof PlayerEntity)) {
-            PlayerEntity entityplayer = (PlayerEntity) this.getRidingEntity();
-            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(1.0D, 0.0D, 1.0D));
+        if ((this.isVehicle()) && (this.getVehicle() instanceof PlayerEntity)) {
+            PlayerEntity entityplayer = (PlayerEntity) this.getVehicle();
+            List<Entity> list = this.level.getEntities(this, getBoundingBox().expandTowards(1.0D, 0.0D, 1.0D));
             for (Entity entity : list) {
                 if (!entity.isAlive()) {
                     continue;
                 }
-                entity.onCollideWithPlayer(entityplayer);
+                entity.playerTouch(entityplayer);
                 if (!(entity instanceof MobEntity)) {
                     continue;
                 }
-                float f = getDistance(entity);
-                if (f < 2.0F && this.rand.nextInt(10) == 0) {
-                    attackEntityFrom(DamageSource.causeMobDamage((LivingEntity) entity),
+                float f = distanceTo(entity);
+                if (f < 2.0F && this.random.nextInt(10) == 0) {
+                    hurt(DamageSource.mobAttack((LivingEntity) entity),
                             (float) ((MobEntity) entity).getAttribute(Attributes.ATTACK_DAMAGE).getValue());
                 }
             }
@@ -381,13 +381,13 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
 
     @Override
     public boolean isMovementCeased() {
-        return ((!isSwimming() && !this.isBeingRidden()) || this.isBeingRidden() || this.getIsSitting());
+        return ((!isSwimming() && !this.isVehicle()) || this.isVehicle() || this.getIsSitting());
     }
 
     @Override
-    public void livingTick() {
-        if (!this.world.isRemote) {
-            if (this.isBeingRidden()) {
+    public void aiStep() {
+        if (!this.level.isClientSide) {
+            if (this.isVehicle()) {
                 Riding();
                 this.mountCount = 1;
             }
@@ -398,21 +398,21 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
                 }
             }
             if (getEdad() == 0) setEdad(getMaxEdad() - 10); //fixes tiny creatures spawned by error
-            if (!getIsAdult() && (this.rand.nextInt(300) == 0)) {
+            if (!getIsAdult() && (this.random.nextInt(300) == 0)) {
                 setEdad(getEdad() + 1);
                 if (getEdad() >= getMaxEdad()) {
                     setAdult(true);
                 }
             }
 
-            this.getNavigator().tick();
+            this.getNavigation().tick();
 
             //updates diving depth after finishing movement
-            if (!this.getNavigator().noPath())// && !updateDivingDepth)
+            if (!this.getNavigation().isDone())// && !updateDivingDepth)
             {
                 if (!this.updateDivingDepth) {
                     float targetDepth =
-                            (MoCTools.distanceToSurface(this.moveController.getX(), this.moveController.getY(), this.moveController.getZ(), this.world));
+                            (MoCTools.distanceToSurface(this.moveControl.getWantedX(), this.moveControl.getWantedY(), this.moveControl.getWantedZ(), this.level));
                     setNewDivingDepth(targetDepth);
                     this.updateDivingDepth = true;
                 }
@@ -420,8 +420,8 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
                 this.updateDivingDepth = false;
             }
 
-            if (isMovementCeased() || rand.nextInt(200) == 0) {
-                this.getNavigator().clearPath();
+            if (isMovementCeased() || random.nextInt(200) == 0) {
+                this.getNavigation().stop();
             }
 
             /*if (this.isInWater() && this.onGroundHorizontally && rand.nextInt(10) == 0)
@@ -440,19 +440,19 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
                 MoCTools.forceDataSync(this);
             }*/
 
-            if (isFisheable() && !this.fishHooked && this.rand.nextInt(30) == 0) {
+            if (isFisheable() && !this.fishHooked && this.random.nextInt(30) == 0) {
                 getFished();
             }
 
-            if (this.fishHooked && this.rand.nextInt(200) == 0) {
+            if (this.fishHooked && this.random.nextInt(200) == 0) {
                 this.fishHooked = false;
 
-                List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(2, 2, 2));
+                List<Entity> list = this.level.getEntities(this, getBoundingBox().expandTowards(2, 2, 2));
                 for (int i = 0; i < list.size(); i++) {
                     Entity entity1 = list.get(i);
 
                     if (entity1 instanceof FishingBobberEntity) {
-                        if (((FishingBobberEntity) entity1).func_234607_k_() == this) {
+                        if (((FishingBobberEntity) entity1).getHookedIn() == this) {
 //                            ((FishingBobberEntity) entity1).caughtEntity = null;
                         }
                     }
@@ -465,30 +465,30 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
         if (isSwimming()) {
             //floating();
             this.outOfWater = 0;
-            this.setAir(800);
+            this.setAirSupply(800);
         } else {
             this.outOfWater++;
-            this.getMotion().subtract(0, 0.1D, 0);
+            this.getDeltaMovement().subtract(0, 0.1D, 0);
             if (this.outOfWater > 20) {
-                this.getNavigator().clearPath();
+                this.getNavigation().stop();
             }
             if (this.outOfWater > 300 && (this.outOfWater % 40) == 0) {
-                this.setMotion((float) (Math.random() * 0.2D - 0.1D), getMotion().y + 0.3D, (float) (Math.random() * 0.2D - 0.1D));
-                attackEntityFrom(DamageSource.DROWN, 1);
+                this.setDeltaMovement((float) (Math.random() * 0.2D - 0.1D), getDeltaMovement().y + 0.3D, (float) (Math.random() * 0.2D - 0.1D));
+                hurt(DamageSource.DROWN, 1);
             }
         }
         if (!this.diving) {
-            if (!this.isBeingRidden() && getAttackTarget() == null && !this.navigator.noPath() && this.rand.nextInt(500) == 0) {
+            if (!this.isVehicle() && getTarget() == null && !this.navigation.isDone() && this.random.nextInt(500) == 0) {
                 this.diving = true;
             }
         } else {
             this.divingCount++;
-            if (this.divingCount > 100 || this.isBeingRidden()) {
+            if (this.divingCount > 100 || this.isVehicle()) {
                 this.diving = false;
                 this.divingCount = 0;
             }
         }
-        super.livingTick();
+        super.aiStep();
     }
 
     public boolean isSwimming() {
@@ -496,8 +496,8 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     }
 
     @Override
-    public void writeAdditional(CompoundNBT nbttagcompound) {
-        super.writeAdditional(nbttagcompound);
+    public void addAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.addAdditionalSaveData(nbttagcompound);
         //nbttagcompound = MoCTools.getEntityData(this);
         nbttagcompound.putBoolean("Adult", getIsAdult());
         nbttagcompound.putInt("Edad", getEdad());
@@ -506,8 +506,8 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     }
 
     @Override
-    public void readAdditional(CompoundNBT nbttagcompound) {
-        super.readAdditional(nbttagcompound);
+    public void readAdditionalSaveData(CompoundNBT nbttagcompound) {
+        super.readAdditionalSaveData(nbttagcompound);
         //nbttagcompound = MoCTools.getEntityData(this);
         setAdult(nbttagcompound.getBoolean("Adult"));
         setEdad(nbttagcompound.getInt("Edad"));
@@ -535,21 +535,21 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
      */
     @Override
     public void checkDespawn() {
-        PlayerEntity var1 = this.world.getClosestPlayer(this, -1.0D);
+        PlayerEntity var1 = this.level.getNearestPlayer(this, -1.0D);
         if (var1 != null) {
-            double var2 = var1.getPosX() - this.getPosX();
-            double var4 = var1.getPosY() - this.getPosY();
-            double var6 = var1.getPosZ() - this.getPosZ();
+            double var2 = var1.getX() - this.getX();
+            double var4 = var1.getY() - this.getY();
+            double var6 = var1.getZ() - this.getZ();
             double var8 = var2 * var2 + var4 * var4 + var6 * var6;
 
-            if (this.canDespawn(0) && var8 > 16384.0D) {
+            if (this.removeWhenFarAway(0) && var8 > 16384.0D) {
                 this.remove();
             }
             //changed from 600
-            if (this.idleTime > 1800 && this.rand.nextInt(800) == 0 && var8 > 1024.0D && this.canDespawn(0)) {
+            if (this.noActionTime > 1800 && this.random.nextInt(800) == 0 && var8 > 1024.0D && this.removeWhenFarAway(0)) {
                 this.remove();
             } else if (var8 < 1024.0D) {
-                this.idleTime = 0;
+                this.noActionTime = 0;
             }
         }
     }
@@ -606,18 +606,18 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i) {
+    public boolean hurt(DamageSource damagesource, float i) {
         if (usesNewAI()) {
-            return super.attackEntityFrom(damagesource, i);
+            return super.hurt(damagesource, i);
         }
 
         if (isNotScared()) {
-            Entity tempEntity = this.getAttackTarget();
-            setAttackTarget((LivingEntity) tempEntity);
-            return super.attackEntityFrom(damagesource, i);
+            Entity tempEntity = this.getTarget();
+            setTarget((LivingEntity) tempEntity);
+            return super.hurt(damagesource, i);
         }
 
-        return super.attackEntityFrom(damagesource, i);
+        return super.hurt(damagesource, i);
     }
 
     protected boolean canBeTrappedInNet() {
@@ -655,11 +655,11 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
      * The act of getting Hooked into a fish Hook.
      */
     private void getFished() {
-        PlayerEntity entityplayer1 = this.world.getClosestPlayer(this, 18D);
+        PlayerEntity entityplayer1 = this.level.getNearestPlayer(this, 18D);
         if (entityplayer1 != null) {
-            FishingBobberEntity fishHook = entityplayer1.fishingBobber;
-            if (fishHook != null && fishHook.func_234607_k_() == null) {
-                float f = fishHook.getDistance(this);
+            FishingBobberEntity fishHook = entityplayer1.fishing;
+            if (fishHook != null && fishHook.getHookedIn() == null) {
+                float f = fishHook.distanceTo(this);
                 if (f > 1) {
                     MoCTools.getPathToEntity(this, fishHook, f);
                 } else {
@@ -697,7 +697,7 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
      */
     protected LivingEntity getBoogey(double d) {
         LivingEntity entityliving = null;
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox().expand(d, 4D, d));
+        List<Entity> list = this.level.getEntities(this, getBoundingBox().expandTowards(d, 4D, d));
         for (int i = 0; i < list.size(); i++) {
             Entity entity = list.get(i);
             if (entitiesToInclude(entity)) {
@@ -714,7 +714,7 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
      * @return
      */
     public boolean entitiesToInclude(Entity entity) {
-        return ((entity.getClass() != this.getClass()) && (entity instanceof LivingEntity) && ((entity.getWidth() >= 0.5D) || (entity.getHeight() >= 0.5D)));
+        return ((entity.getClass() != this.getClass()) && (entity instanceof LivingEntity) && ((entity.getBbWidth() >= 0.5D) || (entity.getBbHeight() >= 0.5D)));
     }
 
     @Override
@@ -728,11 +728,11 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     }
 
     @Override
-    public boolean canBeLeashedTo(PlayerEntity player) {
-        if (!this.world.isRemote && !MoCTools.isThisPlayerAnOP(player) && this.getIsTamed() && !player.getUniqueID().equals(this.getOwnerId())) {
+    public boolean canBeLeashed(PlayerEntity player) {
+        if (!this.level.isClientSide && !MoCTools.isThisPlayerAnOP(player) && this.getIsTamed() && !player.getUUID().equals(this.getOwnerId())) {
             return false;
         }
-        return super.canBeLeashedTo(player);
+        return super.canBeLeashed(player);
     }
 
     @Override
@@ -742,7 +742,7 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
 
     @Override
     public boolean shouldAttackPlayers() {
-        return !getIsTamed() && this.world.getDifficulty() != Difficulty.PEACEFUL;
+        return !getIsTamed() && this.level.getDifficulty() != Difficulty.PEACEFUL;
     }
 
     /**
@@ -751,21 +751,21 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     @Override
     public void travel(Vector3d motion) {
             if (this.isInWater()) {
-                if (this.isBeingRidden()) {
+                if (this.isVehicle()) {
                     LivingEntity passenger = (LivingEntity)this.getControllingPassenger();
                     if (passenger != null)this.moveWithRider(motion, passenger); //riding movement
                         return;
                 }
                 this.moveRelative(0.1F, motion);
-                this.move(MoverType.SELF, getMotion());
-                this.getMotion().scale(0.8999999761581421D);
+                this.move(MoverType.SELF, getDeltaMovement());
+                this.getDeltaMovement().scale(0.8999999761581421D);
 
-                if (this.getAttackTarget() == null) {
-                    this.getMotion().subtract(0, 0.005D, 0);
+                if (this.getTarget() == null) {
+                    this.getDeltaMovement().subtract(0, 0.005D, 0);
                 }
-                this.prevLimbSwingAmount = this.limbSwingAmount;
-                double d2 = this.getPosX() - this.prevPosX;
-                double d3 = this.getPosZ() - this.prevPosZ;
+                this.animationSpeedOld = this.animationSpeed;
+                double d2 = this.getX() - this.xo;
+                double d3 = this.getZ() - this.zo;
                 float f7 = MathHelper.sqrt(d2 * d2 + d3 * d3) * 4.0F;
 
                 if (f7 > 1.0F)
@@ -773,8 +773,8 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
                     f7 = 1.0F;
                 }
 
-                this.limbSwingAmount += (f7 - this.limbSwingAmount) * 0.4F;
-                this.limbSwing += this.limbSwingAmount;
+                this.animationSpeed += (f7 - this.animationSpeed) * 0.4F;
+                this.animationPosition += this.animationSpeed;
             } else {
                 super.travel(motion);
             }
@@ -790,37 +790,37 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
             return;
         }
         //Buckles rider if out of water
-        if (this.isBeingRidden() && !getIsTamed() && !isSwimming()) {
-            this.removePassengers();
+        if (this.isVehicle() && !getIsTamed() && !isSwimming()) {
+            this.ejectPassengers();
             return;
         }
 
-        if (this.isBeingRidden() && !getIsTamed()) {
+        if (this.isVehicle() && !getIsTamed()) {
             this.moveWithRiderUntamed(motion, passenger);
             return;
         }
 
-        if (this.isBeingRidden() && getIsTamed()) {
-            this.prevRotationYaw = this.rotationYaw = passenger.rotationYaw;
-            this.rotationPitch = passenger.rotationPitch * 0.5F;
-            this.setRotation(this.rotationYaw, this.rotationPitch);
-            this.rotationYawHead = this.renderYawOffset = this.rotationYaw;
-            Vector3d motion1 = new Vector3d(passenger.moveStrafing * 0.35F, motion.y, passenger.moveForward * (float)(this.getCustomSpeed() / 5D));
+        if (this.isVehicle() && getIsTamed()) {
+            this.yRotO = this.yRot = passenger.yRot;
+            this.xRot = passenger.xRot * 0.5F;
+            this.setRot(this.yRot, this.xRot);
+            this.yHeadRot = this.yBodyRot = this.yRot;
+            Vector3d motion1 = new Vector3d(passenger.xxa * 0.35F, motion.y, passenger.zza * (float)(this.getCustomSpeed() / 5D));
             if (this.jumpPending) {
                 if (this.isSwimming()) {
-                    this.getMotion().add(0, getCustomJump(), 0);
+                    this.getDeltaMovement().add(0, getCustomJump(), 0);
                 }
                 this.jumpPending = false;
             }
             //So it doesn't sink on its own
-            if (this.getMotion().y < 0D && isSwimming()) {
-                this.setMotion(getMotion().x, 0D, getMotion().z);
+            if (this.getDeltaMovement().y < 0D && isSwimming()) {
+                this.setDeltaMovement(getDeltaMovement().x, 0D, getDeltaMovement().z);
             }
             if (this.divePending) {
                 this.divePending = false;
-                this.getMotion().subtract(0, 0.3D, 0);
+                this.getDeltaMovement().subtract(0, 0.3D, 0);
             }
-                this.setAIMoveSpeed((float) this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
+                this.setSpeed((float) this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
                 super.travel(motion1);
                 this.moveRelative(0.1F, motion1);
             }
@@ -828,31 +828,31 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
 
     public void moveWithRiderUntamed(Vector3d motion, LivingEntity passenger) {
         //Riding behaviour if untamed
-        if ((this.isBeingRidden()) && !getIsTamed()) {
-            if ((this.rand.nextInt(5) == 0) && !getIsJumping() && this.jumpPending) {
-                this.getMotion().add(0, getCustomJump(), 0);
+        if ((this.isVehicle()) && !getIsTamed()) {
+            if ((this.random.nextInt(5) == 0) && !getIsJumping() && this.jumpPending) {
+                this.getDeltaMovement().add(0, getCustomJump(), 0);
                 setIsJumping(true);
                 this.jumpPending = false;
             }
-            if (this.rand.nextInt(10) == 0) {
-                this.getMotion().add(this.rand.nextDouble() / 30D, 0, this.rand.nextDouble() / 10D);
+            if (this.random.nextInt(10) == 0) {
+                this.getDeltaMovement().add(this.random.nextDouble() / 30D, 0, this.random.nextDouble() / 10D);
             }
             //if (!this.world.isRemote) {
-                move(MoverType.SELF, this.getMotion());
+                move(MoverType.SELF, this.getDeltaMovement());
             //}
-            if (!this.world.isRemote && this.rand.nextInt(100) == 0) {
-                passenger.getMotion().add(0D, 0.9D, -0.3D);
+            if (!this.level.isClientSide && this.random.nextInt(100) == 0) {
+                passenger.getDeltaMovement().add(0D, 0.9D, -0.3D);
                 passenger.stopRiding();
             }
             if (this.onGround) {
                 setIsJumping(false);
             }
-            if (!this.world.isRemote && this instanceof IMoCTameable && passenger instanceof PlayerEntity) {
+            if (!this.level.isClientSide && this instanceof IMoCTameable && passenger instanceof PlayerEntity) {
                 int chance = (getMaxTemper() - getTemper());
                 if (chance <= 0) {
                     chance = 1;
                 }
-                if (this.rand.nextInt(chance * 8) == 0) {
+                if (this.random.nextInt(chance * 8) == 0) {
                     MoCTools.tameWithName((PlayerEntity) passenger, (IMoCTameable) this);
                 }
 
@@ -864,15 +864,15 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
      * Whether or not the current entity is in lava
      */
     @Override
-    public boolean isNotColliding(IWorldReader worldIn) {
-        return worldIn.checkNoEntityCollision(this);
+    public boolean checkSpawnObstruction(IWorldReader worldIn) {
+        return worldIn.isUnobstructed(this);
     }
 
     /**
      * Get number of ticks, at least during which the living entity will be silent.
      */
     @Override
-    public int getTalkInterval() {
+    public int getAmbientSoundInterval() {
         return 300;
     }
 
@@ -880,8 +880,8 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
      * Get the experience points the entity currently has.
      */
     @Override
-    protected int getExperiencePoints(PlayerEntity player) {
-        return 1 + this.world.rand.nextInt(3);
+    protected int getExperienceReward(PlayerEntity player) {
+        return 1 + this.level.random.nextInt(3);
     }
 
     /**
@@ -889,25 +889,25 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
      */
     @Override
     public void tick() {
-        int i = this.getAir();
+        int i = this.getAirSupply();
         super.tick();
 
         if (this.isAlive() && !this.isInWater()) {
             --i;
-            this.setAir(i);
+            this.setAirSupply(i);
 
-            if (this.getAir() == -30) {
-                this.setAir(0);
-                this.attackEntityFrom(DamageSource.DROWN, 1.0F);
-                getMotion().add(this.rand.nextDouble() / 10D, 0, this.rand.nextDouble() / 10D);
+            if (this.getAirSupply() == -30) {
+                this.setAirSupply(0);
+                this.hurt(DamageSource.DROWN, 1.0F);
+                getDeltaMovement().add(this.random.nextDouble() / 10D, 0, this.random.nextDouble() / 10D);
             }
         } else {
-            this.setAir(300);
+            this.setAirSupply(300);
         }
     }
 
     @Override
-    public boolean isPushedByWater() {
+    public boolean isPushedByFluid() {
         return false;
     }
 
@@ -916,11 +916,11 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     }
 
     @Override
-    public PathNavigator getNavigator() {
+    public PathNavigator getNavigation() {
         if (this.isInWater()) {
             return this.navigatorWater;
         }
-        return this.navigator;
+        return this.navigation;
     }
 
     /**
@@ -946,7 +946,7 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
             }
             this.divingDepth = setDepth;
         } else {
-            this.divingDepth = (float) (this.rand.nextDouble() * (maxDivingDepth() - minDivingDepth()) + minDivingDepth());
+            this.divingDepth = (float) (this.random.nextDouble() * (maxDivingDepth() - minDivingDepth()) + minDivingDepth());
         }
 
     }
@@ -965,15 +965,15 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
 
     @Override
     public void forceEntityJump() {
-        this.jump();
+        this.jumpFromGround();
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public float yawRotationOffset() {
         double d4 = 0F;
-        if ((this.getMotion().x != 0D) || (this.getMotion().z != 0D)) {
-            d4 = Math.sin(this.ticksExisted * 0.5D) * 8D;
+        if ((this.getDeltaMovement().x != 0D) || (this.getDeltaMovement().z != 0D)) {
+            d4 = Math.sin(this.tickCount * 0.5D) * 8D;
         }
         return (float) (d4);//latOffset;
     }
@@ -983,15 +983,15 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     }
 
     @Override
-    public boolean attackEntityAsMob(Entity entityIn) {
+    public boolean doHurtTarget(Entity entityIn) {
         if (!entityIn.isInWater()) {
             return false;
         }
         boolean flag =
-                entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), ((int) this.getAttribute(Attributes.ATTACK_DAMAGE)
+                entityIn.hurt(DamageSource.mobAttack(this), ((int) this.getAttribute(Attributes.ATTACK_DAMAGE)
                         .getValue()));
         if (flag) {
-            this.applyEnchantments(this, entityIn);
+            this.doEnchantDamageEffects(this, entityIn);
         }
         return flag;
     }
@@ -1020,7 +1020,7 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
 
     @Override
     public SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.ENTITY_GENERIC_HURT;
+        return SoundEvents.GENERIC_HURT;
     }
     
     /**
@@ -1039,14 +1039,14 @@ public abstract class MoCEntityAquatic extends CreatureEntity implements IMoCEnt
     }
 
     @Override
-    public void setLeashHolder(Entity entityIn, boolean sendAttachNotification) {
+    public void setLeashedTo(Entity entityIn, boolean sendAttachNotification) {
         if (this.getIsTamed() && entityIn instanceof PlayerEntity) {
             PlayerEntity entityplayer = (PlayerEntity) entityIn;
             if (MoCConfig.COMMON_CONFIG.OWNERSHIP.enableOwnership.get() && this.getOwnerId() != null
-                    && !entityplayer.getUniqueID().equals(this.getOwnerId()) && !MoCTools.isThisPlayerAnOP((entityplayer))) {
+                    && !entityplayer.getUUID().equals(this.getOwnerId()) && !MoCTools.isThisPlayerAnOP((entityplayer))) {
                 return;
             }
         }
-        super.setLeashHolder(entityIn, sendAttachNotification);
+        super.setLeashedTo(entityIn, sendAttachNotification);
     }
 }

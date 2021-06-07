@@ -23,7 +23,7 @@ public class MoCRenderHorseMob<T extends MoCEntityHorseMob, M extends MoCModelNe
     }
 
     @Override
-    public ResourceLocation getEntityTexture(T entityhorsemob) {
+    public ResourceLocation getTextureLocation(T entityhorsemob) {
         return entityhorsemob.getTexture();
     }
 }
