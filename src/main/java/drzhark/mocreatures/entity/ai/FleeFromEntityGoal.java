@@ -1,14 +1,12 @@
 package drzhark.mocreatures.entity.ai;
 
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.MoCEntityAquatic;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.EnumSet;
@@ -64,8 +62,8 @@ public class FleeFromEntityGoal extends Goal {
 
         List<Entity> list =
                 this.entity.level.getEntities(this.entity,
-                        this.entity.getBoundingBox().expandTowards((double) this.avoidDistance, 3.0D, (double) this.avoidDistance),
-                        Predicates.and(new Predicate[] {(Predicate) EntityPredicates.NO_SPECTATORS, this.canBeSeenSelector, this.avoidTargetSelector}));
+                        this.entity.getBoundingBox().expandTowards(this.avoidDistance, 3.0D, this.avoidDistance),
+                        this.canBeSeenSelector);
 
         if (list.isEmpty()) {
             return false;

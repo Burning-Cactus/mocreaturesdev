@@ -17,9 +17,9 @@ public class MoCAlternateWanderGoal extends Goal {
     private double xPosition;
     private double yPosition;
     private double zPosition;
-    private double speed;
+    private final double speed;
     private int executionChance;
-    private boolean mustUpdate;
+    private boolean forceTrigger;
 
     public MoCAlternateWanderGoal(CreatureEntity creatureIn, double speedIn) {
         this(creatureIn, speedIn, 120);
@@ -44,7 +44,7 @@ public class MoCAlternateWanderGoal extends Goal {
             return false;
         }
 
-        if (!this.mustUpdate) {
+        if (!this.forceTrigger) {
             if (this.entity.getNoActionTime() >= 100) {
                 //System.out.println("exiting path finder !mustUpdate + Age > 100" + this.entity);
                 return false;
@@ -80,7 +80,7 @@ public class MoCAlternateWanderGoal extends Goal {
             this.xPosition = vec3.x;
             this.yPosition = vec3.y;
             this.zPosition = vec3.z;
-            this.mustUpdate = false;
+            this.forceTrigger = false;
             return true;
         }
     }
@@ -98,16 +98,21 @@ public class MoCAlternateWanderGoal extends Goal {
      */
     @Override
     public void start() {
-        //System.out.println(this.entity + "moving to " + this.xPosition + ", " + this.yPosition + ", " + this.zPosition);
         this.entity.getNavigation().moveTo(this.xPosition, this.yPosition, this.zPosition, this.speed);
+    }
+
+    @Override
+    public void stop() {
+        this.entity.getNavigation().stop();
+        super.stop();
     }
 
     /**
      * Makes task to bypass chance
      */
-    public void makeUpdate() {
+    public void trigger() {
         //System.out.println(entity + " has forced update");
-        this.mustUpdate = true;
+        this.forceTrigger = true;
     }
 
     /**

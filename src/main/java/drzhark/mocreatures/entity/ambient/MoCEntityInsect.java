@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class MoCEntityInsect extends MoCEntityAmbient {
+public abstract class MoCEntityInsect extends MoCEntityAmbient {
 
     private int climbCounter;
     protected MoCAlternateWanderGoal wander;
@@ -52,11 +52,11 @@ public class MoCEntityInsect extends MoCEntityAmbient {
     }
 
     public boolean getIsFlying() {
-        return ((Boolean)this.entityData.get(IS_FLYING)).booleanValue();
+        return this.entityData.get(IS_FLYING);
     }
 
     public void setIsFlying(boolean flag) {
-        this.entityData.set(IS_FLYING, Boolean.valueOf(flag));
+        this.entityData.set(IS_FLYING, flag);
     }
 
     @Override
@@ -78,14 +78,14 @@ public class MoCEntityInsect extends MoCEntityAmbient {
                     }
                     if (((LivingEntity) entity1).getBbWidth() >= 0.4F && ((LivingEntity) entity1).getBbHeight() >= 0.4F && canSee(entity1)) {
                         setIsFlying(true);
-                        this.wander.makeUpdate();
+                        this.wander.trigger();
                     }
                 }
             }
 
             if (isFlyer() && !getIsFlying() && this.random.nextInt(200) == 0) {
                 setIsFlying(true);
-                this.wander.makeUpdate();
+                this.wander.trigger();
             }
 
             if (isAttractedToLight() && this.random.nextInt(50) == 0) {
@@ -97,7 +97,7 @@ public class MoCEntityInsect extends MoCEntityAmbient {
 
             //this makes the flying insect move all the time in the air
             if (getIsFlying() && this.getNavigation().isDone() && !isMovementCeased() && this.getTarget() == null) {
-                this.wander.makeUpdate();
+                this.wander.trigger();
             }
 
         } else // client stuff
@@ -151,8 +151,7 @@ public class MoCEntityInsect extends MoCEntityAmbient {
     }
 
     @Override
-    protected void jumpFromGround() {
-    }
+    protected void jumpFromGround() {}
 
     @Override
     protected boolean isMovementNoisy() {
@@ -180,20 +179,10 @@ public class MoCEntityInsect extends MoCEntityAmbient {
     public PathNavigator getNavigation() {
         /*if (this.isInWater() && this.isAmphibian()) {
             return this.navigatorWater;
-        }
-        */if (this.getIsFlying()) {
+        }*/
+        if (this.getIsFlying()) {
             return this.navigatorFlyer;
         }
         return this.navigation;
-    }
-
-    @Override
-    public Entity getEntity() {
-        return this;
-    }
-
-    @Override
-    public void deserializeNBT(CompoundNBT nbt) {
-
     }
 }

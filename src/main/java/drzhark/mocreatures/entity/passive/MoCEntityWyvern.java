@@ -324,7 +324,7 @@ public class MoCEntityWyvern extends MoCEntityTameableAnimal {
             }*/
 
             if (getIsFlying() && this.getNavigation().isDone() && !isMovementCeased() && this.getTarget() == null && random.nextInt(30) == 0) {
-                this.wander.makeUpdate();
+                this.wander.trigger();
             }
 
             if (this.getDeltaMovement().y > 0.5) // prevent large boundingbox checks

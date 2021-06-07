@@ -345,7 +345,7 @@ public class MoCEntityBird extends MoCEntityTameableAnimal {
             }
 
             if (getIsFlying() && this.getNavigation().isDone() && !isMovementCeased() && this.getTarget() == null && random.nextInt(30) == 0) {
-                this.wander.makeUpdate();
+                this.wander.trigger();
             }
 
             if (!getIsFlying() && !getIsTamed() && this.random.nextInt(10) == 0) {
@@ -358,14 +358,14 @@ public class MoCEntityBird extends MoCEntityTameableAnimal {
                     if (((LivingEntity) entity1).getBbWidth() >= 0.4F && ((LivingEntity) entity1).getBbHeight() >= 0.4F && canSee(entity1)) {
                         setIsFlying(true);
                         this.fleeing = true;
-                        this.wander.makeUpdate();
+                        this.wander.trigger();
                     }
                 }
             }
 
             if (!isMovementCeased() && !getIsFlying() && this.random.nextInt(getIsTamed() ? 1000 : 400) == 0) {
                 setIsFlying(true);
-                this.wander.makeUpdate();
+                this.wander.trigger();
             }
 
             if (getIsFlying() && random.nextInt(200) == 0) {

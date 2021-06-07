@@ -27,6 +27,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.ResourceLocation;
@@ -54,7 +55,7 @@ public abstract class MoCEntityAmbient extends AnimalEntity implements IMoCEntit
 
     public MoCEntityAmbient(EntityType<? extends MoCEntityAmbient> type, World world) {
         super(type, world);
-        this.navigatorFlyer = new PathNavigateFlyerMoC(this, world);
+        this.navigatorFlyer = new FlyingPathNavigator(this, world);
     }
 
 
