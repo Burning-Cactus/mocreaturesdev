@@ -1,17 +1,16 @@
 package drzhark.mocreatures.entity.ambient;
 
 import drzhark.mocreatures.MoCTools;
-import drzhark.mocreatures.entity.MoCEntityInsect;
 import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
-public class MoCEntityFirefly extends MoCEntityInsect {
+public class FireflyEntity extends MoCEntityInsect {
 
     private int soundCount;
 
-    public MoCEntityFirefly(EntityType<? extends MoCEntityFirefly> type, World world) {
+    public FireflyEntity(EntityType<? extends FireflyEntity> type, World world) {
         super(type, world);
         this.texture = "firefly.png";
     }

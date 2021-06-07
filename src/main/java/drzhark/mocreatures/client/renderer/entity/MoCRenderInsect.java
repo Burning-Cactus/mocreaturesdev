@@ -1,7 +1,7 @@
 package drzhark.mocreatures.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import drzhark.mocreatures.entity.MoCEntityInsect;
+import drzhark.mocreatures.entity.ambient.MoCEntityInsect;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraftforge.api.distmarker.Dist;

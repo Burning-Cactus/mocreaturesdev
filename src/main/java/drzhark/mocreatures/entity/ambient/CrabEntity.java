@@ -4,10 +4,10 @@ import com.google.common.base.Predicate;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityTameableAmbient;
-import drzhark.mocreatures.entity.ai.EntityAIFleeFromEntityMoC;
-import drzhark.mocreatures.entity.ai.EntityAIFollowOwnerPlayer;
-import drzhark.mocreatures.entity.ai.EntityAIPanicMoC;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.FleeFromEntityGoal;
+import drzhark.mocreatures.entity.ai.FollowOwnerGoal;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
+import drzhark.mocreatures.entity.ai.MoCPanicGoal;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -18,11 +18,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class MoCEntityCrab extends MoCEntityTameableAmbient
+public class CrabEntity extends MoCEntityTameableAmbient
 
 {
 
-    public MoCEntityCrab(EntityType<? extends MoCEntityCrab> type, World world) {
+    public CrabEntity(EntityType<? extends CrabEntity> type, World world) {
         super(type, world);
         setEdad(50 + this.random.nextInt(50));
     }
@@ -30,14 +30,14 @@ public class MoCEntityCrab extends MoCEntityTameableAmbient
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(2, new EntityAIPanicMoC(this, 1.0D));
-        this.goalSelector.addGoal(1, new EntityAIFleeFromEntityMoC(this, new Predicate<Entity>() {
+        this.goalSelector.addGoal(2, new MoCPanicGoal(this, 1.0D));
+        this.goalSelector.addGoal(1, new FleeFromEntityGoal(this, new Predicate<Entity>() {
             public boolean apply(Entity entity) {
-                return !(entity instanceof MoCEntityCrab) && (entity.getBbHeight() > 0.3F || entity.getBbWidth() > 0.3F);
+                return !(entity instanceof CrabEntity) && (entity.getBbHeight() > 0.3F || entity.getBbWidth() > 0.3F);
             }
         }, 6.0F, 0.6D, 1D));
-        this.goalSelector.addGoal(3, new EntityAIFollowOwnerPlayer(this, 0.8D, 6F, 5F));
-        this.goalSelector.addGoal(6, new EntityAIWanderMoC2(this, 1.0D));
+        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 0.8D, 6F, 5F));
+        this.goalSelector.addGoal(6, new MoCAlternateWanderGoal(this, 1.0D));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {

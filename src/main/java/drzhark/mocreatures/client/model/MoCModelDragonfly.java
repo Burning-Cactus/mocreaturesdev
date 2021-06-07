@@ -3,17 +3,15 @@ package drzhark.mocreatures.client.model;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import drzhark.mocreatures.entity.ambient.MoCEntityDragonfly;
+import drzhark.mocreatures.entity.ambient.DragonflyEntity;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
-public class MoCModelDragonfly<T extends MoCEntityDragonfly> extends SegmentedModel<T> {
+public class MoCModelDragonfly<T extends DragonflyEntity> extends SegmentedModel<T> {
 
     ModelRenderer Abdomen;
     ModelRenderer FrontLegs;
@@ -101,7 +99,7 @@ public class MoCModelDragonfly<T extends MoCEntityDragonfly> extends SegmentedMo
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float time, float pitch, float yaw) {
-        MoCEntityDragonfly dragonfly = (MoCEntityDragonfly) entity;
+        DragonflyEntity dragonfly = (DragonflyEntity) entity;
         //boolean onGround = dragonfly.onGround;
         boolean isFlying = (dragonfly.getIsFlying() || dragonfly.getDeltaMovement().y < -0.1D);
         setRotationAngles(limbSwing, limbSwingAmount, time, isFlying);

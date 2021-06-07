@@ -1,8 +1,7 @@
 package drzhark.mocreatures.entity.ambient;
 
 import drzhark.mocreatures.MoCTools;
-import drzhark.mocreatures.entity.MoCEntityInsect;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -14,18 +13,18 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class MoCEntityAnt extends MoCEntityInsect {
+public class AntEntity extends MoCEntityInsect {
 
-    private static final DataParameter<Boolean> FOUND_FOOD = EntityDataManager.defineId(MoCEntityAnt.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> FOUND_FOOD = EntityDataManager.defineId(AntEntity.class, DataSerializers.BOOLEAN);
     
-    public MoCEntityAnt(EntityType<? extends MoCEntityAnt> type, World world) {
+    public AntEntity(EntityType<? extends AntEntity> type, World world) {
         super(type, world);
         this.texture = "ant.png";
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new EntityAIWanderMoC2(this, 1.2D));
+        this.goalSelector.addGoal(1, new MoCAlternateWanderGoal(this, 1.2D));
     }
     
     @Override

@@ -2,12 +2,11 @@ package drzhark.mocreatures.entity.passive;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
-import drzhark.mocreatures.entity.ai.EntityAIFollowAdult;
-import drzhark.mocreatures.entity.ai.EntityAIFollowOwnerPlayer;
-import drzhark.mocreatures.entity.ai.EntityAIHunt;
-import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
-import drzhark.mocreatures.entity.ai.EntityAIPanicMoC;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.FollowAdultGoal;
+import drzhark.mocreatures.entity.ai.FollowOwnerGoal;
+import drzhark.mocreatures.entity.ai.HuntGoal;
+import drzhark.mocreatures.entity.ai.MoCPanicGoal;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import drzhark.mocreatures.registry.MoCSoundEvents;
 import drzhark.mocreatures.inventory.MoCAnimalChest;
 import net.minecraft.block.Blocks;
@@ -26,14 +25,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
 
 public class MoCEntityBear extends MoCEntityTameableAnimal {
 
@@ -61,13 +58,13 @@ public class MoCEntityBear extends MoCEntityTameableAnimal {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new SwimGoal(this));
-        this.goalSelector.addGoal(2, new EntityAIPanicMoC(this, 1.0D));
-        this.goalSelector.addGoal(3, new EntityAIFollowOwnerPlayer(this, 1D, 2F, 10F));
-        this.goalSelector.addGoal(4, new EntityAIFollowAdult(this, 1.0D));
+        this.goalSelector.addGoal(2, new MoCPanicGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1D, 2F, 10F));
+        this.goalSelector.addGoal(4, new FollowAdultGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(6, new EntityAIWanderMoC2(this, 1.0D));
+        this.goalSelector.addGoal(6, new MoCAlternateWanderGoal(this, 1.0D));
         this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.targetSelector.addGoal(1, new EntityAIHunt(this, AnimalEntity.class, true));
+        this.targetSelector.addGoal(1, new HuntGoal(this, AnimalEntity.class, true));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
     }
 

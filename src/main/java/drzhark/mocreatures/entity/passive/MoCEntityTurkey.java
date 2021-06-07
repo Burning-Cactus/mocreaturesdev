@@ -2,7 +2,7 @@ package drzhark.mocreatures.entity.passive;
 
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -32,7 +32,7 @@ public class MoCEntityTurkey extends MoCEntityTameableAnimal {
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.4D));
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.0D, Ingredient.of(Items.MELON_SEEDS), false));
-        this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 1.0D));
+        this.goalSelector.addGoal(5, new MoCAlternateWanderGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
     }
 

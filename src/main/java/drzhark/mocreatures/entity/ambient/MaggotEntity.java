@@ -1,22 +1,21 @@
 package drzhark.mocreatures.entity.ambient;
 
-import drzhark.mocreatures.entity.MoCEntityAmbient;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.world.World;
 
-public class MoCEntityMaggot extends MoCEntityAmbient {
+public class MaggotEntity extends MoCEntityAmbient {
 
-    public MoCEntityMaggot(EntityType<? extends MoCEntityMaggot> type, World world) {
+    public MaggotEntity(EntityType<? extends MaggotEntity> type, World world) {
         super(type, world);
         this.texture = "maggot.png";
     }
     
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new EntityAIWanderMoC2(this, 0.8D));
+        this.goalSelector.addGoal(1, new MoCAlternateWanderGoal(this, 0.8D));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {

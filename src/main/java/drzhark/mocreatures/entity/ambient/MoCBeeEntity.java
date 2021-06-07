@@ -5,7 +5,6 @@
 package drzhark.mocreatures.entity.ambient;
 
 import drzhark.mocreatures.MoCTools;
-import drzhark.mocreatures.entity.MoCEntityInsect;
 import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -18,12 +17,12 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
-public class MoCEntityBee extends MoCEntityInsect
+public class MoCBeeEntity extends MoCEntityInsect
 {
 
     private int soundCount;
 
-    public MoCEntityBee(EntityType<? extends MoCEntityBee> type, World world) {
+    public MoCBeeEntity(EntityType<? extends MoCBeeEntity> type, World world) {
         super(type, world);
         this.texture = "bee.png";
     }

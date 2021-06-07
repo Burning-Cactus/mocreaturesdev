@@ -1,8 +1,8 @@
 package drzhark.mocreatures.entity.aquatic;
 
 import drzhark.mocreatures.entity.MoCEntityTameableAquatic;
-import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
+import drzhark.mocreatures.entity.ai.MoCNearestAttackableTargetGoal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -25,8 +25,8 @@ public class MoCEntityShark extends MoCEntityTameableAquatic {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 1.0D, 30));
-        this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
+        this.goalSelector.addGoal(5, new MoCAlternateWanderGoal(this, 1.0D, 30));
+        this.targetSelector.addGoal(1, new MoCNearestAttackableTargetGoal(this, PlayerEntity.class, true));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {

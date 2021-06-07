@@ -3,7 +3,7 @@ package drzhark.mocreatures.entity;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.ai.EntityAIMoverHelperMoC;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import drzhark.mocreatures.entity.ai.PathNavigateFlyerMoC;
 import drzhark.mocreatures.entity.item.MoCEntityEgg;
 import drzhark.mocreatures.entity.item.MoCEntityKittyBed;
@@ -41,7 +41,7 @@ public abstract class MoCEntityMob extends MonsterEntity implements IMoCEntity//
     protected String texture;
 //    protected PathNavigator navigatorWater;
     protected PathNavigator navigatorFlyer;
-    protected EntityAIWanderMoC2 wander;
+    protected MoCAlternateWanderGoal wander;
 
     protected static final DataParameter<Boolean> ADULT = EntityDataManager.defineId(CreatureEntity.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Integer> TYPE = EntityDataManager.defineId(CreatureEntity.class, DataSerializers.INT);

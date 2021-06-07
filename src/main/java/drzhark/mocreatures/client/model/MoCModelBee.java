@@ -1,17 +1,15 @@
 package drzhark.mocreatures.client.model;
 
 import com.google.common.collect.ImmutableList;
-import drzhark.mocreatures.entity.ambient.MoCEntityBee;
+import drzhark.mocreatures.entity.ambient.MoCBeeEntity;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
-public class MoCModelBee<T extends MoCEntityBee> extends SegmentedModel<T> {
+public class MoCModelBee<T extends MoCBeeEntity> extends SegmentedModel<T> {
 
     ModelRenderer Abdomen;
     ModelRenderer FrontLegs;

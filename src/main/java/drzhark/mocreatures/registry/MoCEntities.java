@@ -1,17 +1,8 @@
 package drzhark.mocreatures.registry;
 
 import drzhark.mocreatures.MoCreatures;
-import drzhark.mocreatures.entity.ambient.MoCEntityAnt;
-import drzhark.mocreatures.entity.ambient.MoCEntityBee;
-import drzhark.mocreatures.entity.ambient.MoCEntityButterfly;
-import drzhark.mocreatures.entity.ambient.MoCEntityCrab;
-import drzhark.mocreatures.entity.ambient.MoCEntityCricket;
-import drzhark.mocreatures.entity.ambient.MoCEntityDragonfly;
-import drzhark.mocreatures.entity.ambient.MoCEntityFirefly;
-import drzhark.mocreatures.entity.ambient.MoCEntityFly;
-import drzhark.mocreatures.entity.ambient.MoCEntityMaggot;
-import drzhark.mocreatures.entity.ambient.MoCEntityRoach;
-import drzhark.mocreatures.entity.ambient.MoCEntitySnail;
+import drzhark.mocreatures.entity.ambient.*;
+import drzhark.mocreatures.entity.ambient.MoCBeeEntity;
 import drzhark.mocreatures.entity.aquatic.MoCEntityAnchovy;
 import drzhark.mocreatures.entity.aquatic.MoCEntityAngelFish;
 import drzhark.mocreatures.entity.aquatic.MoCEntityAngler;
@@ -174,17 +165,17 @@ public class MoCEntities {
     /**
      * Ambients
      */
-    public static final EntityType<MoCEntityAnt> ANT = buildType("ant", MoCEntityAnt::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static final EntityType<MoCEntityBee> BEE = buildType("bee", MoCEntityBee::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static final EntityType<MoCEntityButterfly> BUTTERFLY = buildType("butterfly", MoCEntityButterfly::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static final EntityType<MoCEntityCrab> CRAB = buildType("crab", MoCEntityCrab::new, EntityClassification.AMBIENT, 0.3F, 0.3F);
-    public static final EntityType<MoCEntityCricket> CRICKET = buildType("cricket", MoCEntityCricket::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static final EntityType<MoCEntityDragonfly> DRAGONFLY = buildType("dragonfly", MoCEntityDragonfly::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static final EntityType<MoCEntityFirefly> FIREFLY = buildType("firefly", MoCEntityFirefly::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static final EntityType<MoCEntityFly> FLY = buildType("fly", MoCEntityFly::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static final EntityType<MoCEntityMaggot> MAGGOT = buildType("maggot", MoCEntityMaggot::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static final EntityType<MoCEntitySnail> SNAIL = buildType("snail", MoCEntitySnail::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
-    public static final EntityType<MoCEntityRoach> ROACH = buildType("roach", MoCEntityRoach::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<AntEntity> ANT = buildType("ant", AntEntity::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<MoCBeeEntity> BEE = buildType("bee", MoCBeeEntity::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<ButterflyEntity> BUTTERFLY = buildType("butterfly", ButterflyEntity::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<CrabEntity> CRAB = buildType("crab", CrabEntity::new, EntityClassification.AMBIENT, 0.3F, 0.3F);
+    public static final EntityType<CricketEntity> CRICKET = buildType("cricket", CricketEntity::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<DragonflyEntity> DRAGONFLY = buildType("dragonfly", DragonflyEntity::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<FireflyEntity> FIREFLY = buildType("firefly", FireflyEntity::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<FlyEntity> FLY = buildType("fly", FlyEntity::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<MaggotEntity> MAGGOT = buildType("maggot", MaggotEntity::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<SnailEntity> SNAIL = buildType("snail", SnailEntity::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
+    public static final EntityType<RoachEntity> ROACH = buildType("roach", RoachEntity::new, EntityClassification.AMBIENT, 0.2F, 0.2F);
     
     /**
      * Others
@@ -571,16 +562,16 @@ public class MoCEntities {
         EntitySpawnPlacementRegistry.register(SHARK, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityShark::checkMobSpawnRules);
         EntitySpawnPlacementRegistry.register(STINGRAY, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityStingRay::checkMobSpawnRules);
 
-        EntitySpawnPlacementRegistry.register(ANT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityAnt::checkAnimalSpawnRules);
-        EntitySpawnPlacementRegistry.register(BEE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityBee::checkAnimalSpawnRules);
-        EntitySpawnPlacementRegistry.register(BUTTERFLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityButterfly::checkAnimalSpawnRules);
-        EntitySpawnPlacementRegistry.register(CRAB, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityCrab::checkAnimalSpawnRules);
-        EntitySpawnPlacementRegistry.register(CRICKET, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityCricket::checkAnimalSpawnRules);
-        EntitySpawnPlacementRegistry.register(DRAGONFLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityDragonfly::checkAnimalSpawnRules);
-        EntitySpawnPlacementRegistry.register(FIREFLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityFirefly::checkAnimalSpawnRules);
-        EntitySpawnPlacementRegistry.register(FLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityFly::checkAnimalSpawnRules);
-        EntitySpawnPlacementRegistry.register(MAGGOT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityMaggot::checkAnimalSpawnRules);
-        EntitySpawnPlacementRegistry.register(SNAIL, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntitySnail::checkAnimalSpawnRules);
-        EntitySpawnPlacementRegistry.register(ROACH, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCEntityRoach::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(ANT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AntEntity::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(BEE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MoCBeeEntity::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(BUTTERFLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ButterflyEntity::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(CRAB, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, CrabEntity::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(CRICKET, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, CricketEntity::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(DRAGONFLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, DragonflyEntity::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(FIREFLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FireflyEntity::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(FLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FlyEntity::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(MAGGOT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MaggotEntity::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(SNAIL, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SnailEntity::checkAnimalSpawnRules);
+        EntitySpawnPlacementRegistry.register(ROACH, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, RoachEntity::checkAnimalSpawnRules);
     }
 }

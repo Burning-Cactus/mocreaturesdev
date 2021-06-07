@@ -2,11 +2,11 @@ package drzhark.mocreatures.client.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import drzhark.mocreatures.entity.ambient.MoCEntityMaggot;
+import drzhark.mocreatures.entity.ambient.MaggotEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class MoCModelMaggot extends EntityModel<MoCEntityMaggot> {
+public class MoCModelMaggot extends EntityModel<MaggotEntity> {
 
     ModelRenderer Head;
     ModelRenderer Body;
@@ -35,7 +35,7 @@ public class MoCModelMaggot extends EntityModel<MoCEntityMaggot> {
     }
 
     @Override
-    public void setupAnim(MoCEntityMaggot entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(MaggotEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     }
 
     @SuppressWarnings("unused")

@@ -2,21 +2,20 @@ package drzhark.mocreatures.entity.ambient;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
-import drzhark.mocreatures.entity.MoCEntityInsect;
 import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class MoCEntityCricket extends MoCEntityInsect
+public class CricketEntity extends MoCEntityInsect
 
 {
 
     private int jumpCounter;
     private int soundCounter;
 
-    public MoCEntityCricket(EntityType<? extends MoCEntityCricket> type, World world) {
+    public CricketEntity(EntityType<? extends CricketEntity> type, World world) {
         super(type, world);
         this.texture = "cricketa.png";
     }

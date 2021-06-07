@@ -2,13 +2,13 @@ package drzhark.mocreatures.entity.ai;
 
 import drzhark.mocreatures.entity.IMoCEntity;
 import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.ai.goal.PanicGoal;
+import net.minecraft.entity.ai.goal.RandomWalkingGoal;
 
-public class EntityAIPanicMoC extends PanicGoal {
+public class MoCWanderGoal extends RandomWalkingGoal { //EntityAIWander
 
     private CreatureEntity entityCreature;
 
-    public EntityAIPanicMoC(CreatureEntity creature, double speedIn) {
+    public MoCWanderGoal(CreatureEntity creature, double speedIn) {
         super(creature, speedIn);
         this.entityCreature = creature;
     }
@@ -18,7 +18,7 @@ public class EntityAIPanicMoC extends PanicGoal {
      */
     @Override
     public boolean canUse() {
-        if (this.entityCreature instanceof IMoCEntity && ((IMoCEntity) this.entityCreature).isNotScared()) {
+        if (this.entityCreature instanceof IMoCEntity && ((IMoCEntity) this.entityCreature).isMovementCeased()) {
             return false;
         }
         return super.canUse();

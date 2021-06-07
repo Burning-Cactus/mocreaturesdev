@@ -3,9 +3,9 @@ package drzhark.mocreatures.entity.passive;
 import com.google.common.base.Predicate;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
-import drzhark.mocreatures.entity.ai.EntityAIFleeFromEntityMoC;
-import drzhark.mocreatures.entity.ai.EntityAIFollowOwnerPlayer;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.FleeFromEntityGoal;
+import drzhark.mocreatures.entity.ai.FollowOwnerGoal;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -43,7 +43,7 @@ public class MoCEntityBird extends MoCEntityTameableAnimal {
     public float wingh;
     public boolean textureSet;
     private int jumpTimer;
-    protected EntityAIWanderMoC2 wander;
+    protected MoCAlternateWanderGoal wander;
     public static final String birdNames[] = {"Dove", "Crow", "Parrot", "Blue", "Canary", "Red"};
     private static final DataParameter<Boolean> PRE_TAMED = EntityDataManager.defineId(MoCEntityBird.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IS_FLYING = EntityDataManager.defineId(MoCEntityBird.class, DataSerializers.BOOLEAN);
@@ -63,14 +63,14 @@ public class MoCEntityBird extends MoCEntityTameableAnimal {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new SwimGoal(this));
-        this.goalSelector.addGoal(2, new EntityAIFleeFromEntityMoC(this, new Predicate<Entity>() {
+        this.goalSelector.addGoal(2, new FleeFromEntityGoal(this, new Predicate<Entity>() {
 
             public boolean apply(Entity entity) {
                 return !(entity instanceof MoCEntityBird) && (entity.getBbHeight() > 0.4F || entity.getBbWidth() > 0.4F);
             }
         }, 6.0F, 1.D, 1.3D));
-        this.goalSelector.addGoal(3, new EntityAIFollowOwnerPlayer(this, 0.8D, 2F, 10F));
-        this.goalSelector.addGoal(4, this.wander = new EntityAIWanderMoC2(this, 1.0D, 80));
+        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 0.8D, 2F, 10F));
+        this.goalSelector.addGoal(4, this.wander = new MoCAlternateWanderGoal(this, 1.0D, 80));
         this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
     }
 

@@ -20,7 +20,7 @@ import java.util.UUID;
 
 import net.minecraft.entity.ai.goal.Goal.Flag;
 
-public class EntityAIFollowOwnerPlayer extends Goal {
+public class FollowOwnerGoal extends Goal {
 
     private LivingEntity thePet;
     private PlayerEntity theOwner;
@@ -31,7 +31,7 @@ public class EntityAIFollowOwnerPlayer extends Goal {
     float maxDist;
     float minDist;
 
-    public EntityAIFollowOwnerPlayer(LivingEntity thePetIn, double speedIn, float minDistIn, float maxDistIn) {
+    public FollowOwnerGoal(LivingEntity thePetIn, double speedIn, float minDistIn, float maxDistIn) {
         this.thePet = thePetIn;
         this.world = thePetIn.level;
         this.speed = speedIn;

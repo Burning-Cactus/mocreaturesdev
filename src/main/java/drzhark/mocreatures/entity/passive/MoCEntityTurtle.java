@@ -3,8 +3,8 @@ package drzhark.mocreatures.entity.passive;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
-import drzhark.mocreatures.entity.ai.EntityAIFollowOwnerPlayer;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.FollowOwnerGoal;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -40,8 +40,8 @@ public class MoCEntityTurtle extends MoCEntityTameableAnimal {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new EntityAIFollowOwnerPlayer(this, 0.8D, 2F, 10F));
-        this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 0.8D, 50));
+        this.goalSelector.addGoal(1, new FollowOwnerGoal(this, 0.8D, 2F, 10F));
+        this.goalSelector.addGoal(5, new MoCAlternateWanderGoal(this, 0.8D, 50));
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
     }
 

@@ -1,12 +1,11 @@
 package drzhark.mocreatures.entity.passive;
 
-import com.google.common.base.Predicate;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
-import drzhark.mocreatures.entity.ai.EntityAIFleeFromEntityMoC;
-import drzhark.mocreatures.entity.ai.EntityAIFollowAdult;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.FleeFromEntityGoal;
+import drzhark.mocreatures.entity.ai.FollowAdultGoal;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -35,12 +34,12 @@ public class MoCEntityDeer extends MoCEntityTameableAnimal {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new EntityAIFleeFromEntityMoC(this, entity ->
+        this.goalSelector.addGoal(1, new FleeFromEntityGoal(this, entity ->
                 !(entity instanceof MoCEntityDeer) && (entity.getBbHeight() > 0.8F || entity.getBbWidth() > 0.8F),
                 6.0F, this.getMyAISpeed(), this.getMyAISpeed() * 1.2D));
         this.goalSelector.addGoal(2, new PanicGoal(this, this.getMyAISpeed() * 1.2D));
-        this.goalSelector.addGoal(4, new EntityAIFollowAdult(this, getMyAISpeed()));
-        this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, getMyAISpeed()));
+        this.goalSelector.addGoal(4, new FollowAdultGoal(this, getMyAISpeed()));
+        this.goalSelector.addGoal(5, new MoCAlternateWanderGoal(this, getMyAISpeed()));
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
     }
 

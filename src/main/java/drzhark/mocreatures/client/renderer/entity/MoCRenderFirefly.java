@@ -2,7 +2,7 @@ package drzhark.mocreatures.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import drzhark.mocreatures.client.model.MoCModelFirefly;
-import drzhark.mocreatures.entity.ambient.MoCEntityFirefly;
+import drzhark.mocreatures.entity.ambient.FireflyEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
@@ -10,7 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class MoCRenderFirefly extends MoCRenderInsect<MoCEntityFirefly, MoCModelFirefly<MoCEntityFirefly>> {
+public class MoCRenderFirefly extends MoCRenderInsect<FireflyEntity, MoCModelFirefly<FireflyEntity>> {
 
     public MoCRenderFirefly(EntityRendererManager manager, MoCModelFirefly model, float shadowSize) {
         super(manager, model, shadowSize);
@@ -18,7 +18,7 @@ public class MoCRenderFirefly extends MoCRenderInsect<MoCEntityFirefly, MoCModel
     }
 
     @Override
-    protected void scale(MoCEntityFirefly entityfirefly, MatrixStack stack, float par2) {
+    protected void scale(FireflyEntity entityfirefly, MatrixStack stack, float par2) {
         if (entityfirefly.getIsFlying()) {
             rotateFirefly(entityfirefly, stack);
         } else if (entityfirefly.climbing()) {
@@ -27,13 +27,13 @@ public class MoCRenderFirefly extends MoCRenderInsect<MoCEntityFirefly, MoCModel
 
     }
 
-    protected void rotateFirefly(MoCEntityFirefly entityfirefly, MatrixStack stack) {
+    protected void rotateFirefly(FireflyEntity entityfirefly, MatrixStack stack) {
         stack.mulPose(Vector3f.XN.rotationDegrees(40F));
     }
 
     @Override
-    public ResourceLocation getTextureLocation(MoCEntityFirefly entityfirefly) {
-        return ((MoCEntityFirefly) entityfirefly).getTexture();
+    public ResourceLocation getTextureLocation(FireflyEntity entityfirefly) {
+        return ((FireflyEntity) entityfirefly).getTexture();
     }
     /*
         private class LayerMoCFirefly implements LayerRenderer {

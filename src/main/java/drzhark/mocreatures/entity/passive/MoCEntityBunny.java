@@ -3,11 +3,8 @@ package drzhark.mocreatures.entity.passive;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
-import drzhark.mocreatures.entity.ai.EntityAIFleeFromPlayer;
-import drzhark.mocreatures.entity.ai.EntityAIFollowAdult;
-import drzhark.mocreatures.entity.ai.EntityAIFollowOwnerPlayer;
-import drzhark.mocreatures.entity.ai.EntityAIPanicMoC;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.*;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import drzhark.mocreatures.registry.MoCEntities;
 import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.Entity;
@@ -49,11 +46,11 @@ public class MoCEntityBunny extends MoCEntityTameableAnimal {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new EntityAIFollowOwnerPlayer(this, 0.8D, 6F, 5F));
-        this.goalSelector.addGoal(2, new EntityAIPanicMoC(this, 1.0D));
-        this.goalSelector.addGoal(3, new EntityAIFleeFromPlayer(this, 1.0D, 4D));
-        this.goalSelector.addGoal(4, new EntityAIFollowAdult(this, 1.0D));
-        this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 0.8D));
+        this.goalSelector.addGoal(1, new FollowOwnerGoal(this, 0.8D, 6F, 5F));
+        this.goalSelector.addGoal(2, new MoCPanicGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new FleeFromPlayerGoal(this, 1.0D, 4D));
+        this.goalSelector.addGoal(4, new FollowAdultGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new MoCAlternateWanderGoal(this, 0.8D));
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
     }
 

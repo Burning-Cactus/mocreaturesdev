@@ -5,7 +5,7 @@ import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.IMoCTameable;
 import drzhark.mocreatures.entity.MoCEntityAnimal;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
-import drzhark.mocreatures.entity.ambient.MoCEntityMaggot;
+import drzhark.mocreatures.entity.ambient.MaggotEntity;
 import drzhark.mocreatures.entity.item.MoCEntityThrowableRock;
 import drzhark.mocreatures.entity.monster.MoCEntityOgre;
 import drzhark.mocreatures.entity.monster.MoCEntitySilverSkeleton;
@@ -1491,7 +1491,7 @@ public class MoCTools {
             for (int i = 0; i < var2; ++i) {
                 float var4 = (i % 2 - 0.5F) * 1 / 4.0F;
                 float var5 = (((float)(i / 2)) - 0.5F) * 1 / 4.0F;
-                MoCEntityMaggot maggot = new MoCEntityMaggot(MoCEntities.MAGGOT, world);
+                MaggotEntity maggot = new MaggotEntity(MoCEntities.MAGGOT, world);
                 maggot.moveTo(entity.getX() + var4, entity.getY() + 0.5D, entity.getZ() + var5, world.random.nextFloat() * 360.0F, 0.0F);
                 world.addFreshEntity(maggot);
             }

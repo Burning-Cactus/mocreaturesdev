@@ -1,9 +1,7 @@
-package drzhark.mocreatures.entity;
+package drzhark.mocreatures.entity.ambient;
 
 import drzhark.mocreatures.MoCTools;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
-import drzhark.mocreatures.network.MoCMessageHandler;
-import drzhark.mocreatures.network.message.MoCMessageAnimation;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -21,13 +19,13 @@ import java.util.List;
 public class MoCEntityInsect extends MoCEntityAmbient {
 
     private int climbCounter;
-    protected EntityAIWanderMoC2 wander;
+    protected MoCAlternateWanderGoal wander;
 
-    private static final DataParameter<Boolean> IS_FLYING = EntityDataManager.<Boolean>defineId(MoCEntityInsect.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_FLYING = EntityDataManager.defineId(MoCEntityInsect.class, DataSerializers.BOOLEAN);
     
     public MoCEntityInsect(EntityType<? extends MoCEntityInsect> type, World world) {
         super(type, world);
-        this.goalSelector.addGoal(2, this.wander = new EntityAIWanderMoC2(this, 1.0D, 80));
+        this.goalSelector.addGoal(2, this.wander = new MoCAlternateWanderGoal(this, 1.0D, 80));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -40,7 +38,7 @@ public class MoCEntityInsect extends MoCEntityAmbient {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(IS_FLYING, Boolean.valueOf(false));
+        this.entityData.define(IS_FLYING, false);
     }
 
     @Override

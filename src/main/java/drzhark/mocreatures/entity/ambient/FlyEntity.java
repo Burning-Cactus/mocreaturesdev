@@ -1,7 +1,6 @@
 package drzhark.mocreatures.entity.ambient;
 
 import drzhark.mocreatures.MoCTools;
-import drzhark.mocreatures.entity.MoCEntityInsect;
 import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,9 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.world.World;
 
-public class MoCEntityFly extends MoCEntityInsect {
+public class FlyEntity extends MoCEntityInsect {
 
-    public MoCEntityFly(EntityType<? extends MoCEntityFly> type, World world) {
+    public FlyEntity(EntityType<? extends FlyEntity> type, World world) {
         super(type, world);
         this.texture = "fly.png";
     }

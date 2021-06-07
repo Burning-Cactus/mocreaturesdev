@@ -2,18 +2,17 @@ package drzhark.mocreatures.entity.ambient;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
-import drzhark.mocreatures.entity.MoCEntityInsect;
 import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class MoCEntityDragonfly extends MoCEntityInsect {
+public class DragonflyEntity extends MoCEntityInsect {
 
     private int soundCount;
 
-    public MoCEntityDragonfly(EntityType<? extends MoCEntityDragonfly> type, World world) {
+    public DragonflyEntity(EntityType<? extends DragonflyEntity> type, World world) {
         super(type, world);
         this.texture = "dragonflya.png";
     }

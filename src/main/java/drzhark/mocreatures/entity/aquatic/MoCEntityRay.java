@@ -1,10 +1,8 @@
 package drzhark.mocreatures.entity.aquatic;
 
 import drzhark.mocreatures.entity.MoCEntityTameableAquatic;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
 public class MoCEntityRay extends MoCEntityTameableAquatic {
@@ -15,7 +13,7 @@ public class MoCEntityRay extends MoCEntityTameableAquatic {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(2, new EntityAIWanderMoC2(this, 1.0D, 80));
+        this.goalSelector.addGoal(2, new MoCAlternateWanderGoal(this, 1.0D, 80));
     }
     
     public boolean isPoisoning() {

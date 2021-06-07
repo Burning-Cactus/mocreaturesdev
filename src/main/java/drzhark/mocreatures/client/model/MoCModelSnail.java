@@ -3,7 +3,7 @@ package drzhark.mocreatures.client.model;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import drzhark.mocreatures.entity.ambient.MoCEntitySnail;
+import drzhark.mocreatures.entity.ambient.SnailEntity;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class MoCModelSnail<T extends MoCEntitySnail> extends SegmentedModel<T> {
+public class MoCModelSnail<T extends SnailEntity> extends SegmentedModel<T> {
 
     ModelRenderer Head;
     ModelRenderer Antenna;
@@ -58,7 +58,7 @@ public class MoCModelSnail<T extends MoCEntitySnail> extends SegmentedModel<T> {
 
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        MoCEntitySnail snail = (MoCEntitySnail) entityIn;
+        SnailEntity snail = (SnailEntity) entityIn;
         isHiding = snail.getIsHiding();
         type = snail.getSubType();
         setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);

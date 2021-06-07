@@ -1,7 +1,6 @@
 package drzhark.mocreatures.entity.ambient;
 
 import drzhark.mocreatures.MoCreatures;
-import drzhark.mocreatures.entity.MoCEntityInsect;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
@@ -10,9 +9,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class MoCEntityButterfly extends MoCEntityInsect {
+public class ButterflyEntity extends MoCEntityInsect {
 
-    public MoCEntityButterfly(EntityType<? extends MoCEntityButterfly> type, World world) {
+    public ButterflyEntity(EntityType<? extends ButterflyEntity> type, World world) {
         super(type, world);
     }
 

@@ -1,19 +1,16 @@
 package drzhark.mocreatures.client.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import drzhark.mocreatures.entity.ambient.MoCEntityButterfly;
+import drzhark.mocreatures.entity.ambient.ButterflyEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
-public class MoCModelButterfly<T extends MoCEntityButterfly> extends EntityModel<T> {
+public class MoCModelButterfly<T extends ButterflyEntity> extends EntityModel<T> {
 
     ModelRenderer Abdomen;
     ModelRenderer FrontLegs;
@@ -115,7 +112,7 @@ public class MoCModelButterfly<T extends MoCEntityButterfly> extends EntityModel
 
     @Override
     public void setupAnim(T entityIn, float v, float v1, float v2, float v3, float v4) {
-        MoCEntityButterfly butterfly = (MoCEntityButterfly) entityIn;
+        ButterflyEntity butterfly = (ButterflyEntity) entityIn;
         boolean flying = (butterfly.getIsFlying() || butterfly.getDeltaMovement().y < -0.1D);
         setRotationAngles(v, v1, v2, v3, v4, !flying);
     }

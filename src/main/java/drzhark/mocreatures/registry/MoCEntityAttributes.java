@@ -1,12 +1,7 @@
 package drzhark.mocreatures.registry;
 
-import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.ambient.*;
 import drzhark.mocreatures.entity.aquatic.*;
-import drzhark.mocreatures.entity.item.MoCEntityEgg;
-import drzhark.mocreatures.entity.item.MoCEntityKittyBed;
-import drzhark.mocreatures.entity.item.MoCEntityLitterBox;
-import drzhark.mocreatures.entity.item.MoCEntityThrowableRock;
 import drzhark.mocreatures.entity.monster.*;
 import drzhark.mocreatures.entity.passive.*;
 import net.minecraft.entity.EntityType;
@@ -92,17 +87,17 @@ public class MoCEntityAttributes {
         register(MoCEntities.STINGRAY, MoCEntityStingRay.registerAttributes().build());
 
         //Ambients
-        register(MoCEntities.ANT, MoCEntityAnt.registerAttributes().build());
-        register(MoCEntities.BEE, MoCEntityBee.registerAttributes().build());
-        register(MoCEntities.BUTTERFLY, MoCEntityButterfly.registerAttributes().build());
-        register(MoCEntities.CRAB, MoCEntityCrab.registerAttributes().build());
-        register(MoCEntities.CRICKET, MoCEntityCricket.registerAttributes().build());
-        register(MoCEntities.DRAGONFLY, MoCEntityDragonfly.registerAttributes().build());
-        register(MoCEntities.FIREFLY, MoCEntityFirefly.registerAttributes().build());
-        register(MoCEntities.FLY, MoCEntityFly.registerAttributes().build());
-        register(MoCEntities.MAGGOT, MoCEntityMaggot.registerAttributes().build());
-        register(MoCEntities.SNAIL, MoCEntitySnail.registerAttributes().build());
-        register(MoCEntities.ROACH, MoCEntityRoach.registerAttributes().build());
+        register(MoCEntities.ANT, AntEntity.registerAttributes().build());
+        register(MoCEntities.BEE, MoCBeeEntity.registerAttributes().build());
+        register(MoCEntities.BUTTERFLY, ButterflyEntity.registerAttributes().build());
+        register(MoCEntities.CRAB, CrabEntity.registerAttributes().build());
+        register(MoCEntities.CRICKET, CricketEntity.registerAttributes().build());
+        register(MoCEntities.DRAGONFLY, DragonflyEntity.registerAttributes().build());
+        register(MoCEntities.FIREFLY, FireflyEntity.registerAttributes().build());
+        register(MoCEntities.FLY, FlyEntity.registerAttributes().build());
+        register(MoCEntities.MAGGOT, MaggotEntity.registerAttributes().build());
+        register(MoCEntities.SNAIL, SnailEntity.registerAttributes().build());
+        register(MoCEntities.ROACH, RoachEntity.registerAttributes().build());
 
         //Others
         /*register(MoCEntities.EGG, MoCEntityEgg.registerAttributes().build());

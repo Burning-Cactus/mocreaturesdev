@@ -2,7 +2,7 @@ package drzhark.mocreatures.client.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import drzhark.mocreatures.entity.ambient.MoCEntityCricket;
+import drzhark.mocreatures.entity.ambient.CricketEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
-public class MoCModelCricket<T extends MoCEntityCricket> extends EntityModel<T> {
+public class MoCModelCricket<T extends CricketEntity> extends EntityModel<T> {
 
     ModelRenderer Head;
     ModelRenderer Antenna;
@@ -141,7 +141,7 @@ public class MoCModelCricket<T extends MoCEntityCricket> extends EntityModel<T> 
 
     @Override
     public void setupAnim(T entity, float v, float v1, float v2, float v3, float v4) {
-        MoCEntityCricket entitycricket = (MoCEntityCricket) entity;
+        CricketEntity entitycricket = (CricketEntity) entity;
         isFlying = (entitycricket.getIsFlying() || entitycricket.getDeltaMovement().y < -0.1D);
         setRotationAngles(v, v1, v2, isFlying);
     }

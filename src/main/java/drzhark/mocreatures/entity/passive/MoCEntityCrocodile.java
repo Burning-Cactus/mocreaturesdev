@@ -2,10 +2,9 @@ package drzhark.mocreatures.entity.passive;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
-import drzhark.mocreatures.entity.ai.EntityAIFleeFromPlayer;
-import drzhark.mocreatures.entity.ai.EntityAIHunt;
-import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.FleeFromPlayerGoal;
+import drzhark.mocreatures.entity.ai.HuntGoal;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -43,11 +42,11 @@ public class MoCEntityCrocodile extends MoCEntityTameableAnimal {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(3, new EntityAIFleeFromPlayer(this, 0.8D, 4D));
+        this.goalSelector.addGoal(3, new FleeFromPlayerGoal(this, 0.8D, 4D));
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(7, new EntityAIWanderMoC2(this, 0.9D));
+        this.goalSelector.addGoal(7, new MoCAlternateWanderGoal(this, 0.9D));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.targetSelector.addGoal(1, new EntityAIHunt(this, AnimalEntity.class, true));
+        this.targetSelector.addGoal(1, new HuntGoal(this, AnimalEntity.class, true));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 
     }

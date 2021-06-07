@@ -2,17 +2,16 @@ package drzhark.mocreatures.client.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import drzhark.mocreatures.entity.ambient.MoCEntityFly;
+import drzhark.mocreatures.entity.ambient.FlyEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
-public class MoCModelFly<T extends MoCEntityFly> extends EntityModel<T> {
+public class MoCModelFly<T extends FlyEntity> extends EntityModel<T> {
 
     ModelRenderer FrontLegs;
     ModelRenderer RearLegs;

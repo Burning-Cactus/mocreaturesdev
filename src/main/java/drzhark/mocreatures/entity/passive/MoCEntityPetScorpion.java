@@ -3,10 +3,10 @@ package drzhark.mocreatures.entity.passive;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
-import drzhark.mocreatures.entity.ai.EntityAIFleeFromPlayer;
-import drzhark.mocreatures.entity.ai.EntityAIFollowOwnerPlayer;
-import drzhark.mocreatures.entity.ai.EntityAIHunt;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.FleeFromPlayerGoal;
+import drzhark.mocreatures.entity.ai.FollowOwnerGoal;
+import drzhark.mocreatures.entity.ai.HuntGoal;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import drzhark.mocreatures.registry.MoCItems;
 import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.*;
@@ -52,11 +52,11 @@ public class MoCEntityPetScorpion extends MoCEntityTameableAnimal {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(4, new EntityAIWanderMoC2(this, 1.0D));
-        this.goalSelector.addGoal(5, new EntityAIFleeFromPlayer(this, 1.2D, 4D));
-        this.goalSelector.addGoal(6, new EntityAIFollowOwnerPlayer(this, 1.0D, 2F, 10F));
+        this.goalSelector.addGoal(4, new MoCAlternateWanderGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new FleeFromPlayerGoal(this, 1.2D, 4D));
+        this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 2F, 10F));
         this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.targetSelector.addGoal(1, new EntityAIHunt(this, AnimalEntity.class, true));
+        this.targetSelector.addGoal(1, new HuntGoal(this, AnimalEntity.class, true));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {

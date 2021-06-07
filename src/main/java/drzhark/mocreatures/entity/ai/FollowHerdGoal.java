@@ -8,7 +8,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import java.util.Iterator;
 import java.util.List;
 
-public class EntityAIFollowHerd extends Goal {
+public class FollowHerdGoal extends Goal {
 
     /** The child that is following its parent. */
     LivingEntity theAnimal;
@@ -19,7 +19,7 @@ public class EntityAIFollowHerd extends Goal {
     private int delayCounter;
     private int executionChance;
 
-    public EntityAIFollowHerd(LivingEntity animal, double speed, double minRangeIn, double maxRangeIn, int chance) {
+    public FollowHerdGoal(LivingEntity animal, double speed, double minRangeIn, double maxRangeIn, int chance) {
         this.theAnimal = animal;
         this.moveSpeed = speed;
         this.minRange = minRangeIn; //4D;
@@ -27,7 +27,7 @@ public class EntityAIFollowHerd extends Goal {
         this.executionChance = chance;
     }
 
-    public EntityAIFollowHerd(LivingEntity animal, double speed) {
+    public FollowHerdGoal(LivingEntity animal, double speed) {
         this(animal, speed, 4D, 20D, 120);
     }
 

@@ -2,11 +2,10 @@ package drzhark.mocreatures.entity.passive;
 
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
-import drzhark.mocreatures.entity.ai.EntityAIFollowAdult;
-import drzhark.mocreatures.entity.ai.EntityAIFollowOwnerPlayer;
-import drzhark.mocreatures.entity.ai.EntityAIHunt;
-import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.FollowAdultGoal;
+import drzhark.mocreatures.entity.ai.FollowOwnerGoal;
+import drzhark.mocreatures.entity.ai.HuntGoal;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import drzhark.mocreatures.registry.MoCItems;
 import drzhark.mocreatures.registry.MoCSoundEvents;
 import drzhark.mocreatures.inventory.MoCAnimalChest;
@@ -63,11 +62,11 @@ public class MoCEntityBigCat extends MoCEntityTameableAnimal {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(4, new EntityAIFollowAdult(this, 1.0D));
-        this.goalSelector.addGoal(5, new EntityAIFollowOwnerPlayer(this, 1D, 2F, 10F));
-        this.goalSelector.addGoal(2, new EntityAIWanderMoC2(this, 0.8D, 30));
+        this.goalSelector.addGoal(4, new FollowAdultGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new FollowOwnerGoal(this, 1D, 2F, 10F));
+        this.goalSelector.addGoal(2, new MoCAlternateWanderGoal(this, 0.8D, 30));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.addGoal(4, new EntityAIHunt(this, AnimalEntity.class, true));
+        this.targetSelector.addGoal(4, new HuntGoal(this, AnimalEntity.class, true));
     }
 
     /*@Override

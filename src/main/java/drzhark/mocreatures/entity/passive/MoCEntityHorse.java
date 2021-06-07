@@ -4,8 +4,8 @@ import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
-import drzhark.mocreatures.entity.ai.EntityAIFollowAdult;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.FollowAdultGoal;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import drzhark.mocreatures.registry.MoCEntities;
 import drzhark.mocreatures.registry.MoCItems;
 import drzhark.mocreatures.registry.MoCParticleTypes;
@@ -68,7 +68,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
     public int sprintCounter;
     public int transformType;
     public int transformCounter;
-    protected EntityAIWanderMoC2 wander;
+    protected MoCAlternateWanderGoal wander;
     private static final DataParameter<Boolean> RIDEABLE = EntityDataManager.defineId(MoCEntityHorse.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> CHESTED = EntityDataManager.defineId(MoCEntityHorse.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.defineId(MoCEntityHorse.class, DataSerializers.BOOLEAN);
@@ -96,8 +96,8 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new SwimGoal(this));
-        this.goalSelector.addGoal(3, new EntityAIFollowAdult(this, 1.0D));
-        this.goalSelector.addGoal(4, this.wander = new EntityAIWanderMoC2(this, 1.0D, 80));
+        this.goalSelector.addGoal(3, new FollowAdultGoal(this, 1.0D));
+        this.goalSelector.addGoal(4, this.wander = new MoCAlternateWanderGoal(this, 1.0D, 80));
         this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
     }
 

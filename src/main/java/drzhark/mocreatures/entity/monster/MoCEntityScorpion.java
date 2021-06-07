@@ -3,8 +3,7 @@ package drzhark.mocreatures.entity.monster;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityMob;
-import drzhark.mocreatures.entity.ai.EntityAIFleeFromPlayer;
-import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
+import drzhark.mocreatures.entity.ai.FleeFromPlayerGoal;
 import drzhark.mocreatures.entity.passive.MoCEntityPetScorpion;
 import drzhark.mocreatures.registry.MoCEntities;
 import drzhark.mocreatures.registry.MoCSoundEvents;
@@ -60,7 +59,7 @@ public class MoCEntityScorpion extends MoCEntityMob {
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.addGoal(2, new RestrictSunGoal(this));
         this.goalSelector.addGoal(7, new FleeSunGoal(this, 1.0D));
-        this.goalSelector.addGoal(5, new EntityAIFleeFromPlayer(this, 1.2D, 4D));
+        this.goalSelector.addGoal(5, new FleeFromPlayerGoal(this, 1.2D, 4D));
         this.goalSelector.addGoal(6, new LeapAtTargetGoal(this, 0.4F));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
     }

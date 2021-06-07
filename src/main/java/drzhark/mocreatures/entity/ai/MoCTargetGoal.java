@@ -14,7 +14,7 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
-public abstract class EntityAITargetMoC extends Goal {
+public abstract class MoCTargetGoal extends Goal {
 
     /** The entity that this task belongs to */
     protected final CreatureEntity taskOwner;
@@ -32,13 +32,13 @@ public abstract class EntityAITargetMoC extends Goal {
      */
     private int targetUnseenTicks;
 
-    public EntityAITargetMoC(CreatureEntity creature, boolean checkSight, boolean onlyNearby) {
+    public MoCTargetGoal(CreatureEntity creature, boolean checkSight, boolean onlyNearby) {
         this.taskOwner = creature;
         this.shouldCheckSight = checkSight;
         this.nearbyOnly = onlyNearby;
     }
 
-    public EntityAITargetMoC(CreatureEntity creature, boolean checkSight) {
+    public MoCTargetGoal(CreatureEntity creature, boolean checkSight) {
         this(creature, checkSight, false);
     }
 

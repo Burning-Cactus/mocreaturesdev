@@ -1,8 +1,7 @@
 package drzhark.mocreatures.entity.ambient;
 
 import drzhark.mocreatures.MoCreatures;
-import drzhark.mocreatures.entity.MoCEntityAmbient;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -13,17 +12,17 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class MoCEntitySnail extends MoCEntityAmbient {
+public class SnailEntity extends MoCEntityAmbient {
 
-    private static final DataParameter<Boolean> IS_HIDDING = EntityDataManager.<Boolean>defineId(MoCEntitySnail.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_HIDDING = EntityDataManager.<Boolean>defineId(SnailEntity.class, DataSerializers.BOOLEAN);
     
-    public MoCEntitySnail(EntityType<? extends MoCEntitySnail> type, World world) {
+    public SnailEntity(EntityType<? extends SnailEntity> type, World world) {
         super(type, world);
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new EntityAIWanderMoC2(this, 0.8D));
+        this.goalSelector.addGoal(1, new MoCAlternateWanderGoal(this, 0.8D));
     }
     
     @Override

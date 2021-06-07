@@ -7,17 +7,19 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
 
 /**
  * Base class for rendering most of the MoC entities. This is how tamed mobs will show their names and health.
  */
-public class MoCRenderMoC<T extends LivingEntity, M extends EntityModel<T>> extends LivingRenderer<T, M> {
+public class MoCRenderMoC<T extends MobEntity, M extends EntityModel<T>> extends MobRenderer<T, M> {
 
     public MoCRenderMoC(EntityRendererManager manager, M modelBase, float f) {
         super(manager, modelBase, f);

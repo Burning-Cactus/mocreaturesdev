@@ -4,10 +4,10 @@ import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
-import drzhark.mocreatures.entity.ai.EntityAIFleeFromPlayer;
-import drzhark.mocreatures.entity.ai.EntityAIHunt;
-import drzhark.mocreatures.entity.ai.EntityAIPanicMoC;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.FleeFromPlayerGoal;
+import drzhark.mocreatures.entity.ai.HuntGoal;
+import drzhark.mocreatures.entity.ai.MoCPanicGoal;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import drzhark.mocreatures.registry.MoCItems;
 import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.block.BlockState;
@@ -63,12 +63,12 @@ public class MoCEntitySnake extends MoCEntityTameableAnimal {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(2, new EntityAIPanicMoC(this, 0.8D));
-        this.goalSelector.addGoal(3, new EntityAIFleeFromPlayer(this, 0.8D, 4D));
+        this.goalSelector.addGoal(2, new MoCPanicGoal(this, 0.8D));
+        this.goalSelector.addGoal(3, new FleeFromPlayerGoal(this, 0.8D, 4D));
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 0.8D, 30));
+        this.goalSelector.addGoal(5, new MoCAlternateWanderGoal(this, 0.8D, 30));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.targetSelector.addGoal(1, new EntityAIHunt(this, AnimalEntity.class, true));
+        this.targetSelector.addGoal(1, new HuntGoal(this, AnimalEntity.class, true));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
     }
 

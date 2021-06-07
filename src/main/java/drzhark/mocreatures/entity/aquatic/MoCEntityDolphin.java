@@ -3,8 +3,8 @@ package drzhark.mocreatures.entity.aquatic;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityTameableAquatic;
-import drzhark.mocreatures.entity.ai.EntityAIPanicMoC;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.MoCPanicGoal;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import drzhark.mocreatures.registry.MoCEntities;
 import drzhark.mocreatures.registry.MoCSoundEvents;
 import net.minecraft.entity.Entity;
@@ -35,8 +35,8 @@ public class MoCEntityDolphin extends MoCEntityTameableAquatic {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new EntityAIPanicMoC(this, 1.3D));
-        this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 1.0D, 30));
+        this.goalSelector.addGoal(1, new MoCPanicGoal(this, 1.3D));
+        this.goalSelector.addGoal(5, new MoCAlternateWanderGoal(this, 1.0D, 30));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {

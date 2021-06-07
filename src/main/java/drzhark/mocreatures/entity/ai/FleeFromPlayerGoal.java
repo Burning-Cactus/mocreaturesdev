@@ -11,7 +11,7 @@ import java.util.EnumSet;
 
 import net.minecraft.entity.ai.goal.Goal.Flag;
 
-public class EntityAIFleeFromPlayer extends Goal {
+public class FleeFromPlayerGoal extends Goal {
 
     private CreatureEntity entityCreature;
     protected double speed;
@@ -20,7 +20,7 @@ public class EntityAIFleeFromPlayer extends Goal {
     private double randPosY;
     private double randPosZ;
 
-    public EntityAIFleeFromPlayer(CreatureEntity creature, double speedIn, double distanceToCheck) {
+    public FleeFromPlayerGoal(CreatureEntity creature, double speedIn, double distanceToCheck) {
         this.entityCreature = creature;
         this.distance = distanceToCheck;
         this.speed = speedIn;

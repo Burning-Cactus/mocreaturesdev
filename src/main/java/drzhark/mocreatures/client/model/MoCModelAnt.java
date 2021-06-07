@@ -1,12 +1,12 @@
 package drzhark.mocreatures.client.model;
 
 import com.google.common.collect.ImmutableList;
-import drzhark.mocreatures.entity.ambient.MoCEntityAnt;
+import drzhark.mocreatures.entity.ambient.AntEntity;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 
-public class MoCModelAnt<T extends MoCEntityAnt> extends SegmentedModel<T> {
+public class MoCModelAnt<T extends AntEntity> extends SegmentedModel<T> {
 
     ModelRenderer Head;
     ModelRenderer Mouth;

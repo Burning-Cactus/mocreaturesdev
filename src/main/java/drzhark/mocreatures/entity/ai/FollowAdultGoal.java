@@ -8,7 +8,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import java.util.Iterator;
 import java.util.List;
 
-public class EntityAIFollowAdult extends Goal {
+public class FollowAdultGoal extends Goal {
 
     /** The child that is following its parent. */
     LivingEntity childAnimal;
@@ -16,7 +16,7 @@ public class EntityAIFollowAdult extends Goal {
     double moveSpeed;
     private int delayCounter;
 
-    public EntityAIFollowAdult(LivingEntity animal, double speed) {
+    public FollowAdultGoal(LivingEntity animal, double speed) {
         this.childAnimal = animal;
         this.moveSpeed = speed;
     }

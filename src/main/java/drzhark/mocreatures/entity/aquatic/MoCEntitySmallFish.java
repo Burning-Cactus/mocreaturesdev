@@ -3,9 +3,9 @@ package drzhark.mocreatures.entity.aquatic;
 import com.google.common.base.Predicate;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.MoCEntityTameableAquatic;
-import drzhark.mocreatures.entity.ai.EntityAIFleeFromEntityMoC;
-import drzhark.mocreatures.entity.ai.EntityAIPanicMoC;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.FleeFromEntityGoal;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
+import drzhark.mocreatures.entity.ai.MoCPanicGoal;
 import drzhark.mocreatures.registry.MoCEntities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -53,14 +53,14 @@ public class MoCEntitySmallFish extends MoCEntityTameableAquatic {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new EntityAIPanicMoC(this, 1.3D));
-        this.goalSelector.addGoal(2, new EntityAIFleeFromEntityMoC(this, new Predicate<Entity>() {
+        this.goalSelector.addGoal(1, new MoCPanicGoal(this, 1.3D));
+        this.goalSelector.addGoal(2, new FleeFromEntityGoal(this, new Predicate<Entity>() {
 
             public boolean apply(Entity entity) {
                 return (entity.getBbHeight() > 0.3F || entity.getBbWidth() > 0.3F);
             }
         }, 2.0F, 0.6D, 1.5D));
-        this.goalSelector.addGoal(5, new EntityAIWanderMoC2(this, 1.0D, 80));
+        this.goalSelector.addGoal(5, new MoCAlternateWanderGoal(this, 1.0D, 80));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {

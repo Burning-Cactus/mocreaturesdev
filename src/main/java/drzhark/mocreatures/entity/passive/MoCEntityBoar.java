@@ -3,10 +3,10 @@ package drzhark.mocreatures.entity.passive;
 import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.entity.MoCEntityAnimal;
-import drzhark.mocreatures.entity.ai.EntityAIFleeFromPlayer;
-import drzhark.mocreatures.entity.ai.EntityAIFollowAdult;
-import drzhark.mocreatures.entity.ai.EntityAIHunt;
-import drzhark.mocreatures.entity.ai.EntityAIWanderMoC2;
+import drzhark.mocreatures.entity.ai.FleeFromPlayerGoal;
+import drzhark.mocreatures.entity.ai.FollowAdultGoal;
+import drzhark.mocreatures.entity.ai.HuntGoal;
+import drzhark.mocreatures.entity.ai.MoCAlternateWanderGoal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -39,12 +39,12 @@ public class MoCEntityBoar extends MoCEntityAnimal {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new SwimGoal(this));
-        this.goalSelector.addGoal(2, new EntityAIFleeFromPlayer(this, 1.0D, 4D));
-        this.goalSelector.addGoal(3, new EntityAIFollowAdult(this, 1.0D));
+        this.goalSelector.addGoal(2, new FleeFromPlayerGoal(this, 1.0D, 4D));
+        this.goalSelector.addGoal(3, new FollowAdultGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(7, new EntityAIWanderMoC2(this, 1.0D));
+        this.goalSelector.addGoal(7, new MoCAlternateWanderGoal(this, 1.0D));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.targetSelector.addGoal(1, new EntityAIHunt(this, AnimalEntity.class, true));
+        this.targetSelector.addGoal(1, new HuntGoal(this, AnimalEntity.class, true));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {

@@ -1,29 +1,28 @@
 package drzhark.mocreatures.entity.ambient;
 
 import com.google.common.base.Predicate;
-import drzhark.mocreatures.entity.MoCEntityInsect;
-import drzhark.mocreatures.entity.ai.EntityAIFleeFromEntityMoC;
+import drzhark.mocreatures.entity.ai.FleeFromEntityGoal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.world.World;
 
-public class MoCEntityRoach extends MoCEntityInsect
+public class RoachEntity extends MoCEntityInsect
 
 {
 
-    public MoCEntityRoach(EntityType<? extends MoCEntityRoach> type, World world) {
+    public RoachEntity(EntityType<? extends RoachEntity> type, World world) {
         super(type, world);
         this.texture = "roach.png";
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(3, new EntityAIFleeFromEntityMoC(this, new Predicate<Entity>() {
+        this.goalSelector.addGoal(3, new FleeFromEntityGoal(this, new Predicate<Entity>() {
 
             public boolean apply(Entity entity) {
-                return !(entity instanceof MoCEntityCrab) && (entity.getBbHeight() > 0.3F || entity.getBbWidth() > 0.3F);
+                return !(entity instanceof CrabEntity) && (entity.getBbHeight() > 0.3F || entity.getBbWidth() > 0.3F);
             }
         }, 6.0F, 0.8D, 1.3D));
     }

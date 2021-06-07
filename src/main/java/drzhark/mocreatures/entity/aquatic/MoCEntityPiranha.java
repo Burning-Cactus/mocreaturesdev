@@ -1,8 +1,8 @@
 package drzhark.mocreatures.entity.aquatic;
 
 import drzhark.mocreatures.MoCreatures;
-import drzhark.mocreatures.entity.ai.EntityAIFollowHerd;
-import drzhark.mocreatures.entity.ai.EntityAINearestAttackableTargetMoC;
+import drzhark.mocreatures.entity.ai.FollowHerdGoal;
+import drzhark.mocreatures.entity.ai.MoCNearestAttackableTargetGoal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -25,8 +25,8 @@ public class MoCEntityPiranha extends MoCEntitySmallFish {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(4, new EntityAIFollowHerd(this, 0.6D, 4D, 20D, 1));
-        this.targetSelector.addGoal(1, new EntityAINearestAttackableTargetMoC(this, PlayerEntity.class, true));
+        this.goalSelector.addGoal(4, new FollowHerdGoal(this, 0.6D, 4D, 20D, 1));
+        this.targetSelector.addGoal(1, new MoCNearestAttackableTargetGoal(this, PlayerEntity.class, true));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {

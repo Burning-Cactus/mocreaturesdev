@@ -14,14 +14,12 @@ import net.minecraft.util.math.vector.Vector3d;
 import java.util.EnumSet;
 import java.util.List;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
-
-public class EntityAIFleeFromEntityMoC extends Goal {
+public class FleeFromEntityGoal extends Goal {
 
     public final Predicate<Entity> canBeSeenSelector = new Predicate<Entity>() {
 
         public boolean isApplicable(Entity entityIn) {
-            return entityIn.isAlive() && EntityAIFleeFromEntityMoC.this.entity.getSensing().canSee(entityIn);
+            return entityIn.isAlive() && FleeFromEntityGoal.this.entity.getSensing().canSee(entityIn);
         }
 
         @Override
@@ -41,7 +39,7 @@ public class EntityAIFleeFromEntityMoC extends Goal {
     private double randPosY;
     private double randPosZ;
 
-    public EntityAIFleeFromEntityMoC(CreatureEntity creature, Predicate<Entity> targetSelector, float searchDistance, double farSpeedIn, double nearSpeedIn) {
+    public FleeFromEntityGoal(CreatureEntity creature, Predicate<Entity> targetSelector, float searchDistance, double farSpeedIn, double nearSpeedIn) {
         this.entity = creature;
         this.avoidTargetSelector = targetSelector;
         this.avoidDistance = searchDistance;

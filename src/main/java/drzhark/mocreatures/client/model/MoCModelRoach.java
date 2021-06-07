@@ -2,14 +2,12 @@ package drzhark.mocreatures.client.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import drzhark.mocreatures.entity.ambient.MoCEntityRoach;
+import drzhark.mocreatures.entity.ambient.RoachEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
 
-public class MoCModelRoach extends EntityModel<MoCEntityRoach> {
+public class MoCModelRoach extends EntityModel<RoachEntity> {
 
     ModelRenderer Head;
     ModelRenderer LAnthenna;
@@ -147,8 +145,8 @@ public class MoCModelRoach extends EntityModel<MoCEntityRoach> {
     }
 
     @Override
-    public void setupAnim(MoCEntityRoach entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        MoCEntityRoach entityroach = entityIn;
+    public void setupAnim(RoachEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        RoachEntity entityroach = entityIn;
         this.isFlying = (entityroach.getIsFlying() || entityroach.getDeltaMovement().y < -0.1D);
 
         setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, isFlying);

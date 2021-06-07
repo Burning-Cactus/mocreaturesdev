@@ -3,7 +3,7 @@ package drzhark.mocreatures.entity.ai;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.MoCEntityMob;
-import drzhark.mocreatures.entity.ambient.MoCEntityAnt;
+import drzhark.mocreatures.entity.ambient.AntEntity;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.MathHelper;
@@ -11,9 +11,7 @@ import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.EnumSet;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
-
-public class EntityAIWanderMoC2 extends Goal {
+public class MoCAlternateWanderGoal extends Goal {
 
     private CreatureEntity entity;
     private double xPosition;
@@ -23,11 +21,11 @@ public class EntityAIWanderMoC2 extends Goal {
     private int executionChance;
     private boolean mustUpdate;
 
-    public EntityAIWanderMoC2(CreatureEntity creatureIn, double speedIn) {
+    public MoCAlternateWanderGoal(CreatureEntity creatureIn, double speedIn) {
         this(creatureIn, speedIn, 120);
     }
 
-    public EntityAIWanderMoC2(CreatureEntity creatureIn, double speedIn, int chance) {
+    public MoCAlternateWanderGoal(CreatureEntity creatureIn, double speedIn, int chance) {
         this.entity = creatureIn;
         this.speed = speedIn;
         this.executionChance = chance;
@@ -42,7 +40,7 @@ public class EntityAIWanderMoC2 extends Goal {
         if (this.entity instanceof IMoCEntity && ((IMoCEntity) this.entity).isMovementCeased()) {
             return false;
         }
-        if (this.entity.isVehicle() && !(this.entity instanceof MoCEntityAnt || this.entity instanceof MoCEntityMob)) {
+        if (this.entity.isVehicle() && !(this.entity instanceof AntEntity || this.entity instanceof MoCEntityMob)) {
             return false;
         }
 
