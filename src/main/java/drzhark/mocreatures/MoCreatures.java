@@ -1,11 +1,11 @@
 package drzhark.mocreatures;
 
 import com.mojang.authlib.GameProfile;
-import drzhark.mocreatures.client.MoCClientTickHandler;
 import drzhark.mocreatures.client.handlers.MoCKeyHandler;
 import drzhark.mocreatures.client.renderer.texture.MoCTextures;
 import drzhark.mocreatures.configuration.MoCConfig;
 import drzhark.mocreatures.handlers.MoCEventHooks;
+import drzhark.mocreatures.handlers.MoCWorldEvents;
 import drzhark.mocreatures.registry.MoCEntities;
 import drzhark.mocreatures.registry.MoCEntityAttributes;
 import drzhark.mocreatures.registry.MoCItems;
@@ -17,18 +17,15 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -74,7 +71,6 @@ public class MoCreatures {
 
         bus.addListener(this::setup);
         bus.addListener(this::clientSetup);
-//        bus.addListener(this::onServerStart);
 
         MoCreatures.instance = this;
     }
@@ -85,45 +81,13 @@ public class MoCreatures {
         event.enqueueWork(MoCItems::registerDispenserBehavior);
 
         MinecraftForge.EVENT_BUS.register(new MoCEventHooks());
+        MinecraftForge.EVENT_BUS.register(new MoCWorldEvents());
     }
 
     private void clientSetup(FMLClientSetupEvent event) {
-        MinecraftForge.EVENT_BUS.register(new MoCClientTickHandler());
+//        MinecraftForge.EVENT_BUS.register(new MoCClientTickHandler());
         MinecraftForge.EVENT_BUS.register(new MoCKeyHandler());
-//        MOCTEXTURES.loadTextures();
     }
-
-    //TODO: Register commands properly in 1.15
-//    private void onServerStart(FMLServerStartingEvent event) {
-//        CommandDispatcher dispatcher = event.getCommandDispatcher();
-//        proxy.initGUI();
-//        event.registerServerCommand(new CommandMoCreatures());
-//        event.registerServerCommand(new CommandMoCTP());
-//        event.registerServerCommand(new CommandMoCPets());
-//        if (isServer()) {
-//            if (FMLCommonHandler.instance().getMinecraftServerInstance().isDedicatedServer()) {
-//                event.registerServerCommand(new CommandMoCSpawn());
-//            }
-//        }
-//    }
-
-//
-//    //how to check for client: if(FMLCommonHandler.instance().getSide().isRemote())
-//
-//    @EventHandler
-//    public void load(FMLInitializationEvent event) {
-//        WyvernLairDimensionID = proxy.WyvernDimension;
-//        proxy.mocSettingsConfig.save();
-//        proxy.registerRenderers();
-//        proxy.registerRenderInformation();
-//        WYVERN_LAIR = DimensionType.register("Wyvern Lair", "_wyvern_lair", WyvernLairDimensionID, WorldProviderWyvernEnd.class, false);
-//        DimensionManager.registerDimension(WyvernLairDimensionID, WYVERN_LAIR);
-//    }
-//
-//    @EventHandler
-//    public void postInit(FMLPostInitializationEvent event) {
-//        isCustomSpawnerLoaded = Loader.isModLoaded("CustomSpawner");
-//    }
 
     public static void burnPlayer(PlayerEntity player) {
         //TODO 4FIX

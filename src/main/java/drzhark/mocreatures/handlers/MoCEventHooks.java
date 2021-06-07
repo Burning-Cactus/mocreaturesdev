@@ -5,14 +5,6 @@ package drzhark.mocreatures.handlers;
 public class MoCEventHooks {
 //
 //    @SubscribeEvent
-//    public void onWorldUnload(WorldEvent.Unload event) {
-//        // if overworld has been deleted or unloaded, reset our flag
-//        if (event.getWorld().getDimension().getType().getId() == 0) {
-//            MoCreatures.proxy.worldInitDone = false;
-//        }
-//    }
-//
-//    @SubscribeEvent
 //    public void onWorldLoad(WorldEvent.Load event) {
 //        if (/* DimensionManager.getWorld(0) */ event.getWorld() != null && !MoCreatures.proxy.worldInitDone) // if overworld has loaded, use its mapstorage
 //        {

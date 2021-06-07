@@ -1,3 +1,4 @@
+/*
 package drzhark.mocreatures.client;
 
 import net.minecraft.client.Minecraft;
@@ -32,3 +33,4 @@ public class MoCClientTickHandler {
         }
     }
 }
+*/
